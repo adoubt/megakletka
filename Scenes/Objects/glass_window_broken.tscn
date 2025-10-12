@@ -1,10 +1,8 @@
-[gd_scene load_steps=253 format=4 uid="uid://biw81glctlbm"]
+[gd_scene load_steps=251 format=4 uid="uid://biw81glctlbm"]
 
 [ext_resource type="Script" uid="uid://blnt6smpkj1xh" path="res://Scripts/glass_window_broken.gd" id="1_atp7c"]
 [ext_resource type="Material" uid="uid://bwvilnd7o017o" path="res://assets/themes/glass_window_material.tres" id="2_dkymk"]
 [ext_resource type="Material" uid="uid://cqa6keyudxhu6" path="res://assets/Materials/dissolve_material.tres" id="2_ve5n0"]
-[ext_resource type="AudioStream" uid="uid://byj1v8aaq3drc" path="res://assets/sound/glass.mp3" id="3_7kmm8"]
-[ext_resource type="Script" uid="uid://wxb573o058my" path="res://Scripts/AudioSource3D.gd" id="4_ve5n0"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_pq85w"]
 points = PackedVector3Array(0.044421673, 0.24430016, 0.219641, 0.04475662, -0.3609901, -0.0038141012, 0.04490439, 0.6791271, 0.026022851, -0.005406905, 0.46106753, 0.09213635, -0.05538325, 0.18798158, 0.18272045, -0.05570835, -0.356252, 0.09020448, 0.044175386, -0.4081556, 0.108718395, -0.005406905, 0.14200065, -0.15938479, 0.044933945, 0.61074793, -0.328586, 0.044195086, -0.419247, 0.09632212, 0.044175386, -0.4184932, 0.051405698, -0.055462062, -0.4133244, 0.039277732, 0.0442542, 0.67966557, -0.32332698, -0.05551132, 0.6789118, -0.036065906, -0.005406905, -0.3841421, 0.099058956, -0.055688646, 0.6786964, -0.3110917, -0.005406905, -0.41095537, 0.075071335, 0.039062485, -0.408694, 0.10684016, -0.055146817, 0.640684, -0.3136139, -0.005406905, 0.62916183, -0.32085845, 0.035082504, -0.41946238, 0.09379992, -0.005406905, -0.42010847, 0.066216856, -0.005406905, -0.4197854, 0.049151838, -0.03228163, -0.42043152, 0.047917575)
@@ -2886,11 +2884,6 @@ shadow_mesh = SubResource("ArrayMesh_apnpc")
 [node name="GlassWindowBroken" type="Node3D"]
 script = ExtResource("1_atp7c")
 shader_material = ExtResource("2_ve5n0")
-
-[node name="GlassSound" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("3_7kmm8")
-max_polyphony = 3
-script = ExtResource("4_ve5n0")
 
 [node name="Model" type="Node3D" parent="."]
 

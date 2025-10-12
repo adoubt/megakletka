@@ -4,7 +4,7 @@ extends Node3D
 var input_enabled :=false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	ControllerManager.register(self)
 
 func set_input_enabled(state: bool) -> void:
 	input_enabled = state

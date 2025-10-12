@@ -3,7 +3,7 @@ extends Node3D
 @export var broken_model: PackedScene
 @export var INTENSITY: float = 0.1
 @export var LIFETIME: float = 4.0
-@export var active_limit :int = 82  # 💥 максимум активных кусков
+@export var active_limit :int = 30  # 💥 максимум активных кусков
 @export var active_count :int = 0
 @export var spread_deg := 15.0
 

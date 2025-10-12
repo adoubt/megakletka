@@ -9,7 +9,7 @@ const SCENES := {
 }
 
 # текущая сцена
-var current_scene_name: String = ""
+var current_scene_name: String = "Intro"
 
 # ---------------- PUBLIC API ----------------
 

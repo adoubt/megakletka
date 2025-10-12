@@ -38,9 +38,7 @@ func _process(delta: float) -> void:
 	_update_fps(delta)
 
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Esc"):
-		UIManager.toggle_escape_menu()
+
 
 
 func _update_card() -> void:

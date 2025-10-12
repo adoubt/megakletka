@@ -3,6 +3,7 @@ extends Control
 var pressed := false
 
 func _ready():
+	
 	$Label.modulate.a = 0.0
 	var tween = create_tween()
 	tween.set_loops() # у самого Tween есть, а не у PropertyTweener

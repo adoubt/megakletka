@@ -1,0 +1,10 @@
+[gd_resource type="Environment" load_steps=2 format=3 uid="uid://dssuy6s6t6ifs"]
+
+[ext_resource type="Sky" uid="uid://chle3jp3mirl1" path="res://assets/Materials/sky.tres" id="1_ei11o"]
+
+[resource]
+background_mode = 2
+sky = ExtResource("1_ei11o")
+ssr_fade_in = 0.19118407
+sdfgi_use_occlusion = true
+sdfgi_read_sky_light = false

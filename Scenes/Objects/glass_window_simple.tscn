@@ -33,7 +33,7 @@ mesh = SubResource("ArrayMesh_whcl2")
 
 [node name="Area3D" type="Area3D" parent="."]
 collision_layer = 16
-collision_mask = 38
+collision_mask = 6
 priority = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]

@@ -49,31 +49,32 @@ var blade_speed :float  = 0.9
 
 @onready var camera_pivot = $CameraPivot
 @onready var camera1 := $CameraPivot/Camera3D
-@onready var ray_cast_forward: RayCast3D = $CameraPivot/RayCastForward
+@onready var ray_cast_forward: RayCast3D = $Model/RayCastForward
 @onready var ray_cast_backward: RayCast3D = $CameraPivot/RayCastBackward
-@onready var ray_cast_up: RayCast3D = $CameraPivot/RayCastUp
+@onready var ray_cast_up: RayCast3D = $Model/RayCastUp
 
 
 
 @onready var camera_pivot2 = $CameraPivot2
 
 @onready var camera2 := $CameraPivot2/Camera3D2
-@onready var model = $Model
+
 var control_yaw: float = 0.0       # мгновенный отклик мыши
 var model_lag_speed: float = 5.0   # скорость плавного поворота модели (настройка)
 @onready var label_hint := $"../drop/Label_Interact"
 @onready var label_status := $"../HUDManager/HUD/GrabLabel"
-
+@onready var model = $Model
 @onready var grab_area := $Area3D
-@onready var blade1 := $Model/Blade1pivot
-@onready var blade2 := $Model/Blade2pivot
-@onready var blade3 := $Model/Blade3pivot
-@onready var blade4 := $Model/Blade4pivot
+
+@onready var blade1 := $Model/Blades/Blade1pivot
+@onready var blade2 := $Model/Blades/Blade2pivot
+@onready var blade3 := $Model/Blades/Blade3pivot
+@onready var blade4 := $Model/Blades/Blade4pivot
 @onready var blade_sound := $BladeSound
-@onready var flashlight: SpotLight3D = $Model/SpotLight3D
-@onready var flashlight2: SpotLight3D = $Model/SpotLight3D2
-@onready var front_left_flashlight:= $Model/FrontLeftFlashlight
-@onready var front_right_flashlight:= $Model/FrontRightFlashlight
+@onready var flashlight: SpotLight3D = $Model/lights/SpotLight3D
+@onready var flashlight2: SpotLight3D = $Model/lights/SpotLight3D2
+@onready var front_left_flashlight:= $Model/lights/front/On/LeftFlashlight
+@onready var front_right_flashlight:= $Model/lights/front/On/RightFlashlight
 
 
 @export_group("Camera")
@@ -272,7 +273,7 @@ func _process_movement(delta):
 	# сглаживание
 	var accel_factor = delta / time_to_max_speed
 	if input_dir == Vector3.ZERO:
-		accel_factor = delta / factor_stop
+		accel_factor = delta / factor_stop if model.global_transform.basis.y !=Vector3.ZERO else accel_factor
 	#var accel_factor_y =  delta / factor_stop if model.global_transform.basis.y !=Vector3.ZERO else accel_factor
 	
 	velocity.x = lerp(velocity.x, target_velocity_x, accel_factor)
@@ -300,7 +301,14 @@ func _process_rotation_and_tilt(delta):
 	model.rotation_degrees.x = current_tilt.x
 	model.rotation_degrees.z = current_tilt.z
 
-	
+var input_rotation: Vector3
+var mouse_input: Vector2	
+
+var control_pitch := 0.0
+var pitch_limit := deg_to_rad(50)	
+var pitch_return_speed := 1.5  # скорость возврата
+var idle_time := 0.0
+var idle_delay := 1.3  # через сколько секунд начинать выравнивать	
 func _process_mouse_camera(delta):
 	if !SettingsManager.values["drone_new_control"]: 
 		if mouse_joystick_active:
@@ -308,12 +316,34 @@ func _process_mouse_camera(delta):
 			mouse_delta = Vector2.ZERO
 		else:
 			rotation_degrees.x = lerp(rotation_degrees.x, default_pitch, delta * 2.0)
+		
+		
 	# --- управляем направлением мгновенно ---
 	else: 
+		# --- горизонтальное вращение (yaw) ---
 		control_yaw += -deg_to_rad(mouse_delta.x * mouse_sensitivity)
+		
+		
+		# если мышь двигается — сбрасываем таймер
+		if mouse_delta.length() > 0.5:
+			idle_time = 0.0
+			# --- вертикальное вращение (pitch по орбите) ---
+			control_pitch += -deg_to_rad(mouse_delta.y * mouse_sensitivity * 0.6)
+			control_pitch = clamp(control_pitch, -pitch_limit, pitch_limit)
+
+		else:
+			idle_time += delta
+			# если мышь не трогали дольше idle_delay — начинаем возвращать pitch
+			if idle_time > idle_delay:
+				control_pitch = lerp(control_pitch, 0.0, delta * pitch_return_speed)
+
+		
 		mouse_delta = Vector2.ZERO
 
-		# --- визуальная модель догоняет с лагом ---
+		# --- применяем вращение ---
+		camera_pivot.rotation = Vector3(control_pitch, control_yaw, 0)
+		
+		# --- визуальная модель дрона догоняет yaw ---
 		var target_yaw = control_yaw
 		model.rotation.y = lerp_angle(model.rotation.y, target_yaw, delta * model_lag_speed)
 	if Input.is_action_pressed("rotate_camera_up"):
@@ -387,11 +417,6 @@ func _process_engine_sound(delta: float) -> void:
 		if blade_sound.volume_local_db <= min_volume_db + 1 and blade_sound.playing:
 			blade_sound.stop()
 
-
-
-
-
-
 func _update_camera_follow(delta):
 	var horiz_speed = Vector3(velocity.x, velocity.y, velocity.z).length()
 	var t = clamp(horiz_speed / move_speed, 0.0, 1.0)
@@ -457,7 +482,7 @@ func _update_camera_follow(delta):
 		pos.z = cur_z
 		pos.y = cur_y
 		camera1.position = pos
-		
+
 		
 func _apply_shaders():
 	var speed = velocity.length()

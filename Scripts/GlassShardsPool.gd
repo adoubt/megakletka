@@ -1,12 +1,13 @@
 extends Node
 
 @export var shard_scene: PackedScene
-@export var pool_size: int = 500
+@export var pool_size: int = 100
 
 var pool: Array[RigidBody3D] = []
 var available: Array[RigidBody3D] = []
 
 func _ready():
+	
 	for i in range(pool_size):
 		var rb: RigidBody3D = shard_scene.instantiate()
 		rb.name = "Shard_%d" % i

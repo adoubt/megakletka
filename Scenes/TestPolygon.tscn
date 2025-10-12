@@ -1,29 +1,22 @@
-[gd_scene load_steps=15 format=3 uid="uid://dhl6fkkhp3dy8"]
+[gd_scene load_steps=13 format=3 uid="uid://dhl6fkkhp3dy8"]
 
 [ext_resource type="Script" uid="uid://bi305l2arbj1l" path="res://Scripts/test_polygon.gd" id="1_2kunf"]
 [ext_resource type="PackedScene" uid="uid://kfvo4lrg7huc" path="res://Scenes/base_drone.tscn" id="1_x0cbq"]
 [ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud_manager.tscn" id="2_d6o0v"]
-[ext_resource type="Sky" uid="uid://chle3jp3mirl1" path="res://assets/Materials/sky.tres" id="2_ytcl1"]
+[ext_resource type="Environment" uid="uid://dssuy6s6t6ifs" path="res://assets/Environment.tres" id="2_pijmh"]
 [ext_resource type="PackedScene" uid="uid://cdjheym03q4ok" path="res://Scenes/Drop.tscn" id="3_d6o0v"]
 [ext_resource type="PackedScene" uid="uid://dwdoylad3f00s" path="res://Scenes/player.tscn" id="5_ftdfr"]
 [ext_resource type="PackedScene" uid="uid://bitej6opd7qbd" path="res://Scenes/Objects/glass_window.tscn" id="6_ftdfr"]
 
-[sub_resource type="Environment" id="Environment_uixlb"]
-background_mode = 2
-background_energy_multiplier = 2.0
-sky = ExtResource("2_ytcl1")
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_2kunf"]
 size = Vector3(100, 1, 100)
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ftdfr"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l0ril"]
-albedo_color = Color(0.096204735, 0.09620475, 0.096204735, 1)
-emission_texture = SubResource("NoiseTexture2D_ftdfr")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ftdfr"]
+albedo_color = Color(0.042278394, 0.042278446, 0, 1)
+roughness = 0.56
 
 [sub_resource type="BoxMesh" id="BoxMesh_l0ril"]
-material = SubResource("StandardMaterial3D_l0ril")
+material = SubResource("StandardMaterial3D_ftdfr")
 size = Vector3(100, 1, 100)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ftdfr"]
@@ -37,7 +30,7 @@ albedo_texture = SubResource("ViewportTexture_ftdfr")
 script = ExtResource("1_2kunf")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_uixlb")
+environment = ExtResource("2_pijmh")
 
 [node name="Floor" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
@@ -49,11 +42,11 @@ shape = SubResource("BoxShape3D_2kunf")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012132645, -0.032505035, -0.005027771)
 mesh = SubResource("BoxMesh_l0ril")
 
-[node name="Base_Drone" parent="." instance=ExtResource("1_x0cbq")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -2.073985, 3.3520353, -7.7075877)
-
 [node name="Player" parent="." instance=ExtResource("5_ftdfr")]
 transform = Transform3D(-0.18089803, 0, -0.5930227, 0, 0.62000006, 0, 0.5930227, 0, -0.18089803, -6.3653893, 9.536743e-07, -0.7480469)
+
+[node name="Base_Drone" parent="." instance=ExtResource("1_x0cbq")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.38069642, 2.8728871)
 
 [node name="HUDManager" parent="." instance=ExtResource("2_d6o0v")]
 

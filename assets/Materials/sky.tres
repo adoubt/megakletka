@@ -20,6 +20,7 @@ normalize = false
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_exi56"]
 noise = SubResource("FastNoiseLite_mg4q0")
 color_ramp = SubResource("Gradient_exi56")
+seamless = true
 normalize = false
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_yx6jq"]
@@ -42,7 +43,7 @@ shader_parameter/clouds_density = 0.5
 shader_parameter/clouds_scale = 1.0
 shader_parameter/clouds_smoothness = 0.0999999977648
 shader_parameter/clouds_light_color = Color(0.86467505, 0.86467516, 0.864675, 1)
-shader_parameter/clouds_shadow_intensity = 2.5000000372530002
+shader_parameter/clouds_shadow_intensity = 2.500000037253
 shader_parameter/high_clouds_density = 0.0
 shader_parameter/top_color = Color(0.17819098, 0, 0.23164421, 1)
 shader_parameter/bottom_color = Color(1.2333506e-07, 0, 0.17081833, 1)

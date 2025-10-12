@@ -1,14 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dcirc02tx3del"]
+[gd_scene load_steps=9 format=3 uid="uid://dcirc02tx3del"]
 
 [ext_resource type="Script" uid="uid://c5fh12yk1o0ou" path="res://Scenes/menu.gd" id="1_lti8b"]
 [ext_resource type="PackedScene" uid="uid://dyr4si0jpc4wr" path="res://building.tscn" id="3_mae5d"]
 [ext_resource type="Script" uid="uid://bsglttqymu1yo" path="res://menu_camera_flow.gd" id="4_4hy44"]
 [ext_resource type="AudioStream" uid="uid://bnth3x01y1qt6" path="res://assets/sound/1081.mp3" id="4_158mb"]
 [ext_resource type="Script" uid="uid://wxb573o058my" path="res://Scripts/AudioSource3D.gd" id="5_wwsa2"]
-
-[sub_resource type="Environment" id="Environment_mae5d"]
-background_mode = 1
-background_color = Color(0.00820202, 0.00820202, 0.00820202, 1)
 
 [sub_resource type="Animation" id="Animation_4hy44"]
 resource_name = "MenuCameraFlow"
@@ -76,7 +72,6 @@ _data = {
 script = ExtResource("1_lti8b")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_mae5d")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, -0.351499, 0.936188, 0, -0.936188, -0.351499, 2.03329, 24.8312, 0)

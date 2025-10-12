@@ -1,7 +1,6 @@
-[gd_scene load_steps=26 format=3 uid="uid://cs3guckxlcjyi"]
+[gd_scene load_steps=27 format=3 uid="uid://cs3guckxlcjyi"]
 
 [ext_resource type="Script" uid="uid://ctrfp37708not" path="res://Scenes/game.gd" id="1_80cx4"]
-[ext_resource type="Sky" uid="uid://chle3jp3mirl1" path="res://assets/Materials/sky.tres" id="2_7nbq1"]
 [ext_resource type="PackedScene" uid="uid://kfvo4lrg7huc" path="res://Scenes/base_drone.tscn" id="2_mg4q0"]
 [ext_resource type="PackedScene" uid="uid://djdwfp6cfwga0" path="res://Scenes/Items/DroneRemoteLoot.tscn" id="3_22asu"]
 [ext_resource type="PackedScene" uid="uid://cdjheym03q4ok" path="res://Scenes/Drop.tscn" id="3_vm72l"]
@@ -20,12 +19,20 @@
 [ext_resource type="Resource" uid="uid://cmjc2taikirhg" path="res://Resources/Items/tattoo_machine.tres" id="26_fkdbe"]
 [ext_resource type="PackedScene" uid="uid://cib10taw405l3" path="res://Scenes/Items/ZippoLoot.tscn" id="27_81klo"]
 
-[sub_resource type="Environment" id="Environment_7t8sx"]
-background_mode = 2
-sky = ExtResource("2_7nbq1")
-ssr_fade_in = 0.19118407
-sdfgi_use_occlusion = true
-sdfgi_read_sky_light = false
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_85qyi"]
+sky_top_color = Color(0.7883724, 0.0023701508, 0.5378481, 1)
+sky_horizon_color = Color(0, 0.752132, 0.71117973, 1)
+ground_horizon_color = Color(0, 0.6561027, 0.671152, 1)
+ground_curve = 0.020000027
+ground_energy_multiplier = 2.1
+
+[sub_resource type="Sky" id="Sky_iivbl"]
+sky_material = SubResource("ProceduralSkyMaterial_85qyi")
+
+[sub_resource type="Environment" id="Environment_7nbq1"]
+background_mode = 1
+background_color = Color(0.57409495, 0.7135087, 1, 1)
+sky = SubResource("Sky_iivbl")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_e2o6t"]
 size = Vector3(500, 0.335, 500)
@@ -47,7 +54,7 @@ script = ExtResource("1_80cx4")
 metadata/_edit_horizontal_guides_ = [1235.0]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_7t8sx")
+environment = SubResource("Environment_7nbq1")
 
 [node name="Base_Drone" parent="." instance=ExtResource("2_mg4q0")]
 transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 10.7188, 4.50673, -8.05474)

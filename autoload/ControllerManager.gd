@@ -4,9 +4,11 @@ var controllables: Array = []
 var current_index: int = -1  # -1 значит никто не активен
 
 func _input(event: InputEvent) -> void:
+	if UIManager._any_ui_open(): return
 	if event.is_action_pressed("switch_next"):
 		switch_next() 
 	elif event.is_action_pressed("drone_select"):
+		
 		_handle_object_hotkey("Base_Drone") 
 	elif event.is_action_pressed("player_select"):
 		_handle_object_hotkey("Player") 
@@ -37,6 +39,7 @@ func _handle_object_hotkey(name: String) -> void:
 			obj.set_input_enabled(true)
 
 		_set_camera(obj)
+		
 		return
 
 

@@ -49,6 +49,14 @@ func open_escape_menu() -> void:
 func close_escape_menu() -> void:
 	close_panel("EscapeMenu")
 
+func is_panel_open(name: String) -> bool:
+	if not panels.has(name):
+		return false
+
+	var panel = panels[name]
+	return is_instance_valid(panel) and panel.visible
+
+		
 func open_panel(name: String) -> void:
 	if panels.has(name):
 		var panel = panels[name]
@@ -91,10 +99,16 @@ func _ready() -> void:
 	scale_margins_for_resolution()  # стартовая подгонка
 	#connect("resized", Callable(self, "_on_resize"))  # если Control
 	get_viewport().connect("size_changed", Callable(self, "_on_resize"))
+	
 func _update_ui_state() -> void:
-	var open := _any_ui_open() or force_cursor_visible
-	ControllerManager.set_all_input_enabled(not open)
-	_show_mouse(open)
+	var ui_open := _any_ui_open() or force_cursor_visible
+	var active_node := ControllerManager.get_active()
+
+	if active_node and active_node.has_method("set_input_enabled"):
+		active_node.set_input_enabled(not ui_open)
+
+	_show_mouse(ui_open)
+
 
 func _any_ui_open() -> bool:
 	for p in panels.values():
@@ -136,3 +150,11 @@ func _apply_margin_scaling(node: Node, scale: float):
 	for child in node.get_children():
 		if child is Control:
 			_apply_margin_scaling(child, scale)
+		
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("Esc"):
+		if is_panel_open("Settings"):
+			close_settings()
+		elif SceneManager.current_scene_name not in ["Intro","MainMenu"]:
+			UIManager.toggle_escape_menu()

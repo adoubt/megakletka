@@ -3,7 +3,6 @@
 [resource]
 transparency = 1
 cull_mode = 2
-roughness = 0.32
 billboard_keep_scale = true
 stencil_flags = 2
 stencil_reference = 2
