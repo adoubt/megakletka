@@ -2540,7 +2540,9 @@ exclude_parent = false
 target_position = Vector3(0, 0.995, 0)
 collision_mask = 3
 
-[node name="CameraPivot" type="Node3D" parent="."]
+[node name="CameraPivot" type="SpringArm3D" parent="."]
+collision_mask = 3
+spring_length = 3.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
 transform = Transform3D(1, 2.84328e-09, -1.46274e-08, 0, 0.981627, 0.190809, 1.49012e-08, -0.190809, 0.981627, 0, 0.393466, 1.226)

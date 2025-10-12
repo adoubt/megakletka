@@ -305,7 +305,7 @@ var input_rotation: Vector3
 var mouse_input: Vector2	
 
 var control_pitch := 0.0
-var pitch_limit := deg_to_rad(50)	
+var pitch_limit := deg_to_rad(30)
 var pitch_return_speed := 1.5  # скорость возврата
 var idle_time := 0.0
 var idle_delay := 1.3  # через сколько секунд начинать выравнивать	
@@ -451,11 +451,11 @@ func _update_camera_follow(delta):
 			target_dist = lerp(base_distance, far_distance, t)
 
 		# --- проверка назад (стены за дроном) ---
-		if ray_cast_backward.is_colliding():
-			var hit_pos = ray_cast_backward.get_collision_point()
-			var local_hit = camera_pivot.to_local(hit_pos)
-			var safe_dist = abs(local_hit.z) * 0.1
-			target_dist = min(target_dist, safe_dist)
+		#if ray_cast_backward.is_colliding():
+			#var hit_pos = ray_cast_backward.get_collision_point()
+			#var local_hit = camera_pivot.to_local(hit_pos)
+			#var safe_dist = abs(local_hit.z) * 0.1
+			#target_dist = min(target_dist, safe_dist)
 
 		# --- проверка вперёд (стена перед дроном) ---
 		if ray_cast_forward.is_colliding():
