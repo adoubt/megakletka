@@ -5,6 +5,8 @@ extends RayCast3D
 
 var last_highlighted: MeshInstance3D = null
 
+func _ready() -> void:
+	add_exception(get_parent().get_parent())
 func _physics_process(_delta):
 	prompt.text = ""
 

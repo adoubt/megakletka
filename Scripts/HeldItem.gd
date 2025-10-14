@@ -32,7 +32,7 @@ func throw():
 	
 	# Ставим в позицию руки
 	var hand_global = global_transform
-	thrown_item.global_transform.origin = hand_global.origin + hand_global.basis.z * 1.0  # чуть вперед
+	thrown_item.global_transform.origin = hand_global.origin #+ hand_global.basis.z * 1.0  # чуть вперед
 	# Сила броска
 	var throw_strength = 15.0
 	var camera_forward = -ControllerManager.get_current_camera().global_transform.basis.z.normalized()

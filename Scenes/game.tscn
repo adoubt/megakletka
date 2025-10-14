@@ -20,18 +20,12 @@
 [ext_resource type="PackedScene" uid="uid://cib10taw405l3" path="res://Scenes/Items/ZippoLoot.tscn" id="27_81klo"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_85qyi"]
-sky_top_color = Color(0.7883724, 0.0023701508, 0.5378481, 1)
-sky_horizon_color = Color(0, 0.752132, 0.71117973, 1)
-ground_horizon_color = Color(0, 0.6561027, 0.671152, 1)
-ground_curve = 0.020000027
-ground_energy_multiplier = 2.1
 
 [sub_resource type="Sky" id="Sky_iivbl"]
 sky_material = SubResource("ProceduralSkyMaterial_85qyi")
 
 [sub_resource type="Environment" id="Environment_7nbq1"]
-background_mode = 1
-background_color = Color(0.57409495, 0.7135087, 1, 1)
+background_mode = 2
 sky = SubResource("Sky_iivbl")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_e2o6t"]
@@ -78,7 +72,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.5928, 0.300744, -7.61348)
 
 [node name="Player" parent="." instance=ExtResource("15_vm72l")]
 transform = Transform3D(0.9976879, 0, 0.067963146, 0, 1, 0, -0.067963146, 0, 0.9976879, 5.845911, 6.836657, 0.84254074)
-speed = 10.0
 main_player = true
 
 [node name="Player2" parent="." instance=ExtResource("15_vm72l")]
@@ -99,60 +92,6 @@ transform = Transform3D(0.5249092, 0.46045044, -0.7158602, 1.9296806e-08, 0.8410
 
 [node name="BUILDING" parent="." instance=ExtResource("24_f1jbl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.86119, 1.4851432, 0.128264)
-
-[node name="DirectionalLight3D2" type="OmniLight3D" parent="BUILDING"]
-transform = Transform3D(0.0127216, -0.585297, 0.810719, 0.00918324, 0.810819, 0.585225, -0.999877, 4.65604e-10, 0.0156899, 4.61125, 2.57405, 13.1462)
-light_color = Color(1, 0.839216, 0.231373, 1)
-shadow_enabled = true
-distance_fade_enabled = true
-
-[node name="DirectionalLight3D3" type="OmniLight3D" parent="BUILDING"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68427, 7.0139, -0.227584)
-light_color = Color(1, 0.839216, 0.231373, 1)
-shadow_enabled = true
-
-[node name="DirectionalLight3D4" type="OmniLight3D" parent="BUILDING"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08348, 0.0608212, -0.227584)
-light_color = Color(1, 0.839216, 0.231373, 1)
-shadow_enabled = true
-
-[node name="DirectionalLight3D9" type="OmniLight3D" parent="BUILDING"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.7044835, 1.6193452, 4.407702)
-light_color = Color(1, 0.839216, 0.231373, 1)
-shadow_enabled = true
-
-[node name="DirectionalLight3D5" type="OmniLight3D" parent="BUILDING"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08348, 0.0608212, 21.0757)
-light_color = Color(1, 0.839216, 0.231373, 1)
-shadow_enabled = true
-
-[node name="DirectionalLight3D6" type="OmniLight3D" parent="BUILDING"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08348, 5.96691, 21.0757)
-light_color = Color(1, 0.839216, 0.231373, 1)
-shadow_enabled = true
-
-[node name="DirectionalLight3D7" type="OmniLight3D" parent="BUILDING"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.19387, 0.245415, 16.2689)
-light_color = Color(1, 0.839216, 0.231373, 1)
-shadow_enabled = true
-
-[node name="OmniLight3D" type="OmniLight3D" parent="BUILDING"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.52337, 2.0473757, -11.117644)
-light_color = Color(0.81111115, 0.7846995, 0.2899809, 1)
-light_energy = 11.345
-light_indirect_energy = 3.263
-light_volumetric_fog_energy = 3.101
-omni_range = 14.905
-omni_attenuation = 0.9
-
-[node name="OmniLight3D2" type="OmniLight3D" parent="BUILDING"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.24393, 2.0473757, 23.685656)
-light_color = Color(0.81111115, 0.7846995, 0.2899809, 1)
-light_energy = 11.345
-light_indirect_energy = 3.263
-light_volumetric_fog_energy = 3.101
-omni_range = 14.905
-omni_attenuation = 0.9
 
 [node name="OrderManager" type="Node" parent="."]
 script = ExtResource("24_vaj68")

@@ -26,7 +26,9 @@ func _handle_object_hotkey(name: String) -> void:
 		var active = get_active()
 
 		if active == obj and obj.has_method("toggle_camera"):
+			
 			obj.toggle_camera()
+			obj.set_input_enabled(true)
 			return
 
 		# отключаем ввод у текущего активного объекта
@@ -114,7 +116,15 @@ func get_active() -> Node:
 	if current_index >= 0 and current_index < controllables.size():
 		return controllables[current_index]["node"]
 	return null
+	
+func is_active(obj: Node) -> bool:
+	var active = get_active()
+	#print("Active node:", active, " vs obj:", obj)
+	return obj == active
+	
+	
 
+	
 func get_current_camera() -> Camera3D:
 	var obj = get_active()
 	if obj and obj.has_method("get_current_camera"):

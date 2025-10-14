@@ -1,4 +1,4 @@
-[gd_scene load_steps=149 format=4 uid="uid://kfvo4lrg7huc"]
+[gd_scene load_steps=151 format=4 uid="uid://kfvo4lrg7huc"]
 
 [ext_resource type="Script" uid="uid://dmdk8j6rmtauh" path="res://Scripts/drone.gd" id="1_v1gsr"]
 [ext_resource type="Script" uid="uid://lrkvnxw6uan3" path="res://Scenes/model_drone.gd" id="2_8qpst"]
@@ -2136,22 +2136,173 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_wvrnj")
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_udbft"]
-dof_blur_far_enabled = true
-dof_blur_far_distance = 50.0
-dof_blur_far_transition = 10.0
-dof_blur_near_enabled = true
-dof_blur_near_distance = 0.5
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_e2o6t"]
-radius = 2.00342
-
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_qhcbd"]
 height = 0.100067
 radius = 0.359375
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f1jbl"]
 size = Vector3(0.274597, 0.17307279, 0.303993)
+
+[sub_resource type="Animation" id="Animation_apykc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model/lights/front/On/LeftFlashlight:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Model/lights/SpotLight3D2:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Model/lights/front/On/RightFlashlight:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Model/lights/SpotLight3D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_o84gr"]
+resource_name = "flashlight_off"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model/lights/front/On/LeftFlashlight:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Model/lights/front/On/RightFlashlight:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Model/lights/SpotLight3D:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Model/lights/SpotLight3D2:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_udbft"]
+resource_name = "flashlight_on"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model/lights/front/On/LeftFlashlight:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.16666667, 0.23333335, 0.3, 0.4, 0.56666666, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false, true, false, false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Model/lights/SpotLight3D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.16666667, 0.23333335, 0.3, 0.4, 0.56666666, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false, true, false, false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Model/lights/SpotLight3D2:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.13333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Model/lights/front/On/RightFlashlight:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.13333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2wpqd"]
+_data = {
+&"RESET": SubResource("Animation_apykc"),
+&"flashlight_off": SubResource("Animation_o84gr"),
+&"flashlight_on": SubResource("Animation_udbft")
+}
 
 [node name="Base_Drone" type="CharacterBody3D" groups=["controllable", "drone"]]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
@@ -2162,6 +2313,7 @@ axis_lock_angular_y = true
 axis_lock_angular_z = true
 script = ExtResource("1_v1gsr")
 time_to_max_speed = 2.0
+rotation_speed = 180.0
 
 [node name="Model" type="Node3D" parent="."]
 script = ExtResource("2_8qpst")
@@ -2172,7 +2324,6 @@ blades_material = ExtResource("5_i8kaf")
 front_off = ExtResource("6_udbft")
 front_on = ExtResource("7_apykc")
 back_off = SubResource("StandardMaterial3D_o84gr")
-front = true
 
 [node name="body" type="Node3D" parent="Model"]
 
@@ -2462,7 +2613,6 @@ light_energy = 0.515
 light_indirect_energy = 0.0
 light_size = 0.424
 light_specular = 3.732
-shadow_enabled = true
 distance_fade_enabled = true
 spot_range = 16.4455
 spot_attenuation = -0.21
@@ -2470,11 +2620,11 @@ spot_angle = 26.82
 
 [node name="SpotLight3D2" type="SpotLight3D" parent="Model/lights"]
 transform = Transform3D(0.92718375, 0, 0.3746069, 0, 1, 0, -0.3746069, 0, 0.92718375, 0.22499898, 0.057512525, -0.26960352)
+visible = false
 light_energy = 0.515
 light_indirect_energy = 0.0
 light_size = 0.424
 light_specular = 3.732
-shadow_enabled = true
 distance_fade_enabled = true
 spot_range = 16.4455
 spot_attenuation = -0.21
@@ -2506,7 +2656,6 @@ skeleton = NodePath("")
 [node name="back" type="Node3D" parent="Model/lights"]
 
 [node name="On" type="Node3D" parent="Model/lights/back"]
-visible = false
 
 [node name="group753278407" type="MeshInstance3D" parent="Model/lights/back/On"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.350726e-10, 0, 0.003)
@@ -2529,45 +2678,43 @@ mesh = SubResource("ArrayMesh_n8h5a")
 skeleton = NodePath("")
 
 [node name="RayCastForward" type="RayCast3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0968641, 0)
 exclude_parent = false
 target_position = Vector3(0, 0, -2.015)
 collision_mask = 3
 
 [node name="RayCastUp" type="RayCast3D" parent="Model"]
-transform = Transform3D(1, 0, -2.13163e-14, 0, 1, 0, 0, 0, 1, 0, 0, 0.297771)
+transform = Transform3D(1, 0, -2.13163e-14, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 exclude_parent = false
-target_position = Vector3(0, 0.995, 0)
+target_position = Vector3(0, 1.5, 0)
 collision_mask = 3
 
-[node name="CameraPivot" type="SpringArm3D" parent="."]
+[node name="RayCastDown" type="RayCast3D" parent="Model"]
 collision_mask = 3
-spring_length = 3.0
+
+[node name="RayCastBackward" type="RayCast3D" parent="Model"]
+transform = Transform3D(1, 0, -2.1316282e-14, 0, 1, 0, 0, 0, 1, -1.2954136e-09, 0, 0.2829532)
+exclude_parent = false
+target_position = Vector3(0, 0.095, 1)
+collision_mask = 3
+debug_shape_custom_color = Color(2.117753e-06, 0.64008313, 0.3411191, 1)
+
+[node name="CameraPivot" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
 transform = Transform3D(1, 2.84328e-09, -1.46274e-08, 0, 0.981627, 0.190809, 1.49012e-08, -0.190809, 0.981627, 0, 0.393466, 1.226)
 cull_mask = 1048571
-attributes = SubResource("CameraAttributesPractical_udbft")
+v_offset = 0.175
+near = 0.002
 
-[node name="RayCastBackward" type="RayCast3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, -2.13163e-14, 0, 1, 0, 0, 0, 1, 0, 0, 0.297771)
-exclude_parent = false
-target_position = Vector3(0, 0, 0.935)
+[node name="RayCastCamera" type="RayCast3D" parent="CameraPivot"]
+transform = Transform3D(1, -1.3027012e-15, -7.1054274e-15, 2.220446e-16, 0.99999994, 1.4901161e-08, 7.1054274e-15, -1.4901161e-08, 0.99999994, 0, 0, 0)
+target_position = Vector3(0, 0, 1.685)
 collision_mask = 3
-debug_shape_custom_color = Color(2.117753e-06, 0.64008313, 0.3411191, 1)
 
 [node name="CameraPivot2" type="Node3D" parent="."]
 transform = Transform3D(1, 0, -1.4210855e-14, 0, 1, 0, 1.4210855e-14, 0, 1, -0.009, -0.1, -0.038)
 
 [node name="Camera3D2" type="Camera3D" parent="CameraPivot2"]
-
-[node name="Area3D" type="Area3D" parent="."]
-collision_layer = 8
-collision_mask = 4
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.189192, 0)
-shape = SubResource("SphereShape3D_e2o6t")
 
 [node name="BladeSound" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.0153427, 0)
@@ -2587,3 +2734,8 @@ shape = SubResource("CylinderShape3D_qhcbd")
 [node name="CollisionShape3D3" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.999999, 0, -2.98023e-07, 0, 1, 0, 2.98023e-07, 0, 0.999999, -0.00255227, -0.04375039, 0.00369978)
 shape = SubResource("BoxShape3D_f1jbl")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_2wpqd")
+}

@@ -1,10 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://dhl6fkkhp3dy8"]
+[gd_scene load_steps=10 format=3 uid="uid://dhl6fkkhp3dy8"]
 
 [ext_resource type="Script" uid="uid://bi305l2arbj1l" path="res://Scripts/test_polygon.gd" id="1_2kunf"]
 [ext_resource type="PackedScene" uid="uid://kfvo4lrg7huc" path="res://Scenes/base_drone.tscn" id="1_x0cbq"]
 [ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud_manager.tscn" id="2_d6o0v"]
 [ext_resource type="Environment" uid="uid://dssuy6s6t6ifs" path="res://assets/Environment.tres" id="2_pijmh"]
-[ext_resource type="PackedScene" uid="uid://cdjheym03q4ok" path="res://Scenes/Drop.tscn" id="3_d6o0v"]
 [ext_resource type="PackedScene" uid="uid://dwdoylad3f00s" path="res://Scenes/player.tscn" id="5_ftdfr"]
 [ext_resource type="PackedScene" uid="uid://bitej6opd7qbd" path="res://Scenes/Objects/glass_window.tscn" id="6_ftdfr"]
 
@@ -18,13 +17,6 @@ roughness = 0.56
 [sub_resource type="BoxMesh" id="BoxMesh_l0ril"]
 material = SubResource("StandardMaterial3D_ftdfr")
 size = Vector3(100, 1, 100)
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_ftdfr"]
-viewport_path = NodePath("CSGBox3D/SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pijmh"]
-resource_local_to_scene = true
-albedo_texture = SubResource("ViewportTexture_ftdfr")
 
 [node name="TestPolygon" type="Node3D"]
 script = ExtResource("1_2kunf")
@@ -50,9 +42,6 @@ transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.3
 
 [node name="HUDManager" parent="." instance=ExtResource("2_d6o0v")]
 
-[node name="drop" parent="." instance=ExtResource("3_d6o0v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4578776, 2.4106655, -7.974098)
-
 [node name="OmniLight3D2" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.675547, -43.195923)
 light_color = Color(1, 1, 0.28493494, 1)
@@ -60,6 +49,8 @@ light_energy = 11.7
 light_specular = 11.2
 light_bake_mode = 1
 shadow_enabled = true
+shadow_blur = 2.411
+distance_fade_enabled = true
 omni_range = 23.555416
 omni_attenuation = 0.632
 
@@ -104,14 +95,3 @@ transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 4.97
 
 [node name="GlassWindow14" parent="." instance=ExtResource("6_ftdfr")]
 transform = Transform3D(-4.3711392e-08, -1, 0, -0.25881907, 1.131334e-08, 0.96592593, -0.96592593, 4.2221963e-08, -0.25881907, 14.209569, 13.864881, -18.0442)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.59065795, 1.4688776, 0)
-size = Vector3(0.11230469, 4.370117, 2.1191406)
-material = SubResource("StandardMaterial3D_pijmh")
-
-[node name="SubViewport" type="SubViewport" parent="CSGBox3D"]
-size = Vector2i(1920, 1080)
-
-[node name="Camera3D" type="Camera3D" parent="CSGBox3D/SubViewport"]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.59065795, 1.3512628, 0)

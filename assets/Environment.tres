@@ -8,3 +8,7 @@ sky = ExtResource("1_ei11o")
 ssr_fade_in = 0.19118407
 sdfgi_use_occlusion = true
 sdfgi_read_sky_light = false
+fog_enabled = true
+fog_sky_affect = 0.255
+fog_depth_curve = 0.46651667
+volumetric_fog_anisotropy = -0.54

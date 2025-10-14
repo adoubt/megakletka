@@ -50,10 +50,10 @@ var blade_speed :float  = 0.9
 @onready var camera_pivot = $CameraPivot
 @onready var camera1 := $CameraPivot/Camera3D
 @onready var ray_cast_forward: RayCast3D = $Model/RayCastForward
-@onready var ray_cast_backward: RayCast3D = $CameraPivot/RayCastBackward
+@onready var ray_cast_backward: RayCast3D = $Model/RayCastBackward
 @onready var ray_cast_up: RayCast3D = $Model/RayCastUp
-
-
+@onready var ray_cast_down: RayCast3D = $Model/RayCastDown
+@onready var ray_cast_camera: RayCast3D = $CameraPivot/RayCastCamera
 
 @onready var camera_pivot2 = $CameraPivot2
 
@@ -61,10 +61,9 @@ var blade_speed :float  = 0.9
 
 var control_yaw: float = 0.0       # мгновенный отклик мыши
 var model_lag_speed: float = 5.0   # скорость плавного поворота модели (настройка)
-@onready var label_hint := $"../drop/Label_Interact"
 @onready var label_status := $"../HUDManager/HUD/GrabLabel"
 @onready var model = $Model
-@onready var grab_area := $Area3D
+#@onready var grab_area := $Area3D
 
 @onready var blade1 := $Model/Blades/Blade1pivot
 @onready var blade2 := $Model/Blades/Blade2pivot
@@ -81,8 +80,8 @@ var model_lag_speed: float = 5.0   # скорость плавного пово�
 ## Camera FOV angle affect(Current FOV = Base camera FOV + affect FOV). Please set Base Camera FOV in its settings.
 @export_range(0.0, 180.0, 1) var affect_fov: float = 90.0
 
-
-
+## Dinamic Vertocal Camera Offset  
+@export var dinamic_v_offset: bool = true
 ## How far to move camera back at maximum speed
 @export var far_distance := 3.0
 
@@ -95,12 +94,12 @@ var model_lag_speed: float = 5.0   # скорость плавного пово�
 ## Horizontal rotation of the camera
 @export var camera_yaw := 0.0
 
-## Camera rotation lag
+## Camera rotation lag (1.7 Juice)
 @export var camera_lag := 1.7  
 
 ## Mouse sensitivity
 @export var mouse_sensitivity := 0.2
-
+var base_camera1_pos :Vector3
 var base_fov1 : float
 var far_fov1 : float
 var base_fov2 : float
@@ -132,7 +131,8 @@ var grab_offset := Vector3(0, -0.22, 0)
 var engine_enabled := false
 var mouse_joystick_active := true
 var mouse_delta := Vector2.ZERO
-
+##the same as Input dir
+var target_velocity_y : float
 
 
 
@@ -143,25 +143,10 @@ var flashlight_on: bool = false  # флаг состояния фонаря
 
 
 func _ready():
-	ray_cast_forward.add_exception(self)
-	ray_cast_backward.add_exception(self)
-	ray_cast_up.add_exception(self)
-	grab_area.body_entered.connect(_on_grab_area_body_entered)
-	grab_area.body_exited.connect(_on_grab_area_body_exited)
-	label_hint.visible = false
-	camera_yaw = model.rotation.y
-	camera_pivot.rotation.y = camera_yaw
-	base_distance = camera1.position.z
-	base_height = camera1.position.y
-	front_left_flashlight.hide()
-	front_right_flashlight.hide()
-	
-	base_fov1 = camera1.fov	
-	far_fov1 = base_fov1 + affect_fov
-	base_fov2 = camera2.fov	
-	far_fov2 = base_fov2 + affect_fov
 	ControllerManager.register(self)  
-
+	_setup_ray_casts()
+	_setup_camera()
+	_setup_flashlights()
 
 func set_input_enabled(state: bool) -> void:
 	input_enabled = state
@@ -180,25 +165,10 @@ func get_current_camera() -> Camera3D:
 func _input(event):
 	if not input_enabled:
 		return
-	#if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MIDDLE and event.pressed:
-		#mouse_joystick_active = not mouse_joystick_active
-		#if mouse_joystick_active:
-			#pitch = model.rotation_degrees.x
 	elif event is InputEventMouseMotion and mouse_joystick_active:
 		mouse_delta = event.relative
 	if Input.is_action_just_pressed("flashlight"):
 		toggle_flashlight()
-
-func _on_grab_area_body_entered(body):
-	if body.is_in_group("grabbable") and not is_grabbing:
-		grabbed_box = body
-		label_hint.visible = true
-
-func _on_grab_area_body_exited(body):
-	if body == grabbed_box and not is_grabbing:
-		grabbed_box = null
-		label_hint.visible = false
-
 
 func _rotate_camera(direction: int):
 	var new_rot = camera2.rotation.x + deg_to_rad(direction * rotation_speed * get_process_delta_time())
@@ -213,13 +183,15 @@ func _physics_process(delta):
 	# --- Управление дроном только если input_enabled ---
 	if input_enabled:
 		
-		_process_rotation_and_tilt(delta)
+		
 		_process_mouse_camera(delta)
 		_process_interaction(delta)
-		_process_rotation_blades(delta)
-		_process_engine_sound(delta)
+	
 		_apply_shaders()
+	_process_rotation_and_tilt(delta)
 	_process_movement(delta)
+	_process_rotation_blades(delta)
+	_process_engine_sound(delta)
 	# --- тут обрабатываем камеру ---
 	_update_camera_follow(delta)
 func _apply_physics(delta):
@@ -235,7 +207,7 @@ func _process_movement(delta):
 	moving = false
 	
 	input_dir = Vector3.ZERO
-	var target_velocity_y := 0.0	
+	target_velocity_y = 0.0	
 	if input_enabled:
 		if Input.is_action_pressed("drone_forward"):
 			input_dir -= model.global_transform.basis.z
@@ -262,7 +234,10 @@ func _process_movement(delta):
 			target_velocity_y = -ascend_speed
 			engine_enabled = true
 			moving = true
-		
+		if Input.is_action_pressed("rotate_camera_up"):
+			_rotate_camera(-1)
+		if Input.is_action_pressed("rotate_camera_down"):
+			_rotate_camera(1)	
 	
 	# целевые скорости
 	input_dir = input_dir.normalized()
@@ -272,8 +247,11 @@ func _process_movement(delta):
 	
 	# сглаживание
 	var accel_factor = delta / time_to_max_speed
+	
+	
+	var _factor_stop = factor_stop if ControllerManager.is_active(self) else 2.0
 	if input_dir == Vector3.ZERO:
-		accel_factor = delta / factor_stop if model.global_transform.basis.y !=Vector3.ZERO else accel_factor
+		accel_factor = delta / _factor_stop if model.global_transform.basis.y !=Vector3.ZERO else accel_factor
 	#var accel_factor_y =  delta / factor_stop if model.global_transform.basis.y !=Vector3.ZERO else accel_factor
 	
 	velocity.x = lerp(velocity.x, target_velocity_x, accel_factor)
@@ -283,14 +261,6 @@ func _process_movement(delta):
 	
 	
 func _process_rotation_and_tilt(delta):
-	var yaw_input = Input.get_action_strength("drone_turn_right") - Input.get_action_strength("drone_turn_left")
-	if yaw_input != 0.0:
-		engine_enabled = true
-		moving = true
-		
-		# крутим только модель, а не весь дрон
-		model.rotate_y(deg_to_rad(rotation_speed * yaw_input * delta))
-
 
 	# наклон при движении
 	var local_input = model.global_transform.basis.inverse() * input_dir
@@ -301,14 +271,13 @@ func _process_rotation_and_tilt(delta):
 	model.rotation_degrees.x = current_tilt.x
 	model.rotation_degrees.z = current_tilt.z
 
-var input_rotation: Vector3
-var mouse_input: Vector2	
 
-var control_pitch := 0.0
-var pitch_limit := deg_to_rad(30)
-var pitch_return_speed := 1.5  # скорость возврата
-var idle_time := 0.0
-var idle_delay := 1.3  # через сколько секунд начинать выравнивать	
+var control_pitch : float= 0.0
+var pitch_limit : float= deg_to_rad(30)
+var pitch_return_speed : = 1.5  # скорость возврата
+var idle_time : float= 0.0
+var idle_delay : float= 1.3  # через сколько секунд начинать выравнивать	
+
 func _process_mouse_camera(delta):
 	if !SettingsManager.values["drone_new_control"]: 
 		if mouse_joystick_active:
@@ -339,44 +308,22 @@ func _process_mouse_camera(delta):
 
 		
 		mouse_delta = Vector2.ZERO
-
-		# --- применяем вращение ---
-		camera_pivot.rotation = Vector3(control_pitch, control_yaw, 0)
 		
-		# --- визуальная модель дрона догоняет yaw ---
+		if engine_enabled:
+		# --- применяем вращение ---
+			camera_pivot.rotation = Vector3(control_pitch, control_yaw, 0)
+		
+			# --- визуальная модель дрона догоняет yaw ---
 		var target_yaw = control_yaw
+	
+	
 		model.rotation.y = lerp_angle(model.rotation.y, target_yaw, delta * model_lag_speed)
-	if Input.is_action_pressed("rotate_camera_up"):
-		_rotate_camera(-1)
-	if Input.is_action_pressed("rotate_camera_down"):
-		_rotate_camera(1)
+	
 
 func _process_interaction(delta):
-	if Input.is_action_just_pressed("Interact") and grabbed_box:
-		is_grabbing = not is_grabbing
-		if is_grabbing:
-			label_hint.visible = false
-			label_status.visible = true
-			label_status.text = "Grabbed: %s" % grabbed_box.name
-			joint = PinJoint3D.new()
-			joint.node_a = get_path()
-			joint.node_b = grabbed_box.get_path()
-			joint.position = grabbed_box.global_transform.origin
-			add_child(joint)
-		else:
-			label_status.visible = false
-			if joint:
-				joint.queue_free()
-				joint = null
-			grabbed_box = null
 	
 	if Input.is_action_just_pressed("drone_engine_toggle"):
 		engine_enabled = not engine_enabled
-	# удерживаемые объекты
-	if is_grabbing and grabbed_box:
-		var direction = (global_transform.origin + grab_offset) - grabbed_box.global_transform.origin
-	
-		grabbed_box.linear_velocity = direction * 10.0
 
 func _process_rotation_blades(delta):
 	# --- вращение лопастей ---
@@ -418,15 +365,15 @@ func _process_engine_sound(delta: float) -> void:
 			blade_sound.stop()
 
 func _update_camera_follow(delta):
+	var use_fov_effect = SettingsManager.get_value("use_fov_effect")
 	var horiz_speed = Vector3(velocity.x, velocity.y, velocity.z).length()
 	var t = clamp(horiz_speed / move_speed, 0.0, 1.0)
 	# --- лаг поворота (как было) ---
 	if current_camera_index == 2:
 		camera_pivot2.rotation.y = model.rotation.y
-		if SettingsManager.get_value("use_fov_effect"):
+		if use_fov_effect:
 			# плавно меняем FOV
-			# --- вычисляем нормализованную скорость (0..1) по горизонтали ---
-			
+
 			var target_fov = lerp(base_fov2, far_fov2, t)
 			camera2.fov = lerp(camera2.fov, target_fov, delta * zoom_speed)
 			
@@ -435,12 +382,9 @@ func _update_camera_follow(delta):
 		camera_yaw = lerp_angle(camera_yaw, target_yaw, delta * camera_lag)
 		camera_pivot.rotation.y = camera_yaw
 
-		# --- вычисляем нормализованную скорость (0..1) по горизонтали ---
-		
-
 		# --- базовое расстояние до камеры ---
 		var target_dist: float
-		if SettingsManager.get_value("use_fov_effect"):
+		if use_fov_effect:
 			# плавно меняем FOV
 			
 			var target_fov = lerp(base_fov1, far_fov1, t)
@@ -450,12 +394,12 @@ func _update_camera_follow(delta):
 			# отдаляем камеру по Z
 			target_dist = lerp(base_distance, far_distance, t)
 
-		# --- проверка назад (стены за дроном) ---
-		#if ray_cast_backward.is_colliding():
-			#var hit_pos = ray_cast_backward.get_collision_point()
-			#var local_hit = camera_pivot.to_local(hit_pos)
-			#var safe_dist = abs(local_hit.z) * 0.1
-			#target_dist = min(target_dist, safe_dist)
+		 #--- проверка назад (стены за дроном) ---
+		if ray_cast_backward.is_colliding():
+			var hit_pos = ray_cast_backward.get_collision_point()
+			var local_hit = camera_pivot.to_local(hit_pos)
+			var back_dist = max(0.3, abs(local_hit.z))
+			target_dist = min(target_dist, back_dist)
 
 		# --- проверка вперёд (стена перед дроном) ---
 		if ray_cast_forward.is_colliding():
@@ -463,7 +407,7 @@ func _update_camera_follow(delta):
 			var local_hit = camera_pivot.to_local(hit_pos)
 			var front_dist = max(0.3, abs(local_hit.z))
 			target_dist = min(target_dist, front_dist)
-
+		base_height = camera_pivot.position.y
 		# по умолчанию целевая высота = базовой
 		var target_y = base_height
 
@@ -473,6 +417,27 @@ func _update_camera_follow(delta):
 			var local_hit = camera_pivot.to_local(hit_pos)
 			target_y = min(base_height, local_hit.y - 0.5)  # потолок прижимает вниз
 		
+		if ray_cast_down.is_colliding():
+			var hit_pos = ray_cast_down.get_collision_point()
+			var local_hit = camera_pivot.to_local(hit_pos)
+			var height = abs(local_hit.y)
+
+			# Чем ближе к земле — тем дальше камера
+			target_dist = lerp(target_dist, target_dist + (1.0 / (height + 0.5)),0.5)
+			target_y = lerp(target_y, base_height + (1.0 / (height + 0.5)), 0.5)
+		
+			
+		ray_cast_camera.target_position = camera1.position
+		if ray_cast_camera.is_colliding():
+			var hit_pos = ray_cast_camera.get_collision_point()
+			var local_hit = camera_pivot.to_local(hit_pos)
+			var dist = max(0.3, abs(local_hit.z))
+			target_dist = lerp(target_dist, min(target_dist, dist),0.5)
+		
+		if dinamic_v_offset:
+			if target_velocity_y != 0.0:
+				target_y = lerp(target_y, - target_velocity_y * 0.1, 0.1)
+			
 		
 		# --- интерполяция текущей позиции камеры ---
 		var cur_z = lerp(camera1.position.z, target_dist, delta * zoom_speed)
@@ -483,6 +448,9 @@ func _update_camera_follow(delta):
 		pos.y = cur_y
 		camera1.position = pos
 
+
+
+		
 		
 func _apply_shaders():
 	var speed = velocity.length()
@@ -499,40 +467,34 @@ func _apply_shaders():
 	
 	$"../HUDManager/SpeedLines".material.set_shader_parameter("line_density", shader_param)
 
-
 func toggle_flashlight() -> void:
-	flashlight_on = !flashlight_on  # переключаем состояние
-
+	flashlight_on = !flashlight_on
 	if flashlight_on:
-		# --- Включение с морганием первой фары ---
-		flashlight.visible = true
-		front_left_flashlight.visible = true
-
-		for i in range(3):
-			flashlight.visible = false
-			front_left_flashlight.visible = false
-			await get_tree().process_frame
-			await get_tree().create_timer(0.1).timeout
-
-			flashlight.visible = true
-			front_left_flashlight.visible = true
-			await get_tree().process_frame
-			await get_tree().create_timer(0.1).timeout
-
-		# Устанавливаем окончательное состояние включено
-		flashlight.visible = true
-		front_left_flashlight.visible = true
-
-		# Правая фара включается с задержкой
-		await get_tree().create_timer(0.3).timeout
-		flashlight2.visible = true
-		front_right_flashlight.visible = true
-
+		$AnimationPlayer.play("flashlight_on")
 	else:
-		# --- Быстрое выключение ---
-		flashlight.visible = false
-		front_left_flashlight.visible = false
-		flashlight2.visible = false
-		front_right_flashlight.visible = false
+		$AnimationPlayer.play("flashlight_off")
 
-			 
+
+func _setup_ray_casts():
+	var rays = [ray_cast_forward, ray_cast_backward, ray_cast_up, ray_cast_down, ray_cast_camera]
+	for ray in rays:
+		ray.add_exception(self)
+		
+func _setup_camera():
+	camera_yaw = model.rotation.y
+	camera_pivot.rotation.y = camera_yaw
+	base_distance = camera1.position.z
+	base_height = camera1.position.y
+	base_camera1_pos = camera1.position
+	base_fov1 = camera1.fov
+	far_fov1 = base_fov1 + affect_fov
+	base_fov2 = camera2.fov
+	far_fov2 = base_fov2 + affect_fov
+
+func _setup_flashlights():
+	flashlight.hide()
+	flashlight2.hide()
+	front_left_flashlight.hide()
+	front_right_flashlight.hide()
+
+	
