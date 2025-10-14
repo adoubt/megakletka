@@ -1,0 +1,60 @@
+[gd_resource type="VisualShader" load_steps=8 format=3 uid="uid://dwiow4n4m4d3u"]
+
+[ext_resource type="Texture2D" uid="uid://ynxt237srljg" path="res://assets/shader_pics/blurs 1.png" id="1_gypwc"]
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_fopk8"]
+parameter_name = "speed"
+qualifier = 2
+hint = 1
+max = 10.0
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_sqx72"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_vowdk"]
+texture = ExtResource("1_gypwc")
+texture_type = 2
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_kqdtg"]
+function = 0
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_gypwc"]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeVectorFunc" id="VisualShaderNodeVectorFunc_cwsux"]
+default_input_values = [0, Vector2(0, 0)]
+op_type = 0
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D tex_vtx_3 : hint_normal;
+
+
+
+void vertex() {
+// Texture2D:3
+	vec4 n_out3p0 = texture(tex_vtx_3, UV);
+
+
+// Output:0
+	COLOR.a = n_out3p0.x;
+
+
+}
+"
+nodes/vertex/0/position = Vector2(780, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeTexture_vowdk")
+nodes/vertex/3/position = Vector2(200, 540)
+nodes/vertex/7/node = SubResource("VisualShaderNodeFloatFunc_kqdtg")
+nodes/vertex/7/position = Vector2(-140, 940)
+nodes/vertex/8/node = SubResource("VisualShaderNodeInput_gypwc")
+nodes/vertex/8/position = Vector2(220, -100)
+nodes/vertex/9/node = SubResource("VisualShaderNodeVectorFunc_cwsux")
+nodes/vertex/9/position = Vector2(-400, 20)
+nodes/vertex/10/node = SubResource("VisualShaderNodeFloatParameter_fopk8")
+nodes/vertex/10/position = Vector2(200, 20)
+nodes/vertex/11/node = SubResource("VisualShaderNodeFloatOp_sqx72")
+nodes/vertex/11/position = Vector2(500, 0)
+nodes/vertex/connections = PackedInt32Array(3, 0, 0, 7, 10, 0, 11, 1, 8, 0, 11, 0)

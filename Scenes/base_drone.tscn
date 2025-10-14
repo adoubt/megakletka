@@ -1,14 +1,14 @@
-[gd_scene load_steps=151 format=4 uid="uid://kfvo4lrg7huc"]
+[gd_scene load_steps=152 format=4 uid="uid://kfvo4lrg7huc"]
 
-[ext_resource type="Script" uid="uid://dmdk8j6rmtauh" path="res://Scripts/drone.gd" id="1_v1gsr"]
+[ext_resource type="Script" uid="uid://dmdk8j6rmtauh" path="res://Scripts/Drone/drone.gd" id="1_v1gsr"]
 [ext_resource type="Script" uid="uid://lrkvnxw6uan3" path="res://Scenes/model_drone.gd" id="2_8qpst"]
 [ext_resource type="AudioStream" uid="uid://bt8wqhs8owrj7" path="res://Drone Noise Test - DJI Avata vs DJI FPV vs DJI Mavic 3 vs DJI Air 2S.mp3" id="2_ldkjq"]
 [ext_resource type="Script" uid="uid://wxb573o058my" path="res://Scripts/AudioSource3D.gd" id="3_cllcg"]
 [ext_resource type="Material" uid="uid://dkghwq086gte4" path="res://assets/Materials/black_plastmass_material.tres" id="4_8qpst"]
 [ext_resource type="Material" uid="uid://bnw1e4kw7wxqd" path="res://assets/Materials/blue_plastmass_material.tres" id="4_ubtlo"]
-[ext_resource type="Material" uid="uid://byq0gnhhalaca" path="res://assets/Materials/low-poly_glass_table.tres" id="5_i8kaf"]
 [ext_resource type="Material" uid="uid://tlbbaqy5koq8" path="res://assets/Materials/drone_front_flashlight.tres" id="6_udbft"]
 [ext_resource type="Material" uid="uid://cwsob4lkbjikt" path="res://assets/Materials/drone_front_flashlight_on.tres" id="7_apykc"]
+[ext_resource type="Script" uid="uid://drrdg6fjyaa0s" path="res://Scripts/Drone/DroneCameraController.gd" id="10_apykc"]
 
 [sub_resource type="Gradient" id="Gradient_ox3hw"]
 colors = PackedColorArray(0.7905229, 0.18284702, 0.9346706, 1, 0, 1, 1, 1)
@@ -1844,7 +1844,6 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 27,
 "index_data": PackedByteArray("AAABAAIAAwAEAAUABAADAAYABwAIAAkACAAHAAoACwAMAA0ADQAOAAsADwAQABEAEgATABQA"),
-"material": ExtResource("5_i8kaf"),
 "name": "mat16",
 "primitive": 3,
 "uv_scale": Vector4(0.264999, 2.0243, 0, 0),
@@ -1876,7 +1875,6 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 27,
 "index_data": PackedByteArray("AAABAAIAAwAEAAUABAADAAYABwAIAAkACAAHAAoACwAMAA0ADQAOAAsADwAQABEAEgATABQA"),
-"material": ExtResource("5_i8kaf"),
 "name": "mat16",
 "primitive": 3,
 "uv_scale": Vector4(0.342628, 2.1231, 0, 0),
@@ -1908,7 +1906,6 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 30,
 "index_data": PackedByteArray("AAABAAIAAwAEAAUABAADAAYABwAIAAkACAAHAAoACwAMAA0ADQAOAAsADwAQABEAEAAPABIAEwAUABUA"),
-"material": ExtResource("5_i8kaf"),
 "name": "mat16",
 "primitive": 3,
 "uv_scale": Vector4(0.220655, 2.08097, 0, 0),
@@ -1940,7 +1937,6 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 27,
 "index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgABwAGAAkACgALAAwADAANAAoADgAPABAAEAARAA4AEgATABQA"),
-"material": ExtResource("5_i8kaf"),
 "name": "mat16",
 "primitive": 3,
 "uv_scale": Vector4(0.375792, 2.10386, 0, 0),
@@ -2304,6 +2300,9 @@ _data = {
 &"flashlight_on": SubResource("Animation_udbft")
 }
 
+[sub_resource type="Compositor" id="Compositor_o84gr"]
+compositor_effects = Array[CompositorEffect]([null])
+
 [node name="Base_Drone" type="CharacterBody3D" groups=["controllable", "drone"]]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 collision_layer = 2
@@ -2312,15 +2311,12 @@ axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
 script = ExtResource("1_v1gsr")
-time_to_max_speed = 2.0
-rotation_speed = 180.0
 
 [node name="Model" type="Node3D" parent="."]
 script = ExtResource("2_8qpst")
 legs_material = ExtResource("4_8qpst")
 body_material = ExtResource("4_ubtlo")
 eye_material = ExtResource("4_8qpst")
-blades_material = ExtResource("5_i8kaf")
 front_off = ExtResource("6_udbft")
 front_on = ExtResource("7_apykc")
 back_off = SubResource("StandardMaterial3D_o84gr")
@@ -2698,24 +2694,6 @@ target_position = Vector3(0, 0.095, 1)
 collision_mask = 3
 debug_shape_custom_color = Color(2.117753e-06, 0.64008313, 0.3411191, 1)
 
-[node name="CameraPivot" type="Node3D" parent="."]
-
-[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 2.84328e-09, -1.46274e-08, 0, 0.981627, 0.190809, 1.49012e-08, -0.190809, 0.981627, 0, 0.393466, 1.226)
-cull_mask = 1048571
-v_offset = 0.175
-near = 0.002
-
-[node name="RayCastCamera" type="RayCast3D" parent="CameraPivot"]
-transform = Transform3D(1, -1.3027012e-15, -7.1054274e-15, 2.220446e-16, 0.99999994, 1.4901161e-08, 7.1054274e-15, -1.4901161e-08, 0.99999994, 0, 0, 0)
-target_position = Vector3(0, 0, 1.685)
-collision_mask = 3
-
-[node name="CameraPivot2" type="Node3D" parent="."]
-transform = Transform3D(1, 0, -1.4210855e-14, 0, 1, 0, 1.4210855e-14, 0, 1, -0.009, -0.1, -0.038)
-
-[node name="Camera3D2" type="Camera3D" parent="CameraPivot2"]
-
 [node name="BladeSound" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.0153427, 0)
 stream = ExtResource("2_ldkjq")
@@ -2739,3 +2717,27 @@ shape = SubResource("BoxShape3D_f1jbl")
 libraries = {
 &"": SubResource("AnimationLibrary_2wpqd")
 }
+
+[node name="CameraController" type="Node3D" parent="."]
+script = ExtResource("10_apykc")
+affect_fov = 52.0
+dinamic_v_offset = false
+
+[node name="CameraPivot" type="Node3D" parent="CameraController"]
+
+[node name="Camera3D" type="Camera3D" parent="CameraController/CameraPivot"]
+transform = Transform3D(1, 2.84328e-09, -1.46274e-08, 0, 0.981627, 0.190809, 1.49012e-08, -0.190809, 0.981627, 0, 0.393466, 1.226)
+cull_mask = 1048571
+compositor = SubResource("Compositor_o84gr")
+v_offset = 0.2
+near = 0.002
+
+[node name="RayCastCamera" type="RayCast3D" parent="CameraController/CameraPivot"]
+transform = Transform3D(1, -1.3027012e-15, -7.1054274e-15, 2.220446e-16, 0.99999994, 1.4901161e-08, 7.1054274e-15, -1.4901161e-08, 0.99999994, 0, 0, 0)
+target_position = Vector3(0, 0, 1.685)
+collision_mask = 3
+
+[node name="CameraPivot2" type="Node3D" parent="CameraController"]
+transform = Transform3D(1, 0, -1.4210855e-14, 0, 1, 0, 1.4210855e-14, 0, 1, -0.009, -0.1, -0.038)
+
+[node name="Camera3D2" type="Camera3D" parent="CameraController/CameraPivot2"]
