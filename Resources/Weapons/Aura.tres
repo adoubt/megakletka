@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AOEWeaponData" load_steps=6 format=3 uid="uid://dmc21j6xlk0a"]
+
+[ext_resource type="Script" uid="uid://dmhcfgmgplie5" path="res://Scripts/Weapon/WeaponStatsComponent.gd" id="1_kvfqi"]
+[ext_resource type="Texture2D" uid="uid://djctfudflbstf" path="res://assets/icons/Weapon/Sonic Halo.jpg" id="2_hi53g"]
+[ext_resource type="Script" uid="uid://bbq4r8p1tws0t" path="res://Scripts/Weapon/AOEWeaponData.gd" id="3_3aiqm"]
+[ext_resource type="PackedScene" uid="uid://xhppn74ioulx" path="res://Scenes/Weapons/AOE/Aura.tscn" id="3_hi53g"]
+
+[sub_resource type="Resource" id="Resource_4jjod"]
+script = ExtResource("1_kvfqi")
+damage = 7.0
+metadata/_custom_type_script = "uid://dmhcfgmgplie5"
+
+[resource]
+script = ExtResource("3_3aiqm")
+id = "2"
+name = "Aura"
+icon = ExtResource("2_hi53g")
+description = "Damage enemies in an area around you"
+base_stats = SubResource("Resource_4jjod")
+packed_scene = ExtResource("3_hi53g")
+metadata/_custom_type_script = "uid://bbq4r8p1tws0t"

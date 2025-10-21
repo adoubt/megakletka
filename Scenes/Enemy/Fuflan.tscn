@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://b4ubb8i71u4m7"]
+
+[ext_resource type="Texture2D" uid="uid://cr4xsfmob0q10" path="res://assets/pics/dev_texture.png" id="1_nwlki"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1eocr"]
+albedo_color = Color(0.798921, 0, 0, 1)
+albedo_texture = ExtResource("1_nwlki")
+uv1_triplanar = true
+uv2_triplanar_sharpness = 0.1414944
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fri5i"]
+lightmap_size_hint = Vector2i(9, 8)
+add_uv2 = true
+radius = 0.25
+height = 1.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_rv0w6"]
+lightmap_size_hint = Vector2i(5, 4)
+add_uv2 = true
+radius = 0.1
+height = 0.3
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_es042"]
+radius = 0.25
+height = 1.0
+
+[node name="Fuflan" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 7
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
+material_override = SubResource("StandardMaterial3D_1eocr")
+mesh = SubResource("CapsuleMesh_fri5i")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.3243079, 0.12921196)
+mesh = SubResource("CapsuleMesh_rv0w6")
+skeleton = NodePath("../..")
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_es042")

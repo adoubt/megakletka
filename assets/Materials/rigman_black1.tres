@@ -3,4 +3,8 @@
 [resource]
 resource_name = "Material.009"
 cull_mode = 2
-albedo_color = Color(0.2901953, 0.17254913, 0.10196083, 1)
+shading_mode = 2
+diffuse_mode = 3
+specular_mode = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.28918967, 0.17184411, 0.09985284, 0.99500006)

@@ -7,6 +7,7 @@ extends Node
 @onready var wallet_usdt   = preload("res://UI/wallet_usdt.tscn").instantiate()
 @onready var shop          = preload("res://UI/shop.tscn").instantiate()
 @onready var main_menu     = preload("res://UI/main_menu.tscn").instantiate()
+@onready var dev_panel = preload("res://UI/dev_panel.tscn").instantiate()
 
 var panels: Dictionary = {}
 var force_cursor_visible: bool = false
@@ -26,7 +27,12 @@ func toggle_escape_menu() -> void:
 		close_escape_menu()
 	else:
 		open_escape_menu()
-
+func toogle_dev_panel() -> void:
+	if dev_panel.visible:
+		close_dev_panel()
+	else:
+		open_dev_panel()
+	
 func open_settings() -> void:
 	var in_main_menu := SceneManager.current_scene_name == "MainMenu"
 	open_panel("Settings")
@@ -48,6 +54,13 @@ func open_escape_menu() -> void:
 
 func close_escape_menu() -> void:
 	close_panel("EscapeMenu")
+
+func open_dev_panel() -> void:
+	open_panel("DEV_PANEL")
+
+func close_dev_panel() -> void:
+	close_panel("DEV_PANEL")
+
 
 func is_panel_open(name: String) -> bool:
 	if not panels.has(name):
@@ -86,13 +99,16 @@ func _ready() -> void:
 	canvas.add_child(settings_menu)
 	canvas.add_child(wallet_usdt)
 	canvas.add_child(shop)
+	canvas.add_child(dev_panel)
 
 	panels = {
 		"EscapeMenu": escape_menu,
 		"MainMenu": main_menu,
 		"Settings": settings_menu,
 		"Wallet_USDT": wallet_usdt,
-		"Shop": shop
+		"Shop": shop,
+		"DEV_PANEL" : dev_panel
+		
 	}
 
 	close_all()
@@ -157,4 +173,7 @@ func _input(event: InputEvent) -> void:
 		if is_panel_open("Settings"):
 			close_settings()
 		elif SceneManager.current_scene_name not in ["Intro","MainMenu"]:
-			UIManager.toggle_escape_menu()
+			toggle_escape_menu()
+	if event.is_action_pressed("DEV_PANEL"):
+		if SceneManager.current_scene_name in ["BigRoomTest"]:
+			toogle_dev_panel()

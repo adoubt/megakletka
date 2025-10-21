@@ -45,6 +45,18 @@ text = "PLAY"
 layout_mode = 2
 text = "TEST POLYGON"
 
+[node name="Level" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "LEVEL"
+
+[node name="GameTest" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "GameTest"
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "BIG ROOM TEST"
+
 [node name="Settings" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "SETTINGS"
@@ -56,5 +68,8 @@ text = "EXIT"
 
 [connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_test_pressed"]
+[connection signal="pressed" from="VBoxContainer/Level" to="." method="_on_level_pressed"]
+[connection signal="pressed" from="VBoxContainer/GameTest" to="." method="_on_game_test_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]

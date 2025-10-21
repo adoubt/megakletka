@@ -1,0 +1,173 @@
+[gd_scene load_steps=21 format=3 uid="uid://6g1u6okbk7nj"]
+
+[ext_resource type="Script" uid="uid://x454ibbgwp7n" path="res://addons/SimpleDungeons/DungeonRoom3D.gd" id="1_am5r7"]
+[ext_resource type="Material" uid="uid://44k0m2yb0cqg" path="res://assets/Materials/DEV_material.tres" id="2_ye3mq"]
+[ext_resource type="Texture2D" uid="uid://bwe02yta75ooa" path="res://addons/SimpleDungeons/sample_assets/kenney-green-checkerboar-cc0.png" id="3_emvs1"]
+[ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud_manager.tscn" id="4_1ps50"]
+[ext_resource type="PackedScene" uid="uid://csuaael2v81ju" path="res://Scenes/Player/Player.tscn" id="5_5nlxe"]
+[ext_resource type="Script" uid="uid://4vccwklhahdm" path="res://Scripts/ECS/ECS.gd" id="6_0fvki"]
+[ext_resource type="Script" uid="uid://brr23l6obcpl" path="res://Scripts/ECS/EnemyManager.gd" id="7_5ea8g"]
+[ext_resource type="Script" uid="uid://bhk84kxiihuod" path="res://Scripts/ECS/MovementSystem.gd" id="9_21hib"]
+[ext_resource type="Script" uid="uid://5qw8636gnsq7" path="res://Scripts/ECS/CombatSystem.gd" id="10_q3ovi"]
+[ext_resource type="Script" uid="uid://trouwbc0acct" path="res://Scripts/ECS/SpawnSystem.gd" id="11_jk1mf"]
+[ext_resource type="Script" uid="uid://bpjqmew241ods" path="res://Scripts/ECS/RenderSystem.gd" id="12_dm76g"]
+[ext_resource type="Script" uid="uid://x7pwrsn8456b" path="res://Scripts/ECS/WeaponSystem.gd" id="13_ye3mq"]
+[ext_resource type="Script" uid="uid://b5xbphd775dlv" path="res://Scripts/ECS/StatsSystem.gd" id="14_emvs1"]
+[ext_resource type="Script" uid="uid://bnh20iwyg0bd7" path="res://Scripts/ECS/VFXSystem.gd" id="15_1ps50"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_41ubc"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_1aggn"]
+sky_material = SubResource("ProceduralSkyMaterial_41ubc")
+
+[sub_resource type="Environment" id="Environment_llcw6"]
+background_mode = 2
+sky = SubResource("Sky_1aggn")
+tonemap_mode = 2
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_4ca3h"]
+lightmap_size_hint = Vector2i(2502, 2502)
+add_uv2 = true
+size = Vector2(500, 500)
+orientation = 1
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_wj4iy"]
+data = PackedVector3Array(250, 0, 250, -250, 0, 250, 250, 0, -250, -250, 0, 250, -250, 0, -250, 250, 0, -250)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1lkjf"]
+albedo_texture = ExtResource("3_emvs1")
+uv1_triplanar = true
+
+[node name="BigRoom" type="Node3D"]
+script = ExtResource("1_am5r7")
+size_in_voxels = Vector3i(3, 1, 3)
+max_count = 3
+metadata/_custom_type_script = "uid://x454ibbgwp7n"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_llcw6")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -8, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+material_override = ExtResource("2_ye3mq")
+mesh = SubResource("QuadMesh_4ca3h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("ConcavePolygonShape3D_wj4iy")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+material_override = SubResource("StandardMaterial3D_1lkjf")
+use_collision = true
+size = Vector3(30, 10, 30)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
+operation = 2
+size = Vector3(29.5, 9.5, 29.5)
+
+[node name="DOOR?2" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -3, -15)
+operation = 2
+size = Vector3(2, 4, 1)
+
+[node name="DOOR?3" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -3, -15)
+operation = 2
+size = Vector3(2, 4, 1)
+
+[node name="DOOR?4" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, -15)
+operation = 2
+size = Vector3(2, 4, 1)
+
+[node name="DOOR?" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -3, 15)
+operation = 2
+size = Vector3(2, 4, 1)
+
+[node name="HUDManager" parent="." instance=ExtResource("4_1ps50")]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -4.25, -4.5)
+visible = false
+material_override = ExtResource("2_ye3mq")
+use_collision = true
+size = Vector3(2, 1, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -3.75, -4)
+visible = false
+material_override = ExtResource("2_ye3mq")
+use_collision = true
+size = Vector3(2, 2, 2)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -3.75, -4)
+visible = false
+material_override = ExtResource("2_ye3mq")
+use_collision = true
+size = Vector3(2, 2, 2)
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -4.75, -3)
+visible = false
+material_override = ExtResource("2_ye3mq")
+use_collision = true
+polygon = PackedVector2Array(0, 0, 0, 2, 4, 0)
+depth = 2.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_bake_mode = 1
+
+[node name="Projectiles" type="Node3D" parent="."]
+
+[node name="Entities" type="Node3D" parent="."]
+
+[node name="Enemies" type="Node3D" parent="Entities"]
+
+[node name="Players" type="Node3D" parent="Entities"]
+
+[node name="Player" parent="Entities/Players" instance=ExtResource("5_5nlxe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.836692, -2.870119)
+
+[node name="ECS" type="Node" parent="."]
+script = ExtResource("6_0fvki")
+player_path = NodePath("../Entities/Players/Player")
+
+[node name="EnemyManager" type="Node" parent="ECS"]
+script = ExtResource("7_5ea8g")
+enemies_handler_path = NodePath("../../Entities/Enemies")
+initial_node_pool = 500
+
+[node name="MovementSystem" type="Node3D" parent="ECS"]
+script = ExtResource("9_21hib")
+
+[node name="CombatSystem" type="Node" parent="ECS"]
+script = ExtResource("10_q3ovi")
+
+[node name="VFXSystem" type="Node" parent="ECS/CombatSystem"]
+script = ExtResource("15_1ps50")
+
+[node name="SpawnSystem" type="Node" parent="ECS"]
+script = ExtResource("11_jk1mf")
+spawn_batch_size = 2
+min_spawn_distance = 15.0
+enemy_probabilities = {
+"aboba": 0.7,
+"fuflan": 0.3
+}
+
+[node name="RenderSystem" type="Node" parent="ECS"]
+script = ExtResource("12_dm76g")
+
+[node name="WeaponSystem" type="Node" parent="ECS"]
+script = ExtResource("13_ye3mq")
+projectiles_handler_path = NodePath("../../Projectiles")
+
+[node name="StatsSystem" type="Node" parent="ECS"]
+script = ExtResource("14_emvs1")

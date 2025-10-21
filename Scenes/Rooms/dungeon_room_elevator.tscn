@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dp0qfcyh34vor"]
+
+[ext_resource type="Script" uid="uid://x454ibbgwp7n" path="res://addons/SimpleDungeons/DungeonRoom3D.gd" id="1_c4dv0"]
+[ext_resource type="PackedScene" uid="uid://drvybucsulchh" path="res://Scenes/Objects/elevator.tscn" id="2_xtvx4"]
+
+[node name="ElevatorRoom" type="Node3D"]
+script = ExtResource("1_c4dv0")
+min_count = 1
+max_count = 1
+metadata/_custom_type_script = "uid://x454ibbgwp7n"
+
+[node name="Elevator" parent="." instance=ExtResource("2_xtvx4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.2420633, -0.6925361)
+
+[node name="DOOR_" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 3.8159475)

@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=3 uid="uid://dtt2iq2by7mq"]
+
+[ext_resource type="Script" uid="uid://x454ibbgwp7n" path="res://addons/SimpleDungeons/DungeonRoom3D.gd" id="1_ddfp7"]
+[ext_resource type="Texture2D" uid="uid://bwe02yta75ooa" path="res://addons/SimpleDungeons/sample_assets/kenney-green-checkerboar-cc0.png" id="2_d1pmb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1lkjf"]
+albedo_texture = ExtResource("2_d1pmb")
+uv1_triplanar = true
+
+[sub_resource type="GDScript" id="GDScript_ibo1l"]
+script/source = "@tool
+extends Node
+
+func remove_unused_doors():
+	for door in $\"..\".get_doors():
+		if door.get_room_leads_to() == null:
+			door.door_node.queue_free()
+
+func _on_dungeon_done_generating():
+	remove_unused_doors()
+	#call_deferred(\"remove_unused_doors\")
+	#pass
+"
+
+[node name="BigRoom" type="Node3D"]
+script = ExtResource("1_ddfp7")
+size_in_voxels = Vector3i(3, 1, 3)
+max_count = 3
+metadata/_custom_type_script = "uid://x454ibbgwp7n"
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+material_override = SubResource("StandardMaterial3D_1lkjf")
+use_collision = true
+size = Vector3(30, 10, 30)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
+operation = 2
+size = Vector3(29.5, 9.5, 29.5)
+
+[node name="DOOR?2" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -3, -15)
+operation = 2
+size = Vector3(2, 4, 1)
+
+[node name="DOOR?3" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -3, -15)
+operation = 2
+size = Vector3(2, 4, 1)
+
+[node name="DOOR?4" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, -15)
+operation = 2
+size = Vector3(2, 4, 1)
+
+[node name="DOOR?" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -3, 15)
+operation = 2
+size = Vector3(2, 4, 1)
+
+[node name="RemoveUnusedDoors" type="Node" parent="."]
+script = SubResource("GDScript_ibo1l")
+
+[connection signal="dungeon_done_generating" from="." to="RemoveUnusedDoors" method="_on_dungeon_done_generating"]

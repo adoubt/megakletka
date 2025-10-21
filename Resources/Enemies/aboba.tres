@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=6 format=3 uid="uid://cm1r7mrmtqyc5"]
+
+[ext_resource type="Script" uid="uid://1twi25yw72m7" path="res://Scripts/Entity/StatsComponent.gd" id="1_1kdb4"]
+[ext_resource type="PackedScene" uid="uid://buglwb2isjbnb" path="res://Scenes/Enemy/Aboba.tscn" id="2_1kdb4"]
+[ext_resource type="Script" uid="uid://csele46jbsri8" path="res://Scripts/Entity/EnemyData.gd" id="3_onnsk"]
+[ext_resource type="Script" uid="uid://opgw0hmxa0va" path="res://Scripts/Weapon/WeaponData.gd" id="4_fn8qj"]
+
+[sub_resource type="Resource" id="Resource_1kdb4"]
+script = ExtResource("1_1kdb4")
+max_hp = 50.0
+hp_regen = 10.0
+evasion = 30.0
+damage = 5.0
+movement_speed = 4.0
+metadata/_custom_type_script = "uid://1twi25yw72m7"
+
+[resource]
+script = ExtResource("3_onnsk")
+name = "aboba"
+base_stats = SubResource("Resource_1kdb4")
+packed_scene = ExtResource("2_1kdb4")
+metadata/_custom_type_script = "uid://csele46jbsri8"

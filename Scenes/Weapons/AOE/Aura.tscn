@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://xhppn74ioulx"]
+
+[ext_resource type="Shader" uid="uid://dn5feoc5p3lc4" path="res://assets/Materials/circle_shader.tres" id="1_vsr1u"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_otspj"]
+render_priority = 0
+shader = ExtResource("1_vsr1u")
+shader_parameter/ColorParameter = Color(0.31531084, 0.49177748, 0.7853942, 1)
+shader_parameter/Extra_Opacity = 0.10000000149012
+shader_parameter/Speed = Vector2(0, -1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_0bwja"]
+lightmap_size_hint = Vector2i(159, 57)
+top_radius = 0.0
+bottom_radius = 1.5
+height = 0.001
+cap_top = false
+cap_bottom = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vsr1u"]
+render_priority = 0
+shader = ExtResource("1_vsr1u")
+shader_parameter/ColorParameter = Color(0.31531084, 0.49177748, 0.7853942, 1)
+shader_parameter/Extra_Opacity = 0.10000000149012
+shader_parameter/Speed = Vector2(0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fxaub"]
+lightmap_size_hint = Vector2i(159, 57)
+flip_faces = true
+top_radius = 1.5
+bottom_radius = 1.5
+height = 0.3
+
+[node name="AOE" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 0)
+material_override = SubResource("ShaderMaterial_otspj")
+mesh = SubResource("CylinderMesh_0bwja")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 0)
+material_override = SubResource("ShaderMaterial_vsr1u")
+mesh = SubResource("CylinderMesh_fxaub")

@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://dwcejsxcmljc0"]
+
+[ext_resource type="Material" uid="uid://deo18r3csu3g" path="res://assets/Materials/PaperRaw.tres" id="1_b5gx5"]
+[ext_resource type="Script" uid="uid://cqe4qw6tppomk" path="res://Scripts/objects/floor_btn.gd" id="1_i7iwf"]
+[ext_resource type="FontFile" uid="uid://dcpji2765p1l2" path="res://assets/fonts/Pangolin-Regular.ttf" id="2_i7iwf"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rv3i3"]
+material = ExtResource("1_b5gx5")
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.05
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_i7iwf"]
+height = 0.043103028
+radius = 0.13964844
+
+[node name="Floor_btn" type="StaticBody3D"]
+collision_layer = 4
+collision_mask = 23
+script = ExtResource("1_i7iwf")
+use_type = "Button"
+enabled = false
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.371139e-08, -0.43168437, 0, 1, -1.8869523e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_rv3i3")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
+transform = Transform3D(-3.059797e-08, -0.5685041, 0, 0.7, -2.4850102e-08, 0, 0, 0, 0.7, 0.009659775, 0.011152856, 0)
+mesh = SubResource("CylinderMesh_rv3i3")
+skeleton = NodePath("../..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.028491579, 0, 0)
+shaded = true
+alpha_cut = 1
+modulate = Color(6.127012, 6.127012, 6.127012, 1)
+outline_modulate = Color(0, 0.2577189, 1.0873553, 0.41500002)
+text = "0"
+font = ExtResource("2_i7iwf")
+font_size = 22
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.009466549, 4.1379603e-10, 0)
+shape = SubResource("CylinderShape3D_i7iwf")
+
+[connection signal="interacted" from="." to="." method="_on_interacted"]

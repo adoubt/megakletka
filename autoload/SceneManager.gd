@@ -5,7 +5,10 @@ const SCENES := {
 	"Intro": "uid://bsoxxlhnjn45f",
 	"MainMenu": "uid://dcirc02tx3del",
 	"Game": "uid://cs3guckxlcjyi",
-	"TestPolygon": "uid://dhl6fkkhp3dy8"
+	"TestPolygon": "uid://dhl6fkkhp3dy8",
+	"Level":  "uid://cepy4oe4ipa7d",
+	"GameTest":  "uid://bkfn061oy0fu0",
+	"BigRoomTest": "uid://6g1u6okbk7nj",
 }
 
 # текущая сцена
@@ -25,6 +28,14 @@ func go_to_game():
 func go_to_test_polygon():
 	_change_scene("TestPolygon")
 	
+func go_to_level():
+	_change_scene("Level")
+
+func go_to_game_test():
+	_change_scene("GameTest")
+
+func _go_to_big_room_test():
+	_change_scene("BigRoomTest")
 func restart_current():
 	_change_scene(current_scene_name)
 func exit():

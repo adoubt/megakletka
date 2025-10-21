@@ -213,9 +213,13 @@ func toggle_camera() -> void:
 	if current_camera_index == 1:
 		camera_2.make_current()
 		current_camera_index = 2
+		control_yaw = camera_yaw
+		camera_pivot_2.rotation.y = camera_yaw
 	else:
 		camera_1.make_current()
 		current_camera_index = 1
+		camera_yaw = control_yaw
+		camera_pivot.rotation.y = control_yaw
 		
 func get_current_camera() -> Camera3D:
 	return camera_1 if current_camera_index == 1 else camera_2
@@ -232,8 +236,8 @@ func _apply_shaders():
 	if speed > min_speed:
 		# Линейная интерполяция прозрачности от min_speed до max_speed
 		shader_param = clamp((speed - min_speed) / (max_speed - min_speed), 0.0, 0.4)
-	
-	speed_lines.material.set_shader_parameter("line_density", shader_param)
+	if speed_lines:
+		speed_lines.material.set_shader_parameter("line_density", shader_param)
 	
 func _setup_camera():
 	camera_yaw = model.rotation.y

@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://bl07r12dkseuq"]
+
+[ext_resource type="Script" uid="uid://cm0c4aqtwhlev" path="res://addons/SimpleDungeons/DungeonGenerator3D.gd" id="1_dafho"]
+[ext_resource type="PackedScene" uid="uid://dh2i3dk3g0icv" path="res://addons/SimpleDungeons/sample_dungeons/custom_random_room_function_example/red_room.tscn" id="2_m8oyf"]
+[ext_resource type="PackedScene" uid="uid://dp0qfcyh34vor" path="res://Scenes/Rooms/dungeon_room_elevator.tscn" id="3_lj1qd"]
+[ext_resource type="PackedScene" uid="uid://dtt2iq2by7mq" path="res://Scenes/Rooms/BigRoom.tscn" id="4_b2w0y"]
+[ext_resource type="PackedScene" uid="uid://b2t06bycrtldn" path="res://addons/SimpleDungeons/sample_dungeons/custom_random_room_function_example/corridor.tscn" id="5_pd066"]
+
+[node name="BaseLevelFloor" type="Node3D"]
+script = ExtResource("1_dafho")
+room_scenes = Array[PackedScene]([ExtResource("2_m8oyf"), ExtResource("3_lj1qd"), ExtResource("4_b2w0y")])
+corridor_room_scene = ExtResource("5_pd066")
+dungeon_size = Vector3i(10, 1, 10)
+generate_on_ready = false
+generate_threaded = true
+visualize_generation_wait_between_iterations = 20
+metadata/_custom_type_script = "uid://cm0c4aqtwhlev"
+
+[connection signal="dungeon_done_generating" from="RoomsContainer/BigRoom_1" to="RoomsContainer/BigRoom_1/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/BigRoom_2" to="RoomsContainer/BigRoom_2/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/BigRoom_3" to="RoomsContainer/BigRoom_3/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/RedRoom_4" to="RoomsContainer/RedRoom_4/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/RedRoom_5" to="RoomsContainer/RedRoom_5/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_6" to="RoomsContainer/Corridor_6/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_7" to="RoomsContainer/Corridor_7/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_8" to="RoomsContainer/Corridor_8/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_9" to="RoomsContainer/Corridor_9/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_10" to="RoomsContainer/Corridor_10/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_11" to="RoomsContainer/Corridor_11/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_12" to="RoomsContainer/Corridor_12/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_13" to="RoomsContainer/Corridor_13/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_14" to="RoomsContainer/Corridor_14/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_15" to="RoomsContainer/Corridor_15/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_16" to="RoomsContainer/Corridor_16/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_17" to="RoomsContainer/Corridor_17/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_18" to="RoomsContainer/Corridor_18/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_19" to="RoomsContainer/Corridor_19/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_20" to="RoomsContainer/Corridor_20/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_21" to="RoomsContainer/Corridor_21/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_22" to="RoomsContainer/Corridor_22/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_23" to="RoomsContainer/Corridor_23/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_24" to="RoomsContainer/Corridor_24/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_25" to="RoomsContainer/Corridor_25/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_26" to="RoomsContainer/Corridor_26/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_27" to="RoomsContainer/Corridor_27/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_28" to="RoomsContainer/Corridor_28/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_29" to="RoomsContainer/Corridor_29/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_30" to="RoomsContainer/Corridor_30/RemoveUnusedDoors" method="_on_dungeon_done_generating"]
+[connection signal="dungeon_done_generating" from="RoomsContainer/Corridor_31" to="RoomsContainer/Corridor_31/RemoveUnusedDoors" method="_on_dungeon_done_generating"]

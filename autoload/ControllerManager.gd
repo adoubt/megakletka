@@ -5,19 +5,18 @@ var current_index: int = -1  # -1 значит никто не активен
 
 func _input(event: InputEvent) -> void:
 	if UIManager._any_ui_open(): return
-	if event.is_action_pressed("switch_next"):
-		switch_next() 
+	
 	elif event.is_action_pressed("drone_select"):
 		
-		_handle_object_hotkey("Base_Drone") 
+		handle_object_hotkey("Base_Drone") 
 	elif event.is_action_pressed("player_select"):
-		_handle_object_hotkey("Player") 
+		handle_object_hotkey("Player") 
 	elif event.is_action_pressed("streetcam_select"):
-		_handle_object_hotkey("StreetCam")
+		handle_object_hotkey("StreetCam")
 
 
 		
-func _handle_object_hotkey(name: String) -> void:
+func handle_object_hotkey(name: String) -> void:
 	for obj_dict in controllables:
 		var obj = obj_dict["node"]
 		if obj.name != name:
@@ -132,7 +131,7 @@ func get_current_camera() -> Camera3D:
 	return null
 	
 func activate_default(name: String) -> void:
-	_handle_object_hotkey(name)
+	handle_object_hotkey(name)
 	
 # --- Внутреннее ---
 func _set_camera(obj: Node):

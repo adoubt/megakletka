@@ -1,8 +1,11 @@
-[gd_scene load_steps=36 format=4 uid="uid://b5dbgrg4q52co"]
+[gd_scene load_steps=39 format=4 uid="uid://b5dbgrg4q52co"]
 
 [ext_resource type="PackedScene" uid="uid://csikyl3fl7cbm" path="res://Scenes/Items/JointHeld.tscn" id="1_cuqk8"]
 [ext_resource type="Script" uid="uid://carpmnj3q04tb" path="res://Scripts/rigman.gd" id="1_hh1hf"]
+[ext_resource type="Material" uid="uid://cn63dg0g67emc" path="res://assets/Materials/rigman_eye_mat.tres" id="2_lwj2d"]
 [ext_resource type="Material" uid="uid://ccu4uxuxbmfhx" path="res://assets/Materials/rigman_black1.tres" id="2_xldqy"]
+[ext_resource type="Material" uid="uid://b51vjrgopiqxm" path="res://assets/Materials/rigman_lips_toon_mat.tres" id="3_7vh27"]
+[ext_resource type="Material" uid="uid://hs0ueaniqfjq" path="res://assets/Materials/rigman_toon_mat.tres" id="5_hcowu"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7pkpd"]
 resource_name = "Material.004"
@@ -82,7 +85,6 @@ shadow_mesh = SubResource("ArrayMesh_cuqk8")
 resource_name = "Material.005"
 cull_mode = 2
 albedo_color = Color(1, 1, 1, 0)
-roughness = 0.5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_hh1hf"]
 _surfaces = [{
@@ -974,6 +976,7 @@ skeleton = NodePath("")
 transform = Transform3D(0.20305666, 0, 0, 0, 0.2030567, 0, 0, 0, 0.20305665, 0.17860149, -0.60760397, 0.70226985)
 mesh = SubResource("ArrayMesh_is27d")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("2_lwj2d")
 
 [node name="Node3D" type="Node3D" parent="Armature/GeneralSkeleton/mixamorig_Head/face/eye_left"]
 transform = Transform3D(1, 1.4961028e-20, 0, 1.496103e-20, 1, 0, 0, 0, 1, 0, 0, 1)
@@ -987,6 +990,7 @@ skeleton = NodePath("")
 transform = Transform3D(0.20305666, 0, 0, 0, 0.2030567, 0, 0, 0, 0.20305665, -0.39729315, -0.5881066, 0.7502707)
 mesh = SubResource("ArrayMesh_qfbiq")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("2_lwj2d")
 
 [node name="Node3D" type="Node3D" parent="Armature/GeneralSkeleton/mixamorig_Head/face/eye_right"]
 transform = Transform3D(1, -1.496103e-20, 0, 1.496103e-20, 1, 0, 0, 0, 1, 0, 0, 1)
@@ -1000,21 +1004,25 @@ skeleton = NodePath("")
 transform = Transform3D(0.0007780525, 0.15849668, 1.8046543e-05, -0.063662924, 0.0019369419, 1.9747065e-05, 5.6276098e-05, -0.00013121765, 0.022089757, -0.03320167, -0.9451146, 0.8939056)
 mesh = SubResource("ArrayMesh_a7oln")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("3_7vh27")
 
 [node name="guba_1" type="MeshInstance3D" parent="Armature/GeneralSkeleton/mixamorig_Head/face"]
 transform = Transform3D(-0.0007780893, -0.1863443, 3.1938293e-05, 0.063664794, -0.0022772995, 3.496735e-05, -5.627717e-05, 0.00015418621, 0.03911601, -0.045346923, -1.0065469, 0.8915099)
 mesh = SubResource("ArrayMesh_fh1ii")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("3_7vh27")
 
 [node name="veko_left" type="MeshInstance3D" parent="Armature/GeneralSkeleton/mixamorig_Head/face"]
 transform = Transform3D(0.21192831, 0, 0.05520319, 0, 0.219, 0, -0.05520319, 0, 0.21192831, 0.1847562, -0.5837168, 0.6951273)
 mesh = SubResource("ArrayMesh_pu57n")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("5_hcowu")
 
 [node name="veko_right" type="MeshInstance3D" parent="Armature/GeneralSkeleton/mixamorig_Head/face"]
 transform = Transform3D(0.215, 0, 0, 0, 0.215, 0, 0, 0, 0.215, -0.39729315, -0.5881066, 0.7598024)
 mesh = SubResource("ArrayMesh_uwtxg")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("5_hcowu")
 
 [node name="Mouth" type="Node3D" parent="Armature/GeneralSkeleton/mixamorig_Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.029099911, 0.604403, 0.92510426)
@@ -1026,6 +1034,7 @@ transform = Transform3D(0.96389586, 0.2642304, -0.03297255, 0.11585555, -0.52764
 transform = Transform3D(1, 0, 1.7484555e-07, 0, 1, 0, -1.7484555e-07, 0, 1, 0, 0, 0)
 mesh = SubResource("ArrayMesh_hkp2m")
 skin = SubResource("Skin_s73ts")
+surface_material_override/0 = ExtResource("5_hcowu")
 
 [node name="RightHandHeld" type="BoneAttachment3D" parent="Armature/GeneralSkeleton"]
 transform = Transform3D(0.7540997, 0.610042, -0.2421942, -0.65675086, 0.6985557, -0.28285456, -0.003371207, 0.37236175, 0.92742646, -0.62721366, 3.168898, 1.2099825)

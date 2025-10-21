@@ -117,7 +117,7 @@ func _update_effects_position() -> void:
 
 
 func _on_interacted(body: Node) -> void:
-	var hud = get_tree().get_root().get_node("game/HUDManager")
+	var hud = get_tree().get_root().find_child("HUDManager", true, false)
 	if hud:
 		hud.add_item_to_inventory(item, 0)
 	if body and body.has_method("equip_item"):

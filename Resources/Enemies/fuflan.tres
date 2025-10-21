@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=6 format=3 uid="uid://dwoa40eyph4sc"]
+
+[ext_resource type="Script" uid="uid://1twi25yw72m7" path="res://Scripts/Entity/StatsComponent.gd" id="1_5uvce"]
+[ext_resource type="PackedScene" uid="uid://b4ubb8i71u4m7" path="res://Scenes/Enemy/Fuflan.tscn" id="2_kefxh"]
+[ext_resource type="Script" uid="uid://csele46jbsri8" path="res://Scripts/Entity/EnemyData.gd" id="3_kefxh"]
+[ext_resource type="Script" uid="uid://opgw0hmxa0va" path="res://Scripts/Weapon/WeaponData.gd" id="4_uraap"]
+
+[sub_resource type="Resource" id="Resource_uraap"]
+script = ExtResource("1_5uvce")
+movement_speed = 2.0
+metadata/_custom_type_script = "uid://1twi25yw72m7"
+
+[resource]
+script = ExtResource("3_kefxh")
+name = "fuflan"
+base_stats = SubResource("Resource_uraap")
+packed_scene = ExtResource("2_kefxh")
+metadata/_custom_type_script = "uid://csele46jbsri8"

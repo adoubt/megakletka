@@ -1,7 +1,7 @@
 extends Interactable
 class_name Usable
 
-@export_enum("Laptop", "Door", "Workbench", "Terminal") var use_type: String = "Laptop"
+@export_enum("Laptop", "ElevatorDoors","Door", "Workbench", "Terminal","Button") var use_type: String = "Laptop"
 
 var is_occupied: bool = false
 var occupied_by: int = -1
@@ -17,9 +17,10 @@ func release():
 	rpc("set_occupied_state", false, -1)
 
 func _toggle_door():
-	if has_node("AnimationPlayer"):
-		get_node("AnimationPlayer").play("open")
+	pass
+		
 
+	
 
 func _on_interacted(body: Variant) -> void:
 	if not enabled:
@@ -38,5 +39,9 @@ func _on_interacted(body: Variant) -> void:
 			UIManager.open_wallet_usdt()
 		"Door":
 			_toggle_door()
+		"ElevatorDoors":
+			var elevator = get_tree().get_root().find_child("Elevator", true, false)
+			elevator.toggle_doors()
 		_:
 			print("🧩 Unknown use type:", use_type)
+		
