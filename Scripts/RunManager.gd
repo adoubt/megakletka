@@ -56,7 +56,7 @@ func load_prev_floor():
 		load_floor(current_floor - 1)
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("dev_floor_up"):
 		load_next_floor()
 	elif Input.is_action_just_pressed("dev_floor_down"):

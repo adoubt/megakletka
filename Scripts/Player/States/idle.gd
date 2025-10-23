@@ -8,7 +8,7 @@ func enter(previous_state_path: String, data := {}) -> void:
 	#if previous_state_path == "Falling":
 		#player.animation_player.play("Pack/fall_to_idle_2",0.8)
 	#else:
-	player.animation_player.play("AnimPack/idle_3",0.25)
+	player.animation_player.play("Pack/idle_3",0.25)
 
 
 func physics_update(delta: float) -> void:

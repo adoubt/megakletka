@@ -13,7 +13,7 @@ func _set_index(value: int):
 	prompt_message = "Floor " + str(value)
 
 	
-func _on_interacted(body : Variant) -> void:
+func _on_interacted(_body : Variant) -> void:
 	var elevator_behavior = get_tree().get_root().find_child("ElevatorBehavior", true, false) 
 	elevator_behavior.request_floor(floor_number)
 	

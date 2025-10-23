@@ -1,14 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://bkfn061oy0fu0"]
+[gd_scene load_steps=11 format=3 uid="uid://bkfn061oy0fu0"]
 
-[ext_resource type="Script" uid="uid://cfeccgouh55q" path="res://Scripts/RunManager.gd" id="1_hpky7"]
-[ext_resource type="PackedScene" uid="uid://kfvo4lrg7huc" path="res://Scenes/base_drone.tscn" id="2_0fpds"]
-[ext_resource type="PackedScene" uid="uid://bl07r12dkseuq" path="res://Scenes/BaseLevelFloor.tscn" id="3_il3ve"]
+[ext_resource type="Script" uid="uid://cfeccgouh55q" path="res://scripts/RunManager.gd" id="1_hpky7"]
+[ext_resource type="PackedScene" uid="uid://bl07r12dkseuq" path="res://Scenes/Levels/BaseLevelFloor.tscn" id="3_il3ve"]
 [ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud_manager.tscn" id="4_3n25w"]
 [ext_resource type="PackedScene" uid="uid://dtt2iq2by7mq" path="res://Scenes/Rooms/BigRoom.tscn" id="4_qofol"]
 [ext_resource type="PackedScene" uid="uid://dp0qfcyh34vor" path="res://Scenes/Rooms/dungeon_room_elevator.tscn" id="6_28hsf"]
 [ext_resource type="PackedScene" uid="uid://dh2i3dk3g0icv" path="res://addons/SimpleDungeons/sample_dungeons/custom_random_room_function_example/red_room.tscn" id="7_g0ly7"]
 [ext_resource type="PackedScene" uid="uid://csuaael2v81ju" path="res://Scenes/Player/Player.tscn" id="9_qofol"]
-[ext_resource type="PackedScene" uid="uid://dwdoylad3f00s" path="res://Scenes/Player/PlayerController.tscn" id="10_jlhvm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hpky7"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -32,15 +30,9 @@ environment = SubResource("Environment_il3ve")
 script = ExtResource("1_hpky7")
 total_floors = 100
 
-[node name="Base_Drone" parent="." instance=ExtResource("2_0fpds")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 8.53861, 0)
-
 [node name="BaseLevelFloor" parent="." instance=ExtResource("3_il3ve")]
 room_scenes = Array[PackedScene]([ExtResource("6_28hsf"), ExtResource("7_g0ly7"), ExtResource("4_qofol")])
 
 [node name="HUDManager" parent="." instance=ExtResource("4_3n25w")]
-
-[node name="Player" parent="." instance=ExtResource("10_jlhvm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.006354, 0)
 
 [node name="Player2" parent="." instance=ExtResource("9_qofol")]

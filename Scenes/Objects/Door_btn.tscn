@@ -1,10 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dpi636m1c6jvi"]
+[gd_scene load_steps=4 format=3 uid="uid://dpi636m1c6jvi"]
 
-[ext_resource type="Script" uid="uid://c476be8x2viu1" path="res://Scripts/Usable.gd" id="1_6rexn"]
-[ext_resource type="Material" uid="uid://deo18r3csu3g" path="res://assets/Materials/PaperRaw.tres" id="2_b6eu1"]
+[ext_resource type="Script" uid="uid://cljapxn8lkct" path="res://scripts/Interact/Usable.gd" id="1_afixy"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_rv3i3"]
-material = ExtResource("2_b6eu1")
 top_radius = 0.1
 bottom_radius = 0.1
 height = 0.05
@@ -16,7 +14,7 @@ radius = 0.13964844
 [node name="Door_btn" type="StaticBody3D"]
 collision_layer = 4
 collision_mask = 23
-script = ExtResource("1_6rexn")
+script = ExtResource("1_afixy")
 use_type = "ElevatorDoors"
 
 [node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
@@ -34,5 +32,3 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.009466549, 4.1379603e-10, 0)
 shape = SubResource("CylinderShape3D_i7iwf")
-
-[connection signal="interacted" from="." to="." method="_on_interacted"]

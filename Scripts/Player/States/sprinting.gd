@@ -6,7 +6,7 @@ func enter(previous_state_path: String, data := {}) -> void:
 	print(previous_state_path, " -> Sprinting")
 	player.animation_player.speed_scale = 1.3
 	
-	player.animation_player.play("AnimPack/run_fast", 0.25)
+	player.animation_player.play("Pack/run_fast", 0.25)
 
 
 func physics_update(delta: float) -> void:

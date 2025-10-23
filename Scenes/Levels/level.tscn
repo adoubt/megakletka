@@ -1,10 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://cepy4oe4ipa7d"]
+[gd_scene load_steps=10 format=3 uid="uid://cepy4oe4ipa7d"]
 
 [ext_resource type="Material" uid="uid://dkghwq086gte4" path="res://assets/Materials/black_plastmass_material.tres" id="1_k5f4k"]
-[ext_resource type="PackedScene" uid="uid://kfvo4lrg7huc" path="res://Scenes/base_drone.tscn" id="2_6phgx"]
 [ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud_manager.tscn" id="3_6phgx"]
 [ext_resource type="PackedScene" uid="uid://drvybucsulchh" path="res://Scenes/Objects/elevator.tscn" id="4_8c0lf"]
-[ext_resource type="PackedScene" uid="uid://dwdoylad3f00s" path="res://Scenes/Player/PlayerController.tscn" id="4_81xng"]
 [ext_resource type="Script" uid="uid://dffucx1w4v08r" path="res://Scripts/ElevatorBehavior.gd" id="4_754fn"]
 [ext_resource type="PackedScene" uid="uid://dpi636m1c6jvi" path="res://Scenes/Objects/Door_btn.tscn" id="6_754fn"]
 [ext_resource type="PackedScene" uid="uid://cib10taw405l3" path="res://Scenes/Items/ZippoLoot.tscn" id="7_bvt00"]
@@ -99,9 +97,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9404309, 0.17882943)
 [node name="Door_btn" parent="Building_level/ElevatorBehavior" instance=ExtResource("6_754fn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.332, 1, 4.433)
 prompt_message = "Doors"
-
-[node name="Base_Drone" parent="." instance=ExtResource("2_6phgx")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -54.66718, 6.862845, 7.684509)
-
-[node name="Player" parent="." instance=ExtResource("4_81xng")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.54587436, 5.3051524)

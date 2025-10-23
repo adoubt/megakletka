@@ -5,13 +5,7 @@ class_name MainMenu
 func _ready() -> void:
 	pass
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-
-
-
-func _on_play_pressed() -> void:
-	SceneManager.go_to_game()
 
 func _on_settings_pressed() -> void:
 	UIManager.open_settings()
@@ -20,13 +14,6 @@ func _on_settings_pressed() -> void:
 func _on_exit_pressed() -> void:
 	SceneManager.exit()
 
-
-func _on_test_pressed() -> void:
-	SceneManager.go_to_test_polygon()
-
-
-func _on_level_pressed() -> void:
-	SceneManager.go_to_level()
 
 
 func _on_game_test_pressed() -> void:

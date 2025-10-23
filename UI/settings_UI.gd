@@ -45,7 +45,3 @@ func _on_audio_pressed() -> void:
 
 func _on_debug_pressed() -> void:
 	tab_container.set_current_tab(4)
-
-
-func _on_option_button_item_selected(index: int) -> void:
-	pass # Replace with function body.

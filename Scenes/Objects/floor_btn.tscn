@@ -1,11 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dwcejsxcmljc0"]
+[gd_scene load_steps=5 format=3 uid="uid://dwcejsxcmljc0"]
 
-[ext_resource type="Material" uid="uid://deo18r3csu3g" path="res://assets/Materials/PaperRaw.tres" id="1_b5gx5"]
-[ext_resource type="Script" uid="uid://cqe4qw6tppomk" path="res://Scripts/objects/floor_btn.gd" id="1_i7iwf"]
+[ext_resource type="Script" uid="uid://cqe4qw6tppomk" path="res://scripts/objects/floor_btn.gd" id="1_i7iwf"]
 [ext_resource type="FontFile" uid="uid://dcpji2765p1l2" path="res://assets/fonts/Pangolin-Regular.ttf" id="2_i7iwf"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_rv3i3"]
-material = ExtResource("1_b5gx5")
 top_radius = 0.1
 bottom_radius = 0.1
 height = 0.05

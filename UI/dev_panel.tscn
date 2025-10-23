@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bgy7bmqbuq12g"]
 
-[ext_resource type="Script" uid="uid://dmw0g0j2ymwjc" path="res://Scripts/Unsorted/dev_panel.gd" id="1_oxrvo"]
+[ext_resource type="Script" uid="uid://dmw0g0j2ymwjc" path="res://UI/dev_panel.gd" id="1_oxrvo"]
 [ext_resource type="Texture2D" uid="uid://djctfudflbstf" path="res://assets/icons/Weapon/Sonic Halo.jpg" id="2_w2nk6"]
 [ext_resource type="Texture2D" uid="uid://bxds17ivfooh7" path="res://assets/icons/Weapon/Bone.jpg" id="3_152kq"]
 

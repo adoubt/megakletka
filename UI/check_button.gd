@@ -4,14 +4,17 @@ extends CheckButton
 
 func _ready():
 	# Инициализация из конфига
-	button_pressed = SettingsManager.get_value(settings_key) # false по умолчанию
+	var _button_presed = SettingsManager.get_value(settings_key)
+	if _button_presed != null:
+		button_pressed = _button_presed# false по умолчанию
 	_update_text()
 
 	# Подключаем сигнал через Callable
 	toggled.connect(Callable(self, "_on_toggled"))
 
-func _on_toggled(button_pressed: bool) -> void:
+func _on_toggled() -> void:
 	_update_text()
+	
 	SettingsManager.set_value(settings_key, button_pressed)
 
 func _update_text():

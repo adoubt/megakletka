@@ -1,19 +1,10 @@
-[gd_scene load_steps=21 format=3 uid="uid://6g1u6okbk7nj"]
+[gd_scene load_steps=12 format=3 uid="uid://6g1u6okbk7nj"]
 
 [ext_resource type="Script" uid="uid://x454ibbgwp7n" path="res://addons/SimpleDungeons/DungeonRoom3D.gd" id="1_am5r7"]
 [ext_resource type="Material" uid="uid://44k0m2yb0cqg" path="res://assets/Materials/DEV_material.tres" id="2_ye3mq"]
 [ext_resource type="Texture2D" uid="uid://bwe02yta75ooa" path="res://addons/SimpleDungeons/sample_assets/kenney-green-checkerboar-cc0.png" id="3_emvs1"]
 [ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud_manager.tscn" id="4_1ps50"]
-[ext_resource type="PackedScene" uid="uid://csuaael2v81ju" path="res://Scenes/Player/Player.tscn" id="5_5nlxe"]
-[ext_resource type="Script" uid="uid://4vccwklhahdm" path="res://Scripts/ECS/ECS.gd" id="6_0fvki"]
-[ext_resource type="Script" uid="uid://brr23l6obcpl" path="res://Scripts/ECS/EnemyManager.gd" id="7_5ea8g"]
-[ext_resource type="Script" uid="uid://bhk84kxiihuod" path="res://Scripts/ECS/MovementSystem.gd" id="9_21hib"]
-[ext_resource type="Script" uid="uid://5qw8636gnsq7" path="res://Scripts/ECS/CombatSystem.gd" id="10_q3ovi"]
-[ext_resource type="Script" uid="uid://trouwbc0acct" path="res://Scripts/ECS/SpawnSystem.gd" id="11_jk1mf"]
-[ext_resource type="Script" uid="uid://bpjqmew241ods" path="res://Scripts/ECS/RenderSystem.gd" id="12_dm76g"]
-[ext_resource type="Script" uid="uid://x7pwrsn8456b" path="res://Scripts/ECS/WeaponSystem.gd" id="13_ye3mq"]
-[ext_resource type="Script" uid="uid://b5xbphd775dlv" path="res://Scripts/ECS/StatsSystem.gd" id="14_emvs1"]
-[ext_resource type="Script" uid="uid://bnh20iwyg0bd7" path="res://Scripts/ECS/VFXSystem.gd" id="15_1ps50"]
+[ext_resource type="Script" uid="uid://doiig0ticwg3m" path="res://scripts/game/GameManager.gd" id="5_rv2px"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_41ubc"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -124,50 +115,6 @@ depth = 2.0
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 light_bake_mode = 1
 
-[node name="Projectiles" type="Node3D" parent="."]
-
-[node name="Entities" type="Node3D" parent="."]
-
-[node name="Enemies" type="Node3D" parent="Entities"]
-
-[node name="Players" type="Node3D" parent="Entities"]
-
-[node name="Player" parent="Entities/Players" instance=ExtResource("5_5nlxe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.836692, -2.870119)
-
-[node name="ECS" type="Node" parent="."]
-script = ExtResource("6_0fvki")
-player_path = NodePath("../Entities/Players/Player")
-
-[node name="EnemyManager" type="Node" parent="ECS"]
-script = ExtResource("7_5ea8g")
-enemies_handler_path = NodePath("../../Entities/Enemies")
-initial_node_pool = 500
-
-[node name="MovementSystem" type="Node3D" parent="ECS"]
-script = ExtResource("9_21hib")
-
-[node name="CombatSystem" type="Node" parent="ECS"]
-script = ExtResource("10_q3ovi")
-
-[node name="VFXSystem" type="Node" parent="ECS/CombatSystem"]
-script = ExtResource("15_1ps50")
-
-[node name="SpawnSystem" type="Node" parent="ECS"]
-script = ExtResource("11_jk1mf")
-spawn_batch_size = 2
-min_spawn_distance = 15.0
-enemy_probabilities = {
-"aboba": 0.7,
-"fuflan": 0.3
-}
-
-[node name="RenderSystem" type="Node" parent="ECS"]
-script = ExtResource("12_dm76g")
-
-[node name="WeaponSystem" type="Node" parent="ECS"]
-script = ExtResource("13_ye3mq")
-projectiles_handler_path = NodePath("../../Projectiles")
-
-[node name="StatsSystem" type="Node" parent="ECS"]
-script = ExtResource("14_emvs1")
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("5_rv2px")
+metadata/_custom_type_script = "uid://doiig0ticwg3m"

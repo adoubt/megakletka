@@ -11,7 +11,7 @@ func enter(previous_state_path: String, data := {}) -> void:
 	# Вертикальный импульс
 	player.velocity.y = player.jump_velocity
 	player.animation_player.speed_scale = 5.0 / player.jump_velocity
-	player.animation_player.play("AnimPack/idle_to_jump", 0.25)
+	player.animation_player.play("Pack/idle_to_jump", 0.25)
 
 
 func physics_update(delta: float) -> void:

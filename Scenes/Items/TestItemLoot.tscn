@@ -1,10 +1,79 @@
-[gd_scene load_steps=8 format=3 uid="uid://dx34ye0ik1qtt"]
+[gd_scene load_steps=19 format=3 uid="uid://dy4iuj6leh8my"]
 
 [ext_resource type="Script" uid="uid://crk6p7ykm0nn8" path="res://Scripts/Loot.gd" id="1_5ma8o"]
-[ext_resource type="Resource" uid="uid://r3s0gucu2oa8" path="res://Resources/Items/drone_remote_controller.tres" id="2_3gdj7"]
+[ext_resource type="Texture2D" uid="uid://b4db7snqbqvnr" path="res://assets/icons/drone_remote_controller_64.png" id="2_0bvl5"]
 [ext_resource type="Material" uid="uid://o765wr3vnafe" path="res://assets/Materials/item_highlight.tres" id="3_jr8xg"]
-[ext_resource type="PackedScene" uid="uid://w07rimd38lgp" path="res://Scenes/FX/loot_fx.tscn" id="3_n7d2s"]
+[ext_resource type="Script" uid="uid://cvu6jh1mic2ba" path="res://Scripts/InventoryItem.gd" id="3_o40ds"]
 [ext_resource type="AudioStream" uid="uid://cnbdu8pom8ndi" path="res://assets/sound/Persistent/Loot Dust.ogg" id="4_2inet"]
+[ext_resource type="Shader" uid="uid://byajqubducinv" path="res://assets/Shaders/loot_particles.tres" id="4_4oevf"]
+[ext_resource type="Texture2D" uid="uid://b8nkb7osphjsn" path="res://assets/shader_pics/istockphoto-1281301506-612x612.jpg" id="5_hnio1"]
+
+[sub_resource type="Resource" id="Resource_mt8ud"]
+script = ExtResource("3_o40ds")
+name = "DroneRemoteController"
+icon = ExtResource("2_0bvl5")
+scene_item_held = "D:/steam/godot_projects/about-to-hype/Scenes/Items/DroneRemoteHeld.tscn"
+scene_item_loot = "res://Scenes/Items/DroneRemoteLoot.tscn"
+metadata/_custom_type_script = "uid://cvu6jh1mic2ba"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ibn8u"]
+render_priority = 0
+shader = ExtResource("4_4oevf")
+shader_parameter/Main_Texture = ExtResource("5_hnio1")
+
+[sub_resource type="Curve" id="Curve_v51wh"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2529644, 0.60869557), 0.0, 0.0, 0, 0, Vector2(0.47430828, 0.44565213), 0.0, 0.0, 0, 0, Vector2(0.6996047, 0.9891303), 0.1330645, 0.1330645, 0, 0, Vector2(1, 0), -8.799998, 0.0, 0, 0]
+point_count = 5
+metadata/_snap_count = 8
+
+[sub_resource type="CurveTexture" id="CurveTexture_irwqe"]
+width = 1000
+texture_mode = 1
+curve = SubResource("Curve_v51wh")
+
+[sub_resource type="Gradient" id="Gradient_fp7j2"]
+offsets = PackedFloat32Array(0.008810572, 0.37444934, 1)
+colors = PackedColorArray(1, 1, 0, 0.44700003, 0.49560964, 0, 0.368734, 0.536, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ko6xv"]
+gradient = SubResource("Gradient_fp7j2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_unfrh"]
+lifetime_randomness = 0.5
+emission_shape_offset = Vector3(0, 0.25, 0)
+emission_shape = 6
+emission_ring_axis = Vector3(0, -1, 0)
+emission_ring_height = 1.0
+emission_ring_radius = 0.5
+emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 43.4
+inherit_velocity_ratio = 1.0
+direction = Vector3(0, 0, 0)
+spread = 0.0
+flatness = 1.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, 1, 0)
+color_ramp = SubResource("GradientTexture1D_ko6xv")
+alpha_curve = SubResource("CurveTexture_irwqe")
+turbulence_noise_strength = 0.0
+turbulence_noise_speed_random = 2.54
+
+[sub_resource type="QuadMesh" id="QuadMesh_gpl3q"]
+lightmap_size_hint = Vector2i(4, 4)
+size = Vector2(0.5, 0.5)
+
+[sub_resource type="PackedScene" id="PackedScene_t0hqf"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("LootFX", "Node3D", "GPUParticles3D", "GPUParticles3D", "material_override", "visibility_range_end", "visibility_range_end_margin", "amount", "lifetime", "explosiveness", "randomness", "trail_lifetime", "process_material", "draw_pass_1"),
+"node_count": 2,
+"node_paths": [NodePath(".")],
+"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 0, 0, 1073741824, 0, 3, 2, -1, 10, 4, 0, 5, 1, 6, 2, 7, 3, 8, 4, 9, 5, 10, 6, 11, 7, 12, 8, 13, 9, 0),
+"variants": [SubResource("ShaderMaterial_ibn8u"), 60.0, 5.0, 5, 1.5, 0.1, 1.0, 1.89, SubResource("ParticleProcessMaterial_unfrh"), SubResource("QuadMesh_gpl3q")],
+"version": 3
+}
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vaj68"]
 size = Vector3(0.5, 0.5, 0.5)
@@ -16,8 +85,8 @@ size = Vector3(0.5, 0.5, 0.5)
 collision_layer = 4
 collision_mask = 23
 script = ExtResource("1_5ma8o")
-item = ExtResource("2_3gdj7")
-particles_scene = ExtResource("3_n7d2s")
+item = SubResource("Resource_mt8ud")
+particles_scene = SubResource("PackedScene_t0hqf")
 loot_sound = ExtResource("4_2inet")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
