@@ -3,6 +3,7 @@ extends PlayerState
 var was_sprinting: bool = false
 
 func enter(previous_state_path: String, data := {}) -> void:
+	player.current_state = name
 	print(previous_state_path, " -> Jumping")
 
 	# Сохраняем, был ли спринт перед прыжком

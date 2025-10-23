@@ -4,6 +4,7 @@ extends PlayerState
 var timer := 0.0
 
 func enter(previous_state_path: String, data := {}) -> void:
+	player.current_state = name
 	print(previous_state_path, " -> Dying")
 
 	# Отключаем движение и ввод

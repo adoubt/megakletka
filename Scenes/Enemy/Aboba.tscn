@@ -12,13 +12,13 @@ add_uv2 = true
 radius = 0.1
 height = 0.3
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aq0j3"]
-radius = 0.2
-height = 0.4
+[sub_resource type="SphereShape3D" id="SphereShape3D_ef24y"]
+radius = 0.27447575
 
 [node name="Aboba" type="RigidBody3D"]
-collision_layer = 4
+collision_layer = 2
 collision_mask = 7
+lock_rotation = true
 
 [node name="Model" type="Node3D" parent="."]
 
@@ -33,4 +33,4 @@ mesh = SubResource("CapsuleMesh_65dl7")
 skeleton = NodePath("../..")
 
 [node name="Shape" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_aq0j3")
+shape = SubResource("SphereShape3D_ef24y")

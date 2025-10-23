@@ -109,9 +109,7 @@ polygon = PackedVector2Array(0, 0, 0, 2, 4, 0)
 depth = 2.0
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09496641, 0)
 light_bake_mode = 1
-omni_range = 9.498
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("5_rv2px")

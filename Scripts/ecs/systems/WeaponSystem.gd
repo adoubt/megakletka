@@ -2,10 +2,10 @@ extends BaseSystem
 class_name WeaponSystem
 
 func update(delta: float) -> void:
-	var entities = get_entities_with("WeaponComponent", "TransformComponent") # или TransformComponent
+	var entities = get_entities_with(["WeaponComponent", "TransformComponent"]) # или TransformComponent
 
 	for entity_id in entities:
-		var weapon = component_store.get_component(entity_id, "WeaponComponent")
+		var weapon = cs.get_component(entity_id, "WeaponComponent")
 		if weapon == null:
 			continue
 		
@@ -58,4 +58,4 @@ func _apply_damage(target_id: int, amount: float) -> void:
 	var damage_component = {
 		"amount": amount
 	}
-	component_store.add_component(target_id, "PendingDamageComponent", damage_component)
+	cs.add_component(target_id, "PendingDamageComponent", damage_component)

@@ -1,6 +1,7 @@
 extends PlayerState
 
 func enter(previous_state_path: String, data := {}) -> void:
+	player.current_state = name
 	print(previous_state_path," -> Idle")
 	player.velocity.x = 0.0
 	player.velocity.z = 0.0

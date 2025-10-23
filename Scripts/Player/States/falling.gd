@@ -2,6 +2,7 @@ extends PlayerState
 
 var was_sprinting: bool = false
 func enter(previous_state_path: String, data := {}) -> void:
+	player.current_state = name
 	was_sprinting = false
 	if data.has("was_sprinting"):
 		was_sprinting = bool(data["was_sprinting"])

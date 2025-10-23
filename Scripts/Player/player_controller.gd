@@ -1,6 +1,8 @@
 extends CharacterBody3D
 class_name Player
 
+
+var current_state : String
 @export var max_speed: float = 3.0
 @export var acceleration: float = 25.0
 @export var jump_velocity : float = 5.0

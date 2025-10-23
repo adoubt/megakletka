@@ -2,13 +2,13 @@
 extends RefCounted
 class_name EntityManager
 
-var _next_id := 1
-var entities := {}
+var _next_id : int = 1
+var entities : Dictionary = {}
 
 ## Creates a new unique entity and returns its ID.
 ## Each call increments the internal counter to ensure IDs never repeat.
 func create_entity() -> int:
-	var id = _next_id
+	var id : int = _next_id
 	_next_id += 1
 	entities[id] = true
 	return id

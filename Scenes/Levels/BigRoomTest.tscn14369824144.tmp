@@ -85,33 +85,35 @@ size = Vector3(2, 4, 1)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -4.25, -4.5)
+visible = false
 material_override = ExtResource("2_ye3mq")
 use_collision = true
 size = Vector3(2, 1, 1)
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -3.75, -4)
+visible = false
 material_override = ExtResource("2_ye3mq")
 use_collision = true
 size = Vector3(2, 2, 2)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -3.75, -4)
+visible = false
 material_override = ExtResource("2_ye3mq")
 use_collision = true
 size = Vector3(2, 2, 2)
 
 [node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -4.75, -3)
+visible = false
 material_override = ExtResource("2_ye3mq")
 use_collision = true
 polygon = PackedVector2Array(0, 0, 0, 2, 4, 0)
 depth = 2.0
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09496641, 0)
 light_bake_mode = 1
-omni_range = 9.498
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("5_rv2px")

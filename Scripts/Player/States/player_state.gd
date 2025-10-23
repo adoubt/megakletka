@@ -1,10 +1,10 @@
 class_name PlayerState extends State
 
-const IDLE = "Idle"
-const RUNNING = "Running"
-const JUMPING = "Jumping"
-const FALLING = "Falling"
-const SPRINTING = "Sprinting"
+const IDLE : String = "Idle"
+const RUNNING : String = "Running"
+const JUMPING : String = "Jumping"
+const FALLING : String = "Falling"
+const SPRINTING : String = "Sprinting"
 enum PlayerStates { IDLE, RUNNING, JUMPING, FALLING,SPRINTING }
 
 var player: Player
