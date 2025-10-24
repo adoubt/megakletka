@@ -35,6 +35,19 @@ func remove_component(entity_id: int, comp_name: String) -> void:
 		if components[comp_name].is_empty():
 			components.erase(comp_name)
 
+## Removes ALL components for a given entity
+func remove_all_components_for_entity(entity_id: int) -> void:
+	for comp_name in components.keys():
+		if components[comp_name].has(entity_id):
+			components[comp_name].erase(entity_id)
+			if components[comp_name].is_empty():
+				components.erase(comp_name)
+
+## Checks if an entity has a specific component
+func has_component(entity_id: int, comp_name: String) -> bool:
+	return components.has(comp_name) and components[comp_name].has(entity_id)
+
+
 ## Clears all stored components
 func clear() -> void:
 	components.clear()

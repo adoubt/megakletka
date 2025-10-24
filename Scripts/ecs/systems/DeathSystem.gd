@@ -1,16 +1,13 @@
 extends BaseSystem
 class_name DeathSystem
 
-func update(_delta: float) -> void:
-	var entities = get_entities_with(["HealthComponent"])
-	
-	for entity_id in entities:
-		var health = cs.get_component(entity_id, "HealthComponent")
-		if health == null:
-			continue
-		
-		if health.current_hp <= 0.0:
-			# Можно вызвать анимацию смерти или событие
-			cs.add_component(entity_id, "DeadComponent", DeadComponent.new())
 
-		
+
+func update(_delta: float):
+	var entities = get_entities_with(["CurrentHpComponent"])
+	for e_id in entities:
+		var hp = cs.get_component(e_id, "CurrentHpComponent")
+		if hp.final_value <= 0 and not cs.has_component(e_id, "DeadComponent"):
+			cs.add_component(e_id, "DeadComponent", DeadComponent.new())
+			print(e_id, " just died")
+	

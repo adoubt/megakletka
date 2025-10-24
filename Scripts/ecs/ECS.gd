@@ -16,12 +16,17 @@ func initialize():
 	system_manager.add_system(ControllerSyncSystem.new(entity_manager, component_store))
 	system_manager.add_system(TargetSystem.new(entity_manager, component_store))
 	system_manager.add_system(MovementSystem.new(entity_manager, component_store, self))
-	system_manager.add_system(RenderSystem.new(entity_manager, component_store, self,object_pool))
+	system_manager.add_system(WeaponSystem.new(entity_manager, component_store))
+	system_manager.add_system(ProjectileSystem.new(entity_manager,component_store))
+	system_manager.add_system(CollisionSystem.new(entity_manager, component_store))
+	
 	system_manager.add_system(DeathSystem.new(entity_manager, component_store))
 	system_manager.add_system(DamageSystem.new(entity_manager, component_store))
 	system_manager.add_system(HealthSystem.new(entity_manager, component_store))
-	system_manager.add_system(SpawnSystem.new(entity_manager, component_store))
 	
+	system_manager.add_system(SpawnSystem.new(entity_manager, component_store))
+	system_manager.add_system(RenderSystem.new(entity_manager, component_store, object_pool))
+	system_manager.add_system(CleanerSystem.new(entity_manager, component_store, object_pool))
 	
 	
 	

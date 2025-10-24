@@ -1,24 +1,20 @@
-# res://ecs/systems/DamageSystem.gd
 extends BaseSystem
 class_name DamageSystem
 
-func update(_delta: float) -> void:
-	# Берём все сущности, у которых есть HealthComponent и DamageComponent
-	var entities = get_entities_with(["HealthComponent", "PendingDamageComponent"])
-	
-	for entity_id in entities:
-		var health = cs.get_component(entity_id, "HealthComponent")
-		var damage = cs.get_component(entity_id, "PendingDamageComponent")
-		if damage == null:
+func update(delta: float):
+	var entities = get_entities_with(["PendingDamageComponent","CurrentHpComponent"])
+	for e_id in entities:
+		var pd = cs.get_component(e_id,"PendingDamageComponent")
+		var current_hp = cs.get_component(e_id,"CurrentHpComponent")
+		if pd == null or current_hp == null:
 			continue
-		# Применяем урон
-		health.current_hp  = _calculate_health_after_damage(health.current_hp, damage.amount , health.max_hp)
-		
-		# После применения урона можно удалить компонент
-		cs.remove_component(entity_id, "PendingDamageComponent")
-
-func _calculate_health_after_damage(current_hp : float, damage :float, max_hp :float) -> float:
-	if max_hp <= 0.0: return 0.0
-	if damage <= 0.0: return current_hp
-	if current_hp <= 0.0: return 0.0
-	return clampf(current_hp - damage, 0.0, max_hp)
+		var _current_hp_before = current_hp.final_value
+		# Execute
+		if pd.execute_chance > 0 and randi()%100 < int(pd.execute_chance*100):
+			current_hp.final_value = 0
+		else:
+			
+			current_hp.final_value = min(0.0, current_hp.final_value - pd.amount)
+		print(e_id, " got ", current_hp.final_value - _current_hp_before," dmg from ",pd.source_id)
+		# удаляем PendingDamage после применения
+		cs.remove_component(e_id,"PendingDamageComponent")

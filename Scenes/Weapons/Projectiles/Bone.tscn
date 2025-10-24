@@ -14,7 +14,7 @@ uv1_triplanar = true
 radius = 0.1
 height = 0.2
 
-[node name="Bananarang" type="Node3D"]
+[node name="Bone" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_367bw")

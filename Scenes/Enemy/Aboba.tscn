@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://buglwb2isjbnb"]
+[gd_scene load_steps=4 format=3 uid="uid://buglwb2isjbnb"]
 
 [ext_resource type="Material" uid="uid://44k0m2yb0cqg" path="res://assets/Materials/DEV_material.tres" id="1_ef24y"]
 
@@ -12,13 +12,7 @@ add_uv2 = true
 radius = 0.1
 height = 0.3
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_ef24y"]
-radius = 0.27447575
-
-[node name="Aboba" type="RigidBody3D"]
-collision_layer = 2
-collision_mask = 7
-lock_rotation = true
+[node name="Aboba" type="Node3D"]
 
 [node name="Model" type="Node3D" parent="."]
 
@@ -31,6 +25,3 @@ skeleton = NodePath("../..")
 transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.046016738, 0.172629)
 mesh = SubResource("CapsuleMesh_65dl7")
 skeleton = NodePath("../..")
-
-[node name="Shape" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_ef24y")
