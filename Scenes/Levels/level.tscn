@@ -1,11 +1,11 @@
 [gd_scene load_steps=10 format=3 uid="uid://cepy4oe4ipa7d"]
 
 [ext_resource type="Material" uid="uid://dkghwq086gte4" path="res://assets/Materials/black_plastmass_material.tres" id="1_k5f4k"]
-[ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud_manager.tscn" id="3_6phgx"]
+[ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud.tscn" id="3_6phgx"]
 [ext_resource type="PackedScene" uid="uid://drvybucsulchh" path="res://Scenes/Objects/elevator.tscn" id="4_8c0lf"]
-[ext_resource type="Script" uid="uid://dffucx1w4v08r" path="res://Scripts/ElevatorBehavior.gd" id="4_754fn"]
+[ext_resource type="Script" path="res://Scripts/ElevatorBehavior.gd" id="4_754fn"]
 [ext_resource type="PackedScene" uid="uid://dpi636m1c6jvi" path="res://Scenes/Objects/Door_btn.tscn" id="6_754fn"]
-[ext_resource type="PackedScene" uid="uid://cib10taw405l3" path="res://Scenes/Items/ZippoLoot.tscn" id="7_bvt00"]
+[ext_resource type="PackedScene" path="res://Scenes/Items/ZippoLoot.tscn" id="7_bvt00"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_81xng"]
 material = ExtResource("1_k5f4k")

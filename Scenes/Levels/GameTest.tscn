@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cfeccgouh55q" path="res://scripts/RunManager.gd" id="1_hpky7"]
 [ext_resource type="PackedScene" uid="uid://bl07r12dkseuq" path="res://Scenes/Levels/BaseLevelFloor.tscn" id="3_il3ve"]
-[ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud_manager.tscn" id="4_3n25w"]
+[ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud.tscn" id="4_3n25w"]
 [ext_resource type="PackedScene" uid="uid://dtt2iq2by7mq" path="res://Scenes/Rooms/BigRoom.tscn" id="4_qofol"]
 [ext_resource type="PackedScene" uid="uid://dp0qfcyh34vor" path="res://Scenes/Rooms/dungeon_room_elevator.tscn" id="6_28hsf"]
 [ext_resource type="PackedScene" uid="uid://dh2i3dk3g0icv" path="res://addons/SimpleDungeons/sample_dungeons/custom_random_room_function_example/red_room.tscn" id="7_g0ly7"]

@@ -1,81 +1,85 @@
 extends BaseSystem
 class_name CollisionSystem
 
+# { (source_id, target_id) : true }
+var contact_cache := {}
+
 func update(_delta: float) -> void:
-	var entities = get_entities_with(["TransformComponent", "CollisionComponent"])
+	var entities = get_entities_with(["TransformComponent", "CollisionComponent"], ["DeadComponent"])
 	if entities.size() < 2:
 		return
 
+	var new_cache := {}
+
 	for i in range(entities.size()):
-		var a_id = entities[i]
-		var a_tf = cs.get_component(a_id, "TransformComponent")
-		var a_col = cs.get_component(a_id, "CollisionComponent")
-		if a_tf == null or a_col == null:
-			continue
+		var a = entities[i]
+		var a_tf = cs.get_component(a, "TransformComponent")
+		var a_col = cs.get_component(a, "CollisionComponent")
 
 		for j in range(i+1, entities.size()):
-			var b_id = entities[j]
-			var b_tf = cs.get_component(b_id, "TransformComponent")
-			var b_col = cs.get_component(b_id, "CollisionComponent")
-			if b_tf == null or b_col == null:
+			var b = entities[j]
+			var b_tf = cs.get_component(b, "TransformComponent")
+			var b_col = cs.get_component(b, "CollisionComponent")
+
+			if not _layers_match(a_col, b_col):
 				continue
 
-			# --- фильтрация по слоям ---
-			if (a_col.collision_mask & b_col.collision_layer) == 0 and (b_col.collision_mask & a_col.collision_layer) == 0:
-				continue
+			if a_tf.position.distance_to(b_tf.position) < a_col.radius + b_col.radius:
+				_process_collision(a, b, new_cache)
 
-			# --- проверка пересечения сфер ---
-			var dist = a_tf.position.distance_to(b_tf.position)
-			var radius_sum = a_col.radius + b_col.radius
-			if dist < radius_sum:
-				# --- отскок для динамических ---
-				handle_overlap(a_id, b_id, dist, radius_sum)
+	# Обновляем кеш только после проверки всех коллизий
+	contact_cache = new_cache
 
-				# --- обработка урона ---
-				handle_damage(a_id, b_id)
 
-func handle_overlap(a_id: int, b_id: int, dist: float, radius_sum: float) -> void:
-	var a_tf = cs.get_component(a_id, "TransformComponent")
-	var b_tf = cs.get_component(b_id, "TransformComponent")
-	var dir = (a_tf.position - b_tf.position).normalized()
-	var overlap = radius_sum - dist
+func _layers_match(a_col, b_col) -> bool:
+	return (
+		(a_col.collision_mask & b_col.collision_layer) != 0 and
+		(b_col.collision_mask & a_col.collision_layer) != 0
+	)
 
-	# только для динамических объектов (можно расширить)
-	var a_col = cs.get_component(a_id, "CollisionComponent")
-	var b_col = cs.get_component(b_id, "CollisionComponent")
-	if a_col.type == "dynamic" and b_col.type == "dynamic":
-		a_tf.position += dir * (overlap * 0.5)
-		b_tf.position -= dir * (overlap * 0.5)
-	elif a_col.type == "dynamic":
-		a_tf.position += dir * overlap
-	elif b_col.type == "dynamic":
-		b_tf.position -= dir * overlap
 
-func handle_damage(a_id: int, b_id: int) -> void:
-	var a_has_damage = cs.has_component(a_id, "PendingDamageComponent")
-	var b_has_damage = cs.has_component(b_id, "PendingDamageComponent")
-	
-	var a_stats = cs.get_component(a_id, "CurrentHpComponent")
-	var b_stats = cs.get_component(b_id, "CurrentHpComponent")
+func _process_collision(a:int, b:int, new_cache: Dictionary) -> void:
+	var pairs = [[a, b], [b, a]]
 
-	# Если A наносит урон B
-	if a_has_damage and b_stats:
-		var dmg_src = cs.get_component(a_id, "PendingDamageComponent")
-		if not cs.has_component(b_id, "PendingDamageComponent"):
-			cs.add_component(b_id, "PendingDamageComponent", PendingDamageComponent.new())
-		var pd = cs.get_component(b_id, "PendingDamageComponent")
-		pd.amount  = dmg_src.amounts
-		pd.source_id = dmg_src.source_id
-		pd.execute_chance = dmg_src.execute_chance
-		pd.pierce = dmg_src.pierce
+	for pair in pairs:
+		var source = pair[0]
+		var target = pair[1]
 
-	# Если B наносит урон A
-	if b_has_damage and a_stats:
-		var dmg_src = cs.get_component(b_id, "PendingDamageComponent")
-		if not cs.has_component(a_id, "PendingDamageComponent"):
-			cs.add_component(a_id, "PendingDamageComponent", PendingDamageComponent.new())
-		var pd = cs.get_component(a_id, "PendingDamageComponent")
-		pd.amount = dmg_src.amount
-		pd.source_id = dmg_src.source_id
-		pd.execute_chance = dmg_src.execute_chance
-		pd.pierce = dmg_src.pierce
+		var s_col = cs.get_component(source, "CollisionComponent")
+		var t_col = cs.get_component(target, "CollisionComponent")
+
+		var key = Vector2(source, target) # уникальный ключ для кеша
+
+		# Игрок → враг
+		if s_col.is_player_projectile() and t_col.is_enemy():
+			_register_hit(source, target, key, new_cache)
+
+		# Враг → игрок
+		elif s_col.is_enemy_projectile() and t_col.is_player():
+			_register_hit(source, target, key, new_cache)
+
+		# Контактный урон враг → игрок
+		elif s_col.is_enemy() and t_col.is_player():
+			_register_hit(source, target, key, new_cache)
+
+		# Пуля → стена (отскок)
+		elif s_col.is_projectile() and t_col.is_world():
+			if not cs.has_component(source, "BounceComponent"):
+				cs.add_component(source, "BounceComponent", BounceComponent.new())
+
+
+func _register_hit(source:int, target:int, key: Vector2, new_cache: Dictionary) -> void:
+	# Проверяем кеш
+	if contact_cache.has(key):
+		# Уже зарегистрирован в предыдущем тике
+		new_cache[key] = true
+		return
+
+	# Добавляем HitComponent если его ещё нет
+	if not cs.has_component(target, "HitComponent"):
+		var hit_comp := HitComponent.new()
+		hit_comp.source_id = source
+		cs.add_component(target, "HitComponent", hit_comp)
+
+	# Добавляем в новый кеш
+	new_cache[key] = true

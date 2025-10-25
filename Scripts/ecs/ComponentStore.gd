@@ -2,6 +2,7 @@
 extends RefCounted
 class_name ComponentStore
 
+
 var components: Dictionary = {} # { component_name: { entity_id: component_instance } }
 
 ## Adds a component instance to the specified entity

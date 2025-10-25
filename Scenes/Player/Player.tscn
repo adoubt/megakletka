@@ -16,7 +16,7 @@
 [ext_resource type="Script" uid="uid://c5kdnjnomocws" path="res://scripts/Player/camera_follow.gd" id="14_esmjy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q2k22"]
-radius = 0.16894531
+radius = 0.15
 height = 1.0625
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6tu5v"]
@@ -1217,9 +1217,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07641084, -0.034318507, -0.
 
 [node name="Handtarget" type="MeshInstance3D" parent="Model/RightArmTarget/HandTarget"]
 mesh = SubResource("SphereMesh_cuqk8")
-
-[node name="SpotLight3D" type="SpotLight3D" parent="Model"]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 1, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Model/Armature/GeneralSkeleton")

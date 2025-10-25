@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://blhsqmxaxeak5"]
+
+[node name="DamagePopup" type="Label3D"]
+billboard = 1
+modulate = Color(0.9452769, 0.9452769, 0.9452769, 0)
+outline_modulate = Color(0, 0, 0, 0)
+text = "100"

@@ -42,11 +42,11 @@ horizontal_alignment = 1
 [node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="EnemiesCount" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
 layout_mode = 2
 vertical_alignment = 1
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="ProjectilesCount" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
 layout_mode = 2
 vertical_alignment = 1
 

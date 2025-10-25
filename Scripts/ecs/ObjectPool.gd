@@ -28,14 +28,16 @@ const INITIAL_CAP: int = 32
 const GROW_RATE: float = 1.5
 const SOFT_CAP: int = 200
 const HARD_CAP: int = 2000
-const SHRINK_DELAY: float = 10.0 # секунд до очистки неиспользуемого пула
+const SHRINK_DELAY: float = 100.0 # секунд до очистки неиспользуемого пула
+
 
 
 # ============================================================
 func _init(_root_node: Node3D) -> void:
 	root_node = _root_node
+	warm_pool("res://Scenes/Enemy/Aboba.tscn", 500)
 
-
+	warm_pool("res://Scenes/Weapons/Projectiles/cheese.tscn", 5000)
 # ============================================================
 # 🔸 Получение кэшированной сцены
 func _get_scene(scene_path: String) -> PackedScene:
@@ -119,27 +121,55 @@ func cleanup_unused() -> void:
 
 			pool.max_size = maxi(INITIAL_CAP, int(pool.max_size / 2))
 
-
 # ============================================================
 # 🔸 Активация / деактивация узлов
 func _activate_node(node: Node3D) -> void:
 	node.show()
-	node.set_process(true)
-	node.set_physics_process(true)
-	if node.has_method("set_monitoring"):
-		node.set_deferred("monitoring", true)
+	#node.set_process(false)
+	#node.set_physics_process(false)
+	#if node.has_method("set_monitoring"):
+		#node.set_deferred("monitoring", false)
 
-	# 🔄 Если есть reset-метод — сбрасываем пользовательское состояние
-	if node.has_method("reset_state"):
-		node.reset_state()
+	## 🔄 Если есть reset-метод — сбрасываем пользовательское состояние
+	#if node.has_method("reset_state"):
+		#node.reset_state()
 
 
 func _deactivate_node(node: Node3D) -> void:
 	node.hide()
-	node.set_process(false)
-	node.set_physics_process(false)
-	if node.has_method("set_monitoring"):
-		node.set_deferred("monitoring", false)
-
-	# ✅ Сбрасываем только transform
+	#node.set_process(false)
+	#node.set_physics_process(false)
+	#if node.has_method("set_monitoring"):
+		#node.set_deferred("monitoring", false)
+#
+	## ✅ Сбрасываем только transform
 	node.global_transform = Transform3D.IDENTITY
+
+func _create_pool(scene_path: String, initial_cap: int) -> PoolData:
+	var pool = PoolData.new(initial_cap)
+	pools[scene_path] = pool
+
+	var scene := _get_scene(scene_path)
+	if scene == null:
+		return pool
+
+	for i in initial_cap:
+		var node: Node3D = scene.instantiate()
+		_deactivate_node(node)
+		root_node.add_child(node, true)
+		pool.available.append(node)
+
+	return pool
+
+func warm_pool(scene_path: String, count: int) -> void:
+	var pool: PoolData = pools.get(scene_path)
+	if pool == null:
+		pool = _create_pool(scene_path, count)
+		return
+
+	var scene := _get_scene(scene_path)
+	for i in count:
+		var node: Node3D = scene.instantiate()
+		_deactivate_node(node)
+		root_node.add_child(node, true)
+		pool.available.append(node)

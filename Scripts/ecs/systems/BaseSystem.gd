@@ -1,3 +1,4 @@
+@icon("res://scripts/ecs/data/system_icon.png")
 # res://ecs/BaseSystem.gd
 extends RefCounted
 class_name BaseSystem

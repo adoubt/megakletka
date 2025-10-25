@@ -13,5 +13,5 @@ func _ready():
 	ecs.initialize()  # инициализация EntityManager, ComponentStore, SystemManager
 
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	ecs.update(delta)

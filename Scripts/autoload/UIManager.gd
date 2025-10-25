@@ -7,17 +7,25 @@ extends Node
 
 @onready var main_menu = preload("res://UI/main_menu.tscn").instantiate()
 @onready var dev_panel = preload("res://UI/dev_panel.tscn").instantiate()
-
+@onready var hud = preload("res://UI/hud.tscn").instantiate()
 var panels: Dictionary = {}
 var force_cursor_visible: bool = false
 var last_mouse_state: bool = false
 const BASE_RESOLUTION := Vector2(1152, 648)
+var canvas :CanvasLayer
+
 
 # ========== PUBLIC API ==========
 
 func open_main_menu() -> void:
 	open_panel("MainMenu")
-
+	
+func hud_show() -> void:
+	hud.show()
+	
+func hud_hide()-> void:
+	hud.hide()
+	
 func toggle_escape_menu() -> void:
 	if escape_menu.visible:
 		close_escape_menu()
@@ -82,28 +90,33 @@ func close_panel(_name: String) -> void:
 func close_all() -> void:
 	for p in panels.values():
 		p.visible = false
+		
 	_update_ui_state()
 
 
 # ========== INTERNAL ==========
 func _ready() -> void:
-	var canvas = CanvasLayer.new()
+	canvas = CanvasLayer.new()
 	add_child(canvas)
-
+	canvas.add_child(hud)
 	canvas.add_child(escape_menu)
 	canvas.add_child(main_menu)
 	canvas.add_child(settings_menu)
 
 	canvas.add_child(dev_panel)
+	
+	
 
+	
 	panels = {
+		
 		"EscapeMenu": escape_menu,
 		"MainMenu": main_menu,
 		"Settings": settings_menu,
-		"DEV_PANEL" : dev_panel
-		
-	}
+		"DEV_PANEL" : dev_panel,
 
+	}
+	
 	close_all()
 	scale_margins_for_resolution()  # стартовая подгонка
 	#connect("resized", Callable(self, "_on_resize"))  # если Control
@@ -121,6 +134,7 @@ func _update_ui_state() -> void:
 
 func _any_ui_open() -> bool:
 	for p in panels.values():
+
 		if p.visible:
 			return true
 	return false
@@ -159,12 +173,13 @@ func _apply_margin_scaling(node: Node, scale: float):
 	for child in node.get_children():
 		if child is Control:
 			_apply_margin_scaling(child, scale)
-		
+
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Esc"):
 		if is_panel_open("Settings"):
 			close_settings()
+
 		elif SceneManager.current_scene_name not in ["Intro","MainMenu"]:
 			toggle_escape_menu()
 	if event.is_action_pressed("DEV_PANEL"):

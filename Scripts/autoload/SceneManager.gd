@@ -25,6 +25,7 @@ func go_to_game_test():
 
 func _go_to_big_room_test():
 	_change_scene("BigRoomTest")
+	
 func restart_current():
 	_change_scene(current_scene_name)
 func exit():
@@ -42,6 +43,7 @@ func _change_scene(_name: String):
 	
 	_update_ui_for_scene()
 	UIManager.close_all()
+	
 func _update_ui_for_scene():
 
 	# форс курсор через UIManager
@@ -50,3 +52,7 @@ func _update_ui_for_scene():
 	else:
 		UIManager.force_cursor_visible = false
 	#UIManager._update_ui_state()
+	if current_scene_name in ["BigRoomTest"]:
+		UIManager.hud_show()
+	else:
+		UIManager.hud_hide()

@@ -3,16 +3,17 @@ extends BaseSystem
 class_name ProjectileSystem
 
 func update(delta: float) -> void:
-	var projectiles = get_entities_with(["ProjectileComponent", "TransformComponent"])
+	var projectiles = get_entities_with(["ProjectileComponent", "TransformComponent"],["DeadComponent"])
 	for e_id in projectiles:
 		var tf = cs.get_component(e_id, "TransformComponent")
 		var proj = cs.get_component(e_id, "ProjectileComponent")
 		if tf == null or proj == null:
 			continue
-
+		var lifetime = cs.get_component(e_id,"LifetimeComponent").time_left
+		
 		# lifetime
-		proj.lifetime -= delta
-		if proj.lifetime <= 0:
+		lifetime -= delta
+		if lifetime <= 0:
 		
 			if not cs.has_component(e_id, "DeadComponent"):
 				cs.add_component(e_id, "DeadComponent", DeadComponent.new())
@@ -21,7 +22,17 @@ func update(delta: float) -> void:
 		# movement type (здесь безопасно читать proj.move_type — поле всегда есть)
 		match proj.move_type:
 			"orbit":
+				# Если владелец мёртв — уничтожаем снаряд
+				var owner_id = proj.owner_id
+				if owner_id == -1 or cs.has_component(owner_id, "DeadComponent"):
+					cs.add_component(e_id,"DeadComponent",DeadComponent.new())
+					return
 				var owner_tf = cs.get_component(proj.owner_id, "TransformComponent")
+				if owner_tf == null:
+					print("⚠ ORBIT ERROR: Owner ", owner_id, " has NO TransformComponent! Dead?", cs.has_component(owner_id, "DeadComponent"))
+					cs.add_component(e_id, "DeadComponent", DeadComponent.new())
+					return
+
 				var orbit = cs.get_component(e_id, "OrbitComponent")
 				orbit.angle += orbit.speed * delta
 				var x = cos(orbit.angle) * orbit.radius

@@ -13,6 +13,7 @@ radius = 0.1
 height = 0.3
 
 [node name="Aboba" type="Node3D"]
+process_mode = 4
 
 [node name="Model" type="Node3D" parent="."]
 
