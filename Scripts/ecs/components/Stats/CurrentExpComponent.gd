@@ -1,0 +1,3 @@
+
+extends StatComponent
+class_name CurrentExpComponent

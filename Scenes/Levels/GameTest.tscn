@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bkfn061oy0fu0"]
+[gd_scene load_steps=9 format=3 uid="uid://bkfn061oy0fu0"]
 
 [ext_resource type="Script" uid="uid://cfeccgouh55q" path="res://scripts/RunManager.gd" id="1_hpky7"]
 [ext_resource type="PackedScene" uid="uid://bl07r12dkseuq" path="res://Scenes/Levels/BaseLevelFloor.tscn" id="3_il3ve"]
@@ -6,25 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://dtt2iq2by7mq" path="res://Scenes/Rooms/BigRoom.tscn" id="4_qofol"]
 [ext_resource type="PackedScene" uid="uid://dp0qfcyh34vor" path="res://Scenes/Rooms/dungeon_room_elevator.tscn" id="6_28hsf"]
 [ext_resource type="PackedScene" uid="uid://dh2i3dk3g0icv" path="res://addons/SimpleDungeons/sample_dungeons/custom_random_room_function_example/red_room.tscn" id="7_g0ly7"]
-[ext_resource type="PackedScene" uid="uid://csuaael2v81ju" path="res://Scenes/Player/Player.tscn" id="9_qofol"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hpky7"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-
-[sub_resource type="Sky" id="Sky_0fpds"]
-sky_material = SubResource("ProceduralSkyMaterial_hpky7")
-
-[sub_resource type="Environment" id="Environment_il3ve"]
-background_mode = 2
-sky = SubResource("Sky_0fpds")
-tonemap_mode = 2
-glow_enabled = true
+[ext_resource type="Script" uid="uid://ccdlmovr0p2j8" path="res://scripts/Unsorted/camera_3d.gd" id="8_1vg8b"]
+[ext_resource type="PackedScene" uid="uid://cc5olkug3ak0t" path="res://Scenes/game_manager.tscn" id="10_yblsu"]
 
 [node name="GameTest" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_il3ve")
 
 [node name="RunManager" type="Node" parent="."]
 script = ExtResource("1_hpky7")
@@ -35,4 +22,8 @@ room_scenes = Array[PackedScene]([ExtResource("6_28hsf"), ExtResource("7_g0ly7")
 
 [node name="HUDManager" parent="." instance=ExtResource("4_3n25w")]
 
-[node name="Player2" parent="." instance=ExtResource("9_qofol")]
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.058065053, 0.816561, -0.5743315, 0.082135804, 0.57725924, 0.81241953, 0.99492824, 7.4491666e-09, -0.10058748, -55.64808, 57.291397, -9.348785)
+script = ExtResource("8_1vg8b")
+
+[node name="GameManager" parent="." instance=ExtResource("10_yblsu")]

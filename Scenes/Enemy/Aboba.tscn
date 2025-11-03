@@ -5,20 +5,24 @@
 [sub_resource type="SphereMesh" id="SphereMesh_rlo7i"]
 radius = 0.25
 height = 0.4
+radial_segments = 5
+rings = 5
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_65dl7"]
 lightmap_size_hint = Vector2i(5, 4)
 add_uv2 = true
 radius = 0.1
 height = 0.3
+radial_segments = 5
+rings = 1
 
 [node name="Aboba" type="Node3D"]
-process_mode = 4
 
 [node name="Model" type="Node3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
 material_override = ExtResource("1_ef24y")
+lod_bias = 0.03
 mesh = SubResource("SphereMesh_rlo7i")
 skeleton = NodePath("../..")
 

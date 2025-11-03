@@ -1,24 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://6g1u6okbk7nj"]
+[gd_scene load_steps=10 format=3 uid="uid://6g1u6okbk7nj"]
 
 [ext_resource type="Script" uid="uid://x454ibbgwp7n" path="res://addons/SimpleDungeons/DungeonRoom3D.gd" id="1_am5r7"]
+[ext_resource type="Environment" uid="uid://xb0h3hjg4eu5" path="res://assets/Materials/Environment.tres" id="2_rv2px"]
 [ext_resource type="Material" uid="uid://44k0m2yb0cqg" path="res://assets/Materials/DEV_material.tres" id="2_ye3mq"]
 [ext_resource type="Texture2D" uid="uid://bwe02yta75ooa" path="res://addons/SimpleDungeons/sample_assets/kenney-green-checkerboar-cc0.png" id="3_emvs1"]
-[ext_resource type="Script" uid="uid://doiig0ticwg3m" path="res://scripts/game/GameManager.gd" id="5_rv2px"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_41ubc"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-
-[sub_resource type="Sky" id="Sky_1aggn"]
-sky_material = SubResource("ProceduralSkyMaterial_41ubc")
-
-[sub_resource type="Environment" id="Environment_llcw6"]
-background_mode = 2
-sky = SubResource("Sky_1aggn")
-fog_enabled = true
-fog_mode = 1
-fog_light_energy = 0.5
-fog_density = 1.0
+[ext_resource type="PackedScene" uid="uid://cc5olkug3ak0t" path="res://Scenes/game_manager.tscn" id="5_tyij4"]
+[ext_resource type="ArrayOccluder3D" uid="uid://dqfpxmgbunjxa" path="res://bakes/BigRoomTest.occ" id="6_tyij4"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_4ca3h"]
 lightmap_size_hint = Vector2i(2502, 2502)
@@ -40,7 +27,7 @@ max_count = 3
 metadata/_custom_type_script = "uid://x454ibbgwp7n"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_llcw6")
+environment = ExtResource("2_rv2px")
 
 [node name="Ground" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -8, 0)
@@ -111,6 +98,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09496641, 0)
 light_bake_mode = 1
 omni_range = 9.498
 
-[node name="GameManager" type="Node" parent="."]
-script = ExtResource("5_rv2px")
-metadata/_custom_type_script = "uid://doiig0ticwg3m"
+[node name="GameManager" parent="." instance=ExtResource("5_tyij4")]
+
+[node name="OccluderInstance3D" type="OccluderInstance3D" parent="."]
+occluder = ExtResource("6_tyij4")

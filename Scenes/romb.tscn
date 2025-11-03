@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=4 uid="uid://dosmechqhf3sw"]
+
+[ext_resource type="Texture2D" uid="uid://dnykev5x7hc2x" path="res://Scenes/romb_Untitled.png" id="1_ra8wf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k0k6e"]
+resource_name = "Material"
+transparency = 4
+cull_mode = 2
+albedo_texture = ExtResource("1_ra8wf")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_xgq6m"]
+_surfaces = [{
+"aabb": AABB(-0.86, -1.5, -0.86, 1.7200001, 2, 1.72),
+"format": 34896613377,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAQADAAIAAAADAAEAAwAEAAIABAAAAAIAAAAEAAMABQAGAAcABgAIAAcABQAIAAYACAAJAAcACQAFAAcABQAJAAgA"),
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 10,
+"vertex_data": PackedByteArray("/3//fwAAAAD+//9//38AAP9/////fwAA/3//f///AAAAAP9//38AAP9//38AAAAAAAD/f/9/AAD/fwAA/38AAP9//3///wAA////f/9/AAA=")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_vwkwn"]
+resource_name = "romb_Cone_002"
+_surfaces = [{
+"aabb": AABB(-0.86, -1.5, -0.86, 1.7200001, 2, 1.72),
+"attribute_data": PackedByteArray("/3//v/+//7//n//f/7//v/+/////n//f/3//f/+//7//f/+//7//f/+/////f////5//3/9/////f/+//5//3/+//7////+//9//3////7///////9//3/+//3////+//7//v////3///////7/////f/9//v////7//v//f/98="),
+"format": 34896613399,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgABgAJAAcACgALAAwADQAOAA8AEAARABIAEwAUABUAFgAXABgAFgAZABcAGgAbABwAHQAeAB8A"),
+"material": SubResource("StandardMaterial3D_k0k6e"),
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(2, 2, 0, 0),
+"vertex_count": 32,
+"vertex_data": PackedByteArray("/3//fwAAeOv+//9//3946/9/////f3jr/v//f/9/k8D/f/9///+TwP9/////f5PA/3//fwAAqun/f/9///+q6f7//3//f6rpAAD/f/9/qun/f/9///+lpgAA/3//f6Wm/3////9/paYAAP9//38o2/9//38AACjb/3////9/KNv/f/9/AAA+4QAA/3//fz7h/38AAP9/PuEAAP9//3/zz/9//3////PP/38AAP9/88//f/9/AAD8xf9//3////zFAAD/f/9//MX///9//3/8xf9//3///5H3////f/9/kff/fwAA/3+R9////3//fx75/3//fwAAHvn/fwAA/38e+aTTtImk07SJpNO0ieez+nXns/p157P6dQQ1COoENQjqBDUI6gQ1COo/rGrBP6xqwT+sasH6yg69+soOvfrKDr2sW1v1rFtb9axbW/VJ0iz3SdIs90nSLPcAxv6cAMb+nADG/pwAxv6cKhW04CoVtOAqFbTg/an6Sv2p+kr9qfpK")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_xgq6m")
+
+[node name="romb" type="Node3D"]
+
+[node name="Cone_001" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.3, -4.5298748e-08, 0, 4.5298748e-08, -0.3, 0, 0, 0, 0.3, 0, -0.15293151, 0)
+mesh = SubResource("ArrayMesh_vwkwn")
+skeleton = NodePath("")

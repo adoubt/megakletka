@@ -113,13 +113,14 @@ func unregister_source(player: AudioStreamPlayer3D):
 
 # ================= Occlusion и громкость =================
 func _process(delta: float):
+	
 	var listener = ControllerManager.get_current_camera()
 	if not listener:
 		return
 	var listener_pos = listener.global_transform.origin
 	var space_state = get_world_3d().direct_space_state
 
-	# Обновляем все динамические и объектные источники
+	 #Обновляем все динамические и объектные источники
 	for source in dynamic_sources + object_sources:
 		if not is_instance_valid(source):
 			continue

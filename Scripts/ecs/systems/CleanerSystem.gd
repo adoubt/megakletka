@@ -15,7 +15,7 @@ func update(_delta: float):
 			if cs.has_component(entity_id, "RenderComponent"):
 				var render = cs.get_component(entity_id, "RenderComponent")
 				if render.instance:
-					pool_system.return_to_pool(render.scene_path, render.instance)
+					pool_system.release_instance(render.scene_path, render.instance)
 			
 			# ✅ Сначала удаляем компоненты
 			cs.remove_all_components_for_entity(entity_id)

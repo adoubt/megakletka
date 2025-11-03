@@ -6,25 +6,36 @@ var entity_manager: EntityManager
 var component_store: ComponentStore 
 var system_manager: SystemManager 
 var object_pool : ObjectPool
-
+var grid : SpatialGrid
 func initialize():
 	name = "ECS"
 	entity_manager = EntityManager.new()
 	component_store = ComponentStore.new()
 	system_manager = SystemManager.new()
 	object_pool = ObjectPool.new(self)
+	object_pool.prewarm({
+	"res://Scenes/Enemy/Aboba.tscn": 1000,
+	"res://scenes/enemies/fuflan.tscn": 500,
+	
+	
+	
+})
+	grid = SpatialGrid.new()
+	
 	
 	##Вход
+	system_manager.add_system(SpatialGridSystem.new(entity_manager, component_store, grid))
+	
 	system_manager.add_system(ControllerSyncSystem.new(entity_manager, component_store))
 	system_manager.add_system(SpawnSystem.new(entity_manager, component_store))
 	system_manager.add_system(TargetSystem.new(entity_manager, component_store))
 	system_manager.add_system(WeaponSystem.new(entity_manager, component_store))
 	
-	system_manager.add_system(MovementSystem.new(entity_manager, component_store, self))
-	
+	system_manager.add_system(MovementSystem.new(entity_manager, component_store))
+	system_manager.add_system(DamageSystem.new(entity_manager, component_store))
 	system_manager.add_system(CollisionSystem.new(entity_manager, component_store))
 	system_manager.add_system(HitSystem.new(entity_manager, component_store))
-	system_manager.add_system(DamageSystem.new(entity_manager, component_store))
+	
 	system_manager.add_system(DamagePopupSystem.new(entity_manager, component_store))
 	system_manager.add_system(ProjectileSystem.new(entity_manager,component_store))
 	
@@ -34,9 +45,9 @@ func initialize():
 	
 	system_manager.add_system(CleanerSystem.new(entity_manager, component_store, object_pool))
 	
-	system_manager.add_system(RenderSystem.new(entity_manager, component_store, object_pool))
-	system_manager.add_system(HUDSystem.new(entity_manager, component_store))
 	
+	system_manager.add_system(HUDSystem.new(entity_manager, component_store))
+	system_manager.add_system(RenderSystem.new(entity_manager, component_store, object_pool))
 	
 	
 func update(delta):

@@ -1,8 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dxtmay68ca301"]
+[gd_scene load_steps=10 format=3 uid="uid://dxtmay68ca301"]
 
 [ext_resource type="Script" uid="uid://b1g5iaiket2lr" path="res://UI/HUD.gd" id="1_8uiqn"]
 [ext_resource type="Shader" uid="uid://brfe1o0lxeqv8" path="res://assets/Shaders/SpeedLines.gdshader" id="2_s7b2q"]
-[ext_resource type="Shader" uid="uid://dbkh0dtt2pwj3" path="res://assets/Materials/hud_current_hp.gdshader" id="3_b1lf8"]
+[ext_resource type="Shader" uid="uid://dprejvyaisqwb" path="res://assets/Materials/hud_current_exp.gdshader" id="3_b1lf8"]
 [ext_resource type="Texture2D" uid="uid://3tqlp1wuenk6" path="res://assets/icons/dot.png" id="8_8uiqn"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_bnpwn"]
@@ -24,6 +24,12 @@ shader_parameter/mask_size = 0.1
 shader_parameter/mask_edge = 0.5
 shader_parameter/animation_speed = 20.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1ui3w"]
+shader = ExtResource("3_b1lf8")
+shader_parameter/progress = 1.0
+shader_parameter/progress_tail = 1.0
+shader_parameter/tail_color = Color(1, 1, 1, 1)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rnl6m"]
 shader = ExtResource("3_b1lf8")
 shader_parameter/progress = 1.0
@@ -31,7 +37,6 @@ shader_parameter/progress_tail = 1.0
 shader_parameter/tail_color = Color(1, 1, 1, 1)
 
 [node name="HUD" type="Control"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,6 +46,12 @@ grow_vertical = 2
 mouse_filter = 2
 mouse_behavior_recursive = 1
 script = ExtResource("1_8uiqn")
+min_hp = null
+max_hp = null
+current_hp = null
+min_xp = null
+max_xp = null
+current_xp = null
 
 [node name="SpeedLines" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_xfvwf")
@@ -70,36 +81,70 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD"]
 layout_mode = 2
 
-[node name="FPS" type="Label" parent="HUD/VBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
-layout_direction = 3
+[node name="Header" type="Control" parent="HUD/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-theme_override_colors/font_color = Color(0.7581918, 0.7581918, 0.7581917, 1)
-theme_override_font_sizes/font_size = 26
-text = "FPS 145"
-horizontal_alignment = 2
-uppercase = true
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.05
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Header"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Header/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Background" type="ColorRect" parent="HUD/VBoxContainer/Header/HBoxContainer/MarginContainer"]
+layout_mode = 2
+color = Color(0.099985994, 0.099985994, 0.099985994, 1)
+
+[node name="CurrentExp" type="ColorRect" parent="HUD/VBoxContainer/Header/HBoxContainer/MarginContainer"]
+material = SubResource("ShaderMaterial_1ui3w")
+layout_mode = 2
+color = Color(8.085966e-06, 0.7599176, 0.969438, 1)
 
 [node name="Control" type="Control" parent="HUD/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="LeftPanel" type="HBoxContainer" parent="HUD/VBoxContainer/Control"]
+[node name="FPS" type="Label" parent="HUD/VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -100.0
+offset_bottom = 39.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.7581918, 0.7581918, 0.7581917, 1)
+theme_override_font_sizes/font_size = 26
+text = "FPS 145"
+uppercase = true
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1372.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+
+[node name="LeftPanel" type="HBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer"]
+layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Control2" type="Control" parent="HUD/VBoxContainer/Control/LeftPanel"]
+[node name="Control2" type="Control" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel"]
 layout_mode = 2
 
-[node name="HP" type="VBoxContainer" parent="HUD/VBoxContainer/Control/LeftPanel/Control2"]
+[node name="HP" type="VBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -109,23 +154,23 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 
-[node name="Control" type="Control" parent="HUD/VBoxContainer/Control/LeftPanel/Control2/HP"]
+[node name="Control" type="Control" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/LeftPanel/Control2/HP/Control"]
+[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -917.0
+offset_bottom = -879.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="Control" parent="HUD/VBoxContainer/Control/LeftPanel/Control2/HP/Control/MarginContainer"]
+[node name="Control" type="Control" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer"]
 layout_mode = 2
 
-[node name="Background" type="ColorRect" parent="HUD/VBoxContainer/Control/LeftPanel/Control2/HP/Control/MarginContainer/Control"]
+[node name="Background" type="ColorRect" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer/Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -134,16 +179,17 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.18000486, 0.18000486, 0.18000486, 1)
 
-[node name="CurrentHp" type="ColorRect" parent="HUD/VBoxContainer/Control/LeftPanel/Control2/HP/Control/MarginContainer/Control"]
+[node name="CurrentHp" type="ColorRect" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer/Control"]
 material = SubResource("ShaderMaterial_rnl6m")
-layout_mode = 0
-offset_right = 343.0
-offset_bottom = 36.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.8126073, 0.108499564, 0.17000303, 1)
 
-[node name="CurrentHPLabel" type="Label" parent="HUD/VBoxContainer/Control/LeftPanel/Control2/HP/Control/MarginContainer/Control"]
+[node name="CurrentHPLabel" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer/Control"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -158,10 +204,10 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "100/100"
 
-[node name="Control2" type="Control" parent="HUD/VBoxContainer/Control/LeftPanel/Control2/HP"]
+[node name="Control2" type="Control" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP"]
 layout_mode = 2
 
-[node name="EmptyPanel" type="Panel" parent="HUD/VBoxContainer/Control/LeftPanel/Control2/HP/Control2"]
+[node name="EmptyPanel" type="Panel" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control2"]
 visible = false
 layout_mode = 0
 offset_top = -293.0

@@ -60,4 +60,9 @@ size = Vector3(2, 4, 1)
 [node name="RemoveUnusedDoors" type="Node" parent="."]
 script = SubResource("GDScript_ibo1l")
 
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 2.8188205, 0.12200928)
+spot_range = 10.6636095
+spot_angle = 55.439476
+
 [connection signal="dungeon_done_generating" from="." to="RemoveUnusedDoors" method="_on_dungeon_done_generating"]

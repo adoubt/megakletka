@@ -1,175 +1,131 @@
-extends RefCounted
+extends Node
 class_name ObjectPool
 
-var root_node: Node3D
+# Универсальный Object Pool для ECS
+# Работает по путям к сценам (String)
 
-# ============================================================
-# 🔹 Данные одного пула
-class PoolData:
-	var available: Array[Node3D] = []
-	var active: int = 0
-	var max_size: int
-	var last_used: float = 0.0
+var _pools: Dictionary = {}      # { scene_path: [Node3D, ...] }
+var _prefabs: Dictionary = {}    # { scene_path: PackedScene }
+var _usage: Dictionary = {}      # { scene_path: int }
+var _parent: Node = null         # куда добавлять объекты (опционально)
 
-	func _init(initial_cap: int):
-		max_size = initial_cap
+# ---------------------------
+# Инициализация
+# ---------------------------
+func _init(parent: Node) -> void:
+	_parent = parent
 
+# ---------------------------
+# Разогрев (создаёт заранее объекты)
+# scenes_dict = { "res://scenes/enemy.tscn": 10, "res://scenes/effect.tscn": 5 }
+# ---------------------------
+func prewarm(scenes_dict: Dictionary) -> void:
+	for scene_path in scenes_dict.keys():
+		var count: int = int(scenes_dict[scene_path])
+		if count <= 0:
+			continue
 
-# ============================================================
-# 🔹 Все пулы: { scene_path: PoolData }
-var pools: Dictionary[String, PoolData] = {}
+		# Загружаем сцену, если ещё не загружена
+		if not _prefabs.has(scene_path):
+			var scene: PackedScene = load(scene_path)
+			if not scene:
+				push_error("ObjectPool: can't load scene at %s" % scene_path)
+				continue
+			_prefabs[scene_path] = scene
+			_usage[scene_path] = 0
+			_pools[scene_path] = []
 
-# 🔹 Кэш сцен
-var _scene_cache: Dictionary[String, PackedScene] = {}
+		# Создаём N экземпляров
+		var scene_ref: PackedScene = _prefabs[scene_path]
+		for i in range(count):
+			var node = scene_ref.instantiate() as Node3D
+			if _parent:
+				_parent.add_child(node)
+			_disable(node)
+			_pools[scene_path].append(node)
 
-# ============================================================
-# 🔹 Настройки
-const INITIAL_CAP: int = 32
-const GROW_RATE: float = 1.5
-const SOFT_CAP: int = 200
-const HARD_CAP: int = 2000
-const SHRINK_DELAY: float = 100.0 # секунд до очистки неиспользуемого пула
+	print("ObjectPool: prewarmed %d scene types" % scenes_dict.size())
 
-
-
-# ============================================================
-func _init(_root_node: Node3D) -> void:
-	root_node = _root_node
-	warm_pool("res://Scenes/Enemy/Aboba.tscn", 500)
-
-	warm_pool("res://Scenes/Weapons/Projectiles/cheese.tscn", 5000)
-# ============================================================
-# 🔸 Получение кэшированной сцены
-func _get_scene(scene_path: String) -> PackedScene:
-	if _scene_cache.has(scene_path):
-		return _scene_cache[scene_path]
-
-	var res: Resource = load(scene_path)
-	if res is PackedScene:
-		_scene_cache[scene_path] = res
-		return res
-
-	push_error("❌ Invalid scene path in pool: %s" % scene_path)
-	return null
-
-
-# ============================================================
-# 🔸 Получаем объект из пула
-func get_from_pool(scene_path: String) -> Node3D:
-	var pool: PoolData = pools.get(scene_path)
-	if pool == null:
-		pool = PoolData.new(INITIAL_CAP)
-		pools[scene_path] = pool
-
-	pool.last_used = Time.get_unix_time_from_system()
-
-	# ✅ Есть свободные
-	if pool.available.size() > 0:
-		var node: Node3D = pool.available.pop_back()
-		pool.active += 1
-		_activate_node(node)
-		return node  
-
-	# ✅ Пул полный → расширяем (без рекурсии)
-	if pool.active >= pool.max_size:
-		if pool.max_size < HARD_CAP:
-			pool.max_size = mini(int(pool.max_size * GROW_RATE), HARD_CAP)
-		else:
-			push_warning("⚠️ HARD_CAP reached for: %s" % scene_path)
-			return null
-
-	# ✅ Создаём новый объект
-	var scene: PackedScene = _get_scene(scene_path)
-	if scene == null:
+# ---------------------------
+# Получить экземпляр
+# ---------------------------
+func get_instance(scene_path: String) -> Node3D:
+	if scene_path == "":
+		push_warning("ObjectPool: empty scene_path")
 		return null
 
-	var node: Node3D = scene.instantiate()
-	root_node.add_child(node, true)
+	if not _pools.has(scene_path):
+		_pools[scene_path] = []
+	if not _prefabs.has(scene_path):
+		var scene: PackedScene = load(scene_path)
+		if not scene:
+			push_error("ObjectPool: can't load scene at %s" % scene_path)
+			return null
+		_prefabs[scene_path] = scene
+		_usage[scene_path] = 0
 
-	pool.active += 1
-	_activate_node(node)
+	var pool = _pools[scene_path]
+	var node: Node3D
+
+	if pool.size() > 0:
+		node = pool.pop_back()
+	else:
+		node = _prefabs[scene_path].instantiate()
+		if _parent:
+			_parent.add_child(node)
+
+	_enable(node)
+	_usage[scene_path] += 1
 	return node
 
-
-# ============================================================
-# 🔸 Возврат объекта в пул
-func return_to_pool(scene_path: String, node: Node3D) -> void:
-	var pool: PoolData = pools.get(scene_path)
-	if pool == null:
-		push_warning("⚠️ Attempt to return node to non-existing pool: %s" % scene_path)
+# ---------------------------
+# Вернуть экземпляр в пул
+# ---------------------------
+func release_instance(scene_path: String, node: Node3D) -> void:
+	if not is_instance_valid(node):
 		return
+	if not _pools.has(scene_path):
+		_pools[scene_path] = []
 
-	_deactivate_node(node)
-	pool.available.append(node)
-	pool.active = maxi(0, pool.active - 1)
+	_disable(node)
+	_pools[scene_path].append(node)
+	_usage[scene_path] = max(0, _usage.get(scene_path, 0) - 1)
 
+# ---------------------------
+# Очистить все пулы
+# ---------------------------
+func clear_all() -> void:
+	for arr in _pools.values():
+		for node in arr:
+			if is_instance_valid(node):
+				node.queue_free()
+	_pools.clear()
+	_prefabs.clear()
+	_usage.clear()
 
-# ============================================================
-# 🔸 Очистка неиспользуемых объектов (безопасная)
-func cleanup_unused() -> void:
-	var now := Time.get_unix_time_from_system()
+# ---------------------------
+# Вспомогательные
+# ---------------------------
+func _disable(node: Node3D) -> void:
+	node.visible = false
+	node.process_mode = Node.PROCESS_MODE_DISABLED
+	node.global_position = Vector3.ZERO
 
-	for scene_path in pools.keys():
-		var pool: PoolData = pools[scene_path]
+	if node.has_meta("shape_ref"):
+		var shape = node.get_meta("shape_ref")
+		if is_instance_valid(shape):
+			shape.disabled = true
 
-		if now - pool.last_used > SHRINK_DELAY and pool.available.size() > SOFT_CAP:
-			var target_size = SOFT_CAP
-			while pool.available.size() > target_size:
-				var old: Node3D = pool.available.pop_back()
-				if is_instance_valid(old):
-					old.queue_free()
+	if node.has_meta("anim_ref"):
+		var anim = node.get_meta("anim_ref")
+		if is_instance_valid(anim):
+			anim.stop()
 
-			pool.max_size = maxi(INITIAL_CAP, int(pool.max_size / 2))
+func _enable(node: Node3D) -> void:
+	node.visible = true
+	node.process_mode = Node.PROCESS_MODE_INHERIT
 
-# ============================================================
-# 🔸 Активация / деактивация узлов
-func _activate_node(node: Node3D) -> void:
-	node.show()
-	#node.set_process(false)
-	#node.set_physics_process(false)
-	#if node.has_method("set_monitoring"):
-		#node.set_deferred("monitoring", false)
-
-	## 🔄 Если есть reset-метод — сбрасываем пользовательское состояние
-	#if node.has_method("reset_state"):
-		#node.reset_state()
-
-
-func _deactivate_node(node: Node3D) -> void:
-	node.hide()
-	#node.set_process(false)
-	#node.set_physics_process(false)
-	#if node.has_method("set_monitoring"):
-		#node.set_deferred("monitoring", false)
-#
-	## ✅ Сбрасываем только transform
-	node.global_transform = Transform3D.IDENTITY
-
-func _create_pool(scene_path: String, initial_cap: int) -> PoolData:
-	var pool = PoolData.new(initial_cap)
-	pools[scene_path] = pool
-
-	var scene := _get_scene(scene_path)
-	if scene == null:
-		return pool
-
-	for i in initial_cap:
-		var node: Node3D = scene.instantiate()
-		_deactivate_node(node)
-		root_node.add_child(node, true)
-		pool.available.append(node)
-
-	return pool
-
-func warm_pool(scene_path: String, count: int) -> void:
-	var pool: PoolData = pools.get(scene_path)
-	if pool == null:
-		pool = _create_pool(scene_path, count)
-		return
-
-	var scene := _get_scene(scene_path)
-	for i in count:
-		var node: Node3D = scene.instantiate()
-		_deactivate_node(node)
-		root_node.add_child(node, true)
-		pool.available.append(node)
+	if node.has_meta("shape_ref"):
+		var shape = node.get_meta("shape_ref")
+		if is_instance_valid(shape):
+			shape.disabled = false

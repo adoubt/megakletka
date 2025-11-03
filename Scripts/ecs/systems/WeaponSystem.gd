@@ -26,7 +26,8 @@ func update(delta: float) -> void:
 				spawn_cheese(weapon.owner_id, weapon_id)
 			"dexecutioner":
 				spawn_dexecutioner(weapon.owner_id, weapon_id)
-		
+			"aura":
+				spawn_aura(weapon.owner_id, weapon_id)
 		# Берём скорость атаки владельца
 		var attack_speed = 1.0
 		if cs.has_component(owner_id, "AttackSpeedComponent"):
@@ -84,8 +85,8 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 		#)
 		# --- CollisionComponent ---
 		var col_comp := CollisionComponent.new(
-		CollisionLayers.Layer.ENEMY_PROJECTILE,
-		CollisionLayers.Layer.PLAYER | CollisionLayers.Layer.WORLD,
+		CollisionLayers.Layer.PLAYER_PROJECTILE,
+		CollisionLayers.Layer.ENEMY,
 		0.5
 		)
 
@@ -94,14 +95,13 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 		proj_comp.move_type = "orbit"
 		proj_comp.owner_id = owner_id
 		
-		var lifetime = LifetimeComponent.new(1.0)
+		var lifetime = LifetimeComponent.new(3.0)
 		# --- OrbitComponent ---
 		var orbit_comp := OrbitComponent.new()
 		
 
 		orbit_comp.radius = cs.get_component(weapon_id,"WeaponRadiusComponent").final_value * cs.get_component(owner_id,"WeaponRadiusComponent").final_value
-		var a = cs.get_component(weapon_id,"ProjectileSpeedComponent").final_value
-		var b = cs.get_component(owner_id,"ProjectileSpeedComponent").final_value 
+		
 		orbit_comp.speed = cs.get_component(weapon_id,"ProjectileSpeedComponent").final_value * cs.get_component(owner_id,"ProjectileSpeedComponent").final_value 
 		orbit_comp.height = 0.5
 		orbit_comp.offset_angle = (TAU * float(i)) / float(max(1, count))
@@ -130,6 +130,37 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 
 		
 		
+func spawn_aura(owner_id: int, weapon_id: int) -> void:
+	# Проверяем, есть ли уже аура у этого владельца
+	var existing = get_entities_with(["AuraComponent"])
+	for e in existing:
+		var aura = cs.get_component(e, "AuraComponent")
+		if aura.owner_id == owner_id:
+			return # уже существует, ничего не делаем
+
+	# создаём ауру
+	var aura_entity = em.create_entity()
+
+	var radius = cs.get_component(weapon_id, "WeaponRadiusComponent").final_value * cs.get_component(owner_id, "WeaponRadiusComponent").final_value
+	var damage = cs.get_component(weapon_id, "DamageComponent").final_value * cs.get_component(owner_id, "DamageComponent").final_value
+
+	var aura_comp = AuraComponent.new()
+	aura_comp.owner_id = owner_id
+	aura_comp.radius = radius
+	aura_comp.tick_rate = 0.5
+	aura_comp.damage = damage
+
+	var t = TransformComponent.new()
+	var owner_tf = cs.get_component(owner_id, "TransformComponent")
+	if owner_tf:
+		t.position = owner_tf.position
+
+	cs.add_component(aura_entity, "AuraComponent", aura_comp)
+	cs.add_component(aura_entity, "TransformComponent", t)
+
+	if cs.has_component(weapon_id, "RenderComponent"):
+		var r = cs.get_component(weapon_id, "RenderComponent")
+		cs.add_component(aura_entity, "RenderComponent", RenderComponent.new(r.scene_path))
 
 # --- Dexecutioner: прямой удар с шансом на execute ---
 func spawn_dexecutioner(owner_id: int, weapon_id: int) -> void:

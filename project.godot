@@ -8,16 +8,12 @@
 
 config_version=5
 
-[animation]
-
-warnings/check_invalid_track_paths=false
-
 [application]
 
 config/name="MegaKletka"
 run/main_scene="uid://bsoxxlhnjn45f"
 config/features=PackedStringArray("4.5", "Forward Plus")
-boot_splash/bg_color=Color(0.117864, 0.210975, 0.264721, 1)
+boot_splash/bg_color=Color(0.07233263, 0.23703453, 0.122048356, 1)
 
 [audio]
 
@@ -141,6 +137,11 @@ DEV_PANEL={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194306,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
+street_cam_select={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":78,"key_label":0,"unicode":110,"location":0,"echo":false,"script":null)
+]
+}
 
 [input_devices]
 
@@ -151,25 +152,25 @@ sensors/enable_magnetometer=true
 
 [layer_names]
 
-3d_render/layer_1="Default"
-3d_render/layer_2="Weapon"
 3d_render/layer_20="mirror"
-3d_physics/layer_1="Environment"
-3d_physics/layer_2="Entities"
-3d_physics/layer_3="Interact Objects"
-3d_physics/layer_4="Interact_atea"
-3d_physics/layer_5="Breakable"
-3d_physics/layer_6="Broken_shards"
+3d_physics/layer_1="World"
+3d_physics/layer_2="Player"
+3d_physics/layer_3="Enemy"
+3d_physics/layer_4="PlayerProjectile"
+3d_physics/layer_5="EnemyProjectile"
+3d_physics/layer_6="PlayerHitBox"
+3d_physics/layer_7="EnemyHitBox"
 
 [physics]
 
-common/physics_ticks_per_second=250
 common/physics_jitter_fix=0.0
 3d/physics_engine="Jolt Physics"
+jolt_physics_3d/simulation/velocity_steps=2
 common/physics_interpolation=true
 
 [rendering]
 
 global_illumination/gi/use_half_resolution=true
-anti_aliasing/quality/use_taa=true
+global_illumination/sdfgi/probe_ray_count=0
+global_illumination/sdfgi/frames_to_converge=0
 occlusion_culling/use_occlusion_culling=true

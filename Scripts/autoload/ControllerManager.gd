@@ -6,14 +6,15 @@ var current_index: int = -1  # -1 значит никто не активен
 func _input(event: InputEvent) -> void:
 	if UIManager._any_ui_open(): return
 	
-	if event.is_action_pressed("player_select"):
+	elif event.is_action_pressed("player_select"):
 		handle_object_hotkey("Player") 
-	
+	elif event.is_action_pressed("street_cam_select"):
+		handle_object_hotkey("Camera3D") 
 		
 func handle_object_hotkey(_name: String) -> void:
 	for obj_dict in controllables:
 		var obj = obj_dict["node"]
-		if obj._name != _name:
+		if obj.name != _name:
 			continue
 
 		var active = get_active()

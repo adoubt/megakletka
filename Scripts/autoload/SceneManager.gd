@@ -52,7 +52,7 @@ func _update_ui_for_scene():
 	else:
 		UIManager.force_cursor_visible = false
 	#UIManager._update_ui_state()
-	if current_scene_name in ["BigRoomTest"]:
+	if current_scene_name in ["BigRoomTest","GameTest"]:
 		UIManager.hud_show()
 	else:
 		UIManager.hud_hide()

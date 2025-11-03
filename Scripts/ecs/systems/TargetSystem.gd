@@ -2,30 +2,34 @@ extends BaseSystem
 class_name TargetSystem
 
 func update(_delta: float) -> void:
-	var entities = get_entities_with(["TransformComponent", "TargetComponent"])
+	var enemies = get_entities_with(["TransformComponent", "TargetComponent"])
+	if enemies.is_empty():
+		return
 
-	for entity_id in entities:
-		var target_data = cs.get_component(entity_id, "TargetComponent")
+	# Получаем игрока (у нас он один)
+	var players = get_entities_with(["ControllerStateComponent", "TransformComponent"])
+	if players.is_empty():
+		return
+
+	var player_id = players[0]
+	var player_transform = cs.get_component(player_id, "TransformComponent")
+	if player_transform == null:
+		return
+
+	# Кэшируем позицию игрока один раз
+	var player_pos = player_transform.position
+
+	for enemy_id in enemies:
+		var target_data = cs.get_component(enemy_id, "TargetComponent")
 		if not target_data.active:
 			continue
 
-		var transform = cs.get_component(entity_id, "TransformComponent")
+		var transform = cs.get_component(enemy_id, "TransformComponent")
 		if transform == null:
 			continue
 
-		# Находим ближайшего игрока
-		var nearby_players = get_entities_with(["ControllerStateComponent"])
-		var nearest_id = -1
-		var nearest_dist = INF
-
-		for player_id in nearby_players:
-			var player_transform = cs.get_component(player_id, "TransformComponent")
-			if player_transform == null:
-				continue
-
-			var dist = transform.position.distance_to(player_transform.position)
-			if dist < target_data.aggro_radius and dist < nearest_dist:
-				nearest_id = player_id
-				nearest_dist = dist
-
-		target_data.target_id = nearest_id
+		var dist = transform.position.distance_to(player_pos)
+		if dist < target_data.aggro_radius:
+			target_data.target_id = player_id
+		else:
+			target_data.target_id = -1

@@ -9,11 +9,11 @@ func update(delta: float) -> void:
 		var proj = cs.get_component(e_id, "ProjectileComponent")
 		if tf == null or proj == null:
 			continue
-		var lifetime = cs.get_component(e_id,"LifetimeComponent").time_left
+		var lifetime = cs.get_component(e_id,"LifetimeComponent")
 		
 		# lifetime
-		lifetime -= delta
-		if lifetime <= 0:
+		lifetime.time_left -= delta
+		if lifetime.time_left <= 0:
 		
 			if not cs.has_component(e_id, "DeadComponent"):
 				cs.add_component(e_id, "DeadComponent", DeadComponent.new())

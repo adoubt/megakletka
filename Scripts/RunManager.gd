@@ -148,8 +148,8 @@ func _restore_elevator_contents():
 		if ControllerManager.is_active(obj) and obj.name.begins_with("Player"):
 			var cam = obj.get_node("CameraController")
 			var new_y = obj.global_transform.basis.get_euler().y
-			print("📸 Sync camera: old_y =", cam.input_rotation.y, "→ new_y =", new_y)
-			cam.input_rotation.y = new_y
+			#print("📸 Sync camera: old_y =", cam.input_rotation.y, "→ new_y =", new_y)
+			#cam.input_rotation.y = new_y
 
 	pending_contents.clear()
 	print("Contents restored to new floor.")

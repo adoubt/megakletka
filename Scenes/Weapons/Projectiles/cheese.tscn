@@ -3,8 +3,7 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jr8iu"]
 resource_name = "Material"
 shading_mode = 2
-diffuse_mode = 3
-specular_mode = 1
+vertex_color_use_as_albedo = true
 albedo_color = Color(0.80655646, 0.6522701, 0.012920001, 1)
 metadata/extras = {
 "fromFBX": {
@@ -48,9 +47,8 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_tdsxc")
 
 [node name="Cheese" type="Node3D"]
-process_mode = 4
 
 [node name="Cube" type="MeshInstance3D" parent="."]
-transform = Transform3D(20, 0, 0, 0, -8.742278e-07, 20, 0, -20, -8.742278e-07, 0, 0, 0)
+transform = Transform3D(20, 0, 0, 0, -8.742278e-07, 20, 0, -20, -8.742278e-07, -0.04630387, 0, 0)
 mesh = SubResource("ArrayMesh_g5ncc")
 skeleton = NodePath("")
