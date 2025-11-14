@@ -8,37 +8,55 @@ extends Node
 @onready var main_menu = preload("res://UI/main_menu.tscn").instantiate()
 @onready var dev_panel = preload("res://UI/dev_panel.tscn").instantiate()
 @onready var hud = preload("res://UI/hud.tscn").instantiate()
+var upgrade_menu 
 var panels: Dictionary = {}
 var force_cursor_visible: bool = false
 var last_mouse_state: bool = false
 const BASE_RESOLUTION := Vector2(1152, 648)
 var canvas :CanvasLayer
 
-
+var game_paused: bool = false
 # ========== PUBLIC API ==========
 
 func open_main_menu() -> void:
 	open_panel("MainMenu")
+	game_paused = false
 	
+func open_upgrade_menu() -> void:
+	open_panel("UpgradeMenu")
+	game_paused = true
+	
+func close_upgrade_menu() -> void:
+	close_panel("UpgradeMenu")
+	game_paused = false
+	
+func toggle_upgrade_menu() -> void:
+	if hud.upgrade_panel.visible:
+		close_upgrade_menu()
+	else:
+		open_upgrade_menu() 
+		
 func hud_show() -> void:
 	hud.show()
-	
 func hud_hide()-> void:
 	hud.hide()
+	
 	
 func toggle_escape_menu() -> void:
 	if escape_menu.visible:
 		close_escape_menu()
+		if hud.upgrade_panel.visible:
+			game_paused = true
 	else:
 		open_escape_menu()
-func toogle_dev_panel() -> void:
+func toggle_dev_panel() -> void:
 	if dev_panel.visible:
 		close_dev_panel()
 	else:
 		open_dev_panel()
 	
 func open_settings() -> void:
-	var in_main_menu := SceneManager.current_scene_name == "MainMenu"
+	var in_main_menu :bool = SceneManager.current_scene_name == "MainMenu"
 	open_panel("Settings")
 	if in_main_menu:
 		close_panel("MainMenu")
@@ -51,14 +69,15 @@ func close_settings() -> void:
 		open_main_menu()
 	else:
 		open_escape_menu()
+	
 	close_panel("Settings")
 	
 func open_escape_menu() -> void:
 	open_panel("EscapeMenu")
-
+	game_paused = true
 func close_escape_menu() -> void:
 	close_panel("EscapeMenu")
-
+	game_paused = false
 func open_dev_panel() -> void:
 	open_panel("DEV_PANEL")
 
@@ -90,7 +109,7 @@ func close_panel(_name: String) -> void:
 func close_all() -> void:
 	for p in panels.values():
 		p.visible = false
-		
+	game_paused = false	
 	_update_ui_state()
 
 
@@ -114,7 +133,7 @@ func _ready() -> void:
 		"MainMenu": main_menu,
 		"Settings": settings_menu,
 		"DEV_PANEL" : dev_panel,
-
+		"UpgradeMenu": hud.upgrade_panel
 	}
 	
 	close_all()
@@ -179,9 +198,13 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Esc"):
 		if is_panel_open("Settings"):
 			close_settings()
+			
 
 		elif SceneManager.current_scene_name not in ["Intro","MainMenu"]:
 			toggle_escape_menu()
 	if event.is_action_pressed("DEV_PANEL"):
-		if SceneManager.current_scene_name in ["BigRoomTest"]:
-			toogle_dev_panel()
+		if SceneManager.current_scene_name in ["BigRoomTest","GameTest"]:
+			toggle_dev_panel()
+	if event.is_action_pressed("upgrade_menu"):
+		if hud.has_upgrade and SceneManager.current_scene_name in ["BigRoomTest","GameTest"] and not escape_menu.visible:
+			toggle_upgrade_menu()

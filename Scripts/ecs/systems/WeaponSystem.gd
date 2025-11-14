@@ -3,7 +3,7 @@ class_name WeaponSystem
 
 
 func update(delta: float) -> void:
-	var entities = get_entities_with(["WeaponComponent"]) # или TransformComponent
+	var entities = get_entities_with(["WeaponComponent"],["DeadComponent"]) # или TransformComponent
 
 	for weapon_id in entities:
 		
@@ -15,7 +15,9 @@ func update(delta: float) -> void:
 		if owner_id == -1:
 			continue
 		if cs.has_component(owner_id, "DeadComponent"):
+			cs.add_component(weapon_id, "DeadComponent", DeadComponent.new(1.0))
 			continue
+	
 			
 		weapon.cd_timer = max(weapon.cd_timer - delta, 0.0)
 		if weapon.cd_timer > 0.0:

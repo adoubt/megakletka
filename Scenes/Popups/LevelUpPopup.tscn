@@ -1,0 +1,81 @@
+[gd_scene load_steps=11 format=3 uid="uid://cg8diy5mqdnwf"]
+
+[ext_resource type="Texture2D" uid="uid://bhns03k4m0nhr" path="res://assets/shader_pics/T_VFX_Flare_251.jpg" id="1_qesax"]
+[ext_resource type="Shader" uid="uid://cxm4lxqux7cw7" path="res://assets/Materials/LevelUpPopUpAura.tres" id="2_kpvrd"]
+[ext_resource type="Texture2D" uid="uid://vtfqfew6lse5" path="res://assets/shader_pics/T_VFX_simple_1.png" id="3_b6xcu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nylhr"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("1_qesax")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_rn5wc"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_gec05"]
+curve = SubResource("Curve_rn5wc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yeynr"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.1
+emission_ring_radius = 0.5
+emission_ring_inner_radius = 0.1
+emission_ring_cone_angle = 90.0
+angle_min = 1.0728835e-05
+angle_max = 1.0728835e-05
+direction = Vector3(0, 1, 0)
+spread = 5.0
+initial_velocity_min = 0.39999998
+initial_velocity_max = 0.79999995
+gravity = Vector3(0, 0, 0)
+tangential_accel_min = -2.2351742e-06
+tangential_accel_max = 5.089998
+scale_min = 0.049999997
+scale_max = 0.29999998
+scale_curve = SubResource("CurveTexture_gec05")
+color = Color(1, 0.84313726, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_uq5jc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fk0n2"]
+render_priority = 0
+shader = ExtResource("2_kpvrd")
+shader_parameter/main_color = Color(0.9459776, 0.79714715, 0, 1)
+shader_parameter/transparency_texture = ExtResource("3_b6xcu")
+shader_parameter/blinking_sped = 5.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_svao1"]
+size = Vector2(1.455, 0.305)
+
+[node name="LevelUpPopUp" type="Node3D"]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1685448, 0)
+material_override = SubResource("StandardMaterial3D_nylhr")
+lifetime = 0.97
+speed_scale = 0.79
+explosiveness = 0.81
+process_material = SubResource("ParticleProcessMaterial_yeynr")
+draw_pass_1 = SubResource("QuadMesh_uq5jc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_fk0n2")
+mesh = SubResource("QuadMesh_svao1")
+
+[node name="Label3D" type="Label3D" parent="."]
+visibility_range_end = 100.0
+billboard = 2
+alpha_cut = 1
+outline_render_priority = -11
+text = "[R]   Upgrade!"
+outline_size = 20

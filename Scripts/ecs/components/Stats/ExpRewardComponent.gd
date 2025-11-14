@@ -1,2 +1,0 @@
-extends StatComponent
-class_name ExpRewardComponent

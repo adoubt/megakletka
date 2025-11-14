@@ -21,6 +21,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if UIManager.game_paused: return
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		# Горизонтальное вращение (вокруг игрока)
 		rotation.y -= event.relative.x * mouse_sensitivity

@@ -1,3 +1,3 @@
 extends StatComponent
-class_name ExpPickUpRangeComponent
+class_name XPPickUpRangeComponent
 ## pickup range 

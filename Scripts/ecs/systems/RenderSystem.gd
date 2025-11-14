@@ -4,7 +4,7 @@ class_name RenderSystem
 
 
 var pool_system: ObjectPool
-var smoothness := 20.0 # чем больше, тем быстрее догоняет (в кадрах/сек)
+var smoothness := 30.0 # чем больше, тем быстрее догоняет (в кадрах/сек)
 
 
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _pool_system:ObjectPool):

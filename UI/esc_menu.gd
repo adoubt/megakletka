@@ -21,13 +21,7 @@ func _ready():
 			_apply_style(btn)
 			_connect_animation(btn)
 
-	# Подключаем кнопки к действиям
-	continue_btn.pressed.connect(
-		func(): UIManager.close_escape_menu()
-	)
-	#$VBoxContainer/Restart.pressed.connect(_on_restart_pressed)
-	#$VBoxContainer/Menu.pressed.connect(_on_menu_pressed)
-	#$VBoxContainer/Exit.pressed.connect(_on_exit_pressed)
+
 
 func _apply_style(btn: Button) -> void:
 	var style_normal = StyleBoxFlat.new()
@@ -60,6 +54,7 @@ func _tween_scale(btn: Button, target_scale: Vector2) -> void:
 	tween.tween_property(btn, "scale", target_scale, anim_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 # --- Кнопки ---
+
 func _on_restart_pressed() -> void:
 	SceneManager.restart_current()
 
@@ -72,3 +67,7 @@ func _on_exit_pressed() -> void:
 
 func _on_settings_pressed() -> void:
 	UIManager.open_settings()
+
+
+func _on_continue_pressed() -> void:
+	UIManager.toggle_escape_menu()
