@@ -34,7 +34,7 @@ var weapon_configs = {
 			"projectile_count" : 3.0,
 			"projectile_radius" : 0.2,
 			"weapon_radius": 1.5,
-			"projectile_speed": 5.0,
+			"projectile_speed": 2.0,
 		},
 		"aura":{
 			"scene": "res://Scenes/Weapons/AOE/Aura.tscn",
@@ -51,41 +51,46 @@ var card_configs = {
 	"heart_card": {
 		"name": "Heart Boost",
 		"suit": "hearts",
-		"description": "+5% MaxHP",
+		"description": "+50% MaxHP",
 		"icon": "res://assets/icons/Cards/Sprite-0002.png",
-		"passive_effect": {"stat": MaxHpComponent, "mult": 0.05},
-		"active_effect": null, # если карта можно сыграть
+		"abilities": {"stat": MaxHpMultComponent, "value": 1.5},
 		"cost": 50,            # магазинная стоимость
 		"drop_weight": 10      # шанс выпасть в апгрейде
 	},
 	"vamp_card": {
-		"name": "Vampirism",
+		"name": "Vamp",
 		"suit": "hearts",
-		"description": "Heal 2% on hit",
+		"description": "Heal 10% on hit",
 		"icon": "res://assets/icons/Cards/Diamonds.png",
-		"passive_effect": {"stat": LifestealComponent, "add": 0.02},
-		"active_effect": null,
+		"abilities": {"stat": LifestealComponent, "value": 0.10},
 		"cost": 100,
 		"drop_weight": 5
 	},
-	"spades_card": {
-		"name": "SSSpades",
+	"projectiles_card": {
+		"name": "CHEESUS CHRIST",
 		"suit": "spades",
-		"description": "+ 5 dmg",
-		"icon": "res://assets/icons/Cards/Hearts.png",
-		"passive_effect": {"stat": DamageComponent, "add": 0.02},
-		"active_effect": null,
+		"description": "+ 3 projectiles",
+		"icon": "res://assets/icons/Cards/Spades.png",
+		"abilities": {"stat": ProjectileCountComponent, "value": 3.0},
 		"cost": 100,
-		"drop_weight": 2
+		"drop_weight": 100
 	},
 	"atatck_spades_card": {
 		"name": "ATKspeeddddd",
 		"suit": "spades",
-		"description": "+ 5 attack speed",
+		"description": "+ 10% attack speed",
 		"icon": "res://assets/icons/Cards/Clubs.png",
-		"passive_effect": {"stat": AttackSpeedComponent, "add": 0.02},
-		"active_effect": null,
+		"abilities": {"stat": AttackSpeedComponent, "value": 0.10},
 		"cost": 100,
 		"drop_weight": 10
+	},
+	"destroy_card": {
+		"name": "Destroy Card",
+		"suit": "spades",
+		"description": "[color=red]Destroy[/color] random card",
+		"icon": "res://assets/icons/Cards/tiktokcard2.png",
+		"abilities": {"stat": AttackSpeedComponent, "value": 1.02},
+		"cost": 100,
+		"drop_weight": 5
 	},
 }	

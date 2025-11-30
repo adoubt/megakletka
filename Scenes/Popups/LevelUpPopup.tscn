@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cg8diy5mqdnwf"]
+[gd_scene load_steps=13 format=3 uid="uid://cg8diy5mqdnwf"]
 
 [ext_resource type="Texture2D" uid="uid://bhns03k4m0nhr" path="res://assets/shader_pics/T_VFX_Flare_251.jpg" id="1_qesax"]
 [ext_resource type="Shader" uid="uid://cxm4lxqux7cw7" path="res://assets/Materials/LevelUpPopUpAura.tres" id="2_kpvrd"]
@@ -16,6 +16,13 @@ billboard_keep_scale = true
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_qesax"]
+offsets = PackedFloat32Array(0, 0.84347826)
+colors = PackedColorArray(0, 0.8023774, 0.852857, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kpvrd"]
+gradient = SubResource("Gradient_qesax")
 
 [sub_resource type="Curve" id="Curve_rn5wc"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -43,14 +50,14 @@ tangential_accel_max = 5.089998
 scale_min = 0.049999997
 scale_max = 0.29999998
 scale_curve = SubResource("CurveTexture_gec05")
-color = Color(1, 0.84313726, 0, 1)
+color_ramp = SubResource("GradientTexture1D_kpvrd")
 
 [sub_resource type="QuadMesh" id="QuadMesh_uq5jc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fk0n2"]
 render_priority = 0
 shader = ExtResource("2_kpvrd")
-shader_parameter/main_color = Color(0.9459776, 0.79714715, 0, 1)
+shader_parameter/main_color = Color(0.34489694, 0.88698477, 0.99999994, 1)
 shader_parameter/transparency_texture = ExtResource("3_b6xcu")
 shader_parameter/blinking_sped = 5.0
 

@@ -5,8 +5,8 @@ var values : Dictionary = {
 	   
 	"language": "English",          
 	"resolution": Vector2(1920,1080),
-	"sensitivity": 1.0
-		
+	"sensitivity": 1.0,
+	"audio_path": false	
 }
 
 # ------------------

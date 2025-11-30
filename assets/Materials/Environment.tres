@@ -12,7 +12,6 @@ background_mode = 2
 sky = SubResource("Sky_1aggn")
 tonemap_mode = 2
 ssao_enabled = true
-sdfgi_enabled = true
 sdfgi_use_occlusion = true
 fog_enabled = true
 fog_mode = 1

@@ -36,6 +36,7 @@ func initialize():
 	system_manager.add_system(ControllerSyncSystem.new(entity_manager, component_store))
 	var spawn_system: SpawnSystem = SpawnSystem.new(entity_manager, component_store,database)
 	system_manager.add_system(spawn_system)
+	system_manager.add_system(StatsRecalculationSystem.new(entity_manager, component_store))
 	system_manager.add_system(TargetSystem.new(entity_manager, component_store))
 	system_manager.add_system(WeaponSystem.new(entity_manager, component_store))
 	

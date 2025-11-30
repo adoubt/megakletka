@@ -51,7 +51,7 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 	# 2) Берём count
 
 	var count = int(cs.get_component(weapon_id, "ProjectileCountComponent").final_value
-	) * int(cs.get_component(owner_id, "ProjectileCountComponent").final_value) 
+	) + int(cs.get_component(owner_id, "ProjectileCountComponent").final_value) 
 	
 	if count <= 0:
 		return
@@ -108,11 +108,15 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 		orbit_comp.height = 0.5
 		orbit_comp.offset_angle = (TAU * float(i)) / float(max(1, count))
 		orbit_comp.angle = orbit_comp.offset_angle
+		orbit_comp.tilt_x = randf_range(-5, 5)
+		orbit_comp.tilt_y = randf_range(-5, 5)
+		orbit_comp.tilt_z = randf_range(-5, 5)
 
 		# --- TransformComponent (инициализация и позиция) ---
 		var t_comp := TransformComponent.new()
 		var x = cos(orbit_comp.offset_angle) * orbit_comp.radius
 		var z = sin(orbit_comp.offset_angle) * orbit_comp.radius
+		
 		t_comp.position = owner_tf.position + Vector3(x, orbit_comp.height, z)
 
 		# --- RenderComponent (если есть) ---

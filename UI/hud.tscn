@@ -196,13 +196,10 @@ size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -152.0
-offset_bottom = -877.0
+offset_bottom = 30.0
 grow_horizontal = 2
-grow_vertical = 2
 
 [node name="Control" type="Control" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer"]
 layout_mode = 2
@@ -228,15 +225,9 @@ color = Color(0.8126073, 0.108499564, 0.17000303, 1)
 
 [node name="CurrentHPLabel" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer/Control"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -33.5
-offset_top = -12.0
-offset_right = 33.5
-offset_bottom = 12.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "100 / 100"
@@ -362,6 +353,7 @@ expand_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 30
@@ -376,14 +368,18 @@ mouse_filter = 2
 layout_mode = 2
 text = "Card"
 
-[node name="Label2" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
+[node name="Label2" type="RichTextLabel" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
-text = "Dimonds +1 "
-horizontal_alignment = 1
+size_flags_vertical = 3
+mouse_filter = 2
+bbcode_enabled = true
+text = "ааааааааааааааааааааапа"
+fit_content = true
+scroll_active = false
 
 [node name="VBoxContainer3" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton/MarginContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 8
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
 theme_override_constants/margin_top = 20
@@ -440,6 +436,7 @@ expand_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton2/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 30
@@ -454,14 +451,18 @@ mouse_filter = 2
 layout_mode = 2
 text = "Card"
 
-[node name="Label2" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
+[node name="Label2" type="RichTextLabel" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
-text = "Dimonds +1 "
-horizontal_alignment = 1
+size_flags_vertical = 3
+mouse_filter = 2
+bbcode_enabled = true
+text = "ааааааааааааааааааааапа"
+fit_content = true
+scroll_active = false
 
 [node name="VBoxContainer3" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton2/MarginContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 8
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
 theme_override_constants/margin_top = 20
@@ -518,6 +519,7 @@ expand_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton3/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 30
@@ -532,14 +534,18 @@ mouse_filter = 2
 layout_mode = 2
 text = "Card"
 
-[node name="Label2" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton3/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
+[node name="Label2" type="RichTextLabel" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton3/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
-text = "Dimonds +1 "
-horizontal_alignment = 1
+size_flags_vertical = 3
+mouse_filter = 2
+bbcode_enabled = true
+text = "ааааааааааааааааааааапа"
+fit_content = true
+scroll_active = false
 
 [node name="VBoxContainer3" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton3/MarginContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 8
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
 theme_override_constants/margin_top = 20
@@ -596,6 +602,7 @@ expand_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton4/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 30
@@ -610,14 +617,18 @@ mouse_filter = 2
 layout_mode = 2
 text = "Card"
 
-[node name="Label2" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton4/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
+[node name="Label2" type="RichTextLabel" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton4/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
-text = "Dimonds +1 "
-horizontal_alignment = 1
+size_flags_vertical = 3
+mouse_filter = 2
+bbcode_enabled = true
+text = "ааааааааааааааааааааапа"
+fit_content = true
+scroll_active = false
 
 [node name="VBoxContainer3" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer/TextureButton4/MarginContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 8
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
 theme_override_constants/margin_top = 20

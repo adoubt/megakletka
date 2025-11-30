@@ -79,6 +79,7 @@ func spawn_enemy(enemy_name: String, position: Vector3) -> int:
 	cs.add_component(entity_id, "TransformComponent", TransformComponent.new(position))
 	cs.add_component(entity_id, "MaxHpComponent", MaxHpComponent.new(data["hp"]))
 	cs.add_component(entity_id, "CurrentHpComponent",CurrentHpComponent.new(data["hp"]))
+	cs.add_component(entity_id,"CurrentHpRatioComponent", CurrentHpRatioComponent.new(1))
 	cs.add_component(entity_id, "RenderComponent",RenderComponent.new(data["scene"]))
 	cs.add_component(entity_id, "TargetComponent",TargetComponent.new())
 	cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(data["movespeed"]))
@@ -114,11 +115,13 @@ func spawn_char(char_name: String, position: Vector3) -> int:
 	cs.add_component(entity_id, "TransformComponent", TransformComponent.new(position))
 	cs.add_component(entity_id, "MaxHpComponent", MaxHpComponent.new(data["hp"]))
 	cs.add_component(entity_id, "CurrentHpComponent",CurrentHpComponent.new(data["hp"]))
+	cs.add_component(entity_id,"CurrentHpRatioComponent", CurrentHpRatioComponent.new(1))
 	cs.add_component(entity_id, "RenderComponent",RenderComponent.new(data["scene"]))
 	cs.add_component(entity_id, "DamageComponent", DamageComponent.new())
 	cs.add_component(entity_id, "ControllerStateComponent", ControllerStateComponent.new())
 	cs.add_component(entity_id, "TeamComponent", TeamComponent.new(3))
 	cs.add_component(entity_id, "LevelComponent", LevelComponent.new())
+	cs.add_component(entity_id, "LifestealComponent", LifestealComponent.new(0))
 	cs.add_component(entity_id, "XPPickUpRangeComponent", XPPickUpRangeComponent.new(data["xp_pickup_range"]))
 	cs.add_component(entity_id, "XPMultComponent", XPMultComponent.new())
 	cs.add_component(entity_id, "AttackSpeedComponent", AttackSpeedComponent.new())
@@ -132,7 +135,7 @@ func spawn_char(char_name: String, position: Vector3) -> int:
 	))
 	cs.add_component(entity_id, "ProjectileRadiusComponent", ProjectileRadiusComponent.new())
 	cs.add_component(entity_id, "WeaponRadiusComponent", WeaponRadiusComponent.new())
-	cs.add_component(entity_id, "ProjectileCountComponent", ProjectileCountComponent.new())
+	cs.add_component(entity_id, "ProjectileCountComponent", ProjectileCountComponent.new(0))
 	cs.add_component(entity_id, "ProjectileSpeedComponent",ProjectileSpeedComponent.new())
 	return entity_id
 
@@ -161,13 +164,28 @@ func spawn_weapon(_name:String, owner_id:int):
 		 
 	return entity_id
 	
-func spawn_card(_name:String, owner_id:int):
+func spawn_card(_name: String, owner_id: int) -> int:
 	if not db.card_configs.has(_name):
 		push_warning("Unknown card name : %s" % _name)
 		return -1
-		
-	#var data = db.card_configs[_name]
+
+	var data = db.card_configs[_name]
 	var entity_id = em.create_entity()
-	cs.add_component(entity_id, "CardComponent", CardComponent.new(_name,owner_id))
+
+	# Основной компонент карты
+	cs.add_component(entity_id, "CardComponent", CardComponent.new(_name, owner_id))
+
+	# Добавляем все способности из abilities
+	if data.has("abilities") and data.abilities != null:
+		var abilities_list = []
+		if typeof(data.abilities) == TYPE_ARRAY:
+			abilities_list = data.abilities
+		elif typeof(data.abilities) == TYPE_DICTIONARY:
+			abilities_list.append(data.abilities)
+
+		for ability in abilities_list:
+			# ability = {"stat": "ProjectileCountComponent", "value": 3.0}
+
+			cs.add_component(entity_id, ability.stat.resource_path.get_file().get_basename(), ability.stat.new(ability.value))
 
 	return entity_id

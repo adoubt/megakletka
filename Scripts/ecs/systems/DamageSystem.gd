@@ -16,8 +16,8 @@ func update(delta: float):
 			hp.final_value = 0
 		else:
 			hp.final_value = max(0.0, hp.final_value - pd.amount)
-
 		var damage_done = hp_before - hp.final_value
+		
 		print(e_id," (", hp_before, ") took ", damage_done, " dmg from ", pd.source_id) 
 		
 		var owner_tf = cs.get_component(e_id, "TransformComponent")

@@ -1,26 +1,14 @@
-[gd_scene load_steps=5 format=4 uid="uid://dosmechqhf3sw"]
+[gd_scene load_steps=14 format=4 uid="uid://dosmechqhf3sw"]
 
 [ext_resource type="Texture2D" uid="uid://dnykev5x7hc2x" path="res://Scenes/romb_Untitled.png" id="1_ra8wf"]
+[ext_resource type="Shader" uid="uid://bbuejxcikvtd1" path="res://assets/Materials/romb_sin.gdshader" id="2_hl7n5"]
+[ext_resource type="Texture2D" uid="uid://bhns03k4m0nhr" path="res://assets/shader_pics/T_VFX_Flare_251.jpg" id="2_i641g"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k0k6e"]
 resource_name = "Material"
 transparency = 4
 cull_mode = 2
 albedo_texture = ExtResource("1_ra8wf")
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_xgq6m"]
-_surfaces = [{
-"aabb": AABB(-0.86, -1.5, -0.86, 1.7200001, 2, 1.72),
-"format": 34896613377,
-"index_count": 36,
-"index_data": PackedByteArray("AAABAAIAAQADAAIAAAADAAEAAwAEAAIABAAAAAIAAAAEAAMABQAGAAcABgAIAAcABQAIAAYACAAJAAcACQAFAAcABQAJAAgA"),
-"name": "Material",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 10,
-"vertex_data": PackedByteArray("/3//fwAAAAD+//9//38AAP9/////fwAA/3//f///AAAAAP9//38AAP9//38AAAAAAAD/f/9/AAD/fwAA/38AAP9//3///wAA////f/9/AAA=")
-}]
-blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_vwkwn"]
 resource_name = "romb_Cone_002"
@@ -38,11 +26,77 @@ _surfaces = [{
 "vertex_data": PackedByteArray("/3//fwAAeOv+//9//3946/9/////f3jr/v//f/9/k8D/f/9///+TwP9/////f5PA/3//fwAAqun/f/9///+q6f7//3//f6rpAAD/f/9/qun/f/9///+lpgAA/3//f6Wm/3////9/paYAAP9//38o2/9//38AACjb/3////9/KNv/f/9/AAA+4QAA/3//fz7h/38AAP9/PuEAAP9//3/zz/9//3////PP/38AAP9/88//f/9/AAD8xf9//3////zFAAD/f/9//MX///9//3/8xf9//3///5H3////f/9/kff/fwAA/3+R9////3//fx75/3//fwAAHvn/fwAA/38e+aTTtImk07SJpNO0ieez+nXns/p157P6dQQ1COoENQjqBDUI6gQ1COo/rGrBP6xqwT+sasH6yg69+soOvfrKDr2sW1v1rFtb9axbW/VJ0iz3SdIs90nSLPcAxv6cAMb+nADG/pwAxv6cKhW04CoVtOAqFbTg/an6Sv2p+kr9qfpK")
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_xgq6m")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l3sqc"]
+render_priority = 0
+shader = ExtResource("2_hl7n5")
+shader_parameter/amplitude = 1.0
+shader_parameter/bounce_speed = 3.0
+shader_parameter/rotate_speed = 2.0
+shader_parameter/tint_color = Color(0.2, 0.6, 1, 0.9843137)
+shader_parameter/fresnel_strength = 2.5
+shader_parameter/rim_strength = 5.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hl7n5"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("2_i641g")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_l3sqc"]
+offsets = PackedFloat32Array(0, 0.84347826)
+colors = PackedColorArray(0, 0.8023774, 0.852857, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kpvrd"]
+gradient = SubResource("Gradient_l3sqc")
+
+[sub_resource type="Curve" id="Curve_prsrh"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_gec05"]
+curve = SubResource("Curve_prsrh")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_v2pmu"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.5
+emission_ring_radius = 0.5
+emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 25.8
+angle_min = 1.0728835e-05
+angle_max = 1.0728835e-05
+direction = Vector3(0, 1, 0)
+spread = 5.0
+initial_velocity_min = 0.39999998
+initial_velocity_max = 0.79999995
+gravity = Vector3(0, 0, 0)
+tangential_accel_min = -2.2351742e-06
+tangential_accel_max = 5.089998
+scale_min = 0.049999997
+scale_max = 0.29999998
+scale_curve = SubResource("CurveTexture_gec05")
+color_ramp = SubResource("GradientTexture1D_kpvrd")
+
+[sub_resource type="QuadMesh" id="QuadMesh_j65ed"]
 
 [node name="romb" type="Node3D"]
 
 [node name="Cone_001" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.3, -4.5298748e-08, 0, 4.5298748e-08, -0.3, 0, 0, 0, 0.3, 0, -0.15293151, 0)
+transform = Transform3D(-0.2, -3.019916e-08, 0, 3.019916e-08, -0.2, 0, 0, 0, 0.2, 0, 0.225, 0)
 mesh = SubResource("ArrayMesh_vwkwn")
 skeleton = NodePath("")
+surface_material_override/0 = SubResource("ShaderMaterial_l3sqc")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.054570287, 0)
+material_override = SubResource("StandardMaterial3D_hl7n5")
+process_material = SubResource("ParticleProcessMaterial_v2pmu")
+draw_pass_1 = SubResource("QuadMesh_j65ed")

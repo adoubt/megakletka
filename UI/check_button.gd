@@ -12,10 +12,12 @@ func _ready():
 	# Подключаем сигнал через Callable
 	toggled.connect(Callable(self, "_on_toggled"))
 
-func _on_toggled() -> void:
-	_update_text()
-	
-	SettingsManager.set_value(settings_key, button_pressed)
 
 func _update_text():
 	text = "ON" if button_pressed else "OFF"
+
+
+func _on_toggled(_toggled_on: bool) -> void:
+	_update_text()
+	
+	SettingsManager.set_value(settings_key, button_pressed)

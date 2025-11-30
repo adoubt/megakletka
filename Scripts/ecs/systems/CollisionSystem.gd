@@ -3,7 +3,7 @@ class_name CollisionSystem
 
 var contact_cache := {}
 var cell_size: float = 30.0 # подбирай под радиусы мобов/пуль
-
+###тут будет баг в дальнейшем, когда енеми встает в модельку и не коцает, думаю имеет смысл для этого чистить кеш между кулдаунами или чот такое
 func update(_delta: float) -> void:
 	
 	var entities := get_entities_with(["TransformComponent", "CollisionComponent"], ["DeadComponent"])

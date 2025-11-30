@@ -28,6 +28,7 @@ func update(delta: float) -> void:
 					cs.add_component(e_id,"DeadComponent",DeadComponent.new())
 					return
 				var owner_tf = cs.get_component(proj.owner_id, "TransformComponent")
+				
 				if owner_tf == null:
 					print("⚠ ORBIT ERROR: Owner ", owner_id, " has NO TransformComponent! Dead?", cs.has_component(owner_id, "DeadComponent"))
 					cs.add_component(e_id, "DeadComponent", DeadComponent.new())
@@ -60,7 +61,12 @@ func update(delta: float) -> void:
 			var render = cs.get_component(e_id, "RenderComponent")
 			if render and render.instance:
 				# направляем инстанс по вектору движения (игнорируя y для красоты)
-				var fwd = proj.direction
-				fwd.y = 0
-				if fwd.length() > 0.001:
-					render.instance.look_at(tf.position + fwd, Vector3.UP)
+				#var fwd = proj.direction
+				#fwd.y = 3
+				#if fwd.length() > 0.001:
+					#render.instance.look_at(tf.position + fwd, Vector3.UP)
+				# добавляем ПЕРСОНАЛЬНЫЙ НАКЛОН
+				var orbit = cs.get_component(e_id, "OrbitComponent")
+				render.instance.rotate_x(deg_to_rad(orbit.tilt_x))
+				render.instance.rotate_y(deg_to_rad(orbit.tilt_y))
+				render.instance.rotate_z(deg_to_rad(orbit.tilt_z))

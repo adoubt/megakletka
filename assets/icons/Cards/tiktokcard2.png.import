@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6pwe5kalbd8l"
-path="res://.godot/imported/masti.png-8d3723f2929ae217ca140e81cf24fcfa.ctex"
+uid="uid://bu48uvomntp5e"
+path="res://.godot/imported/tiktokcard2.png-19955a88a6009f17bec05a4932217dae.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://masti.png"
-dest_files=["res://.godot/imported/masti.png-8d3723f2929ae217ca140e81cf24fcfa.ctex"]
+source_file="res://assets/icons/Cards/tiktokcard2.png"
+dest_files=["res://.godot/imported/tiktokcard2.png-19955a88a6009f17bec05a4932217dae.ctex"]
 
 [params]
 

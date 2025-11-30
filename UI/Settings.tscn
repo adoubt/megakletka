@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://boxcl4vey5uwq"]
+[gd_scene load_steps=13 format=3 uid="uid://boxcl4vey5uwq"]
 
 [ext_resource type="Theme" uid="uid://lrgo7wl6w1c0" path="res://assets/fonts/Font_theme.tres" id="1_3ykye"]
 [ext_resource type="Script" uid="uid://c0spwl5w1xlol" path="res://UI/settings_UI.gd" id="2_cj1lu"]
 [ext_resource type="Script" uid="uid://bmcx0ghk2foqr" path="res://UI/ui_slider.gd" id="3_cj1lu"]
+[ext_resource type="Material" uid="uid://b6jm1dn3iwhm1" path="res://assets/Materials/DarkenedBlur.tres" id="3_r3owr"]
 [ext_resource type="Theme" uid="uid://2ocoy8vsxdat" path="res://assets/themes/tab_settings.tres" id="4_ay7hg"]
 [ext_resource type="StyleBox" uid="uid://cetf4is0ai61y" path="res://assets/themes/back_btn_style.tres" id="5_r3owr"]
 [ext_resource type="Script" uid="uid://bofqephgaqn5r" path="res://UI/check_button.gd" id="6_oflx8"]
@@ -43,14 +44,24 @@ grow_vertical = 2
 theme = ExtResource("4_ay7hg")
 script = ExtResource("2_cj1lu")
 
-[node name="ColorRect2" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="."]
+material = ExtResource("3_r3owr")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.196078)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.52156866)
 
 [node name="Control" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -756,6 +767,7 @@ popup/item_1/id = 2
 layout_mode = 2
 size_flags_horizontal = 6
 script = ExtResource("6_oflx8")
+settings_key = "audio_path"
 
 [connection signal="pressed" from="Control/HBoxContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/TABCustom/TabButtons/General" to="." method="_on_general_pressed"]
@@ -764,4 +776,4 @@ script = ExtResource("6_oflx8")
 [connection signal="pressed" from="Control/HBoxContainer/TABCustom/TabButtons/Audio" to="." method="_on_audio_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/TABCustom/TabButtons/Debug" to="." method="_on_debug_pressed"]
 [connection signal="item_selected" from="Control/HBoxContainer/TABCustom/TabContainer/Debug/Panel/MarginContainer/HBoxContainer/HBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]
-[connection signal="pressed" from="Control/HBoxContainer/TABCustom/TabContainer/Debug/Panel/MarginContainer/HBoxContainer/HBoxContainer/CheckButton" to="Control/HBoxContainer/TABCustom/TabContainer/Debug/Panel/MarginContainer/HBoxContainer/HBoxContainer/CheckButton" method="_on_pressed"]
+[connection signal="toggled" from="Control/HBoxContainer/TABCustom/TabContainer/Debug/Panel/MarginContainer/HBoxContainer/HBoxContainer/CheckButton" to="Control/HBoxContainer/TABCustom/TabContainer/Debug/Panel/MarginContainer/HBoxContainer/HBoxContainer/CheckButton" method="_on_toggled"]
