@@ -1,9 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://6g1u6okbk7nj"]
+[gd_scene load_steps=9 format=3 uid="uid://6g1u6okbk7nj"]
 
 [ext_resource type="Script" uid="uid://x454ibbgwp7n" path="res://addons/SimpleDungeons/DungeonRoom3D.gd" id="1_am5r7"]
-[ext_resource type="Environment" uid="uid://xb0h3hjg4eu5" path="res://assets/Materials/Environment.tres" id="2_rv2px"]
+[ext_resource type="Environment" uid="uid://be13su6vsgpyl" path="res://assets/Materials/Environment_default.tres" id="2_tyij4"]
 [ext_resource type="Material" uid="uid://44k0m2yb0cqg" path="res://assets/Materials/DEV_material.tres" id="2_ye3mq"]
-[ext_resource type="Texture2D" uid="uid://bwe02yta75ooa" path="res://addons/SimpleDungeons/sample_assets/kenney-green-checkerboar-cc0.png" id="3_emvs1"]
+[ext_resource type="Material" uid="uid://o765wr3vnafe" path="res://assets/Materials/item_highlight.tres" id="4_tyij4"]
 [ext_resource type="PackedScene" uid="uid://cc5olkug3ak0t" path="res://Scenes/game_manager.tscn" id="5_tyij4"]
 [ext_resource type="ArrayOccluder3D" uid="uid://dqfpxmgbunjxa" path="res://bakes/BigRoomTest.occ" id="6_tyij4"]
 
@@ -16,10 +16,6 @@ orientation = 1
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_wj4iy"]
 data = PackedVector3Array(250, 0, 250, -250, 0, 250, 250, 0, -250, -250, 0, 250, -250, 0, -250, 250, 0, -250)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1lkjf"]
-albedo_texture = ExtResource("3_emvs1")
-uv1_triplanar = true
-
 [node name="BigRoom" type="Node3D"]
 script = ExtResource("1_am5r7")
 size_in_voxels = Vector3i(3, 1, 3)
@@ -27,7 +23,7 @@ max_count = 3
 metadata/_custom_type_script = "uid://x454ibbgwp7n"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource("2_rv2px")
+environment = ExtResource("2_tyij4")
 
 [node name="Ground" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -8, 0)
@@ -40,7 +36,7 @@ mesh = SubResource("QuadMesh_4ca3h")
 shape = SubResource("ConcavePolygonShape3D_wj4iy")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-material_override = SubResource("StandardMaterial3D_1lkjf")
+material_override = ExtResource("4_tyij4")
 use_collision = true
 size = Vector3(30, 10, 30)
 

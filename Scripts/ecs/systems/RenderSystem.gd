@@ -12,7 +12,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _po
 	pool_system = _pool_system
 	
 func update(_delta: float) -> void:
-	var entities = get_entities_with(["TransformComponent", "RenderComponent"])
+	var entities = get_entities_with(["TransformComponent", "RenderComponent"],["DeadComponent"])
 
 	for entity_id in entities:
 
@@ -27,4 +27,8 @@ func update(_delta: float) -> void:
 			continue
 
 		render.instance.global_position = render.instance.global_position.lerp(transform.position, clamp(_delta * smoothness, 0, 1))
-	
+		render.instance.scale = render.instance.scale.lerp(render.scale, clamp(_delta * smoothness, 0, 1))
+		var target = cs.get_component(entity_id, "TargetComponent")
+		if target and target.target_id !=-1:
+			var target_pos = cs.get_component(target.target_id, "TransformComponent")
+			render.instance.look_at(target_pos.position)

@@ -19,14 +19,14 @@ rings = 1
 [node name="Aboba" type="Node3D"]
 
 [node name="Model" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
 material_override = ExtResource("1_ef24y")
-lod_bias = 0.03
 mesh = SubResource("SphereMesh_rlo7i")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Model"]
-transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.046016738, 0.172629)
+transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.046016738, 0.17839456)
 mesh = SubResource("CapsuleMesh_65dl7")
 skeleton = NodePath("../..")

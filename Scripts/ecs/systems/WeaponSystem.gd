@@ -30,6 +30,8 @@ func update(delta: float) -> void:
 				spawn_dexecutioner(weapon.owner_id, weapon_id)
 			"aura":
 				spawn_aura(weapon.owner_id, weapon_id)
+			"carrot":
+				spawn_cheese(weapon.owner_id, weapon_id)
 		# Берём скорость атаки владельца
 		var attack_speed = 1.0
 		if cs.has_component(owner_id, "AttackSpeedComponent"):
@@ -78,18 +80,13 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 		var dmg_comp := DamageComponent.new()
 		# используем поле amount (если у тебя другое имя — замени)
 		dmg_comp.final_value = damage_value
-
-		## --- CollisionComponent ---
-		#var col_comp := CollisionComponent.new(
-		#CollisionLayers.Layer.PLAYER_PROJECTILE,
-		#CollisionLayers.Layer.ENEMY | CollisionLayers.Layer.WORLD,
-		#0.2
-		#)
 		# --- CollisionComponent ---
+		var proj_radius = cs.get_component(weapon_id,"ProjectileRadiusComponent").final_value * cs.get_component(owner_id,"ProjectileRadiusComponent").final_value
+		
 		var col_comp := CollisionComponent.new(
 		CollisionLayers.Layer.PLAYER_PROJECTILE,
 		CollisionLayers.Layer.ENEMY,
-		0.5
+		proj_radius
 		)
 
 		# --- ProjectileComponent ---
@@ -122,7 +119,7 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 		# --- RenderComponent (если есть) ---
 		var r_comp = null
 		if render_path != null:
-			r_comp = RenderComponent.new(render_path)
+			r_comp = RenderComponent.new(render_path, Vector3(1.0, 1.0, 1.0) * cs.get_component(owner_id,"ProjectileRadiusComponent").final_value)
 
 		# --- Добавляем компоненты пачкой в понятном порядке ---
 		cs.add_component(ent_id, "TransformComponent", t_comp)

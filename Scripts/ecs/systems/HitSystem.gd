@@ -6,7 +6,7 @@ func update(delta: float):
 	for entity_id in entities:
 		var hit = cs.get_component(entity_id, "HitComponent")
 
-		# создаём PendingDamage, если его нет
+		## Create PendingDamage if not exist
 		if not cs.has_component(entity_id, "PendingDamageComponent"):
 			cs.add_component(entity_id, "PendingDamageComponent", PendingDamageComponent.new())
 			
@@ -17,6 +17,7 @@ func update(delta: float):
 			pd.amount = dmg_comp.final_value
 		
 		var owner = cs.get_component(hit.source_id, "ProjectileComponent")
+		## BullShit. I can't steal hp if an enemy blocked all the damage in its system. So it's a bad palce for lifesteal//// 
 		if owner:
 			if cs.get_component(owner.owner_id, "LifestealComponent") and dmg_comp.final_value > 0:
 				var pending_health = cs.get_component(owner.owner_id, "LifestealComponent").final_value * dmg_comp.final_value

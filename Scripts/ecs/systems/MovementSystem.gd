@@ -11,26 +11,26 @@ func update(delta: float) -> void:
 
 	for entity_id in entities:
 		var tf = cs.get_component(entity_id, "TransformComponent")
-		if tf == null:
+		if not tf:
 			continue
 
 		var speed = cs.get_component(entity_id, "MoveSpeedComponent")
-		if speed == null:
+		if not speed:
 			continue
 
 		var target = cs.get_component(entity_id, "TargetComponent")
-		if target == null or not target.active or target.target_id == -1:
+		if not target or target.target_id == -1:
 			tf.velocity = Vector3.ZERO
 			continue
 
 		var target_tf = cs.get_component(target.target_id, "TransformComponent")
-		if target_tf == null:
+		if not target_tf:
 			tf.velocity = Vector3.ZERO
 			continue
 
 		# --- направление к цели ---
-		var dx = target_tf.position.x - tf.position.x
-		var dy = target_tf.position.y - tf.position.y
+		var dx = target_tf.position.x  - tf.position.x
+		var dy = target_tf.position.y + 0.3 - tf.position.y
 		var dz = target_tf.position.z - tf.position.z
 		var len = dx * dx + dy * dy + dz * dz
 

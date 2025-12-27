@@ -36,6 +36,15 @@ var weapon_configs = {
 			"weapon_radius": 1.5,
 			"projectile_speed": 2.0,
 		},
+		"carrot": {
+			"scene": "res://Scenes/Weapons/Projectiles/carrot.tscn",
+			"cd": 5,
+			"damage" : 4,
+			"projectile_count" : 3.0,
+			"projectile_radius" : 0.2,
+			"weapon_radius": 1.5,
+			"projectile_speed": 2.0,
+		},
 		"aura":{
 			"scene": "res://Scenes/Weapons/AOE/Aura.tscn",
 			"cd": 1,
@@ -60,20 +69,20 @@ var card_configs = {
 	"vamp_card": {
 		"name": "Vamp",
 		"suit": "hearts",
-		"description": "Heal 10% on hit",
+		"description": "Heal 1% on hit",
 		"icon": "res://assets/icons/Cards/Diamonds.png",
-		"abilities": {"stat": LifestealComponent, "value": 0.10},
+		"abilities": {"stat": LifestealComponent, "value": 0.1},
 		"cost": 100,
 		"drop_weight": 5
 	},
 	"projectiles_card": {
 		"name": "CHEESUS CHRIST",
 		"suit": "spades",
-		"description": "+ 3 projectiles",
+		"description": "+ 1 projectiles",
 		"icon": "res://assets/icons/Cards/Spades.png",
-		"abilities": {"stat": ProjectileCountComponent, "value": 3.0},
+		"abilities": {"stat": ProjectileCountComponent, "value": 1.0},
 		"cost": 100,
-		"drop_weight": 100
+		"drop_weight": 30
 	},
 	"atatck_spades_card": {
 		"name": "ATKspeeddddd",
@@ -92,5 +101,25 @@ var card_configs = {
 		"abilities": {"stat": AttackSpeedComponent, "value": 1.02},
 		"cost": 100,
 		"drop_weight": 5
+	},
+	"proj_speed_card": {
+		"name": "Faster prog Card",
+		"suit": "spades",
+		"description": "+1 projectile speed",
+		"icon": "res://assets/icons/Cards/Clubs.png",
+		"abilities": {"stat": ProjectileSpeedComponent, "value": 1},
+		"cost": 100,
+		"drop_weight": 30
+	},
+	"size_card": {
+		"name": "FAT",
+		"suit": "Hearts",
+		"description": "+50% size",
+		"icon": "res://assets/icons/Cards/Hearts.png",
+		"abilities": [
+			{"stat": WeaponRadiusComponent, "value": 0.0},
+			{"stat": ProjectileRadiusComponent, "value": 0.5}],
+		"cost": 100,
+		"drop_weight": 99
 	},
 }	

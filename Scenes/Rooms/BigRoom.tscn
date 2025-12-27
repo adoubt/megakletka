@@ -1,11 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dtt2iq2by7mq"]
+[gd_scene load_steps=4 format=3 uid="uid://dtt2iq2by7mq"]
 
 [ext_resource type="Script" uid="uid://x454ibbgwp7n" path="res://addons/SimpleDungeons/DungeonRoom3D.gd" id="1_ddfp7"]
-[ext_resource type="Texture2D" uid="uid://bwe02yta75ooa" path="res://addons/SimpleDungeons/sample_assets/kenney-green-checkerboar-cc0.png" id="2_d1pmb"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1lkjf"]
-albedo_texture = ExtResource("2_d1pmb")
-uv1_triplanar = true
+[ext_resource type="Material" uid="uid://cqa6keyudxhu6" path="res://assets/Materials/dissolve_material.tres" id="2_d1pmb"]
 
 [sub_resource type="GDScript" id="GDScript_ibo1l"]
 script/source = "@tool
@@ -29,7 +25,7 @@ max_count = 3
 metadata/_custom_type_script = "uid://x454ibbgwp7n"
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-material_override = SubResource("StandardMaterial3D_1lkjf")
+material_override = ExtResource("2_d1pmb")
 use_collision = true
 size = Vector3(30, 10, 30)
 

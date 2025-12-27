@@ -12,18 +12,18 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 
 
 func _on_upgrade_chosen(data: Dictionary):
-	print("🟢 EventBus получил событие upgrade_chosen:", data)
+	print("🟢 EventBus got event upgrade_chosen:", data)
 
 	var e_id = data["entity_id"]
 	var index = data["choice_index"]
 
 	if not cs.has_component(e_id, "LevelUpOfferComponent"):
-		print("⚠️ Нет LevelUpOfferComponent у entity:", e_id)
+		print("⚠️ No LevelUpOfferComponent for entity:", e_id)
 		return
 
 	var offer = cs.get_component(e_id, "LevelUpOfferComponent")
 	offer.chosen_index = index
-	print("✅ Выбран апгрейд индекс:", index, "для entity:", e_id)
+	print("✅ Chosen upgrade index:", index, "for entity:", e_id)
 	
 func update(_delta: float) -> void:
 	var entities = get_entities_with(["LevelComponent"], ["DeadComponent", "LevelUpOfferComponent"])

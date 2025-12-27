@@ -6,30 +6,34 @@ func update(_delta: float) -> void:
 	if enemies.is_empty():
 		return
 
-	# Получаем игрока (у нас он один)
+	# Берём игроков и фильтруем живых
 	var players = get_entities_with(["ControllerStateComponent", "TransformComponent"])
-	if players.is_empty():
-		return
+	var alive_players := []
+	for pid in players:
+		if not cs.has_component(pid, "DeadComponent"):
+			alive_players.append(pid)
 
-	var player_id = players[0]
-	var player_transform = cs.get_component(player_id, "TransformComponent")
-	if player_transform == null:
-		return
-
-	# Кэшируем позицию игрока один раз
-	var player_pos = player_transform.position
+	var player_id := -1
+	var player_pos := Vector3.ZERO
+	if alive_players.size() > 0:
+		player_id = alive_players[0]
+		player_pos = cs.get_component(player_id, "TransformComponent").position
 
 	for enemy_id in enemies:
-		var target_data = cs.get_component(enemy_id, "TargetComponent")
-		if not target_data.active:
-			continue
-
+		var target = cs.get_component(enemy_id, "TargetComponent")
 		var transform = cs.get_component(enemy_id, "TransformComponent")
-		if transform == null:
+
+		# Очистка таргета
+		if target.target_id != -1:
+			if cs.has_component(target.target_id, "DeadComponent"):
+				target.target_id = -1
+				continue
+
+			var target_transform = cs.get_component(target.target_id, "TransformComponent")
+			if transform.position.distance_to(target_transform.position) > target.aggro_radius:
+				target.target_id = -1
 			continue
 
-		var dist = transform.position.distance_to(player_pos)
-		if dist < target_data.aggro_radius:
-			target_data.target_id = player_id
-		else:
-			target_data.target_id = -1
+		# Назначение таргета (только живой игрок)
+		if player_id != -1 and transform.position.distance_to(player_pos) <= target.aggro_radius:
+			target.target_id = player_id

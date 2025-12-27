@@ -2,7 +2,7 @@ extends BaseSystem
 class_name DamageSystem
 
 func update(delta: float):
-	var entities = get_entities_with(["PendingDamageComponent", "CurrentHpComponent"])
+	var entities = get_entities_with(["PendingDamageComponent", "CurrentHpComponent"],["DeadComponent"])
 	for e_id in entities:
 		var pd = cs.get_component(e_id, "PendingDamageComponent")
 		var hp = cs.get_component(e_id, "CurrentHpComponent")

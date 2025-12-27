@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dweuliiw7ujou"]
+
+[ext_resource type="PackedScene" uid="uid://brvktp4xb2k6x" path="res://import/low_poly_carrot.glb" id="1_kt6cb"]
+
+[node name="Carrot" instance=ExtResource("1_kt6cb")]
+
+[node name="Carrot" parent="Sketchfab_model/Root" index="0"]
+transform = Transform3D(0.14298561, 0, 0.13983962, 0, 0.2, 0, -0.13983962, 0, 0.14298561, 0, 0, 0)

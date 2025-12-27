@@ -20,8 +20,8 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_db 
 	var char_id = spawn_char("Rigman",Vector3.ZERO) 
 	UIManager.hud.owner_id = char_id
 	#spawn_weapon("dexecutioner",char_id)
-	spawn_weapon("cheese",char_id)
-	
+	#spawn_weapon("cheese",char_id)
+	spawn_weapon("carrot",char_id)
 func _get_valid_spawn_position(center: Vector3) -> Vector3:
 	var pos: Vector3
 	var dist: float
@@ -154,7 +154,14 @@ func spawn_weapon(_name:String, owner_id:int):
 		cs.add_component(entity_id, "ProjectileRadiusComponent", ProjectileRadiusComponent.new(data["projectile_radius"]))
 		cs.add_component(entity_id, "WeaponRadiusComponent", WeaponRadiusComponent.new(data["weapon_radius"]))
 		cs.add_component(entity_id,"ProjectileSpeedComponent",ProjectileSpeedComponent.new(data["projectile_speed"]))
-	
+	if _name == "carrot":
+		cs.add_component(entity_id,"WeaponComponent",WeaponComponent.new(_name, data["cd"], owner_id))
+		cs.add_component(entity_id, "DamageComponent", DamageComponent.new(data["damage"]))
+		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(data["scene"]))
+		cs.add_component(entity_id, "ProjectileCountComponent", ProjectileCountComponent.new(data["projectile_count"]))
+		cs.add_component(entity_id, "ProjectileRadiusComponent", ProjectileRadiusComponent.new(data["projectile_radius"]))
+		cs.add_component(entity_id, "WeaponRadiusComponent", WeaponRadiusComponent.new(data["weapon_radius"]))
+		cs.add_component(entity_id,"ProjectileSpeedComponent",ProjectileSpeedComponent.new(data["projectile_speed"]))
 	elif _name == "aura":
 		cs.add_component(entity_id,"WeaponComponent",WeaponComponent.new(_name, data["cd"], owner_id))
 		cs.add_component(entity_id, "DamageComponent", DamageComponent.new(data["damage"]))

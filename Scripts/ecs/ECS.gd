@@ -21,7 +21,7 @@ func initialize():
 	UIManager.hud.event_bus = event_bus
 	object_pool = ObjectPool.new(self)
 	object_pool.prewarm({
-	"res://Scenes/Enemy/Aboba.tscn": 1000,
+	"res://Scenes/Enemy/Aboba.tscn": 500,
 	"res://scenes/enemies/fuflan.tscn": 500,
 	
 	
@@ -37,11 +37,12 @@ func initialize():
 	var spawn_system: SpawnSystem = SpawnSystem.new(entity_manager, component_store,database)
 	system_manager.add_system(spawn_system)
 	system_manager.add_system(StatsRecalculationSystem.new(entity_manager, component_store))
-	system_manager.add_system(TargetSystem.new(entity_manager, component_store))
+	
 	system_manager.add_system(WeaponSystem.new(entity_manager, component_store))
 	
 	system_manager.add_system(MovementSystem.new(entity_manager, component_store))
 	system_manager.add_system(DamageSystem.new(entity_manager, component_store))
+	system_manager.add_system(DeathSystem.new(entity_manager, component_store))
 	system_manager.add_system(CollisionSystem.new(entity_manager, component_store))
 	system_manager.add_system(HitSystem.new(entity_manager, component_store))
 	
@@ -50,7 +51,8 @@ func initialize():
 	system_manager.add_system(ProjectileSystem.new(entity_manager,component_store))
 	
 	system_manager.add_system(HealthSystem.new(entity_manager, component_store))
-	system_manager.add_system(DeathSystem.new(entity_manager, component_store))
+	
+	system_manager.add_system(TargetSystem.new(entity_manager, component_store))
 	system_manager.add_system(XPPickUpSystem.new(entity_manager,component_store))
 	system_manager.add_system(LevelSystem.new(entity_manager,component_store))
 	system_manager.add_system(LevelUpOfferSystem.new(entity_manager,component_store,event_bus,database))

@@ -59,7 +59,9 @@ func update(delta: float) -> void:
 		# (опционально) обновим визуал поворотом, если есть
 		if cs.has_component(e_id, "RenderComponent"):
 			var render = cs.get_component(e_id, "RenderComponent")
+			
 			if render and render.instance:
+				
 				# направляем инстанс по вектору движения (игнорируя y для красоты)
 				#var fwd = proj.direction
 				#fwd.y = 3
