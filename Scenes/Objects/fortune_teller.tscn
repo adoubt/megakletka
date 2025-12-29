@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxqdfuxttkhtd"]
+
+[ext_resource type="PackedScene" uid="uid://b70l82l4tfdev" path="res://import/fortune_teller/scene.gltf" id="1_u1yl4"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_u1yl4")]
+
+[node name="Sketchfab_model" parent="." index="0"]
+transform = Transform3D(2.9902005, -0.14106953, -0.19697455, 0.18132907, -0.31452763, 2.977951, -0.16068399, -2.9801295, -0.30497357, 0.043395493, 0.0048576333, 0.06718868)

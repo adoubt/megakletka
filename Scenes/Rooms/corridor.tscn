@@ -1,0 +1,189 @@
+[gd_scene load_steps=5 format=3 uid="uid://b2t06bycrtldn"]
+
+[ext_resource type="Script" uid="uid://x454ibbgwp7n" path="res://addons/SimpleDungeons/DungeonRoom3D.gd" id="1_qqrlr"]
+[ext_resource type="Shader" uid="uid://bl01pbrmlfuje" path="res://assets/Shaders/walkway.gdshader" id="2_dvp5c"]
+
+[sub_resource type="GDScript" id="GDScript_ldqn2"]
+script/source = "@tool
+extends Node
+
+func remove_unused_doors():
+	for door in $\"..\".get_doors():
+		if door.get_room_leads_to() == null:
+			door.door_node.queue_free()
+
+func _on_dungeon_done_generating():
+	remove_unused_doors()
+	#call_deferred(\"remove_unused_doors\")
+	#pass
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_etwsf"]
+render_priority = 0
+shader = ExtResource("2_dvp5c")
+shader_parameter/scale = 1.0
+shader_parameter/main_color = Color(0.96, 0.92, 0.85, 1)
+shader_parameter/dark_color = Color(0.62, 0.38, 0.32, 1)
+shader_parameter/yellow_tint = Color(1, 0.96, 0.82, 1)
+shader_parameter/wear = 0.65
+shader_parameter/anim_speed = 0.02
+
+[node name="Corridor" type="Node3D"]
+script = ExtResource("1_qqrlr")
+
+[node name="RemoveUnusedDoors" type="Node" parent="."]
+script = SubResource("GDScript_ldqn2")
+
+[node name="DOOR?" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.0324306, 0, 0)
+
+[node name="CSGCylinder3D" type="CSGBox3D" parent="DOOR?"]
+transform = Transform3D(0.66006726, -0.7512066, -3.283628e-08, -3.7512125e-16, -4.3711385e-08, 1, -0.7512066, -0.66006726, -2.8852455e-08, 4.312609, -4.937, -0.0828616)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D2" type="CSGBox3D" parent="DOOR?"]
+transform = Transform3D(0.8016297, -0.59782106, -2.6131588e-08, -8.159408e-16, -4.3711385e-08, 1, -0.59782106, -0.8016297, -3.5040348e-08, 3.2908764, -4.937, -0.99735576)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D3" type="CSGBox3D" parent="DOOR?"]
+transform = Transform3D(0.9930068, 0.118057385, 5.160454e-09, -8.159408e-16, -4.3711385e-08, 1, 0.118057385, -0.9930068, -4.3405706e-08, 1.911653, -4.937, -0.9403155)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D4" type="CSGBox3D" parent="DOOR?"]
+transform = Transform3D(0.9827196, -0.18510062, -8.0910025e-09, -8.159408e-16, -4.3711385e-08, 1, -0.18510062, -0.9827196, -4.2956035e-08, 0.67202616, -4.937, -0.8049537)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D5" type="CSGBox3D" parent="DOOR?"]
+transform = Transform3D(0.9958591, 0.09091073, 3.9738355e-09, -8.159408e-16, -4.3711385e-08, 1, 0.09091073, -0.9958591, -4.3530378e-08, 0.67202616, -4.937, 0.6959231)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D6" type="CSGBox3D" parent="DOOR?"]
+transform = Transform3D(0.97841895, 0.20663118, 9.032135e-09, -1.1389206e-15, -4.371138e-08, 1, 0.20663118, -0.97841895, -4.276804e-08, 1.8600259, -4.937, 0.57886744)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D7" type="CSGBox3D" parent="DOOR?"]
+transform = Transform3D(0.8421513, 0.53924125, 2.357098e-08, -1.1389206e-15, -4.371138e-08, 1, 0.53924125, -0.8421513, -3.6811592e-08, 3.088107, -4.937, 0.44907534)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="DOOR?2" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4.9612637, 0, 0)
+
+[node name="CSGCylinder3D" type="CSGBox3D" parent="DOOR?2"]
+transform = Transform3D(0.7321626, 0.6811299, 2.977313e-08, -3.7512125e-16, -4.3711385e-08, 1, 0.6811299, -0.7321626, -3.2003843e-08, 3.862413, -4.937, -0.014243086)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D2" type="CSGBox3D" parent="DOOR?2"]
+transform = Transform3D(0.76634735, -0.64242655, -2.8081356e-08, -8.159408e-16, -4.3711385e-08, 1, -0.64242655, -0.76634735, -3.3498107e-08, 3.1380138, -4.937, -0.9758977)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D3" type="CSGBox3D" parent="DOOR?2"]
+transform = Transform3D(0.9802021, -0.19799957, -8.654827e-09, -2.7819823e-15, -4.371139e-08, 1, -0.19799957, -0.9802021, -4.284599e-08, 1.911653, -4.937, -0.85484695)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D4" type="CSGBox3D" parent="DOOR?2"]
+transform = Transform3D(0.9827196, -0.18510062, -8.0910025e-09, -8.159408e-16, -4.3711385e-08, 1, -0.18510062, -0.9827196, -4.2956035e-08, 0.67202616, -4.937, -1.0756055)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D5" type="CSGBox3D" parent="DOOR?2"]
+transform = Transform3D(0.9958591, 0.09091073, 3.9738355e-09, -8.159408e-16, -4.3711385e-08, 1, 0.09091073, -0.9958591, -4.3530378e-08, 0.67202616, -4.937, 0.2685778)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D6" type="CSGBox3D" parent="DOOR?2"]
+transform = Transform3D(0.97841895, 0.20663118, 9.032135e-09, -1.1389206e-15, -4.371138e-08, 1, 0.20663118, -0.97841895, -4.276804e-08, 1.8600259, -4.937, 0.42217422)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D7" type="CSGBox3D" parent="DOOR?2"]
+transform = Transform3D(0.94722706, 0.32056347, 1.4012272e-08, -1.1389206e-15, -4.371138e-08, 1, 0.32056347, -0.94722706, -4.14046e-08, 2.998217, -4.937, 0.7491871)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="DOOR?3" type="Node3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.019382477, 0, 5.0969224)
+
+[node name="CSGCylinder3D" type="CSGBox3D" parent="DOOR?3"]
+transform = Transform3D(0.56501025, -0.825084, -3.6065558e-08, -3.7512125e-16, -4.3711385e-08, 1, -0.825084, -0.56501025, -2.4697375e-08, 4.3467364, -4.937, 0.11396231)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D2" type="CSGBox3D" parent="DOOR?3"]
+transform = Transform3D(0.9926374, -0.121124394, -5.2945146e-09, -3.7512125e-16, -4.3711385e-08, 1, -0.121124394, -0.9926374, -4.338956e-08, 3.380176, -4.937, -0.80496)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D3" type="CSGBox3D" parent="DOOR?3"]
+transform = Transform3D(0.9930068, 0.118057385, 5.160454e-09, -8.159408e-16, -4.3711385e-08, 1, 0.118057385, -0.9930068, -4.3405706e-08, 2.0256114, -4.937, -0.9403154)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D4" type="CSGBox3D" parent="DOOR?3"]
+transform = Transform3D(0.9827196, -0.18510062, -8.0910025e-09, -8.159408e-16, -4.3711385e-08, 1, -0.18510062, -0.9827196, -4.2956035e-08, 0.67202616, -4.937, -0.7337294)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D5" type="CSGBox3D" parent="DOOR?3"]
+transform = Transform3D(0.9958591, 0.09091073, 3.9738355e-09, -8.159408e-16, -4.3711385e-08, 1, 0.09091073, -0.9958591, -4.3530378e-08, 0.67202616, -4.937, 0.61045486)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D6" type="CSGBox3D" parent="DOOR?3"]
+transform = Transform3D(0.97841895, 0.20663118, 9.032135e-09, -1.1389206e-15, -4.371138e-08, 1, 0.20663118, -0.97841895, -4.276804e-08, 1.8600259, -4.937, 0.62160164)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D7" type="CSGBox3D" parent="DOOR?3"]
+transform = Transform3D(0.97841895, 0.20663118, 9.032135e-09, -1.1389206e-15, -4.371138e-08, 1, 0.20663118, -0.97841895, -4.276804e-08, 3.0586078, -4.937, 0.574477)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="DOOR?4" type="Node3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.019382477, 0, -4.9030776)
+
+[node name="CSGCylinder3D" type="CSGBox3D" parent="DOOR?4"]
+transform = Transform3D(0.7514368, 0.6598051, 2.8840988e-08, 1.0327598e-15, -4.3711385e-08, 1, 0.6598051, -0.7514368, -3.2846344e-08, 4.16874, -4.937, -0.22646606)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D2" type="CSGBox3D" parent="DOOR?4"]
+transform = Transform3D(0.90039474, 0.4350741, 1.901769e-08, 1.2193733e-15, -4.371139e-08, 1, 0.4350741, -0.90039474, -3.93575e-08, 3.1798954, -4.937, -0.9306041)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D3" type="CSGBox3D" parent="DOOR?4"]
+transform = Transform3D(0.9930068, 0.118057385, 5.160454e-09, -8.159408e-16, -4.3711385e-08, 1, 0.118057385, -0.9930068, -4.3405706e-08, 1.911653, -4.937, -0.7082628)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D4" type="CSGBox3D" parent="DOOR?4"]
+transform = Transform3D(0.9827196, -0.18510062, -8.0910025e-09, -8.159408e-16, -4.3711385e-08, 1, -0.18510062, -0.9827196, -4.2956035e-08, 0.67202616, -4.937, -0.918914)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D5" type="CSGBox3D" parent="DOOR?4"]
+transform = Transform3D(0.9958591, 0.09091073, 3.9738355e-09, -8.159408e-16, -4.3711385e-08, 1, 0.09091073, -0.9958591, -4.3530378e-08, 0.67202616, -4.937, 0.5534746)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D6" type="CSGBox3D" parent="DOOR?4"]
+transform = Transform3D(0.97841895, 0.20663118, 9.032135e-09, -1.1389206e-15, -4.371138e-08, 1, 0.20663118, -0.97841895, -4.276804e-08, 1.8600259, -4.937, 0.5788674)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[node name="CSGCylinder3D7" type="CSGBox3D" parent="DOOR?4"]
+transform = Transform3D(0.950927, -0.30941528, -1.3524969e-08, -1.1389206e-15, -4.371138e-08, 1, -0.30941528, -0.950927, -4.156633e-08, 3.1976442, -4.937, 0.66700023)
+size = Vector3(1, 1, 0.20715332)
+material = SubResource("ShaderMaterial_etwsf")
+
+[connection signal="dungeon_done_generating" from="." to="RemoveUnusedDoors" method="_on_dungeon_done_generating"]

@@ -1258,8 +1258,8 @@ script = ExtResource("14_0u84n")
 metadata/_custom_type_script = "uid://cgcrnfwyr7oa7"
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 3, 0)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 5, 0)
 distance_fade_enabled = true
 distance_fade_begin = 2.9
-spot_range = 3.5
-spot_angle = 17.991085
+spot_range = 6.0
+spot_angle = 36.562496

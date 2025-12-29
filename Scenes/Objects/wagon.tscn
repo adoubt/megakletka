@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://digjh4t3qq7k6"]
+
+[ext_resource type="PackedScene" uid="uid://dm84oihh2hclp" path="res://import/wagon.gltf" id="1_rw6yc"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_rw6yc")]
+
+[node name="Wagon_obj_cleaner_materialmerger_gles" parent="Sketchfab_model" index="0"]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)

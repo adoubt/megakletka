@@ -1,0 +1,11 @@
+Model Information:
+* title:	Trailer Hell Circus
+* source:	https://sketchfab.com/3d-models/trailer-hell-circus-9566f6f620be408cb22abd46b04af799
+* author:	valentin.lothe.art (https://sketchfab.com/valentin.lothe.art)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Trailer Hell Circus" (https://sketchfab.com/3d-models/trailer-hell-circus-9566f6f620be408cb22abd46b04af799) by valentin.lothe.art (https://sketchfab.com/valentin.lothe.art) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

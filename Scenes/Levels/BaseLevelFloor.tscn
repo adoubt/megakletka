@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dh2i3dk3g0icv" path="res://addons/SimpleDungeons/sample_dungeons/custom_random_room_function_example/red_room.tscn" id="2_m8oyf"]
 [ext_resource type="PackedScene" uid="uid://dp0qfcyh34vor" path="res://Scenes/Rooms/dungeon_room_elevator.tscn" id="3_lj1qd"]
 [ext_resource type="PackedScene" uid="uid://dtt2iq2by7mq" path="res://Scenes/Rooms/BigRoom.tscn" id="4_b2w0y"]
-[ext_resource type="PackedScene" uid="uid://b2t06bycrtldn" path="res://addons/SimpleDungeons/sample_dungeons/custom_random_room_function_example/corridor.tscn" id="5_pd066"]
+[ext_resource type="PackedScene" uid="uid://b2t06bycrtldn" path="res://Scenes/Rooms/corridor.tscn" id="5_pd066"]
 
 [node name="BaseLevelFloor" type="Node3D"]
 script = ExtResource("1_dafho")

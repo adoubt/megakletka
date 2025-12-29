@@ -1,0 +1,11 @@
+Model Information:
+* title:	Traveling circus
+* source:	https://sketchfab.com/3d-models/traveling-circus-a5064500870043b18c6ef6f8b137f49a
+* author:	littlehustler (https://sketchfab.com/littlehustler)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Traveling circus" (https://sketchfab.com/3d-models/traveling-circus-a5064500870043b18c6ef6f8b137f49a) by littlehustler (https://sketchfab.com/littlehustler) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
