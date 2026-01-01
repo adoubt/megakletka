@@ -16,7 +16,8 @@ func update(_delta: float):
 				var render = cs.get_component(entity_id, "RenderComponent")
 				if render.instance:
 					pool_system.release_instance(render.scene_path, render.instance)
-			
+				if render.shadow_instance:
+					pool_system.release_instance("res://Scenes/shadow.tscn", render.shadow_instance)
 			# ✅ Сначала удаляем компоненты
 			cs.remove_all_components_for_entity(entity_id)
 

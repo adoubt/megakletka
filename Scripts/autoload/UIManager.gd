@@ -23,11 +23,13 @@ func open_main_menu() -> void:
 	game_paused = false
 	
 func open_upgrade_menu() -> void:
-	open_panel("UpgradeMenu")
+	open_panel("UpgradeMenu", true)
+	open_panel("UpgradeVFX", true)
 	game_paused = true
 	
 func close_upgrade_menu() -> void:
 	close_panel("UpgradeMenu")
+	close_panel("UpgradeVFX")
 	game_paused = false
 	
 func toggle_upgrade_menu() -> void:
@@ -57,7 +59,7 @@ func toggle_dev_panel() -> void:
 	
 func open_settings() -> void:
 	var in_main_menu :bool = SceneManager.current_scene_name == "MainMenu"
-	open_panel("Settings")
+	open_panel("Settings",true)
 	if in_main_menu:
 		close_panel("MainMenu")
 	else:
@@ -93,17 +95,43 @@ func is_panel_open(_name: String) -> bool:
 	return is_instance_valid(panel) and panel.visible
 
 		
-func open_panel(_name: String) -> void:
+func open_panel(_name: String, use_tween: bool = false ) -> void:
 	if panels.has(_name):
 		var panel = panels[_name]
-		panel.visible = true
+		
+		
+		if use_tween:
+			panel.scale = Vector2.ZERO
+			panel.pivot_offset = panel.size * 0.5
+			panel.visible = true
+			var tween : Tween = panel.create_tween()
+			tween.set_trans(Tween.TRANS_BACK)
+			tween.set_ease(Tween.EASE_OUT)
+			tween.tween_property(panel, "scale", Vector2.ONE, 0.2)
+			await tween.finished.connect(func(): tween.kill)
+		else:
+			panel.visible = true
+
+			
 		if panel.has_method("refresh"):
 			panel.refresh()
+			
 		_update_ui_state()
 
-func close_panel(_name: String) -> void:
+func close_panel(_name: String, use_tween: bool = false ) -> void:
 	if panels.has(_name):
-		panels[_name].visible = false
+		var panel = panels[_name]
+		if use_tween:
+			var tween:Tween = panel.create_tween()
+			tween.set_trans(Tween.TRANS_BACK)
+			tween.set_ease(Tween.EASE_IN)
+
+			tween.tween_property(panel, "scale", Vector2.ZERO, 0.2)
+
+			tween.finished.connect(func():
+				panel.visible = false
+			)
+		else:	panel.visible = false
 		_update_ui_state()
 
 func close_all() -> void:
@@ -133,7 +161,9 @@ func _ready() -> void:
 		"MainMenu": main_menu,
 		"Settings": settings_menu,
 		"DEV_PANEL" : dev_panel,
-		"UpgradeMenu": hud.upgrade_panel
+		"UpgradeMenu": hud.upgrade_panel,
+		"UpgradeVFX": hud.upgrade_vfx
+		
 	}
 	
 	close_all()

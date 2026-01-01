@@ -13,8 +13,5 @@ func update(delta: float) -> void:
 			UIManager.hud.current_hp = current_hp.final_value
 			UIManager.hud.max_hp = max_hp.final_value
 		
-		var enemies = get_entities_with(["TeamComponent"])
-		UIManager.dev_panel.enemies_count.text ="Enemies: "+ str(enemies.size())
-		var projectiles = get_entities_with(["ProjectileComponent"],["DeadComponent"]) 
-		UIManager.dev_panel.projectiles_count.text = "Projectiles: "+str(projectiles.size())
+		
 		

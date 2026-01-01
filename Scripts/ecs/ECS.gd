@@ -22,7 +22,8 @@ func initialize():
 	object_pool = ObjectPool.new(self)
 	object_pool.prewarm({
 	"res://Scenes/Enemy/Aboba.tscn": 500,
-	"res://scenes/enemies/fuflan.tscn": 500,
+	"res://Scenes/shadow.tscn": 500,
+	
 	
 	
 	
@@ -41,6 +42,7 @@ func initialize():
 	system_manager.add_system(WeaponSystem.new(entity_manager, component_store))
 	
 	system_manager.add_system(MovementSystem.new(entity_manager, component_store))
+
 	system_manager.add_system(DamageSystem.new(entity_manager, component_store))
 	system_manager.add_system(DeathSystem.new(entity_manager, component_store))
 	system_manager.add_system(CollisionSystem.new(entity_manager, component_store))
@@ -58,7 +60,7 @@ func initialize():
 	system_manager.add_system(LevelUpOfferSystem.new(entity_manager,component_store,event_bus,database))
 	system_manager.add_system(LevelUpSelectionSystem.new(entity_manager,component_store,spawn_system))
 	system_manager.add_system(CleanerSystem.new(entity_manager, component_store, object_pool))
-	
+	system_manager.add_system(DEVPanelSystem.new(entity_manager, component_store, object_pool))
 	
 	system_manager.add_system(HUDSystem.new(entity_manager, component_store))
 	system_manager.add_system(RenderSystem.new(entity_manager, component_store, object_pool))

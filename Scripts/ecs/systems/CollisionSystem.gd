@@ -2,7 +2,7 @@ extends BaseSystem
 class_name CollisionSystem
 
 var contact_cache := {}
-var cell_size: float = 30.0 # подбирай под радиусы мобов/пуль
+var cell_size: float = 0.2 # подбирай под радиусы мобов/пуль
 ###тут будет баг в дальнейшем, когда енеми встает в модельку и не коцает, думаю имеет смысл для этого чистить кеш между кулдаунами или чот такое
 func update(_delta: float) -> void:
 	
@@ -73,6 +73,8 @@ func _check_cross_pairs(list_a: Array, list_b: Array, new_cache: Dictionary) -> 
 			continue
 
 		for b in list_b:
+			if a >= b:
+				continue
 			_check_entities(a, b, a_tf, a_col, new_cache)
 
 
@@ -113,13 +115,16 @@ func _process_collision(a:int, b:int, new_cache: Dictionary) -> void:
 
 		if s_col.is_player_projectile() and t_col.is_enemy():
 			_register_hit(source, target, key, new_cache)
+		elif s_col.is_enemy() and t_col.is_enemy():
+			if not cs.has_component(source, "ClimbComponent"):
+				cs.add_component(source, "ClimbComponent", ClimbComponent.new())
 		elif s_col.is_enemy_projectile() and t_col.is_player():
 			_register_hit(source, target, key, new_cache)
 		elif s_col.is_enemy() and t_col.is_player():
 			_register_hit(source, target, key, new_cache)
-		elif s_col.is_projectile() and t_col.is_world():
-			if not cs.has_component(source, "BounceComponent"):
-				cs.add_component(source, "BounceComponent", BounceComponent.new())
+		#elif s_col.is_projectile() and t_col.is_world():
+			#if not cs.has_component(source, "BounceComponent"):
+				#cs.add_component(source, "BounceComponent", BounceComponent.new())
 
 
 func _register_hit(source:int, target:int, key: Vector2, new_cache: Dictionary) -> void:

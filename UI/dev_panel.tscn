@@ -13,65 +13,98 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_oxrvo")
 
+[node name="TextureRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7490196)
+
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -173.5
-offset_right = 314.0
-offset_bottom = 173.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer2"]
+[node name="List" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2/List"]
+visible = false
 layout_mode = 2
 text = "Enemy Pool"
 horizontal_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2/List"]
+visible = false
 layout_mode = 2
 
-[node name="EnemiesCount" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
-layout_mode = 2
-vertical_alignment = 1
-
-[node name="ProjectilesCount" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="EnemiesCount" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2/List"]
+visible = false
 layout_mode = 2
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2"]
+[node name="ProjectilesCount" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2/List"]
+visible = false
+layout_mode = 2
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
+visible = false
 layout_mode = 2
 text = "WEAPONS"
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer2"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
+visible = false
 layout_mode = 2
 columns = 3
 
-[node name="TextureButton" type="TextureButton" parent="MarginContainer/VBoxContainer2/GridContainer"]
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2/GridContainer"]
 layout_mode = 2
 toggle_mode = true
 texture_normal = ExtResource("2_w2nk6")
 
-[node name="TextureButton2" type="TextureButton" parent="MarginContainer/VBoxContainer2/GridContainer"]
+[node name="TextureButton2" type="TextureButton" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2/GridContainer"]
 layout_mode = 2
 toggle_mode = true
 texture_normal = ExtResource("3_152kq")
 
-[node name="Killed" type="Label" parent="MarginContainer/VBoxContainer2"]
+[node name="Killed" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
+visible = false
 layout_mode = 2
 text = "Enemies Killed : "
 
-[node name="DD" type="Label" parent="MarginContainer/VBoxContainer2"]
+[node name="DD" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2"]
+visible = false
 layout_mode = 2
 text = "Damage Dealt :"
+
+[node name="SystemsList" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/SystemsList"]
+layout_mode = 2

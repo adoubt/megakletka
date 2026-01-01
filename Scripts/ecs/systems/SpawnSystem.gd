@@ -17,7 +17,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_db 
 	super._init(_entity_manager,_component_store)
 	db = _db
 	
-	var char_id = spawn_char("Rigman",Vector3.ZERO) 
+	var char_id = spawn_char("Rigman",Vector3(44.0,3.0,0.0)) 
 	UIManager.hud.owner_id = char_id
 	#spawn_weapon("dexecutioner",char_id)
 	#spawn_weapon("cheese",char_id)
@@ -80,7 +80,7 @@ func spawn_enemy(enemy_name: String, position: Vector3) -> int:
 	cs.add_component(entity_id, "MaxHpComponent", MaxHpComponent.new(data["hp"]))
 	cs.add_component(entity_id, "CurrentHpComponent",CurrentHpComponent.new(data["hp"]))
 	cs.add_component(entity_id,"CurrentHpRatioComponent", CurrentHpRatioComponent.new(1))
-	cs.add_component(entity_id, "RenderComponent",RenderComponent.new(data["scene"]))
+	cs.add_component(entity_id, "RenderComponent",RenderComponent.new(data["scene"],true))
 	cs.add_component(entity_id, "TargetComponent",TargetComponent.new())
 	cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(data["movespeed"]))
 	cs.add_component(entity_id, "TeamComponent", TeamComponent.new(2))
@@ -116,7 +116,7 @@ func spawn_char(char_name: String, position: Vector3) -> int:
 	cs.add_component(entity_id, "MaxHpComponent", MaxHpComponent.new(data["hp"]))
 	cs.add_component(entity_id, "CurrentHpComponent",CurrentHpComponent.new(data["hp"]))
 	cs.add_component(entity_id,"CurrentHpRatioComponent", CurrentHpRatioComponent.new(1))
-	cs.add_component(entity_id, "RenderComponent",RenderComponent.new(data["scene"]))
+	cs.add_component(entity_id, "RenderComponent",RenderComponent.new(data["scene"],true))
 	cs.add_component(entity_id, "DamageComponent", DamageComponent.new())
 	cs.add_component(entity_id, "ControllerStateComponent", ControllerStateComponent.new())
 	cs.add_component(entity_id, "TeamComponent", TeamComponent.new(3))
@@ -149,7 +149,7 @@ func spawn_weapon(_name:String, owner_id:int):
 	if _name == "cheese":
 		cs.add_component(entity_id,"WeaponComponent",WeaponComponent.new(_name, data["cd"], owner_id))
 		cs.add_component(entity_id, "DamageComponent", DamageComponent.new(data["damage"]))
-		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(data["scene"]))
+		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(data["scene"],true))
 		cs.add_component(entity_id, "ProjectileCountComponent", ProjectileCountComponent.new(data["projectile_count"]))
 		cs.add_component(entity_id, "ProjectileRadiusComponent", ProjectileRadiusComponent.new(data["projectile_radius"]))
 		cs.add_component(entity_id, "WeaponRadiusComponent", WeaponRadiusComponent.new(data["weapon_radius"]))
@@ -157,7 +157,7 @@ func spawn_weapon(_name:String, owner_id:int):
 	if _name == "carrot":
 		cs.add_component(entity_id,"WeaponComponent",WeaponComponent.new(_name, data["cd"], owner_id))
 		cs.add_component(entity_id, "DamageComponent", DamageComponent.new(data["damage"]))
-		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(data["scene"]))
+		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(data["scene"],true))
 		cs.add_component(entity_id, "ProjectileCountComponent", ProjectileCountComponent.new(data["projectile_count"]))
 		cs.add_component(entity_id, "ProjectileRadiusComponent", ProjectileRadiusComponent.new(data["projectile_radius"]))
 		cs.add_component(entity_id, "WeaponRadiusComponent", WeaponRadiusComponent.new(data["weapon_radius"]))

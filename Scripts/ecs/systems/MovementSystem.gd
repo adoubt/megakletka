@@ -1,52 +1,64 @@
 extends BaseSystem
 class_name MovementSystem
 
-var gravity: float = -9.8
-var floor_check_distance: float = 2.0
+const GRAVITY := -9.8
+const CLIMB_SPEED := 2.0
+const FLOOR_Y := 0.6
 
 func update(delta: float) -> void:
-	var entities := get_entities_with(["TransformComponent", "MoveSpeedComponent", "TargetComponent"], ["ProjectileComponent"])
-	if entities.is_empty():
-		return
+	var entities := get_entities_with(
+		["TransformComponent", "MoveSpeedComponent", "TargetComponent"],
+		["ProjectileComponent"]
+	)
 
-	for entity_id in entities:
-		var tf = cs.get_component(entity_id, "TransformComponent")
-		if not tf:
+	for id in entities:
+		var tf = cs.get_component(id, "TransformComponent")
+		var speed = cs.get_component(id, "MoveSpeedComponent")
+		var target = cs.get_component(id, "TargetComponent")
+
+		if not tf or not speed or not target:
 			continue
 
-		var speed = cs.get_component(entity_id, "MoveSpeedComponent")
-		if not speed:
-			continue
+		# ---- XZ движение к цели ----
+		if target.target_id != -1:
+			var target_tf = cs.get_component(target.target_id, "TransformComponent")
+			if target_tf:
+				var dx = target_tf.position.x - tf.position.x
+				var dz = target_tf.position.z - tf.position.z
+				var len = dx * dx + dz * dz
 
-		var target = cs.get_component(entity_id, "TargetComponent")
-		if not target or target.target_id == -1:
-			tf.velocity = Vector3.ZERO
-			continue
-
-		var target_tf = cs.get_component(target.target_id, "TransformComponent")
-		if not target_tf:
-			tf.velocity = Vector3.ZERO
-			continue
-
-		# --- направление к цели ---
-		var dx = target_tf.position.x  - tf.position.x
-		var dy = target_tf.position.y + 0.3 - tf.position.y
-		var dz = target_tf.position.z - tf.position.z
-		var len = dx * dx + dy * dy + dz * dz
-
-		if len > 0.01:
-			len = sqrt(len)
-			var inv = 1.0 / len
-			tf.velocity.x = dx * inv * speed.final_value
-			tf.velocity.y = dy * inv * speed.final_value
-			tf.velocity.z = dz * inv * speed.final_value
+				if len > 0.001:
+					len = sqrt(len)
+					var inv = 1.0 / len
+					tf.velocity.x = dx * inv * speed.final_value
+					tf.velocity.z = dz * inv * speed.final_value
+				else:
+					tf.velocity.x = 0
+					tf.velocity.z = 0
 		else:
-			tf.velocity = Vector3.ZERO
+			tf.velocity.x = 0
+			tf.velocity.z = 0
+			
+		
 
-		# --- обновляем позицию ---
-		tf.position.x += tf.velocity.x * delta
-		tf.position.y += tf.velocity.y * delta
-		tf.position.z += tf.velocity.z * delta
+		# ---- ГРАВИТАЦИЯ ----
+		
+		if tf.position.y + cs.get_component(id, "CollisionComponent").radius > FLOOR_Y:
+			tf.velocity.y += GRAVITY * delta
+		elif cs.has_component(id, "ClimbComponent"):
+			tf.velocity.y = max(tf.velocity.y, CLIMB_SPEED)
 
 
-	
+			cs.remove_component(id, "ClimbComponent")
+		else: 
+			tf.velocity.y = FLOOR_Y
+		# ---- ИНТЕГРАЦИЯ ----
+		tf.position += tf.velocity * delta
+
+		# ---- ПОЛ ----
+		#var col = cs.get_component(id, "CollisionComponent")
+		
+		#if tf.position.y + col.radius  < FLOOR_Y:
+			#tf.position.y = FLOOR_Y
+			#if tf.velocity.y < 0:
+				#tf.velocity.y = 0

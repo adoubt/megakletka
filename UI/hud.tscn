@@ -1,8 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://dxtmay68ca301"]
+[gd_scene load_steps=22 format=3 uid="uid://dxtmay68ca301"]
 
 [ext_resource type="Script" uid="uid://b1g5iaiket2lr" path="res://UI/HUD.gd" id="1_8uiqn"]
 [ext_resource type="Shader" uid="uid://brfe1o0lxeqv8" path="res://assets/Shaders/SpeedLines.gdshader" id="2_s7b2q"]
 [ext_resource type="Shader" uid="uid://dprejvyaisqwb" path="res://assets/Materials/hud_current_exp.gdshader" id="3_b1lf8"]
+[ext_resource type="Texture2D" uid="uid://brgymp5obg6sn" path="res://addons/icon.svg" id="3_i0a73"]
+[ext_resource type="Shader" uid="uid://dxopctb7n76ft" path="res://assets/Shaders/upgrade_vfx.gdshader" id="3_pf7ph"]
 [ext_resource type="Shader" uid="uid://dbkh0dtt2pwj3" path="res://assets/Materials/hud_current_hp.gdshader" id="4_rnl6m"]
 [ext_resource type="Texture2D" uid="uid://ct1edtmqx1cgi" path="res://assets/icons/Cards/Diamonds.png" id="5_i0a73"]
 [ext_resource type="Script" uid="uid://cfoguovtnuqbo" path="res://UI/upgrade_choice.gd" id="5_pf7ph"]
@@ -26,6 +28,18 @@ shader_parameter/line_faloff = 0.25
 shader_parameter/mask_size = 0.1
 shader_parameter/mask_edge = 0.5
 shader_parameter/animation_speed = 20.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vs5gg"]
+shader = ExtResource("3_pf7ph")
+shader_parameter/amplitude = 728.0
+shader_parameter/frequency = 1.0
+shader_parameter/light_magnitude = 21.0
+shader_parameter/color_spread = 180.0
+shader_parameter/light_distance = 0.53999998792992
+shader_parameter/speed = 0.009977647776509002
+shader_parameter/cut_angle = false
+shader_parameter/angle = 87.0
+shader_parameter/yshift = -0.5600000098348801
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1ui3w"]
 shader = ExtResource("3_b1lf8")
@@ -80,6 +94,20 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 color = Color(1, 1, 1, 0)
+
+[node name="UpgradeVFX" type="TextureRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_vs5gg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_i0a73")
+expand_mode = 3
+flip_v = true
 
 [node name="HUD" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -249,6 +277,7 @@ size_flags_stretch_ratio = 1.4
 theme_override_constants/margin_top = 50
 
 [node name="UpgradeOffers" type="ColorRect" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect"]
+visible = false
 layout_mode = 2
 mouse_filter = 1
 color = Color(0, 0, 0, 0.5)

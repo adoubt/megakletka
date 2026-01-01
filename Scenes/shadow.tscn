@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://choro1j1bjqun"]
+
+[ext_resource type="Shader" uid="uid://bmqoi101rudo2" path="res://assets/Shaders/shadow.gdshader" id="1_wjdoq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8pobm"]
+render_priority = 0
+shader = ExtResource("1_wjdoq")
+shader_parameter/radius = 1.0
+shader_parameter/softness = 0.35
+shader_parameter/alpha = 0.3
+
+[sub_resource type="QuadMesh" id="QuadMesh_rxdv1"]
+material = SubResource("ShaderMaterial_8pobm")
+
+[node name="Shadow" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("QuadMesh_rxdv1")

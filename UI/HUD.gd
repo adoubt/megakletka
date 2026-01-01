@@ -8,6 +8,7 @@ var db: DataBase
 @onready var fps_label: Label = $HUD/VBoxContainer/Control/FPS
 @onready var upgrade_panel:ColorRect = $HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers
 @onready var upgrade_offers: VBoxContainer = $HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer
+@onready var upgrade_vfx: TextureRect = $UpgradeVFX
 
 # === HP ===
 @export var min_hp: float = 0.0

@@ -129,3 +129,20 @@ func _enable(node: Node3D) -> void:
 		var shape = node.get_meta("shape_ref")
 		if is_instance_valid(shape):
 			shape.disabled = false
+
+func get_debug_stats() -> Dictionary:
+	var result: Dictionary = {}
+
+	for scene_path in _prefabs.keys():
+		var free: int = 0
+		if _pools.has(scene_path):
+			free = _pools[scene_path].size()
+
+		var used: int = _usage.get(scene_path, 0)
+		result[scene_path] = {
+			"used": used,
+			"free": free,
+			"total": used + free
+		}
+
+	return result

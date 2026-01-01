@@ -62,10 +62,12 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 	var	damage_value = cs.get_component(weapon_id, "DamageComponent").final_value * cs.get_component(owner_id, "DamageComponent").final_value
 
 	var render_path = null
+	var render_shadow : bool
 	if cs.has_component(weapon_id, "RenderComponent"):
 		var rcomp = cs.get_component(weapon_id, "RenderComponent")
 		if rcomp != null:
 			render_path = rcomp.scene_path
+			render_shadow = rcomp.shadow
 
 	# Хит: если у владельца нет Transform — выходим
 	var owner_tf = cs.get_component(owner_id, "TransformComponent")
@@ -119,7 +121,7 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 		# --- RenderComponent (если есть) ---
 		var r_comp = null
 		if render_path != null:
-			r_comp = RenderComponent.new(render_path, Vector3(1.0, 1.0, 1.0) * cs.get_component(owner_id,"ProjectileRadiusComponent").final_value)
+			r_comp = RenderComponent.new(render_path,render_shadow, Vector3(1.0, 1.0, 1.0) * cs.get_component(owner_id,"ProjectileRadiusComponent").final_value)
 
 		# --- Добавляем компоненты пачкой в понятном порядке ---
 		cs.add_component(ent_id, "TransformComponent", t_comp)

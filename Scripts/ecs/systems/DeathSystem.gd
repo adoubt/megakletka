@@ -8,7 +8,7 @@ func update(_delta: float):
 		var hp = cs.get_component(e_id, "CurrentHpComponent")
 		if hp.final_value > 0:
 			continue
-		cs.add_component(e_id, "DeadComponent", DeadComponent.new(5))
+		cs.add_component(e_id, "DeadComponent", DeadComponent.new(0.1))
 		var pos: Vector3 = cs.get_component(e_id,"TransformComponent").position
 		var xp_reward = cs.get_component(e_id,"XPRewardComponent")
 		if xp_reward:
