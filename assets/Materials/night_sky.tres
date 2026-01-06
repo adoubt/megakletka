@@ -1,0 +1,13 @@
+[gd_resource type="Environment" load_steps=2 format=3 uid="uid://f5b0km3n8yim"]
+
+[ext_resource type="Sky" uid="uid://chle3jp3mirl1" path="res://assets/Materials/sky.tres" id="1_uhkc6"]
+
+[resource]
+background_mode = 2
+sky = ExtResource("1_uhkc6")
+ambient_light_source = 3
+ambient_light_color = Color(0.5058824, 0.5176471, 0.72156864, 1)
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+glow_normalized = true
+volumetric_fog_enabled = true

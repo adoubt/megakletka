@@ -19,10 +19,11 @@ var current_state : String
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 @onready var camera_controller: Node3D = $CameraController
+@onready var death_anim: AnimationPlayer = $DeathAnim
 
 func _ready() -> void:
 	ControllerManager.register(self)
-	
+	ControllerManager.activate_default(self)
 func set_input_enabled(state: bool) -> void:
 	input_enabled = state
 

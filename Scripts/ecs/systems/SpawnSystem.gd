@@ -130,7 +130,9 @@ func spawn_char(char_name: String, position: Vector3) -> int:
 	cs.add_component(entity_id, "CollisionComponent",
 	CollisionComponent.new(
 		CollisionLayers.Layer.PLAYER,
-		CollisionLayers.Layer.ENEMY | CollisionLayers.Layer.ENEMY_PROJECTILE,
+		CollisionLayers.Layer.ENEMY |
+		CollisionLayers.Layer.PLAYER | 
+		CollisionLayers.Layer.WORLD | CollisionLayers.Layer.ENEMY_PROJECTILE,
 		data["collider_radius"]
 	))
 	cs.add_component(entity_id, "ProjectileRadiusComponent", ProjectileRadiusComponent.new())

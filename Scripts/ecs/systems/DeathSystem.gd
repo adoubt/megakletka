@@ -8,7 +8,12 @@ func update(_delta: float):
 		var hp = cs.get_component(e_id, "CurrentHpComponent")
 		if hp.final_value > 0:
 			continue
-		cs.add_component(e_id, "DeadComponent", DeadComponent.new(0.1))
+		
+		if cs.has_component(e_id,"PlayerComponent"): 
+			var death_frame: int = Engine.get_process_frames()
+			cs.add_component(e_id, "RespawnableComponent", RespawnableComponent.new(death_frame))
+			cs.get_component(e_id, "RenderComponent").instance.death_anim.play("grave_on")
+		cs.add_component(e_id, "DeadComponent", DeadComponent.new(0.0))
 		var pos: Vector3 = cs.get_component(e_id,"TransformComponent").position
 		var xp_reward = cs.get_component(e_id,"XPRewardComponent")
 		if xp_reward:

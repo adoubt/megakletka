@@ -29,7 +29,7 @@ func update(_delta: float) -> void:
 		
 		var proj_speed = cs.get_component(card,"ProjectileSpeedComponent")
 		if proj_speed:
-			cs.get_component(owner_id,"ProjectileSpeedComponent").final_value = cs.get_component(owner_id,"ProjectileSpeedComponent").final_value + proj_speed.final_value
+					cs.get_component(owner_id,"ProjectileSpeedComponent").final_value = cs.get_component(owner_id,"ProjectileSpeedComponent").final_value + proj_speed.final_value
 		
 		var weapon_radius = cs.get_component(card,"WeaponRadiusComponent")
 		if weapon_radius:

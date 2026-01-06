@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://cs0k188sh64h4"]
+
+[ext_resource type="PackedScene" uid="uid://8ubrs3e3rwa4" path="res://import/grave/scene.gltf" id="1_27s1w"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5r63f"]
+shading_mode = 2
+diffuse_mode = 3
+specular_mode = 1
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.53303677, 0.53303665, 0.5330369, 1)
+metallic = 0.61
+metallic_specular = 0.55
+roughness = 0.65
+
+[node name="GraveModel" instance=ExtResource("1_27s1w")]
+
+[node name="Sketchfab_model" parent="." index="0"]
+transform = Transform3D(0.98884225, -0.013987454, 0.14830828, -0.14833935, -0.18371125, 0.971723, 0.013653968, -0.9828807, -0.18373635, 0, -0.013948083, 0)
+
+[node name="RootNode" parent="Sketchfab_model/1bd429a08d1446e8ad231739bdbe8e81_fbx" index="0"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="pCube2_lambert1_0" parent="Sketchfab_model/1bd429a08d1446e8ad231739bdbe8e81_fbx/RootNode/pCube2" index="0"]
+material_override = SubResource("StandardMaterial3D_5r63f")

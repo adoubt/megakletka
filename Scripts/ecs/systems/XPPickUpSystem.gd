@@ -29,12 +29,12 @@ func update(delta: float) -> void:
 				continue
 
 		# 2. Если магнитится — летим к игроку
-		pickup.speed += delta * 60.0 # ускорение
+		pickup.speed += delta * 30.0 # ускорение
 		var dir = (target_pos - orb_transform.position).normalized()
 		orb_transform.position += dir * pickup.speed * delta
 
 		# 3. Если долетел — подбираем
-		if orb_transform.position.distance_to(target_pos) < 0.5:
+		if orb_transform.position.distance_to(target_pos) < 0.1:
 			# добавляем XP, если есть XPRewardComponent
 			var reward = cs.get_component(orb_id, "XPRewardComponent")
 			if reward:

@@ -2,7 +2,7 @@ extends BaseSystem
 class_name CollisionSystem
 
 var contact_cache := {}
-var cell_size: float = 0.2 # подбирай под радиусы мобов/пуль
+var cell_size: float = 0.9 # подбирай под радиусы мобов/пуль
 ###тут будет баг в дальнейшем, когда енеми встает в модельку и не коцает, думаю имеет смысл для этого чистить кеш между кулдаунами или чот такое
 func update(_delta: float) -> void:
 	
@@ -116,8 +116,11 @@ func _process_collision(a:int, b:int, new_cache: Dictionary) -> void:
 		if s_col.is_player_projectile() and t_col.is_enemy():
 			_register_hit(source, target, key, new_cache)
 		elif s_col.is_enemy() and t_col.is_enemy():
-			if not cs.has_component(source, "ClimbComponent"):
-				cs.add_component(source, "ClimbComponent", ClimbComponent.new())
+			var climber = _choose_climber_by_target(a, b)
+			if climber != -1 and not cs.has_component(climber, "ClimbComponent"):
+				cs.add_component(climber, "ClimbComponent", ClimbComponent.new())
+			#if not cs.has_component(source, "ClimbComponent"):
+				#cs.add_component(source, "ClimbComponent", ClimbComponent.new())
 		elif s_col.is_enemy_projectile() and t_col.is_player():
 			_register_hit(source, target, key, new_cache)
 		elif s_col.is_enemy() and t_col.is_player():
@@ -148,3 +151,26 @@ func _to_cell(pos: Vector3) -> Vector3i:
 		int(pos.y / cell_size),
 		int(pos.z / cell_size)
 	)
+	
+func _choose_climber_by_target(a:int, b:int) -> int:
+	var a_target = cs.get_component(a, "TargetComponent")
+	var b_target = cs.get_component(b, "TargetComponent")
+
+	if not a_target or not b_target:
+		return -1
+
+	if a_target.target_id != b_target.target_id:
+		return -1
+
+	var target_tf = cs.get_component(a_target.target_id, "TransformComponent")
+	if not target_tf:
+		return -1
+
+	var a_tf = cs.get_component(a, "TransformComponent")
+	var b_tf = cs.get_component(b, "TransformComponent")
+
+	var da = a_tf.position.distance_squared_to(target_tf.position)
+	var db = b_tf.position.distance_squared_to(target_tf.position)
+
+	# дальше от цели → climber
+	return a if da > db else b

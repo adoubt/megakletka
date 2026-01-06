@@ -187,3 +187,10 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.371269, -5.0352283, 0)
 mesh = SubResource("ArrayMesh_eg8jg")
 skeleton = NodePath("")
+
+[node name="Node" type="Node3D" parent="."]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -2.0784817, 0.98167443)
+light_color = Color(0.89411765, 0.827451, 0.7058824, 1)
+omni_range = 3.0

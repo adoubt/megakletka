@@ -33,9 +33,9 @@ shader = ExtResource("2_hl7n5")
 shader_parameter/amplitude = 1.0
 shader_parameter/bounce_speed = 3.0
 shader_parameter/rotate_speed = 2.0
-shader_parameter/tint_color = Color(0.2, 0.6, 1, 0.9843137)
-shader_parameter/fresnel_strength = 2.5
-shader_parameter/rim_strength = 5.0
+shader_parameter/tint_color = Color(0.30588236, 0.84313726, 1, 0.5176471)
+shader_parameter/fresnel_intensity = 0.3
+shader_parameter/fresnel_blue_boost = 0.4
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hl7n5"]
 transparency = 1
@@ -89,8 +89,18 @@ color_ramp = SubResource("GradientTexture1D_kpvrd")
 
 [node name="romb" type="Node3D"]
 
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.054570287, 0)
+light_color = Color(0, 1, 1, 1)
+distance_fade_enabled = true
+omni_range = 1.0
+
 [node name="Cone_001" type="MeshInstance3D" parent="."]
 transform = Transform3D(-0.2, -3.019916e-08, 0, 3.019916e-08, -0.2, 0, 0, 0, 0.2, 0, 0.225, 0)
+cast_shadow = 0
+lod_bias = 128.0
+ignore_occlusion_culling = true
+gi_mode = 0
 mesh = SubResource("ArrayMesh_vwkwn")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("ShaderMaterial_l3sqc")

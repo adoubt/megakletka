@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=4 uid="uid://csuaael2v81ju"]
+[gd_scene load_steps=55 format=4 uid="uid://csuaael2v81ju"]
 
 [ext_resource type="Script" uid="uid://cbd1ujwj68mhr" path="res://scripts/Player/player_controller.gd" id="1_4wape"]
 [ext_resource type="Script" uid="uid://carpmnj3q04tb" path="res://scripts/rigman.gd" id="4_825xp"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://bsr0t03bvpau5" path="res://scripts/Player/camera_controller.gd" id="13_0u84n"]
 [ext_resource type="Script" uid="uid://bdsp5m5cry51s" path="res://scripts/Player/States/dying.gd" id="14_0u84n"]
 [ext_resource type="Script" uid="uid://c5kdnjnomocws" path="res://scripts/Player/camera_follow.gd" id="14_esmjy"]
+[ext_resource type="PackedScene" uid="uid://cs0k188sh64h4" path="res://Scenes/Objects/grave.tscn" id="16_6tu5v"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q2k22"]
 radius = 0.15
@@ -714,6 +715,181 @@ _data = {
 radius = 0.025
 height = 0.05
 
+[sub_resource type="Animation" id="Animation_0objx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GraveModel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GraveModel:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -2, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Model:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Model:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_w71ue"]
+resource_name = "grave_off"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GraveModel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.93333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("GraveModel")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array()
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GraveModel:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.16666667, 0.96666664),
+"transitions": PackedFloat32Array(5.6568694, 0.43527448),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.4, -2, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Model:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.13333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Model:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.93333334),
+"transitions": PackedFloat32Array(1, 0.14358725),
+"update": 0,
+"values": [Vector3(0, -2.245, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_spxdj"]
+resource_name = "grave_on"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GraveModel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.019999996, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("GraveModel")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array()
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GraveModel:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.8666667),
+"transitions": PackedFloat32Array(0.43527448, 0.5547863),
+"update": 0,
+"values": [Vector3(-0.4, -2, 0), Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Model:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.9666667),
+"transitions": PackedFloat32Array(12.553328, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -2.245, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Model:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.9666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1e6p3"]
+_data = {
+&"RESET": SubResource("Animation_0objx"),
+&"grave_off": SubResource("Animation_w71ue"),
+&"grave_on": SubResource("Animation_spxdj")
+}
+
 [node name="Player" type="CharacterBody3D" groups=["controllable", "player"]]
 collision_layer = 2
 script = ExtResource("1_4wape")
@@ -1259,7 +1435,17 @@ metadata/_custom_type_script = "uid://cgcrnfwyr7oa7"
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 5, 0)
+light_color = Color(0.89411765, 0.827451, 0.7058824, 1)
 distance_fade_enabled = true
 distance_fade_begin = 2.9
 spot_range = 6.0
 spot_angle = 36.562496
+
+[node name="DeathAnim" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_1e6p3")
+}
+
+[node name="GraveModel" parent="." instance=ExtResource("16_6tu5v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+visible = false

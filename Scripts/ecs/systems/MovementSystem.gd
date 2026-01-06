@@ -1,14 +1,14 @@
 extends BaseSystem
 class_name MovementSystem
 
-const GRAVITY := -9.8
-const CLIMB_SPEED := 2.0
-const FLOOR_Y := 0.6
+const GRAVITY :float= -9.8
+const CLIMB_SPEED :float= 5.0
+const FLOOR_Y :float= 0.6
 
 func update(delta: float) -> void:
 	var entities := get_entities_with(
-		["TransformComponent", "MoveSpeedComponent", "TargetComponent"],
-		["ProjectileComponent"]
+		["TransformComponent", "MoveSpeedComponent"],
+		["DeadComponent"]
 	)
 
 	for id in entities:
@@ -45,15 +45,52 @@ func update(delta: float) -> void:
 		
 		if tf.position.y + cs.get_component(id, "CollisionComponent").radius > FLOOR_Y:
 			tf.velocity.y += GRAVITY * delta
+		#elif cs.has_component(id, "ClimbComponent"):
+			#tf.velocity.y = 0.0
+			#tf.velocity += Vector3( 
+				#randf() * -CLIMB_SPEED if (abs(tf.velocity.x) > abs(tf.velocity.z)) else randf() * CLIMB_SPEED,
+				#randf() * CLIMB_SPEED,
+				#randf() * -CLIMB_SPEED if (abs(tf.velocity.z) > abs(tf.velocity.x)) else randf() * CLIMB_SPEED
+				#) 
+	#
+			#cs.remove_component(id, "ClimbComponent")
 		elif cs.has_component(id, "ClimbComponent"):
-			tf.velocity.y = max(tf.velocity.y, CLIMB_SPEED)
+			var vel :Vector3= tf.velocity
 
+			# направление вперёд (куда моб ХОТЕЛ идти)
+			var forward := Vector3(vel.x, 0, vel.z)
+			var _speed := forward.length()
 
+			if _speed > 0.01:
+				forward = forward.normalized()
+			else:
+				forward = Vector3.ZERO
+
+			# вектор вбок (перпендикуляр)
+			var side := Vector3(-forward.z, 0, forward.x)
+
+			# случайно влево или вправо
+			if randf() < 0.5:
+				side = -side
+
+			# ---- ПАРАМЕТРЫ ----
+			var side_push := CLIMB_SPEED * 0.6
+			var brake := 0.5 # 0.0 = стоп, 1.0 = без тормоза
+
+			# ---- ПРИМЕНЕНИЕ ----
+			vel.x = forward.x * _speed * brake + side.x * side_push
+			vel.z = forward.z * _speed * brake + side.z * side_push
+			vel.z = CLIMB_SPEED 
+			# слегка прижать вниз, чтобы не подпрыгивал
+			#vel.y = min(vel.y, 0.0)
+
+			tf.velocity = vel
 			cs.remove_component(id, "ClimbComponent")
+
 		else: 
 			tf.velocity.y = FLOOR_Y
 		# ---- ИНТЕГРАЦИЯ ----
-		tf.position += tf.velocity * delta
+		tf.position += tf.velocity * delta 
 
 		# ---- ПОЛ ----
 		#var col = cs.get_component(id, "CollisionComponent")

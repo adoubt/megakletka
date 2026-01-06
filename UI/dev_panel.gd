@@ -5,7 +5,8 @@ class_name DevPanel
 
 @onready var list: VBoxContainer = $MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2/List
 
-@onready var systems_list: VBoxContainer = $MarginContainer/HBoxContainer/SystemsList
+@onready var systems_list: VBoxContainer = $MarginContainer/HBoxContainer/ScrollContainer/SystemsList
+
 
 # кеш строк
 var system_rows :Dictionary= {} # system_name -> HBoxContainer

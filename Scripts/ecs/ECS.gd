@@ -23,10 +23,10 @@ func initialize():
 	object_pool.prewarm({
 	"res://Scenes/Enemy/Aboba.tscn": 500,
 	"res://Scenes/shadow.tscn": 500,
+	"res://Scenes/grave.tscn": 3,
+	"res://Scenes/romb.tscn": 20
 	
-	
-	
-	
+
 })
 	grid = SpatialGrid.new()
 	

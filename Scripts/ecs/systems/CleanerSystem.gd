@@ -10,6 +10,8 @@ func update(_delta: float):
 	var entities = get_entities_with(["DeadComponent"])
 	for entity_id in entities:
 		var dead = cs.get_component(entity_id,"DeadComponent")
+		if cs.has_component(entity_id, "RespawnableComponent") :
+			continue
 		if dead.decay_time <=0:
 			# Вернуть render-узел в пул
 			if cs.has_component(entity_id, "RenderComponent"):

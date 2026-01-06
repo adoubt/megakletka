@@ -14,12 +14,6 @@ extends Node3D
 var current_camera : Camera3D
 
 
-func _ready() -> void:
-	pass
-	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
-
-
 func _unhandled_input(event: InputEvent) -> void:
 	if UIManager.game_paused: return
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:

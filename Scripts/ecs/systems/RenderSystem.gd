@@ -6,7 +6,7 @@ class_name RenderSystem
 const SHADOW_Y := 0.05
 const SHADOW_SCENE : String = "res://Scenes/shadow.tscn"
 var pool_system: ObjectPool
-var smoothness := 30.0 # чем больше, тем быстрее догоняет (в кадрах/сек)
+var smoothness := 200.0 # чем больше, тем быстрее догоняет (в кадрах/сек)
 
 
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _pool_system:ObjectPool):
