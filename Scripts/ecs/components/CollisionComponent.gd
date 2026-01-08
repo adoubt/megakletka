@@ -25,5 +25,8 @@ func is_player_projectile() -> bool:
 func is_enemy_projectile() -> bool: 
 	return (collision_layer & CollisionLayers.Layer.ENEMY_PROJECTILE) != 0
 
+func is_world() -> bool:
+	return (collision_layer & CollisionLayers.Layer.WORLD) != 0
+	
 func is_projectile() -> bool: 
 	return is_player_projectile() or is_enemy_projectile()

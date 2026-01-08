@@ -1,10 +1,11 @@
 extends BaseSystem
 class_name LevelUpSelectionSystem
-var spawn_system: SpawnSystem
 
-func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _spawn_system: SpawnSystem):
+var event_bus: EventBus
+
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
 	super._init(_entity_manager, _component_store)
-	spawn_system = _spawn_system
+	event_bus = _event_bus
 	
 func update(_delta: float) -> void:
 	var offers = get_entities_with(["LevelUpOfferComponent"])
@@ -13,17 +14,24 @@ func update(_delta: float) -> void:
 
 		match offer.chosen_index:
 			-1:
-				continue  # ждём выбора
+				continue  # Waiting for the choise
 			-2:
-				# Реролл — просто пересоздаём оффер, очки не тратим
+				# Reroll
 				cs.remove_component(e_id, "LevelUpOfferComponent")
 				continue
 			_:
-				# Выбран апгрейд
-				var level = cs.get_component(e_id, "LevelComponent")
+				# Upgrade Chosen
+				var level = cs.get_component(offer.owner_id, "LevelComponent")
 				if level:
 					level.skill_points -= 1
 				
-				spawn_system.spawn_card(offer.choices[offer.chosen_index], offer.owner_id)
-				cs.remove_component(e_id, "LevelUpOfferComponent")
 				
+				event_bus.emit("create_item", { "item_name": offer.choices[offer.chosen_index],
+				"owner_id": offer.owner_id
+				})
+				var instance = cs.get_component(offer.owner_id, "RenderComponent").instance
+				if instance: instance.hide_level_up()	
+				
+				cs.remove_component(e_id, "LevelUpOfferComponent")
+				cs.remove_component(offer.owner_id, "ActiveOfferComponent")
+				em.destroy_entity(e_id)

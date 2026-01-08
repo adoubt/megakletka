@@ -73,6 +73,7 @@ func get_elevator_scan() -> Area3D:
 		return null
 
 	for room in rooms_container.get_children():
+		#if room.has_method("")
 		if "ElevatorRoom" in room.name:
 			return room.get_node_or_null("Elevator/Scan")
 

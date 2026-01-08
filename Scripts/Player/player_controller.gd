@@ -1,6 +1,7 @@
 extends CharacterBody3D
 class_name Player
 
+@onready var level_up_pop_up: Node3D = $LevelUpPopUp
 
 var current_state : String
 @export var max_speed: float = 3.0
@@ -30,3 +31,7 @@ func set_input_enabled(state: bool) -> void:
 func get_current_camera() -> Camera3D:
 	return camera_controller.camera
 	
+func show_level_up():
+	level_up_pop_up.show()
+func hide_level_up():
+	level_up_pop_up.hide()

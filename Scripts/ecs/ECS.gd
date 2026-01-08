@@ -1,5 +1,4 @@
-#Autoload
-extends Node3D
+extends Node
 class_name ECS
 
 var entity_manager: EntityManager 
@@ -23,20 +22,25 @@ func initialize():
 	object_pool.prewarm({
 	"res://Scenes/Enemy/Aboba.tscn": 500,
 	"res://Scenes/shadow.tscn": 500,
-	"res://Scenes/grave.tscn": 3,
-	"res://Scenes/romb.tscn": 20
+	"res://Scenes/Objects/grave.tscn": 3,
+	"res://Scenes/romb.tscn": 20,
+	"res://Scenes/Popups/InteractPopup.tscn":2,
+	"res://Scenes/Popups/LevelUpPopup.tscn":1,
+	"res://Scenes/Popups/DamagePopup.tscn":30,
+	"res://Scenes/POI/fortune_teller.tscn":2,
 	
 
 })
 	grid = SpatialGrid.new()
 	
 	
-	##Вход
+	system_manager.add_system(RunInitSystem.new(entity_manager, component_store,database, event_bus))
+	system_manager.add_system(CombatSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(SpatialGridSystem.new(entity_manager, component_store, grid))
 	
 	system_manager.add_system(ControllerSyncSystem.new(entity_manager, component_store))
-	var spawn_system: SpawnSystem = SpawnSystem.new(entity_manager, component_store,database)
-	system_manager.add_system(spawn_system)
+	system_manager.add_system(EnemySpawnSystem.new(entity_manager, component_store,database, event_bus))
+	system_manager.add_system(FactorySystem.new(entity_manager, component_store,database, event_bus))
 	system_manager.add_system(StatsRecalculationSystem.new(entity_manager, component_store))
 	
 	system_manager.add_system(WeaponSystem.new(entity_manager, component_store))
@@ -49,20 +53,23 @@ func initialize():
 	system_manager.add_system(HitSystem.new(entity_manager, component_store))
 	
 	system_manager.add_system(DamagePopupSystem.new(entity_manager, component_store))
-	system_manager.add_system(LevelUpPopUpSystem.new(entity_manager, component_store))
+	#system_manager.add_system(LevelUpPopUpSystem.new(entity_manager, component_store, event_bus))
 	system_manager.add_system(ProjectileSystem.new(entity_manager,component_store))
 	
 	system_manager.add_system(HealthSystem.new(entity_manager, component_store))
-	
+	system_manager.add_system(InteractionProximitySystem.new(entity_manager, component_store))
+	system_manager.add_system(InteractionUISystem.new(entity_manager, component_store))
 	system_manager.add_system(TargetSystem.new(entity_manager, component_store))
 	system_manager.add_system(XPPickUpSystem.new(entity_manager,component_store))
 	system_manager.add_system(LevelSystem.new(entity_manager,component_store))
+	system_manager.add_system(LevelUpSelectionSystem.new(entity_manager,component_store, event_bus))
 	system_manager.add_system(LevelUpOfferSystem.new(entity_manager,component_store,event_bus,database))
-	system_manager.add_system(LevelUpSelectionSystem.new(entity_manager,component_store,spawn_system))
+	system_manager.add_system(Interactionsystem.new(entity_manager,component_store))
 	system_manager.add_system(CleanerSystem.new(entity_manager, component_store, object_pool))
 	system_manager.add_system(DEVPanelSystem.new(entity_manager, component_store, object_pool))
-	
-	system_manager.add_system(HUDSystem.new(entity_manager, component_store))
+
+	system_manager.add_system(HUDSystem.new(entity_manager, component_store, event_bus))
+	system_manager.add_system(FloorActivationSystem.new(entity_manager, component_store, database, event_bus, object_pool))
 	system_manager.add_system(RenderSystem.new(entity_manager, component_store, object_pool))
 	
 	

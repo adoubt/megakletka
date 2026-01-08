@@ -8,6 +8,8 @@ extends Node
 @onready var main_menu = preload("res://UI/main_menu.tscn").instantiate()
 @onready var dev_panel = preload("res://UI/dev_panel.tscn").instantiate()
 @onready var hud = preload("res://UI/hud.tscn").instantiate()
+@onready var wagon_panel = preload("res://UI/wagon_panel.tscn").instantiate()
+
 var upgrade_menu 
 var panels: Dictionary = {}
 var force_cursor_visible: bool = false
@@ -18,6 +20,18 @@ var canvas :CanvasLayer
 var game_paused: bool = false
 # ========== PUBLIC API ==========
 
+func open_wagon_panel() -> void:
+	open_panel("WagonPanel")
+
+func close_wagon_panel() -> void:
+	close_panel("WagonPanel")
+
+func toggle_wagon_panel() -> void:
+	if is_panel_open("WagonPanel"):
+		close_panel("WagonPanel")
+	else:
+		open_panel("WagonPanel") 
+	
 func open_main_menu() -> void:
 	open_panel("MainMenu")
 	game_paused = false
@@ -151,7 +165,7 @@ func _ready() -> void:
 	canvas.add_child(settings_menu)
 
 	canvas.add_child(dev_panel)
-	
+	canvas.add_child(wagon_panel)
 	
 
 	
@@ -162,8 +176,8 @@ func _ready() -> void:
 		"Settings": settings_menu,
 		"DEV_PANEL" : dev_panel,
 		"UpgradeMenu": hud.upgrade_panel,
-		"UpgradeVFX": hud.upgrade_vfx
-		
+		"UpgradeVFX": hud.upgrade_vfx,
+		"WagonPanel": wagon_panel
 	}
 	
 	close_all()
@@ -175,8 +189,8 @@ func _update_ui_state() -> void:
 	var ui_open := _any_ui_open() or force_cursor_visible
 	var active_node := ControllerManager.get_active()
 
-	if active_node and active_node.has_method("set_input_enabled"):
-		active_node.set_input_enabled(not ui_open)
+	#if active_node and active_node.has_method("set_input_enabled"):
+		#active_node.set_input_enabled(not ui_open)
 
 	_show_mouse(ui_open)
 
@@ -238,3 +252,5 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("upgrade_menu"):
 		if hud.has_upgrade and SceneManager.current_scene_name in ["BigRoomTest","GameTest"] and not escape_menu.visible:
 			toggle_upgrade_menu()
+
+	

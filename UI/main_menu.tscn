@@ -39,10 +39,17 @@ theme = ExtResource("2_tk8dj")
 
 [node name="GameTest" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-text = "GameTest"
+text = "New Run"
+
+[node name="Join" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Join
+"
 
 [node name="Button2" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+disabled = true
 text = "BIG ROOM TEST"
 
 [node name="Settings" type="Button" parent="VBoxContainer"]
@@ -55,6 +62,7 @@ theme_override_styles/normal = ExtResource("3_d8nwk")
 text = "EXIT"
 
 [connection signal="pressed" from="VBoxContainer/GameTest" to="." method="_on_game_test_pressed"]
+[connection signal="pressed" from="VBoxContainer/Join" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]

@@ -10,7 +10,7 @@ func update(delta: float) -> void:
 		var weapon = cs.get_component(weapon_id, "WeaponComponent")
 		if not weapon:
 			continue
-		# ✅ Проверяем владельца
+		
 		var owner_id = weapon.owner_id
 		if owner_id == -1:
 			continue
@@ -32,7 +32,7 @@ func update(delta: float) -> void:
 				spawn_aura(weapon.owner_id, weapon_id)
 			"carrot":
 				spawn_cheese(weapon.owner_id, weapon_id)
-		# Берём скорость атаки владельца
+	
 		var attack_speed = 1.0
 		if cs.has_component(owner_id, "AttackSpeedComponent"):
 			attack_speed = cs.get_component(owner_id,"AttackSpeedComponent").final_value
@@ -42,7 +42,7 @@ func update(delta: float) -> void:
 
 
 func spawn_cheese(owner_id: int, weapon_id: int) -> void:
-	# 1) Помечаем старые орбитальные снаряды владельца как Dead
+	
 	var existing = get_entities_with(["ProjectileComponent", "OrbitComponent"])
 	for e in existing:
 		var p = cs.get_component(e, "ProjectileComponent")
@@ -50,7 +50,7 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 			if not cs.has_component(e, "DeadComponent"):
 				cs.add_component(e, "DeadComponent", DeadComponent.new(0.0))
 
-	# 2) Берём count
+	
 
 	var count = int(cs.get_component(weapon_id, "ProjectileCountComponent").final_value
 	) + int(cs.get_component(owner_id, "ProjectileCountComponent").final_value) 
@@ -69,20 +69,20 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 			render_path = rcomp.scene_path
 			render_shadow = rcomp.shadow
 
-	# Хит: если у владельца нет Transform — выходим
+	
 	var owner_tf = cs.get_component(owner_id, "TransformComponent")
 	if owner_tf == null:
 		return
 
-	# 3) Спавним новые снаряды (равномерно по окружности)
+	
 	for i in range(count):
 		var ent_id = em.create_entity()
 
-		# --- PendingDamageComponent ---
+		
 		var dmg_comp := DamageComponent.new()
-		# используем поле amount (если у тебя другое имя — замени)
+		
 		dmg_comp.final_value = damage_value
-		# --- CollisionComponent ---
+		
 		var proj_radius = cs.get_component(weapon_id,"ProjectileRadiusComponent").final_value * cs.get_component(owner_id,"ProjectileRadiusComponent").final_value
 		
 		var col_comp := CollisionComponent.new(
@@ -111,19 +111,19 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 		orbit_comp.tilt_y = randf_range(-5, 5)
 		orbit_comp.tilt_z = randf_range(-5, 5)
 
-		# --- TransformComponent (инициализация и позиция) ---
+		
 		var t_comp := TransformComponent.new()
 		var x = cos(orbit_comp.offset_angle) * orbit_comp.radius
 		var z = sin(orbit_comp.offset_angle) * orbit_comp.radius
 		
 		t_comp.position = owner_tf.position + Vector3(x, orbit_comp.height, z)
 
-		# --- RenderComponent (если есть) ---
+	
 		var r_comp = null
 		if render_path != null:
 			r_comp = RenderComponent.new(render_path,render_shadow, Vector3(1.0, 1.0, 1.0) * cs.get_component(owner_id,"ProjectileRadiusComponent").final_value)
 
-		# --- Добавляем компоненты пачкой в понятном порядке ---
+		
 		cs.add_component(ent_id, "TransformComponent", t_comp)
 		cs.add_component(ent_id, "DamageComponent", dmg_comp)
 		cs.add_component(ent_id, "CollisionComponent", col_comp)
@@ -136,14 +136,14 @@ func spawn_cheese(owner_id: int, weapon_id: int) -> void:
 		
 		
 func spawn_aura(owner_id: int, weapon_id: int) -> void:
-	# Проверяем, есть ли уже аура у этого владельца
+
 	var existing = get_entities_with(["AuraComponent"])
 	for e in existing:
 		var aura = cs.get_component(e, "AuraComponent")
 		if aura.owner_id == owner_id:
-			return # уже существует, ничего не делаем
+			return 
 
-	# создаём ауру
+
 	var aura_entity = em.create_entity()
 
 	var radius = cs.get_component(weapon_id, "WeaponRadiusComponent").final_value * cs.get_component(owner_id, "WeaponRadiusComponent").final_value
@@ -167,7 +167,7 @@ func spawn_aura(owner_id: int, weapon_id: int) -> void:
 		var r = cs.get_component(weapon_id, "RenderComponent")
 		cs.add_component(aura_entity, "RenderComponent", RenderComponent.new(r.scene_path))
 
-# --- Dexecutioner: прямой удар с шансом на execute ---
+
 func spawn_dexecutioner(owner_id: int, weapon_id: int) -> void:
 	var dex_id = em.create_entity()
 	
@@ -181,7 +181,7 @@ func spawn_dexecutioner(owner_id: int, weapon_id: int) -> void:
 	dmg.execute_chance = 0.05 # 5% 
 	dmg.pierce = true
 	
-	# Устанавливаем позицию около владельца
+	
 	var owner_tf = cs.get_component(owner_id, "TransformComponent")
 	var new_pos = owner_tf.position + Vector3(1,0,1)
 	var col_comp := CollisionComponent.new(

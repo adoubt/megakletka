@@ -1,6 +1,7 @@
-[gd_scene load_steps=55 format=4 uid="uid://csuaael2v81ju"]
+[gd_scene load_steps=56 format=4 uid="uid://csuaael2v81ju"]
 
 [ext_resource type="Script" uid="uid://cbd1ujwj68mhr" path="res://scripts/Player/player_controller.gd" id="1_4wape"]
+[ext_resource type="PackedScene" uid="uid://cg8diy5mqdnwf" path="res://Scenes/Popups/LevelUpPopup.tscn" id="2_spxdj"]
 [ext_resource type="Script" uid="uid://carpmnj3q04tb" path="res://scripts/rigman.gd" id="4_825xp"]
 [ext_resource type="AnimationLibrary" uid="uid://dfguaj6wqckad" path="res://assets/Animations/Pack.res" id="5_i5acl"]
 [ext_resource type="Material" uid="uid://ccu4uxuxbmfhx" path="res://assets/Materials/rigman_black1.tres" id="5_ji083"]
@@ -895,6 +896,9 @@ collision_layer = 2
 script = ExtResource("1_4wape")
 main_player = true
 
+[node name="LevelUpPopUp" parent="." instance=ExtResource("2_spxdj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3836733, 0)
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.53125, 0)
 shape = SubResource("CapsuleShape3D_q2k22")
@@ -1180,6 +1184,7 @@ bone_idx = 5
 
 [node name="face" type="Node3D" parent="Model/Armature/GeneralSkeleton/mixamorig_Head"]
 transform = Transform3D(0.9999999, -3.5730297e-12, -9.932313e-14, 3.5730305e-12, 0.99999964, -1.5062902e-07, 9.932366e-14, 1.5062898e-07, 0.99999994, 0.00012822317, 1.584503, 0.020389583)
+visible = false
 
 [node name="brown_left" type="MeshInstance3D" parent="Model/Armature/GeneralSkeleton/mixamorig_Head/face"]
 transform = Transform3D(7.275958e-12, 0.1529421, -1.4551915e-11, -0.0636677, -2.910383e-11, -2.3283064e-10, 1.8626451e-09, 0, 0.02208977, 0.18591443, -0.33019638, 0.77170056)
@@ -1433,14 +1438,6 @@ metadata/_custom_type_script = "uid://cgcrnfwyr7oa7"
 script = ExtResource("14_0u84n")
 metadata/_custom_type_script = "uid://cgcrnfwyr7oa7"
 
-[node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 5, 0)
-light_color = Color(0.89411765, 0.827451, 0.7058824, 1)
-distance_fade_enabled = true
-distance_fade_begin = 2.9
-spot_range = 6.0
-spot_angle = 36.562496
-
 [node name="DeathAnim" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_1e6p3")
@@ -1449,3 +1446,12 @@ libraries = {
 [node name="GraveModel" parent="." instance=ExtResource("16_6tu5v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 visible = false
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.03938185, 0.99922425, 0, -0.99922425, -0.03938185, 0, 4.074031, 0)
+light_color = Color(1, 1, 0.3764706, 1)
+light_size = 0.469
+light_bake_mode = 1
+distance_fade_enabled = true
+spot_range = 7.3136487
+spot_angle = 57.34632

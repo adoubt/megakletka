@@ -1,10 +1,10 @@
 extends BaseSystem
 class_name CleanerSystem
-var pool_system : ObjectPool
+var object_pool : ObjectPool
 
-func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _pool_system:ObjectPool):
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _object_pool:ObjectPool):
 	super._init(_entity_manager, _component_store)
-	pool_system = _pool_system
+	object_pool = _object_pool
 	
 func update(_delta: float):
 	var entities = get_entities_with(["DeadComponent"])
@@ -17,9 +17,9 @@ func update(_delta: float):
 			if cs.has_component(entity_id, "RenderComponent"):
 				var render = cs.get_component(entity_id, "RenderComponent")
 				if render.instance:
-					pool_system.release_instance(render.scene_path, render.instance)
+					object_pool.release_instance(render.scene_path, render.instance)
 				if render.shadow_instance:
-					pool_system.release_instance("res://Scenes/shadow.tscn", render.shadow_instance)
+					object_pool.release_instance("res://Scenes/shadow.tscn", render.shadow_instance)
 			# ✅ Сначала удаляем компоненты
 			cs.remove_all_components_for_entity(entity_id)
 

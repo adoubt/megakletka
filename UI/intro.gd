@@ -13,6 +13,7 @@ func _ready():
 func _input(event):
 	if not pressed and event.is_pressed():
 		pressed = true
+		
 		AudioManager.play_ui_sound("game_start")
 		start_transition()
 

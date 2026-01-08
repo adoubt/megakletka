@@ -11,4 +11,5 @@ func subscribe(event_name: String, callback: Callable):
 func emit(event_name: String, data = null):
 	if listeners.has(event_name):
 		for callback in listeners[event_name]:
-			callback.call(data)
+			
+			callback.call(data) if data else callback.call()

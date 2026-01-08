@@ -11,7 +11,27 @@ var enemy_configs = {
 			"xp_reward": 2.0
 		}
 	}
-
+	
+var poi_configs = {
+		"fortune_teller": {
+			"scene": "res://Scenes/POI/fortune_teller.tscn",
+			"interact_radius": 2.5,
+			"collider_radius":1.25,
+			"drop_weight": 30,
+			"target_priority" : 1
+		},
+		"wagon": {
+			"scene": "res://Scenes/Objects/wagon.tscn",
+			
+			"interact_radius": 1.5,
+			"collider_radius":1.0,
+			"target_priority" : 1
+		},
+}
+		#"chest_big": {"scene": "...", "drop_weight": 1},
+		#"altar": {"scene": "...", "drop_weight": 2},
+		#"merchant": {"scene": "...", "drop_weight": 4},
+	
 
 var char_configs = {
 		"Rigman": {
@@ -20,7 +40,8 @@ var char_configs = {
 			"attack_speed_mult":1,
 			"collider_radius": 0.15,
 			"movespeed": 10,
-			"xp_pickup_range": 1.5
+			"xp_pickup_range": 1.5,
+			"weapon_name" : "carrot"
 		}
 	}
 	
@@ -56,7 +77,7 @@ var upgrades_configs = {
 	
 	}
 
-var card_configs = {
+var item_configs = {
 	"heart_card": {
 		"name": "Heart Boost",
 		"suit": "hearts",

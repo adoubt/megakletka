@@ -2,7 +2,7 @@
 extends Control
 
 const ANIMATION_DURATION: float = 0.7
-var owner_id:int = -1
+var offer_id:int = -1
 var has_upgrade: bool = false
 var db: DataBase
 @onready var fps_label: Label = $HUD/VBoxContainer/Control/FPS
@@ -108,23 +108,26 @@ func get_tween() -> Tween:
 	
 func on_upgrade_button_pressed(index: int):
 	print('Upgrade btn chosen(delete massage 107 )')
-	# e_id — айдишник игрока (или оффера)
+
 	event_bus.emit("upgrade_chosen", {
-	"entity_id": owner_id,
+	"entity_id": offer_id,
 	"choice_index": index
 })
+	has_upgrade = false
 	UIManager.close_upgrade_menu()
-
 	
 	
-func setup_upgrade_buttons(owner_id: int,offer: Array) -> void:
+	
+func setup_upgrade_buttons(_offer_id,offer: Array) -> void:
+	offer_id = _offer_id
+	has_upgrade = true
 	# Перебираем все кнопки внутри контейнера
 	for i in range(upgrade_offers.get_child_count()):
 		var btn := upgrade_offers.get_child(i) as TextureButton
 
 		if i < offer.size():
 			btn.visible = true
-			var data = db.card_configs[str(offer[i])]
+			var data = db.item_configs[str(offer[i])]
 			btn.choice_name.text = data["name"]
 			btn.icon.texture = load(data["icon"])
 			btn.choice_decs.text = data["description"]

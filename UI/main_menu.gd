@@ -17,8 +17,14 @@ func _on_exit_pressed() -> void:
 
 
 func _on_game_test_pressed() -> void:
+
+
 	SceneManager.go_to_game_test()
 
 
 func _on_button_2_pressed() -> void:
 	SceneManager._go_to_big_room_test()
+
+
+func _on_join_pressed() -> void:
+	SceneManager.go_to_game_test()

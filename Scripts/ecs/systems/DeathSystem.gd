@@ -13,6 +13,7 @@ func update(_delta: float):
 			var death_frame: int = Engine.get_process_frames()
 			cs.add_component(e_id, "RespawnableComponent", RespawnableComponent.new(death_frame))
 			cs.get_component(e_id, "RenderComponent").instance.death_anim.play("grave_on")
+			cs.get_component(e_id, "RenderComponent").instance.hide_level_up()
 		cs.add_component(e_id, "DeadComponent", DeadComponent.new(0.0))
 		var pos: Vector3 = cs.get_component(e_id,"TransformComponent").position
 		var xp_reward = cs.get_component(e_id,"XPRewardComponent")
