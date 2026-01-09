@@ -1,15 +1,17 @@
-[gd_scene load_steps=34 format=4 uid="uid://bkfn061oy0fu0"]
+[gd_scene load_steps=44 format=4 uid="uid://bkfn061oy0fu0"]
 
 [ext_resource type="Environment" uid="uid://f5b0km3n8yim" path="res://assets/Materials/night_sky.tres" id="1_rfiin"]
 [ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud.tscn" id="4_3n25w"]
-[ext_resource type="PackedScene" uid="uid://ouaivsktf5ss" path="res://Scenes/Rooms/wagon_poi.tscn" id="6_rb7ub"]
-[ext_resource type="Script" uid="uid://ccdlmovr0p2j8" path="res://scripts/Unsorted/camera_3d.gd" id="8_1vg8b"]
 [ext_resource type="Texture2D" uid="uid://dg7p8wfxvrcl5" path="res://import/fnaf_ar_dark_circus_dlc_map/textures/Trees_baseColor.png" id="10_p10dv"]
 [ext_resource type="PackedScene" uid="uid://cc5olkug3ak0t" path="res://Scenes/game_manager.tscn" id="10_yblsu"]
 [ext_resource type="Texture2D" uid="uid://c0f87o655mrho" path="res://import/fnaf_ar_dark_circus_dlc_map/textures/Wooden_Carriage_baseColor.png" id="11_ur4yb"]
+[ext_resource type="Script" uid="uid://c1u5kbo7gert2" path="res://UI/level_up_scene.gd" id="12_mgmqy"]
 [ext_resource type="Texture2D" uid="uid://0xa7ifqf6pif" path="res://import/fnaf_ar_dark_circus_dlc_map/textures/Wooden_Doors_baseColor.png" id="12_wpg7h"]
+[ext_resource type="Texture2D" uid="uid://dmlj8n3eq6vxw" path="res://import/wodden panel/doska_Image_0.png" id="13_fanm4"]
 [ext_resource type="Texture2D" uid="uid://d4muknt1mo4e4" path="res://import/fnaf_ar_dark_circus_dlc_map/textures/Wooden_Doors_emissive.png" id="13_mgmqy"]
+[ext_resource type="Texture2D" uid="uid://ocp2uesuesui" path="res://import/wodden panel/doska_Image_1.png" id="14_ldlt8"]
 [ext_resource type="Texture2D" uid="uid://bvkqgvj1dm8cf" path="res://import/fnaf_ar_dark_circus_dlc_map/textures/CIRCUS_Sign_baseColor.png" id="15_fanm4"]
+[ext_resource type="Texture2D" uid="uid://cbnoveup3dhsn" path="res://import/wodden panel/doska_Image_2.png" id="15_rfiin"]
 [ext_resource type="Texture2D" uid="uid://b32akfo71cqcg" path="res://import/fnaf_ar_dark_circus_dlc_map/textures/CIRCUS_Sign_emissive.png" id="16_ldlt8"]
 [ext_resource type="Texture2D" uid="uid://baay2xo2rc86e" path="res://import/fnaf_ar_dark_circus_dlc_map/textures/Gumball_Machine_baseColor.png" id="18_rfiin"]
 [ext_resource type="Texture2D" uid="uid://brerh23lhiarp" path="res://import/fnaf_ar_dark_circus_dlc_map/textures/Gumballs_baseColor.png" id="19_rkjmm"]
@@ -269,6 +271,142 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ypt82")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wloro"]
+resource_name = "Plank"
+cull_mode = 2
+albedo_texture = ExtResource("13_fanm4")
+metallic_texture = ExtResource("14_ldlt8")
+metallic_texture_channel = 2
+roughness = 0.0
+roughness_texture = ExtResource("14_ldlt8")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("15_rfiin")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_roudi"]
+_surfaces = [{
+"aabb": AABB(-0.16025649, -0.015832305, -0.6049983, 0.34519503, 0.027655423, 1.239611),
+"format": 34896654337,
+"index_count": 165,
+"index_data": PackedByteArray("AAABAAIAAgABAAMAAAAEAAEAAQAFAAMAAgADAAYABQAHAAMACAACAAYACAAGAAkACAAJAAoACwAIAAoADAALAAoADAAKAA0ABQAOAAcABQAPAA4AEAAHAA4ADwAQAA4AEAARAAcADwASABAAEgATABAAEgAUABMAFAAVABMAFAAWABUAFgAXABUAFgAYABcAEAAZABEAGQAaABEAGQAGABoAGwAZABAAGwAcABkAHQAcABsAHgAdABsAFwAfAB4AHwAdAB4AGAAfABcAHwAgAB0AIAAhAB0AIQANAB0AGAAiAB8AGAAjACIAIgAkAB8AIgAlACQAJgANACQAJQAmACQAJgAMAA0AJgAnAAwAJQAnACYAIgAnACUAIgAjACcAIwAoACcAJwAoACkAKAAAACkAKAAqAAAAKgAEAAAAKgArAAQAKgAPACsA"),
+"name": "Plank",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 44,
+"vertex_data": PackedByteArray("q9n+/35CAAByrP7/9wAAANHk/v/MBgAAf6EAACsAAAATdP7/AAAAAO9I/v9rAAAA0eQAAMwGAAC0OwAAVgEAAFDZ/v8PRgAAq9kAAH5CAABF/wAAK7sAAP/////juQAA0eT/////AADR5AAA//8AAFUDAADMBgAAVQP+/8wGAACVFQAAfkIAABN0AAAAAAAAlRX+/35CAAAAAAAAMX4AAAAA/v8xfgAASA4AAOO5AABIDv7/47kAAFUDAACW9QAAVQP//5b1AACr2QAAfkIAAHKsAAD3AAAAAAAAADF+AABK6gAAMX4AAP//AADjuQAASA4AAOO5AAC0OwAA2O4AABN0AAAr7wAAcqwAAJb1AAC0O///2O4AAEgO/v/juQAAQYEAALnvAAATdP//K+8AAHKs//+W9QAA///+/+O5AAAAAP7/MX4AAErq/v8xfgAAlRX+/35CAAC0O/7/VgEAAA==")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_hx3oq"]
+resource_name = "doska_Plank2_Plank_0"
+_surfaces = [{
+"aabb": AABB(-0.16025649, -0.015832305, -0.6049983, 0.34519503, 0.027655423, 1.239611),
+"attribute_data": PackedByteArray("9liNLvZYjS7n7bE+eDY6PnBR8gdwUfIHuuGiPkBD/jzSWokK0lqJCtqktT5AnCg9lEgqB5RIKgfUKZE+QFvlPJk2uC6ZNrgu2GhaPlThOj7HP54Hxz+eBygdfz5A0fM8eTZ2CXk2dgni5lk+QGoXPVQ27lJUNu5SyFJZPj7dpT76W8lS+lvJUvv1tz5MlKU+y168dctevHWWmL0+OHnrPnA2THZwNkx2I8JZPsiZ7D4zP1iYMz9YmILQfD44WRg/mTVSm5k1UptYaFY+91IbP1xJUZhcSVGYNrqSPsBRGD/mU0Wb5lNFm6LOpz7HRRs/n14XoJ9eF6BtQL0+MRggPy4RvS4uEb0uK3KJPTj2Oj7wDVwL8A1cC+kHXz2A0DU9GBeFBxgXhQewxrg9IKzwPFcghQZXIIUGwFwBPgCo0Dz3MrQu9zK0LpDfSz640zo+oynVBqMp1QYQkCY+YK3aPBUzdgkVM3YJ5ldMPgBnFz0YM+5SGDPuUuhiTD4i3qU+Ug1XUlINV1KZJVU98q6kPs4Jt3XOCbd1se8cPaRw6z7gMkJ24DJCdgyCSz4Whew+LymYli8pmJZwviQ+/5gWPysyPpsrMj6bJK1IPuU+Gz/RH0+W0R9PlsSN/j2IUBY/ThbDmU4Ww5kYeLI9ysMZP7sMmp+7DJqfEb5LPcGaHz/fQYIH30GCB1y/gz4gYPA82TUyBtk1MgakZVc+IE7GPFo/XwRaP18ETGt9PoD9izx5NnYJeTZ2CeLmWT5Aahc9I1B2BCNQdgQ4R6A+QNuOPHBR8gdwUfIHuuGiPkBD/jzSWokK0lqJCtqktT5AnCg9vVsdB71bHQeoe7c+QLHjPOZTRZvmU0Wbos6nPsdFGz81XUijNV1Io95ruj4TSSM/8EptnPBKbZzA4JU+IW4cP59eF6CfXhegbUC9PjEYID9cSVGYXElRmDa6kj7AURg/Mz9YmDM/WJiC0Hw+OFkYP6I/t5uiP7ebyIl+PuS3Gz+ZNVKbmTVSm1hoVj73Uhs/dTY8nnU2PJ6V1Vk+aj0ePyRZsjAkWbIwXkmyPnTMQj49XrYKPV62Cq57vD5wYis9bFyALmxcgC6C2rg+sAM6PtJaiQrSWokK2qS1PkCcKD08YlV2PGJVdvx4xD6mq+w+y168dctevHWWmL0+OHnrPp9eF6CfXhegbUC9PjEYID8sYhigLGIYoKhaxD5RGSA/cDZMdnA2THYjwlk+yJnsPisyPpsrMj6bJK1IPuU+Gz/gMkJ24DJCdgyCSz4Whew+mTVSm5k1UptYaFY+91IbP1Q27lJUNu5SyFJZPj7dpT4YM+5SGDPuUuhiTD4i3qU+mTa4Lpk2uC7YaFo+VOE6PvcytC73MrQukN9LPrjTOj55NnYJeTZ2CeLmWT5Aahc9FTN2CRUzdgnmV0w+AGcXPQ=="),
+"format": 34896654455,
+"index_count": 165,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAADAAAABAAFAAMABAAGAAUABwAEAAAABwAAAAgACQAHAAgACgAHAAkACwAKAAkADAAKAAsACwAJAA0ADQAJAA4ADgAJAA8AEAARABIAEAASABMAFAAQABMAFAATABUAFAAVABYAFwAQABQAFwAYABAAGQAYABcAGgAZABcAGwAZABoAHAAbABoAGwAdABkAHQAeABkAHgAfABkAIAAhACIAIAAjACEAIAAiACQAJQAgACQAJgAlACQAJgAkACcAKAApACoAKAArACkALAAoACoALQAsACoALQAqAC4ALwAtAC4ALwAuADAAMQAyADMAMQA0ADIAMQAzADUANgAxADUANwA2ADUANwA1ADgAOQA6ADsAOQA8ADoAPQA5ADsAPQA7AD4APwA9AD4APwA+AEAAQQA/AEAAQQBAAEIA"),
+"material": SubResource("StandardMaterial3D_wloro"),
+"name": "Plank",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 67,
+"vertex_data": PackedByteArray("q9n+/35C/79yrP7/9wAAwNHk/v/MBhfAE3T+/wAAAMCVFf7/fkL/v7Q7/v9WARDAVQP+/8wGPsAAAP7/MX7/v0rq/v8xfv+////+/+O5AcBIDv7/47n/v7Q7///Y7gbAVQP//5b1J8ATdP//K+8GwHKs//+W9SbA0eT/////NsCr2QAAfkLs/9HkAADMBtP+cqwAAPcAuv4TdAAAAADv/pUVAAB+QrX/tDsAAFYBNf5VAwAAzAbE/QAAAAAxfq3/SuoAADF+jv///wAA47ln/0gOAADjuYX/tDsAANju3P5VAwAAlvWQ/hN0AAAr76f+cqwAAJb14/7R5AAA///o/u9I/v9rALf9VQMAAMwGff60OwAAVgF1/1UD/v/MBu3+f6EAACsAlf1yrP7/9wCw/tHk/v/MBsj+0eQAAMwGff5yrP//lvVGmNHkAAD//1KcQYEAALnvn47R5P////9wnRN0//8r76qGtDv//9ju6Yi0OwAA2O6xiFUD//+W9ReUVQMAAJb1EZRQ2f7/D0bL1dHkAADMBgzTq9kAAH5CTNXR5P7/zAbv0kX/AAAru6fW/////+O5hNfR5P/////q0tHkAAD//9bSSA7+/+O5b9VVAwAAlvUH10gOAADjuWrVVQP//5b1C9cAAP7/MX651QAAAAAxfrjVlRX+/35CmNWVFQAAfkKY1VUD/v/MBl/TVQMAAMwGXtPH/puAf/0/gcT0nIWt/lt9Y//Jfiv7WXZa97duIf9ugIf/O4Aq/OmBzv8XgNP8qHnf+MBxtvkjg+zxCIe17ySI9T/q/1o/tf5NP5r+aj/U/tY/rf8FPwr+yD6Q/aV/LECDfz1AWH9TQHh/Q0DAfp9AbX7IQIV+vEDHfptAzH6ZQLEK53x29yKZkPmlk3L3DJmv8ul51+iEdS3jZ3Th4wV1DL7w5V6+kO61Sej8Fr6d8Ra3M/iMh4g3VYRaNOyJNDrniRI6uqzlVUSpuVQuqyVWPamgVDuqkVZtqhRWHqnpVhqp11bH1UXVOdVL1MLVR9U+1UnUFtUX1RTVGNVT1SvVU9Ur1ZHWjNaP1o3W")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_roudi")
+
+[sub_resource type="BoxMesh" id="BoxMesh_2xl73"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="Animation" id="Animation_dsp3i"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Board:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Board:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1.4, 0.69)]
+}
+
+[sub_resource type="Animation" id="Animation_o01un"]
+resource_name = "hide_board"
+length = 0.856
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Board:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.76666665),
+"transitions": PackedFloat32Array(2.2191365, 0.42044824),
+"update": 0,
+"values": [Vector3(-0.08726646, 0.26529005, -0.26703537), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Board:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(-0.033333335, 0.76666665),
+"transitions": PackedFloat32Array(2.1435473, 0.35355353),
+"update": 0,
+"values": [Vector3(-0.1, 0.265, -0.035), Vector3(1, 1.4, 0.69)]
+}
+
+[sub_resource type="Animation" id="Animation_2b3xr"]
+resource_name = "show_board"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Board:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.76666665),
+"transitions": PackedFloat32Array(0.42044824, 0.39229172),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.08726646, 0.26529005, -0.26703537)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Board:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.76666665),
+"transitions": PackedFloat32Array(0.19614607, 0.5358867),
+"update": 0,
+"values": [Vector3(1, 1.4, 0.69), Vector3(-0.1, 0.265, -0.035)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oqo82"]
+_data = {
+&"RESET": SubResource("Animation_dsp3i"),
+&"hide_board": SubResource("Animation_o01un"),
+&"show_board": SubResource("Animation_2b3xr")
+}
+
 [node name="GameTest" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -276,10 +414,6 @@ environment = ExtResource("1_rfiin")
 
 [node name="HUDManager" parent="." instance=ExtResource("4_3n25w")]
 visible = false
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.058065053, 0.816561, -0.5743315, 0.082135804, 0.57725924, 0.81241953, 0.99492824, 7.488556e-09, -0.10058748, -43.960938, 33.666958, -9.348785)
-script = ExtResource("8_1vg8b")
 
 [node name="GameManager" parent="." instance=ExtResource("10_yblsu")]
 
@@ -325,11 +459,6 @@ shape = SubResource("BoxShape3D_yblsu")
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -70, 65, 0)
 shape = SubResource("BoxShape3D_yblsu")
 
-[node name="WagonPOI" parent="." instance=ExtResource("6_rb7ub")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.956, 0)
-visible = false
-show_debug_in_editor = false
-
 [node name="Dark Circus DLC - Environment (Full)_Gumball Machine_0" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.891403, 0, 0)
 mesh = SubResource("ArrayMesh_ifjc4")
@@ -343,6 +472,11 @@ skeleton = NodePath("")
 [node name="Trees" type="Node3D" parent="."]
 
 [node name="Dark Circus DLC - Environment (Full)_Trees_0" type="MeshInstance3D" parent="Trees"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.598938, 0, 0.020294193)
+mesh = SubResource("ArrayMesh_sxmqd")
+skeleton = NodePath("")
+
+[node name="Dark Circus DLC - Environment (Full)_Trees_11" type="MeshInstance3D" parent="Trees"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.598938, 0, 0.020294193)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
@@ -388,7 +522,7 @@ mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
 [node name="Dark Circus DLC - Environment (Full)_Trees_9" type="MeshInstance3D" parent="Trees"]
-transform = Transform3D(0.3967154, 0, 0.9179418, 0, 1, 0, -0.9179418, 0, 0.3967154, 36.80493, 0, -32.956726)
+transform = Transform3D(0.3967154, 0, 0.9179418, 0, 1, 0, -0.9179418, 0, 0.3967154, 37.743046, 0, -32.956726)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
@@ -396,3 +530,83 @@ skeleton = NodePath("")
 transform = Transform3D(-0.71756744, 0, -0.6964892, 0, 1, 0, 0.6964892, 0, -0.71756744, 10.919754, 0, -31.186577)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
+
+[node name="LevelUpScene" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.0944, 4.969407, -25.811102)
+script = ExtResource("12_mgmqy")
+
+[node name="Board" type="Node3D" parent="LevelUpScene"]
+transform = Transform3D(2.4999998, 0, 0, 0, 2.5, 0, 0, 0, 2.4999998, 1, 1.4, 0.69)
+
+[node name="Plank2_Plank_0" type="MeshInstance3D" parent="LevelUpScene/Board"]
+transform = Transform3D(1.0000001, -1.8626451e-08, 0, -2.2351742e-08, 1.0000001, -1.4901161e-08, -2.9802322e-08, 1.4901161e-08, 1, -0.016052578, 0.02285733, 0.073960975)
+mesh = SubResource("ArrayMesh_hx3oq")
+skeleton = NodePath("")
+
+[node name="ItemRoot" type="Node3D" parent="LevelUpScene/Board"]
+transform = Transform3D(0.37473753, -0.10514758, -0.09228123, 0.093040176, 0.3843548, -0.06012417, 0.10447659, 0.034862295, 0.3845378, 0.061859407, -0.095198885, 0.014191301)
+
+[node name="Slot" type="Marker3D" parent="LevelUpScene/Board/ItemRoot"]
+transform = Transform3D(1, 0, 0, -2.3092639e-14, 1, 0, 0, 0, 1, -0.5027558, 0.4964344, -1.0641327)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LevelUpScene/Board/ItemRoot/Slot"]
+mesh = SubResource("BoxMesh_2xl73")
+
+[node name="Slot2" type="Marker3D" parent="LevelUpScene/Board/ItemRoot"]
+transform = Transform3D(1, 0, 0, -3.907985e-14, 1, 0, 0, 0, 1, -0.38749418, 0.49584404, -0.7971135)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LevelUpScene/Board/ItemRoot/Slot2"]
+mesh = SubResource("BoxMesh_2xl73")
+
+[node name="Slot3" type="Marker3D" parent="LevelUpScene/Board/ItemRoot"]
+transform = Transform3D(1, 0, 0, -3.0198066e-14, 1, 0, 0, 0, 1, -0.28838593, 0.4902572, -0.5138334)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LevelUpScene/Board/ItemRoot/Slot3"]
+mesh = SubResource("BoxMesh_2xl73")
+
+[node name="Slot4" type="Marker3D" parent="LevelUpScene/Board/ItemRoot"]
+transform = Transform3D(1, 0, 0, -3.5527137e-14, 1, 0, 0, 0, 1, -0.22235808, 0.5185277, -0.14537346)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LevelUpScene/Board/ItemRoot/Slot4"]
+mesh = SubResource("BoxMesh_2xl73")
+
+[node name="Board2" type="Node3D" parent="LevelUpScene"]
+transform = Transform3D(0.9440123, -0.32954744, 0.015468778, -0.32711485, -0.92889285, 0.17364816, -0.04285647, -0.16898605, -0.9846861, -0.8580643, -0.10739279, -1.6593281)
+
+[node name="Plank2_Plank_0" type="MeshInstance3D" parent="LevelUpScene/Board2"]
+mesh = SubResource("ArrayMesh_hx3oq")
+skeleton = NodePath("")
+
+[node name="Lighting" type="Node3D" parent="LevelUpScene"]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="LevelUpScene/Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.84334433, 1.0652664, 0.27716374)
+light_color = Color(0.76513064, 0.34599128, 0, 1)
+light_energy = 0.7
+light_bake_mode = 0
+
+[node name="SpotLight3D" type="SpotLight3D" parent="LevelUpScene/Lighting"]
+transform = Transform3D(-1, -7.5710346e-08, 4.3711385e-08, 0, 0.49999997, 0.86602545, -8.742278e-08, 0.86602545, -0.49999997, -0.56857324, 2.4216084, -1.9373789)
+light_color = Color(1.540184e-06, 0.7977, 0.65703297, 1)
+light_energy = 3.0
+light_bake_mode = 0
+shadow_enabled = true
+spot_range = 4.386
+spot_angle = 29.13
+spot_angle_attenuation = 0.9330347
+
+[node name="CameraPivot" type="Node3D" parent="LevelUpScene"]
+
+[node name="SubViewport" type="SubViewport" parent="LevelUpScene/CameraPivot"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="LevelUpScene/CameraPivot/SubViewport"]
+transform = Transform3D(-0.070347905, 0.48432106, -0.87205756, 0.038943134, 0.8748904, 0.48275286, 0.9967621, 0, -0.08040769, 80.77334, 5.77371, -27.04982)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="LevelUpScene"]
+libraries = {
+&"": SubResource("AnimationLibrary_oqo82")
+}

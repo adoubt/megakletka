@@ -28,7 +28,7 @@ func update(_delta: float) -> void:
 				combat.state = CombatState.ACTIVE
 				print("combat_started")
 				event_bus.emit("combat_started", { "current_floor": current_floor })
-
+				
 		CombatState.ACTIVE:
 			
 			if battery.current_budget <= 0:

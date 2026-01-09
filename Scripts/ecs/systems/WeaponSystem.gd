@@ -1,8 +1,23 @@
 extends BaseSystem
 class_name WeaponSystem
 
+var combat: bool = false 
 
+var event_bus : EventBus
+
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _event_bus: EventBus):
+	super._init(_entity_manager, _component_store)
+	event_bus = _event_bus	
+	event_bus.subscribe("combat_started", _start_combat)
+	event_bus.subscribe("combat_finished", _finish_combat)
+	
+func _start_combat(_data) -> void:
+	combat = true
+func _finish_combat(_data)-> void:
+	combat = false	
+	
 func update(delta: float) -> void:
+	
 	var entities = get_entities_with(["WeaponComponent"],["DeadComponent"]) # или TransformComponent
 
 	for weapon_id in entities:
@@ -22,7 +37,8 @@ func update(delta: float) -> void:
 		weapon.cd_timer = max(weapon.cd_timer - delta, 0.0)
 		if weapon.cd_timer > 0.0:
 			continue	
-		
+		if not combat:
+			continue
 		match weapon.name:
 			"cheese":
 				spawn_cheese(weapon.owner_id, weapon_id)

@@ -26,9 +26,9 @@ func update(_delta: float) -> void:
 					level.skill_points -= 1
 				
 				
-				event_bus.emit("create_item", { "item_name": offer.choices[offer.chosen_index],
+				event_bus.emit("create_item", [{ "item_name": offer.choices[offer.chosen_index],
 				"owner_id": offer.owner_id
-				})
+				}])
 				var instance = cs.get_component(offer.owner_id, "RenderComponent").instance
 				if instance: instance.hide_level_up()	
 				

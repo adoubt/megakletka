@@ -17,11 +17,11 @@ func initialize():
 	component_store = ComponentStore.new()
 	system_manager = SystemManager.new()
 	event_bus = EventBus.new()
-	UIManager.hud.event_bus = event_bus
+	UIManager.event_bus = event_bus
 	object_pool = ObjectPool.new(self)
 	object_pool.prewarm({
-	"res://Scenes/Enemy/Aboba.tscn": 500,
-	"res://Scenes/shadow.tscn": 500,
+	"res://Scenes/Enemy/Aboba.tscn": 150,
+	"res://Scenes/shadow.tscn": 200,
 	"res://Scenes/Objects/grave.tscn": 3,
 	"res://Scenes/romb.tscn": 20,
 	"res://Scenes/Popups/InteractPopup.tscn":2,
@@ -43,7 +43,7 @@ func initialize():
 	system_manager.add_system(FactorySystem.new(entity_manager, component_store,database, event_bus))
 	system_manager.add_system(StatsRecalculationSystem.new(entity_manager, component_store))
 	
-	system_manager.add_system(WeaponSystem.new(entity_manager, component_store))
+	system_manager.add_system(WeaponSystem.new(entity_manager, component_store,event_bus))
 	
 	system_manager.add_system(MovementSystem.new(entity_manager, component_store))
 
@@ -53,7 +53,7 @@ func initialize():
 	system_manager.add_system(HitSystem.new(entity_manager, component_store))
 	
 	system_manager.add_system(DamagePopupSystem.new(entity_manager, component_store))
-	#system_manager.add_system(LevelUpPopUpSystem.new(entity_manager, component_store, event_bus))
+	
 	system_manager.add_system(ProjectileSystem.new(entity_manager,component_store))
 	
 	system_manager.add_system(HealthSystem.new(entity_manager, component_store))

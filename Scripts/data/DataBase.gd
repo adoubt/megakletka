@@ -23,9 +23,10 @@ var poi_configs = {
 		"wagon": {
 			"scene": "res://Scenes/Objects/wagon.tscn",
 			
-			"interact_radius": 1.5,
+			"interact_radius": 3.5,
 			"collider_radius":1.0,
-			"target_priority" : 1
+			"target_priority" : 1,
+			"slots": 2
 		},
 }
 		#"chest_big": {"scene": "...", "drop_weight": 1},
@@ -41,7 +42,8 @@ var char_configs = {
 			"collider_radius": 0.15,
 			"movespeed": 10,
 			"xp_pickup_range": 1.5,
-			"weapon_name" : "carrot"
+			"weapon_name" : "carrot",
+			"slots": 3
 		}
 	}
 	

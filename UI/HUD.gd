@@ -24,16 +24,16 @@ var db: DataBase
 @export var max_xp: float = 100.0
 @export var current_xp: float = 0.0:
 	set = set_current_xp
-@onready var current_xp_texture: ColorRect = $HUD/VBoxContainer/Header/HBoxContainer/MarginContainer/CurrentXP
-@onready var current_xp_label: Label = $HUD/VBoxContainer/Header/HBoxContainer/MarginContainer/CurrentXPLabel
+@onready var current_xp_texture: ColorRect = $HUD/VBoxContainer/Header/CurrentXP
+@onready var current_xp_label: Label = $HUD/VBoxContainer/Header/MarginContainer/CurrentXPLabel
 @onready var xp_shader: ShaderMaterial 
-@onready var current_level: Label = $HUD/VBoxContainer/Header/HBoxContainer/MarginContainer/CurrentLevel
+@onready var current_level: Label = $HUD/VBoxContainer/Header/CurrentLevel
 
 # === Technical ===
 var _tween: Tween
 var _time_passed := 0.0
 var _refresh_interval := 0.5
-var event_bus: EventBus
+
 
 func _ready() -> void:
 	hp_shader = current_hp_texture.material
@@ -109,7 +109,7 @@ func get_tween() -> Tween:
 func on_upgrade_button_pressed(index: int):
 	print('Upgrade btn chosen(delete massage 107 )')
 
-	event_bus.emit("upgrade_chosen", {
+	UIManager.event_bus.emit("upgrade_chosen", {
 	"entity_id": offer_id,
 	"choice_index": index
 })

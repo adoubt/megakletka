@@ -4,13 +4,11 @@ class_name InteractionProximitySystem
 ##TODO InteractionProximitySystem can be faster using grid cells
 func update(_delta: float) -> void:
 	var players := get_entities_with(
-		["PlayerComponent"],
-		["DeadComponent"]
+		["PlayerComponent"]
 	)
 
 	var targets := get_entities_with(
-		["TransformComponent", "InteractionTargetComponent"],
-		["DeadComponent"]
+		["TransformComponent", "InteractionTargetComponent"]
 	)
 
 	for p in players:

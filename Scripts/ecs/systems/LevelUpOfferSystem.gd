@@ -12,17 +12,6 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 
 
 
-#func _on_upgrade_chosen(data: Dictionary):
-	#
-	#var e_id = data["entity_id"]
-	#var index = data["choice_index"]
-#
-	#if not cs.has_component(e_id, "LevelUpOfferComponent"):
-	#
-		#return
-#
-	#var offer = cs.get_component(e_id, "LevelUpOfferComponent")
-	#offer.chosen_index = index
 	
 func _on_upgrade_chosen(data: Dictionary):
 	var offer_entity = data["entity_id"]
@@ -35,27 +24,7 @@ func _on_upgrade_chosen(data: Dictionary):
 	offer.chosen_index = index
 	
 
-	
-#func update(_delta: float) -> void:
-	#var entities = get_entities_with(["LevelComponent"], ["DeadComponent", "LevelUpOfferComponent"])
-	#for e_id in entities:
-		#var level = cs.get_component(e_id, "LevelComponent")
-		#if level.skill_points <= 0:
-			#continue
-		#
-		### Генерируем предложение
-		#var offer = generate_random_upgrades(e_id)
-		#cs.add_component(e_id, "LevelUpOfferComponent", LevelUpOfferComponent.new(e_id, offer))
-		#
-		#UIManager.hud.setup_upgrade_buttons(e_id, offer)
-		###Создаем попап
-		#var popup_id = em.create_entity()
-		#cs.add_component(popup_id, "LevelUpPopUpComponent", LevelUpPopUpComponent.new(e_id))
-		#cs.add_component(popup_id, "TransformComponent", TransformComponent.new(
-		#cs.get_component(e_id, "TransformComponent").position + Vector3(0, 1.5, 0)
-		#))
-		#
-		#cs.add_component(popup_id, "RenderComponent", RenderComponent.new("uid://cg8diy5mqdnwf"))
+
 func update(_delta: float) -> void:
 	var players = get_entities_with(
 		["LevelComponent"],
@@ -87,14 +56,7 @@ func update(_delta: float) -> void:
 		var instance = cs.get_component(player, "RenderComponent").instance
 		if instance: 
 			instance.show_level_up()
-			print("Jopa")		
-		#var popup_id = em.create_entity()
-		#cs.add_component(popup_id, "LevelUpPopUpComponent", LevelUpPopUpComponent.new(e_id))
-		#cs.add_component(popup_id, "TransformComponent", TransformComponent.new(
-		#cs.get_component(e_id, "TransformComponent").position + Vector3(0, 1.5, 0)
-		#))
-		#
-		#cs.add_component(popup_id, "RenderComponent", RenderComponent.new("uid://cg8diy5mqdnwf"))
+					
 		
 
 func generate_random_upgrades(e_id: int, count: int = 3) -> Array:

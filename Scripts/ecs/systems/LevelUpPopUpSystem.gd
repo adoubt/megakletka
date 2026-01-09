@@ -1,17 +1,14 @@
 extends BaseSystem
 class_name LevelUpPopUpSystem
 
+var event_bus: EventBus
 
-
-func _init(_entity_manager: EntityManager, _component_store: ComponentStore):
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
 	super._init(_entity_manager, _component_store)
 	
-
+	event_bus =_event_bus
 	#event_bus.subscribe("level_up_offer_created", _on_level_up_offer_created)
 	#UIManager.hud.has_upgrade = false
-	
-	
-
 	
 func update(_delta: float) -> void:
 	var popups = get_entities_with(["LevelUpPopUpComponent"], ["DeadComponent"])

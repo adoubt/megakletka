@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://bo06kqekqxmvh"]
+
+[ext_resource type="PackedScene" uid="uid://bkpdckwxj4r24" path="res://import/wodden panel/doska.glb" id="1_f6cm1"]
+
+[node name="doska" instance=ExtResource("1_f6cm1")]

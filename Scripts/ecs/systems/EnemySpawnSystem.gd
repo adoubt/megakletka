@@ -52,7 +52,7 @@ func _spawn_tick() -> void:
 
 		enemies_to_create.append({"enemy_name":enemy_name, "position":_get_spawn_position()})
 	
-	event_bus.emit("create_enemies", enemies_to_create)
+	event_bus.emit("create_enemy", enemies_to_create)
 
 
 func  _on_combat_started(data : Dictionary) -> void:

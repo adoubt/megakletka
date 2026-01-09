@@ -2,6 +2,7 @@ extends Control
 
 @onready var sell_zone: DropZone = $MarginContainer/VBoxContainer/SellZone
 @onready var use_zone: DropZone  = $MarginContainer/VBoxContainer/UseZone
+@onready var sub_view_texture: TextureRect = $SubViewTexture
 
 var drop_zones: Array[DropZone]
 

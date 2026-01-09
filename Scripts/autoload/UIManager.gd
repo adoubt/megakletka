@@ -1,5 +1,4 @@
 extends Node
-# Автозагруженный Singleton
 
 # ========== PANELS ==========
 @onready var escape_menu  = preload("res://UI/esc_menu.tscn").instantiate()
@@ -9,7 +8,10 @@ extends Node
 @onready var dev_panel = preload("res://UI/dev_panel.tscn").instantiate()
 @onready var hud = preload("res://UI/hud.tscn").instantiate()
 @onready var wagon_panel = preload("res://UI/wagon_panel.tscn").instantiate()
+@onready var level_up_panel = preload("res://UI/level_up_panel.tscn").instantiate()
 
+var event_bus: EventBus
+var player_camera
 var upgrade_menu 
 var panels: Dictionary = {}
 var force_cursor_visible: bool = false
@@ -20,6 +22,21 @@ var canvas :CanvasLayer
 var game_paused: bool = false
 # ========== PUBLIC API ==========
 
+func open_level_up_panel():
+	
+	open_panel("LevelUpPanel")
+	level_up_panel.scene.show_anim_board()
+
+func close_level_up_panel() -> void:
+	level_up_panel.scene.hide_anim_board()
+	close_panel("LevelUpPanel")	
+	
+func toggle_level_up_panel() -> void:
+	if is_panel_open("LevelUpPanel"):
+		close_level_up_panel()
+	else:
+		open_level_up_panel() 
+		
 func open_wagon_panel() -> void:
 	open_panel("WagonPanel")
 
@@ -160,12 +177,13 @@ func _ready() -> void:
 	canvas = CanvasLayer.new()
 	add_child(canvas)
 	canvas.add_child(hud)
+	canvas.add_child(dev_panel)
+	canvas.add_child(wagon_panel)
+	canvas.add_child(level_up_panel)
 	canvas.add_child(escape_menu)
 	canvas.add_child(main_menu)
 	canvas.add_child(settings_menu)
 
-	canvas.add_child(dev_panel)
-	canvas.add_child(wagon_panel)
 	
 
 	
@@ -176,6 +194,7 @@ func _ready() -> void:
 		"Settings": settings_menu,
 		"DEV_PANEL" : dev_panel,
 		"UpgradeMenu": hud.upgrade_panel,
+		"LevelUpPanel": level_up_panel,
 		"UpgradeVFX": hud.upgrade_vfx,
 		"WagonPanel": wagon_panel
 	}
@@ -251,6 +270,8 @@ func _input(event: InputEvent) -> void:
 			toggle_dev_panel()
 	if event.is_action_pressed("upgrade_menu"):
 		if hud.has_upgrade and SceneManager.current_scene_name in ["BigRoomTest","GameTest"] and not escape_menu.visible:
+			#toggle_level_up_panel()
+			#event_bus.emit("level_up_panel_toggled") 
 			toggle_upgrade_menu()
 
 	

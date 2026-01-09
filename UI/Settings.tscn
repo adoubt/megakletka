@@ -776,4 +776,3 @@ settings_key = "audio_path"
 [connection signal="pressed" from="Control/HBoxContainer/TABCustom/TabButtons/Audio" to="." method="_on_audio_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/TABCustom/TabButtons/Debug" to="." method="_on_debug_pressed"]
 [connection signal="item_selected" from="Control/HBoxContainer/TABCustom/TabContainer/Debug/Panel/MarginContainer/HBoxContainer/HBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]
-[connection signal="toggled" from="Control/HBoxContainer/TABCustom/TabContainer/Debug/Panel/MarginContainer/HBoxContainer/HBoxContainer/CheckButton" to="Control/HBoxContainer/TABCustom/TabContainer/Debug/Panel/MarginContainer/HBoxContainer/HBoxContainer/CheckButton" method="_on_toggled"]

@@ -13,6 +13,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _db
 	
 	event_bus.subscribe("floor_changed", _activate_poi_on_floor)
 	event_bus.subscribe("POI_CREATED", _activate_poi_on_floor)
+	
 func _activate_poi_on_floor():
 	var pois = get_entities_with(["FloorIdComponent", "POIComponent"],["DeadComponent"])
 	var floors = get_entities_with([

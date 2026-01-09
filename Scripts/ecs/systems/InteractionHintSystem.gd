@@ -4,7 +4,7 @@ class_name InteractionUISystem
 func update(_delta):
 	var players := get_entities_with(
 		["InRangeInteractionComponent", "PlayerComponent"],
-		[]
+		
 	)
 
 	for p in players:

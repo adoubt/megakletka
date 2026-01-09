@@ -82,11 +82,11 @@ func _init_poi() -> void:
 		for poi_name in pool:
 			var position: Vector3 = _get_random_position_in_radius()
 			pois_to_create.append({"floor_id":floor_id, "poi_name":poi_name, "position": position})
-			
+
 			chosen.append(poi_name)
 			if chosen.size() >= POI_ON_FLOOR:
 				break
-	event_bus.emit("create_pois", pois_to_create)			
+	event_bus.emit("create_poi", pois_to_create)			
 	
 	
 func _get_random_position_in_radius(min_radius: float= 10.0, max_radius: float= 50.0) -> Vector3:

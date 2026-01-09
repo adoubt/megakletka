@@ -10,3 +10,6 @@ func show_hint() -> void:
 
 func hide_hint() -> void:
 	hint.hide()
+
+func get_subview_port() -> SubViewport:
+	return $CameraPivot/SubViewport
