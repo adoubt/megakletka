@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://d4culp27pja5e"]
+
+[ext_resource type="Shader" uid="uid://bh4ct46k25psp" path="res://assets/Shaders/intro.gdshader" id="1_rbnmk"]
+
+[resource]
+shader = ExtResource("1_rbnmk")
+shader_parameter/aurora_color = Color(0.41893116, 0.839577, 0.93789816, 1)
+shader_parameter/background_color1 = Color(0.04122936, 0.0372619, 0.07763391, 1)
+shader_parameter/background_color2 = Color(0.1420778, 0.6911566, 0, 1)
+shader_parameter/aurora_intensity = 1.5470000734825
+shader_parameter/star_brightness = 0.3890000184775

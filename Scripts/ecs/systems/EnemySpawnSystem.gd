@@ -7,14 +7,21 @@ var db: DataBase
 var current_floor: int = -1
 var spawning := false
 
-# ===== НАСТРОЙКИ =====
-var spawn_interval := 1.0        # как часто разрешено ДОСПАВНИВАТЬ
+
+var spawn_interval := 5       
 var spawn_timer := 0.0
 
 const MAX_ENEMIES := 100
 const BATTERY_BUDGET_RATIO := 0.5   # 50% бюджета
-const MAX_PER_TICK := 10             # защита от лагов
+const MAX_PER_TICK := 5            # защита от лагов
 
+const WORLD_SIZE := Vector2(75.0, -5.0)
+
+
+#cashe
+var players: Array = []
+var players_update_timer := 0.0
+const PLAYERS_UPDATE_INTERVAL := 3.0
 # ====================
 
 func _init(
@@ -39,12 +46,22 @@ func update(delta: float) -> void:
 	spawn_timer -= delta
 	if spawn_timer > 0.0:
 		return
-
+	players_update_timer -= delta
+	if players_update_timer < 0.0 : 
+		_update_players()
+		players_update_timer = PLAYERS_UPDATE_INTERVAL
+		
+		
 	spawn_timer = spawn_interval
 	_try_spawn()
+	
+		
+func _update_players() -> void:
+	players = get_entities_with(
+		["PlayerComponent"],
+		["DeadComponent"]
+	)
 
-
-# ===== ОСНОВНАЯ ЛОГИКА =====
 
 func _try_spawn() -> void:
 	var battery := cs.get_component(current_floor, "BatteryComponent")
@@ -75,8 +92,8 @@ func _try_spawn() -> void:
 
 	for i in range(can_spawn):
 		var enemy_name := _pick_enemy()
-		var cost := _get_enemy_cost(enemy_name)
-
+		var cost = db.enemy_configs[enemy_name]["budget"]
+		
 		if available_budget < cost:
 			break
 
@@ -109,14 +126,32 @@ func _on_combat_finished(_data: Dictionary) -> void:
 # ===== ВСПОМОГАТЕЛЬНОЕ =====
 
 func _pick_enemy() -> String:
-	return "Aboba" # позже: веса / сложность / этаж
+	var keys : Array = db.enemy_configs.keys()
+	return keys.pick_random()
 
 func _get_enemy_cost(_enemy_name: String) -> int:
 	return 2
 
-func _get_spawn_position() -> Vector3:
-	return Vector3(
-		randf_range(-20.0, 20.0),
+
+
+func _get_spawn_position(min_radius := 20.0, max_radius := 40.0) -> Vector3:
+	if players.is_empty():
+		return Vector3.ZERO
+
+	var tf = cs.get_component(players.pick_random(), "TransformComponent")
+	if tf == null:
+		return Vector3.ZERO
+
+	var angle := randf() * TAU
+	var r := sqrt(randf_range(min_radius * min_radius, max_radius * max_radius))
+
+	var pos :Vector3= tf.position + Vector3(
+		cos(angle) * r,
 		0.5,
-		randf_range(-20.0, 20.0)
+		sin(angle) * r
 	)
+
+	pos.x = clamp(pos.x, -WORLD_SIZE.x + 1.0, WORLD_SIZE.x - 1.0)
+	pos.z = clamp(pos.z, -WORLD_SIZE.y + 1.0, WORLD_SIZE.y - 1.0)
+
+	return pos

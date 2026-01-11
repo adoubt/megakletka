@@ -21,54 +21,51 @@ func update(delta: float) -> void:
 
 		# movement type (здесь безопасно читать proj.move_type — поле всегда есть)
 		match proj.move_type:
-			"orbit":
-				# Если владелец мёртв — уничтожаем снаряд
+			MoveType.ORBIT:
 				var owner_id = proj.owner_id
 				if owner_id == -1 or cs.has_component(owner_id, "DeadComponent"):
-					cs.add_component(e_id,"DeadComponent",DeadComponent.new())
-					return
-				var owner_tf = cs.get_component(proj.owner_id, "TransformComponent")
-				
-				if owner_tf == null:
-					print("⚠ ORBIT ERROR: Owner ", owner_id, " has NO TransformComponent! Dead?", cs.has_component(owner_id, "DeadComponent"))
 					cs.add_component(e_id, "DeadComponent", DeadComponent.new())
-					return
+					continue
+
+				var owner_tf = cs.get_component(owner_id, "TransformComponent")
+				if owner_tf == null:
+					cs.add_component(e_id, "DeadComponent", DeadComponent.new())
+					continue
 
 				var orbit = cs.get_component(e_id, "OrbitComponent")
 				orbit.angle += orbit.speed * delta
-				var x = cos(orbit.angle) * orbit.radius
-				var z = sin(orbit.angle) * orbit.radius
-				tf.position = owner_tf.position + Vector3(x, orbit.height, z)
-			"homing":
+
+				var offset = Vector3(
+					cos(orbit.angle) * orbit.radius,
+					orbit.height,
+					sin(orbit.angle) * orbit.radius
+				)
+
+				tf.position = owner_tf.position + offset
+				tf.velocity = Vector3.ZERO # важно
+				if cs.has_component(e_id, "RenderComponent"):
+					var render = cs.get_component(e_id, "RenderComponent")
+					
+					if render and render.instance:
+						
+						
+						
+						render.instance.rotate_x(deg_to_rad(orbit.tilt_x))
+						render.instance.rotate_y(deg_to_rad(orbit.tilt_y))
+						render.instance.rotate_z(deg_to_rad(orbit.tilt_z))
+			MoveType.HOMING:
 				if proj.target_id != -1 and cs.has_component(proj.target_id, "TransformComponent"):
 					var target_tf = cs.get_component(proj.target_id, "TransformComponent")
-					var dir = (target_tf.position - tf.position)
-					if dir.length() > 0.001:
-						tf.position += dir.normalized() * proj.speed * delta
-					else:
-						# если цель слишком близко — ничего
-						pass
-				else:
-					if proj.direction.length() > 0.001:
-						tf.position += proj.direction.normalized() * proj.speed * delta
-			_:
-				# default / "linear"
-				if proj.direction.length() > 0.001:
-					tf.position += proj.direction.normalized() * proj.speed * delta
+					var dir = target_tf.position - tf.position
 
-		# (опционально) обновим визуал поворотом, если есть
-		if cs.has_component(e_id, "RenderComponent"):
-			var render = cs.get_component(e_id, "RenderComponent")
-			
-			if render and render.instance:
-				
-				# направляем инстанс по вектору движения (игнорируя y для красоты)
-				#var fwd = proj.direction
-				#fwd.y = 3
-				#if fwd.length() > 0.001:
-					#render.instance.look_at(tf.position + fwd, Vector3.UP)
-				# добавляем ПЕРСОНАЛЬНЫЙ НАКЛОН
-				var orbit = cs.get_component(e_id, "OrbitComponent")
-				render.instance.rotate_x(deg_to_rad(orbit.tilt_x))
-				render.instance.rotate_y(deg_to_rad(orbit.tilt_y))
-				render.instance.rotate_z(deg_to_rad(orbit.tilt_z))
+					if dir.length_squared() > 0.0001:
+						tf.velocity = dir.normalized() * proj.speed
+				else:
+					tf.velocity = proj.direction * proj.speed
+
+			MoveType.LINEAR:
+				tf.velocity = proj.direction * proj.speed
+
+
+		
+		

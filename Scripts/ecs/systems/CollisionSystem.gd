@@ -89,12 +89,14 @@ func _check_cross_pairs(list_a: Array, list_b: Array, new_cache: Dictionary) -> 
 			if a >= b:
 				continue
 			_check_entities(a, b, a_tf, a_col, new_cache)
+			
 func _check_entities(
 	a: int,
 	b: int,
 	a_tf,
 	a_col,
 	new_cache: Dictionary
+	
 ) -> void:
 	var b_tf = tf_cache[b]
 	var b_col = col_cache[b]
@@ -112,6 +114,8 @@ func _process_collision(a: int, b: int, new_cache: Dictionary) -> void:
 	_process_one_way(b, a, new_cache)
 
 
+
+	##TODO изменить порядок вызова
 func _process_one_way(source: int, target: int, new_cache: Dictionary) -> void:
 	var s_col = col_cache[source]
 	var t_col = col_cache[target]
@@ -130,9 +134,10 @@ func _process_one_way(source: int, target: int, new_cache: Dictionary) -> void:
 
 	elif s_col.is_enemy_projectile() and t_col.is_player():
 		_register_hit(source, target, key, new_cache)
-
+	
 	elif s_col.is_enemy() and t_col.is_player():
 		_register_hit(source, target, key, new_cache)
+		
 func _register_hit(
 	source: int,
 	target: int,
@@ -150,8 +155,8 @@ func _register_hit(
 	new_cache[key] = true
 func _layers_match(a_col, b_col) -> bool:
 	return (
-		(a_col.collision_mask & b_col.collision_layer) != 0 and
-		(b_col.collision_mask & a_col.collision_layer) != 0
+		(a_col.collision_mask & b_col.collision_layer) != 0
+
 	)
 
 

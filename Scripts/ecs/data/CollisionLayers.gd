@@ -1,7 +1,7 @@
 extends Resource
 class_name CollisionLayers
 
-enum Layer {
+enum {
 	WORLD = 1 << 0,
 	PLAYER = 1 << 1,
 	ENEMY = 1 << 2,

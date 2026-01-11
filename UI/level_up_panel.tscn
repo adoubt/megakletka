@@ -1,6 +1,36 @@
-[gd_scene load_steps=2 format=3 uid="uid://bqbrn3mjc8g8i"]
+[gd_scene load_steps=5 format=3 uid="uid://bqbrn3mjc8g8i"]
 
 [ext_resource type="Script" uid="uid://e2hr6inpbeb6" path="res://UI/level_up_panel.gd" id="1_vij61"]
+[ext_resource type="Script" uid="uid://7aiu8snflvkp" path="res://UI/drop_zone.gd" id="2_1mmw1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_12ega"]
+bg_color = Color(0.8745098, 0.627451, 0.35686275, 0.78431374)
+border_width_left = 10
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 0.39215687)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 35
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 35
+corner_detail = 2
+anti_aliasing_size = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vij61"]
+bg_color = Color(0.39607844, 0.5294118, 0.38039216, 0.78431374)
+border_width_left = 10
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 0.39215687)
+corner_radius_top_left = 35
+corner_radius_top_right = 55
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+corner_detail = 2
+anti_aliasing_size = 10.0
 
 [node name="LevelUpPanel" type="Control"]
 layout_mode = 3
@@ -20,3 +50,81 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="TextureRect/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 50
+
+[node name="SellZone" type="Control" parent="TextureRect/MarginContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(300, 150)
+layout_mode = 2
+script = ExtResource("2_1mmw1")
+
+[node name="Panel" type="Panel" parent="TextureRect/MarginContainer/VBoxContainer2/SellZone"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_12ega")
+
+[node name="Label" type="Label" parent="TextureRect/MarginContainer/VBoxContainer2/SellZone/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.39215687)
+theme_override_constants/line_spacing = -25
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 45
+text = "SELL
+$14"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UseZone" type="Control" parent="TextureRect/MarginContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(300, 150)
+layout_mode = 2
+script = ExtResource("2_1mmw1")
+
+[node name="Panel" type="Panel" parent="TextureRect/MarginContainer/VBoxContainer2/UseZone"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vij61")
+
+[node name="Label" type="Label" parent="TextureRect/MarginContainer/VBoxContainer2/UseZone/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.39215687)
+theme_override_constants/line_spacing = -25
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 45
+text = "USE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Camera3D" type="Camera3D" parent="."]

@@ -17,6 +17,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_eve
 	event_bus.subscribe("create_enemy", _create_enemy)
 	event_bus.subscribe("create_slot", _create_slot)
 	event_bus.subscribe("create_weapon", _create_weapon)
+	event_bus.subscribe("create_xp", _create_xp)
 	
 func _create_poi(data_array: Array) -> void:
 	for data in data_array:
@@ -37,11 +38,11 @@ func _create_poi(data_array: Array) -> void:
 		cs.add_component(entity_id, "POIComponent", POIComponent.new(poi_name))
 		cs.add_component(entity_id, "InteractionTargetComponent", InteractionTargetComponent.new(e_data["interact_radius"], e_data["target_priority"]))
 		cs.add_component(entity_id, "CollisionComponent", CollisionComponent.new(
-			CollisionLayers.Layer.WORLD, 
-			CollisionLayers.Layer.PLAYER |
-			CollisionLayers.Layer.ENEMY | 
-			CollisionLayers.Layer.ENEMY_PROJECTILE |
-			CollisionLayers.Layer.PLAYER_PROJECTILE,
+			CollisionLayers.WORLD, 
+			CollisionLayers.PLAYER |
+			CollisionLayers.ENEMY | 
+			CollisionLayers.ENEMY_PROJECTILE |
+			CollisionLayers.PLAYER_PROJECTILE,
 			e_data["collider_radius"]))
 		cs.add_component(entity_id, "RenderComponent", RenderComponent.new(e_data["scene"]))
 		
@@ -66,17 +67,16 @@ func _create_enemy(data_array: Array) -> void:
 		cs.add_component(entity_id, "CurrentHpRatioComponent", CurrentHpRatioComponent.new(1))
 		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"],true))
 		cs.add_component(entity_id, "TargetComponent",TargetComponent.new())
-		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(e_data["movespeed"]))
+		cs.add_component(entity_id, "SpeedComponent", SpeedComponent.new(e_data["movespeed"]))
 		cs.add_component(entity_id, "TeamComponent", TeamComponent.new(2))
 		cs.add_component(entity_id, "XPRewardComponent", XPRewardComponent.new(e_data['xp_reward']))
 		cs.add_component(entity_id, "AttackSpeedComponent", AttackSpeedComponent.new())
 		cs.add_component(entity_id, "CollisionComponent",
 		CollisionComponent.new(
-			CollisionLayers.Layer.ENEMY,
-			CollisionLayers.Layer.PLAYER | 
-			CollisionLayers.Layer.WORLD | 
-			CollisionLayers.Layer.PLAYER_PROJECTILE |
-			CollisionLayers.Layer.ENEMY,
+			CollisionLayers.ENEMY,
+			CollisionLayers.PLAYER | 
+			CollisionLayers.WORLD | CollisionLayers.ENEMY |
+			CollisionLayers.PLAYER_PROJECTILE,
 			e_data["collider_radius"]
 		))
 		cs.add_component(entity_id, "ProjectileRadiusComponent", ProjectileRadiusComponent.new())
@@ -86,6 +86,10 @@ func _create_enemy(data_array: Array) -> void:
 		cs.add_component(entity_id,"GroundedComponent", GroundedComponent.new())
 		cs.add_component(entity_id, "DamageComponent", DamageComponent.new())
 		
+		if e_data.has("weapon_name"):
+			event_bus.emit("create_weapon", [{"weapon_name":e_data["weapon_name"],"owner_id": entity_id}])
+		
+			
 		
 	
 
@@ -100,7 +104,7 @@ func _create_char(data_array: Array):
 		var e_data = db.char_configs[char_name]
 		var entity_id = em.create_entity()
 		cs.add_component(entity_id, "PlayerComponent", PlayerComponent.new())
-		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(e_data["movespeed"]))
+		cs.add_component(entity_id, "SpeedComponent", SpeedComponent.new(e_data["movespeed"]))
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(position))
 		cs.add_component(entity_id, "MaxHpComponent", MaxHpComponent.new(e_data["hp"]))
 		cs.add_component(entity_id, "CurrentHpComponent",CurrentHpComponent.new(e_data["hp"]))
@@ -118,10 +122,9 @@ func _create_char(data_array: Array):
 		
 		cs.add_component(entity_id, "CollisionComponent",
 		CollisionComponent.new(
-			CollisionLayers.Layer.PLAYER,
-			CollisionLayers.Layer.ENEMY |
-			CollisionLayers.Layer.PLAYER | 
-			CollisionLayers.Layer.WORLD | CollisionLayers.Layer.ENEMY_PROJECTILE,
+			CollisionLayers.PLAYER,
+			CollisionLayers.ENEMY | 
+			CollisionLayers.WORLD | CollisionLayers.ENEMY_PROJECTILE,
 			e_data["collider_radius"]
 		))
 		cs.add_component(entity_id, "ProjectileRadiusComponent", ProjectileRadiusComponent.new())
@@ -133,7 +136,17 @@ func _create_char(data_array: Array):
 		
 		for slot in e_data["slots"]:
 			event_bus.emit("create_slot", [{"owner_id": entity_id}])
-	
+			
+#TODO create new rombs for biggef xp_value, get this from db	
+func _create_xp(data_array: Array):
+	for data in data_array:
+		
+		var entity_id = em.create_entity()
+		cs.add_component(entity_id,"TransformComponent", TransformComponent.new(data["position"]))
+		cs.add_component(entity_id,"XPRewardComponent",XPRewardComponent.new(data["xp_value"]))
+		cs.add_component(entity_id,"RenderComponent", RenderComponent.new("uid://dosmechqhf3sw"))
+		cs.add_component(entity_id,"PickUpComponent", PickUpComponent.new())
+		
 func _create_weapon(data_array: Array):
 	for data in data_array:
 		var _name = data["weapon_name"]
@@ -143,14 +156,23 @@ func _create_weapon(data_array: Array):
 		
 		var e_data = db.weapon_configs[_name]
 		var entity_id = em.create_entity()
-		if _name == "carrot":
-			cs.add_component(entity_id,"WeaponComponent",WeaponComponent.new(_name, e_data["cd"], owner_id))
-			cs.add_component(entity_id, "DamageComponent", DamageComponent.new(e_data["damage"]))
-			cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"],true))
-			cs.add_component(entity_id, "ProjectileCountComponent", ProjectileCountComponent.new(e_data["projectile_count"]))
-			cs.add_component(entity_id, "ProjectileRadiusComponent", ProjectileRadiusComponent.new(e_data["projectile_radius"]))
-			cs.add_component(entity_id, "WeaponRadiusComponent", WeaponRadiusComponent.new(e_data["weapon_radius"]))
+		
+		cs.add_component(entity_id,"WeaponComponent",WeaponComponent.new(_name, e_data["cd"], owner_id))
+		cs.add_component(entity_id, "DamageComponent", DamageComponent.new(e_data["damage"]))
+		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"],true))
+		
+		if e_data.has("projectile_speed"):
 			cs.add_component(entity_id,"ProjectileSpeedComponent",ProjectileSpeedComponent.new(e_data["projectile_speed"]))
+		if e_data.has("projectile_count"):
+			cs.add_component(entity_id, "ProjectileCountComponent", ProjectileCountComponent.new(e_data["projectile_count"]))
+		
+		if e_data.has("projectile_radius"):
+			cs.add_component(entity_id, "ProjectileRadiusComponent", ProjectileRadiusComponent.new(e_data["projectile_radius"]))
+		
+		if e_data.has("weapon_radius"):
+			cs.add_component(entity_id, "WeaponRadiusComponent", WeaponRadiusComponent.new(e_data["weapon_radius"]))
+		if e_data.has("duration"):
+			cs.add_component(entity_id, "LifetimeComponent", LifetimeComponent.new(e_data["duration"]))
 		
 func _create_item(data_array: Array):
 	for data in data_array:

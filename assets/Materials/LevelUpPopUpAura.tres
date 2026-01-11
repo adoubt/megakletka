@@ -1,7 +1,7 @@
 [gd_resource type="VisualShader" load_steps=14 format=3 uid="uid://cxm4lxqux7cw7"]
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_23g2o"]
-size = Vector2(1084.0002, 509)
+size = Vector2(1092, 509)
 title = "Blinking Part"
 tint_color_enabled = true
 tint_color = Color(0.6015625, 0.22793579, 0.22793579, 0.75)
@@ -25,6 +25,8 @@ default_value = Color(0.0056611504, 0.0056611514, 0.00566115, 1)
 
 [sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_igoha"]
 parameter_name = "transparency_texture"
+texture_type = 1
+texture_filter = 2
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_l3lql"]
 expanded_output_ports = [0]
@@ -37,11 +39,11 @@ input_name = "time"
 [sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_kd0bc"]
 output_port_for_preview = 0
 linked_parent_graph_frame = 10
-function = 1
+function = 0
 
 [sub_resource type="VisualShaderNodeRemap" id="VisualShaderNodeRemap_2ks0r"]
 output_port_for_preview = 0
-default_input_values = [1, -1.0, 2, 1.0, 3, 0.3, 4, 1.0]
+default_input_values = [1, -0.5, 2, 1.0, 3, 0.5, 4, 0.0]
 linked_parent_graph_frame = 10
 
 [sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_ohhje"]
@@ -53,7 +55,7 @@ operator = 2
 operator = 2
 
 [sub_resource type="VisualShaderNodeBillboard" id="VisualShaderNodeBillboard_negb2"]
-billboard_type = 2
+billboard_type = 3
 keep_scale = true
 
 [resource]
@@ -61,7 +63,7 @@ code = "shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx, unshaded, shadows_disabled;
 
 uniform vec4 main_color : source_color;
-uniform sampler2D transparency_texture;
+uniform sampler2D transparency_texture : source_color, filter_linear;
 uniform float blinking_sped;
 uniform sampler2D depth_tex_frg_12 : hint_depth_texture;
 
@@ -71,9 +73,10 @@ void vertex() {
 	mat4 n_out2p0;
 // GetBillboardMatrix:2
 	{
-		mat4 __mvm = VIEW_MATRIX * mat4(INV_VIEW_MATRIX[0], MODEL_MATRIX[1], vec4(normalize(cross(INV_VIEW_MATRIX[0].xyz, MODEL_MATRIX[1].xyz)), 0.0), MODEL_MATRIX[3]);
-		__mvm = __mvm * mat4(vec4(length(MODEL_MATRIX[0].xyz), 0.0, 0.0, 0.0), vec4(0.0, 1.0, 0.0, 0.0), vec4(0.0, 0.0, length(MODEL_MATRIX[2].xyz), 0.0), vec4(0.0, 0.0, 0.0, 1.0));
-		n_out2p0 = __mvm;
+		mat4 __wm = mat4(normalize(INV_VIEW_MATRIX[0]), normalize(INV_VIEW_MATRIX[1]), normalize(INV_VIEW_MATRIX[2]), MODEL_MATRIX[3]);
+		__wm = __wm * mat4(vec4(cos(INSTANCE_CUSTOM.x), -sin(INSTANCE_CUSTOM.x), 0.0, 0.0), vec4(sin(INSTANCE_CUSTOM.x), cos(INSTANCE_CUSTOM.x), 0.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 0.0, 1.0));
+		__wm = __wm * mat4(vec4(length(MODEL_MATRIX[0].xyz), 0.0, 0.0, 0.0), vec4(0.0, length(MODEL_MATRIX[1].xyz), 0.0, 0.0), vec4(0.0, 0.0, length(MODEL_MATRIX[2].xyz), 0.0), vec4(0.0, 0.0, 0.0, 1.0));
+		n_out2p0 = VIEW_MATRIX * __wm;
 	}
 
 
@@ -107,15 +110,15 @@ void fragment() {
 
 
 // FloatFunc:6
-	float n_out6p0 = cos(n_out8p0);
+	float n_out6p0 = sin(n_out8p0);
 
 
 	float n_out7p0;
 // Remap:7
-	float n_in7p1 = -1.00000;
+	float n_in7p1 = -0.50000;
 	float n_in7p2 = 1.00000;
-	float n_in7p3 = 0.30000;
-	float n_in7p4 = 1.00000;
+	float n_in7p3 = 0.50000;
+	float n_in7p4 = 0.00000;
 	{
 		float __input_range = n_in7p2 - n_in7p1;
 		float __output_range = n_in7p4 - n_in7p3;
@@ -158,7 +161,7 @@ nodes/vertex/connections = PackedInt32Array(2, 0, 0, 10)
 nodes/fragment/2/node = SubResource("VisualShaderNodeColorParameter_dhyl4")
 nodes/fragment/2/position = Vector2(-1060, 20)
 nodes/fragment/3/node = SubResource("VisualShaderNodeTexture2DParameter_igoha")
-nodes/fragment/3/position = Vector2(-1260, 820)
+nodes/fragment/3/position = Vector2(-1360, 820)
 nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_l3lql")
 nodes/fragment/4/position = Vector2(-1280, 500)
 nodes/fragment/5/node = SubResource("VisualShaderNodeInput_tdqpf")

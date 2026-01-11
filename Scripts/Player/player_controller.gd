@@ -5,7 +5,7 @@ class_name Player
 
 var current_state : String
 @export var max_speed: float = 3.0
-@export var acceleration: float = 25.0
+@export var acceleration: float = 125.0
 @export var jump_velocity : float = 5.0
 @export var gravity: float = -9.8
 @export_group("Controller")

@@ -922,6 +922,12 @@ near = 0.01
 script = ExtResource("14_esmjy")
 spring_arm = NodePath("../SpringArm3D/SpringArmPosition")
 
+[node name="SpotLight3D" type="SpotLight3D" parent="CameraController/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.9613998)
+light_bake_mode = 0
+spot_range = 11.7052145
+spot_angle = 28.565193
+
 [node name="Model" type="Node3D" parent="."]
 script = ExtResource("4_825xp")
 
@@ -1449,6 +1455,7 @@ visible = false
 
 [node name="SpotLight3D2" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.03938185, 0.99922425, 0, -0.99922425, -0.03938185, 0, 2.776886, 0)
+visible = false
 light_color = Color(1, 1, 0.9882353, 1)
 light_bake_mode = 0
 distance_fade_enabled = true

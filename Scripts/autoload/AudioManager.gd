@@ -1,25 +1,18 @@
 extends Node3D
 
-# Чистый менеджер звука, работает с базой данных
-
-
-# Динамические/однократные 3D звуки
 var dynamic_sources: Array = []
 
-# Объектные источники (постоянные, привязаны к нодам)
 var object_sources: Dictionary = {} # node -> AudioStreamPlayer3D
 
-# Фоновая музыка
 var music_players: Dictionary = {} # name -> AudioStreamPlayer3D
 
-# UI звуки (не позиционные)
 var ui_sources: Array = []
 
 var ui_player: AudioStreamPlayer
 func _ready() -> void:
 	ui_player= AudioStreamPlayer.new()
 	add_child(ui_player)
-# ==================== ПОЗИЦИОННЫЕ 3D ЗВУКИ ====================
+
 func play_sound(name: String, position: Vector3, volume_db: float = 0.0, pitch_range: Vector2 = Vector2(0.9,1.1), max_distance: float = 15.0) -> void:
 	var path = DatabaseManager.db.sound_configs["diegetic"]["one_shot"].get(name, null)
 	if path == null:
@@ -32,7 +25,7 @@ func play_sound(name: String, position: Vector3, volume_db: float = 0.0, pitch_r
 	player.volume_db = volume_db
 	player.pitch_scale = randf_range(pitch_range.x, pitch_range.y)
 	
-	# ⚡ Ограничиваем дальность слышимости и ставим модель затухания
+
 	player.max_distance = max_distance
 	player.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_DISTANCE
 
@@ -49,7 +42,7 @@ func _on_dynamic_finished(player: AudioStreamPlayer3D):
 	if is_instance_valid(player):
 		player.queue_free()
 
-# ==================== UI ЗВУКИ ====================
+
 func play_ui_sound(name: String, volume_db: float = -10.0, pitch_range: Vector2 = Vector2(1.0,1.0)) -> void:
 	var path = DatabaseManager.db.sound_configs["non_diegetic"]["ui"][name]
 	if path == null:
@@ -72,7 +65,7 @@ func _on_ui_finished(player: AudioStreamPlayer):
 	if is_instance_valid(player):
 		player.queue_free()
 
-# ==================== ФОНОВАЯ МУЗЫКА ====================
+
 func play_music(name: String, volume_db: float = 0.0, loop: bool = true) -> void:
 	if music_players.has(name):
 		var existing = music_players[name]
@@ -102,7 +95,7 @@ func stop_music(name: String) -> void:
 			player.queue_free()
 		music_players.erase(name)
 
-# ==================== ПОСТОЯННЫЕ ОБЪЕКТНЫЕ ИСТОЧНИКИ ====================
+
 func register_persistent(name: String, node: Node3D, loop: bool = true, volume_db: float = 0.0) -> void:
 	if object_sources.has(node):
 		return

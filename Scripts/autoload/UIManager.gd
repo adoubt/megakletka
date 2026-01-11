@@ -10,16 +10,17 @@ extends Node
 @onready var wagon_panel = preload("res://UI/wagon_panel.tscn").instantiate()
 @onready var level_up_panel = preload("res://UI/level_up_panel.tscn").instantiate()
 
+@onready var post_process_panel:  = preload("res://UI/post_process_panel.tscn").instantiate()
 var event_bus: EventBus
 
 var player_camera
 var upgrade_menu 
 var panels: Dictionary = {}
 var force_cursor_visible: bool = false
-var last_mouse_state: bool = false
+var last_mouse_state: bool = true
 const BASE_RESOLUTION := Vector2(1152, 648)
 var canvas :CanvasLayer
-
+var post_process_canvas :CanvasLayer
 var game_paused: bool = false
 # ========== PUBLIC API ==========
 
@@ -70,16 +71,23 @@ func toggle_upgrade_menu() -> void:
 	else:
 		open_upgrade_menu() 
 		
-func hud_show() -> void:
-	hud.show()
-func hud_hide()-> void:
-	hud.hide()
+func open_hud() -> void:
+	open_panel("HUD")
 	
+func close_hud()-> void:
+	close_panel("HUD")
+
+func toggle_hud() -> void:
+	
+	if is_panel_open("HUD"):
+		close_panel("HUD")
+	else: open_panel("HUD")
 	
 func toggle_escape_menu() -> void:
-	if escape_menu.visible:
+	if SceneManager.current_scene_name == "GameTest": toggle_hud()
+	if is_panel_open("EscapeMenu"):
 		close_escape_menu()
-		if hud.upgrade_panel.visible:
+		if is_panel_open("UpgradeMenu"):
 			game_paused = true
 	else:
 		open_escape_menu()
@@ -107,10 +115,12 @@ func close_settings() -> void:
 	close_panel("Settings")
 	
 func open_escape_menu() -> void:
-	open_panel("EscapeMenu")
+	open_panel("EscapeMenu", true)
+	
 	game_paused = true
 func close_escape_menu() -> void:
 	close_panel("EscapeMenu")
+	
 	game_paused = false
 func open_dev_panel() -> void:
 	open_panel("DEV_PANEL")
@@ -166,8 +176,9 @@ func close_panel(_name: String, use_tween: bool = false ) -> void:
 		else:	panel.visible = false
 		_update_ui_state()
 
-func close_all() -> void:
+func close_all(incluse_hud : bool = false) -> void:
 	for p in panels.values():
+		if p == hud and not incluse_hud: continue
 		p.visible = false
 	game_paused = false	
 	_update_ui_state()
@@ -176,6 +187,7 @@ func close_all() -> void:
 # ========== INTERNAL ==========
 func _ready() -> void:
 	canvas = CanvasLayer.new()
+	canvas.name = "Panels"
 	add_child(canvas)
 	canvas.add_child(hud)
 	canvas.add_child(dev_panel)
@@ -184,9 +196,12 @@ func _ready() -> void:
 	canvas.add_child(escape_menu)
 	canvas.add_child(main_menu)
 	canvas.add_child(settings_menu)
-
 	
-
+	
+	post_process_canvas = CanvasLayer.new()
+	add_child(post_process_canvas)
+	post_process_canvas.name = "PostProcess"
+	post_process_canvas.add_child(post_process_panel)
 	
 	panels = {
 		
@@ -197,7 +212,8 @@ func _ready() -> void:
 		"UpgradeMenu": hud.upgrade_panel,
 		"LevelUpPanel": level_up_panel,
 		"UpgradeVFX": hud.upgrade_vfx,
-		"WagonPanel": wagon_panel
+		"WagonPanel": wagon_panel,
+		"HUD" :hud
 	}
 	
 	close_all()
@@ -207,7 +223,7 @@ func _ready() -> void:
 	
 func _update_ui_state() -> void:
 	var ui_open := _any_ui_open() or force_cursor_visible
-	var active_node := ControllerManager.get_active()
+	#var active_node := ControllerManager.get_active()
 
 	#if active_node and active_node.has_method("set_input_enabled"):
 		#active_node.set_input_enabled(not ui_open)
@@ -217,7 +233,7 @@ func _update_ui_state() -> void:
 
 func _any_ui_open() -> bool:
 	for p in panels.values():
-
+		if p == hud: continue
 		if p.visible:
 			return true
 	return false
@@ -266,6 +282,7 @@ func _input(event: InputEvent) -> void:
 
 		elif SceneManager.current_scene_name not in ["Intro","MainMenu"]:
 			toggle_escape_menu()
+			
 	if event.is_action_pressed("DEV_PANEL"):
 		if SceneManager.current_scene_name in ["BigRoomTest","GameTest"]:
 			toggle_dev_panel()

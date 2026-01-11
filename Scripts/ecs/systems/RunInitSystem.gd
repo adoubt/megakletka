@@ -5,7 +5,7 @@ class_name RunInitSystem
 var db : DataBase
 const ANTES := 3
 const FLOORS_PER_ANTE := 5
-const BASE_BATTERY := 100
+const BASE_BATTERY := 150
 
 const POI_ON_FLOOR : int = 3
 

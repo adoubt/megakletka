@@ -8,7 +8,19 @@ class_name DataBase
 			"attack_speed":1.7,
 			"collider_radius":0.25,
 			"movespeed": 3.0,
-			"xp_reward": 2.0
+			"xp_reward": 2.0,
+			"budget" : 2
+		},
+		"CarrotAboba": {
+			"scene": "res://Scenes/Enemy/Aboba.tscn",
+			"hp": 10,
+			"attack_speed":1.7,
+			"collider_radius":0.25,
+			"movespeed": 3.0,
+			"xp_reward": 10.0,
+			
+			"budget" : 5
+			
 		}
 	}
 	
@@ -39,45 +51,45 @@ class_name DataBase
 			"scene": "res://Scenes/Player/Player.tscn",
 			"hp": 10,
 			"attack_speed_mult":1,
-			"collider_radius": 0.15,
+			"collider_radius": 0.4,
 			"movespeed": 10,
 			"xp_pickup_range": 1.5,
-			"weapon_name" : "carrot",
-			"slots": 3
+			"weapon_name" : "nut",
+			"slots": 3,
+			
 		}
 	}
 	
 	
 @export var weapon_configs = {
 		
-		"cheese": {
-			"scene": "res://Scenes/Weapons/Projectiles/cheese.tscn",
-			"cd": 5,
-			"damage" : 4,
-			"projectile_count" : 3.0,
-			"projectile_radius" : 0.2,
-			"weapon_radius": 1.5,
-			"projectile_speed": 2.0,
-		},
+		
 		"carrot": {
 			"scene": "res://Scenes/Weapons/Projectiles/carrot.tscn",
 			"cd": 5,
 			"damage" : 4,
-			"projectile_count" : 3.0,
-			"projectile_radius" : 0.2,
+			"projectile_count" : 1.0,
+			"projectile_radius" : 0.3,
 			"weapon_radius": 1.5,
 			"projectile_speed": 2.0,
+			"duration": 3.0
 		},
 		"aura":{
 			"scene": "res://Scenes/Weapons/AOE/Aura.tscn",
 			"cd": 1,
 			"damage" : 4,
 			"weapon_radius": 1.0,
+		},
+		"nut":{
+			"scene": "res://Scenes/Weapons/Projectiles/carrot.tscn",
+			"cd": 0.5,
+			"damage" : 1,
+			"projectile_count" : 1.0,
+			"projectile_radius" : 0.3,
+			"projectile_speed": 20.0,
+			"duration": 2.0
 		}
 }
-@export var upgrades_configs = {
-	
-	}
 
 @export var item_configs = {
 	"heart_card": {
@@ -180,4 +192,11 @@ class_name DataBase
 			
 		},
 	}
+}
+
+@export var shaders_config = {
+	"vhs" : "res://assets/Shaders/PostProcess/vhscamera3.gdshader",
+	"vhs2": "res://assets/Shaders/PostProcess/vhs_shader.gdshader",
+	"kuwahara" : "res://assets/Shaders/PostProcess/kuwahara.gdshader"
+	
 }

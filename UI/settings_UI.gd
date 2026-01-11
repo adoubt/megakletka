@@ -1,11 +1,11 @@
 extends Control
 @onready var tab_container: TabContainer = $Control/HBoxContainer/TABCustom/TabContainer
 # Базовое разрешение, под которое ты верстал
-
+@onready var post_process_effects_button = $Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel/MarginContainer/HBoxContainer/HBoxContainer/Effects
 
 func _ready() -> void:
-	_apply_settings(self)
-	
+	#_apply_settings(self)
+	_load_effects()
 func _apply_settings(node: Node) -> void:
 	# Проверяем у текущей ноды
 	if "setting_key" in node:
@@ -20,7 +20,19 @@ func _apply_settings(node: Node) -> void:
 			_apply_settings(child)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
-
+func _load_effects()-> void:
+	var effects = DatabaseManager.db.shaders_config.keys()
+	var current_shader = SettingsManager.get_value("post_process_shader")
+	post_process_effects_button.add_item("Off", 0)
+	var i: int = 1
+	
+	for effect in effects:
+		post_process_effects_button.add_item(effect, i)
+		if effect == current_shader:
+			post_process_effects_button.selected = i
+		i+=1
+	
+	
 
 func _on_back_pressed() -> void:
 	
@@ -45,3 +57,7 @@ func _on_audio_pressed() -> void:
 
 func _on_debug_pressed() -> void:
 	tab_container.set_current_tab(4)
+
+
+func _on_effects_item_selected(index: int) -> void:
+	UIManager.post_process_panel.set_shader_by_index(index)

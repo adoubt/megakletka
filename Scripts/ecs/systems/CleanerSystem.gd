@@ -22,10 +22,12 @@ func update(_delta: float):
 					render.instance.material_override.next_pass = null
 				if render.shadow_instance:
 					object_pool.release_instance("res://Scenes/shadow.tscn", render.shadow_instance)
-			# ✅ Сначала удаляем компоненты
+			var collision = cs.get_component(entity_id, "CollisionComponent")
+			if collision and collision.debug_collider:
+				object_pool.release_instance("res://Scenes/debug_collider.tscn",collision.debug_collider)
 			cs.remove_all_components_for_entity(entity_id)
 
-			# ✅ Потом удаляем сущность
+			
 			em.destroy_entity(entity_id)
 		else:
 			dead.decay_time -= _delta

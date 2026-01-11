@@ -8,7 +8,7 @@ var object_pool : ObjectPool
 var grid : SpatialGrid
 var event_bus: EventBus
 var db: DataBase
-
+var debug_collision :bool = false
 func initialize():
 	name = "ECS"
 	db = DatabaseManager.db
@@ -35,6 +35,7 @@ func initialize():
 	"res://Scenes/Popups/LevelUpPopup.tscn":1,
 	"res://Scenes/Popups/DamagePopup.tscn":30,
 	"res://Scenes/POI/fortune_teller.tscn":2,
+	"res://Scenes/debug_collider.tscn":200 if debug_collision else 0
 	
 
 })
@@ -50,12 +51,13 @@ func initialize():
 	system_manager.add_system(FactorySystem.new(entity_manager, component_store,event_bus,db))
 	system_manager.add_system(StatsRecalculationSystem.new(entity_manager, component_store,event_bus))
 	
-	system_manager.add_system(WeaponSystem.new(entity_manager, component_store,event_bus))
+	
 	
 	system_manager.add_system(MovementSystem.new(entity_manager, component_store,event_bus))
 
 	system_manager.add_system(DamageSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(DeathSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(WeaponSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(CollisionSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HitSystem.new(entity_manager, component_store,event_bus))
 	
@@ -74,7 +76,8 @@ func initialize():
 	system_manager.add_system(Interactionsystem.new(entity_manager,component_store,event_bus))
 
 	system_manager.add_system(DEVPanelSystem.new(entity_manager, component_store,event_bus, object_pool))
-
+	if debug_collision: system_manager.add_system(DEBUGCollisionSystem.new(entity_manager, component_store,event_bus, object_pool)) 
+	
 	system_manager.add_system(HUDSystem.new(entity_manager, component_store,event_bus,))
 	system_manager.add_system(FloorActivationSystem.new(entity_manager, component_store,event_bus, db, object_pool))
 	system_manager.add_system(RenderSystem.new(entity_manager, component_store,event_bus, object_pool))

@@ -7,13 +7,19 @@ const FLOOR_Y :float= 0.6
 
 func update(delta: float) -> void:
 	var entities := get_entities_with(
-		["TransformComponent", "MoveSpeedComponent"],
+		["TransformComponent"],
 		["DeadComponent"]
 	)
 
 	for id in entities:
 		var tf = cs.get_component(id, "TransformComponent")
-		var speed = cs.get_component(id, "MoveSpeedComponent")
+		if cs.has_component(id, "ProjectileComponent"):
+			# только интеграция
+			tf.position += tf.velocity * delta
+			continue
+		var speed = cs.get_component(id, "SpeedComponent") 
+		if not speed:
+			speed = cs.get_component(id, "ProjectileSpeedComponent")
 		var target = cs.get_component(id, "TargetComponent")
 
 		if not tf or not speed or not target:
@@ -45,15 +51,7 @@ func update(delta: float) -> void:
 		
 		if tf.position.y + cs.get_component(id, "CollisionComponent").radius > FLOOR_Y:
 			tf.velocity.y += GRAVITY * delta
-		#elif cs.has_component(id, "ClimbComponent"):
-			#tf.velocity.y = 0.0
-			#tf.velocity += Vector3( 
-				#randf() * -CLIMB_SPEED if (abs(tf.velocity.x) > abs(tf.velocity.z)) else randf() * CLIMB_SPEED,
-				#randf() * CLIMB_SPEED,
-				#randf() * -CLIMB_SPEED if (abs(tf.velocity.z) > abs(tf.velocity.x)) else randf() * CLIMB_SPEED
-				#) 
-	#
-			#cs.remove_component(id, "ClimbComponent")
+		
 		elif cs.has_component(id, "ClimbComponent"):
 			var vel :Vector3= tf.velocity
 
@@ -91,11 +89,3 @@ func update(delta: float) -> void:
 			tf.velocity.y = FLOOR_Y
 		# ---- ИНТЕГРАЦИЯ ----
 		tf.position += tf.velocity * delta 
-
-		# ---- ПОЛ ----
-		#var col = cs.get_component(id, "CollisionComponent")
-		
-		#if tf.position.y + col.radius  < FLOOR_Y:
-			#tf.position.y = FLOOR_Y
-			#if tf.velocity.y < 0:
-				#tf.velocity.y = 0

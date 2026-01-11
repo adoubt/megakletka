@@ -154,7 +154,7 @@ text = "DEBUG"
 layout_mode = 2
 theme = ExtResource("4_ay7hg")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_r3owr")
-current_tab = 4
+current_tab = 2
 tabs_visible = false
 use_hidden_tabs_for_min_size = true
 tab_focus_mode = 1
@@ -697,10 +697,121 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Graphics" type="Control" parent="Control/HBoxContainer/TABCustom/TabContainer"]
-visible = false
+[node name="Graphics2" type="VBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer"]
 layout_mode = 2
+theme = ExtResource("1_3ykye")
+theme_override_constants/separation = 8
 metadata/_tab_index = 2
+
+[node name="Panel" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme = ExtResource("1_3ykye")
+theme_override_styles/panel = SubResource("StyleBoxFlat_4v2jo")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3ykye")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 7
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("1_3ykye")
+theme_override_constants/separation = 220
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme = ExtResource("1_3ykye")
+text = "Effects"
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3ykye")
+
+[node name="Effects" type="OptionButton" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel/MarginContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_normal_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("StyleBoxFlat_l1i01")
+flat = true
+fit_to_longest_item = false
+allow_reselect = true
+
+[node name="Panel2" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme = ExtResource("1_3ykye")
+theme_override_styles/panel = SubResource("StyleBoxFlat_4v2jo")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3ykye")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 7
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel2/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("1_3ykye")
+theme_override_constants/separation = 220
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel2/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme = ExtResource("1_3ykye")
+text = "FIELD OF VIEW"
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel2/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3ykye")
+theme_override_constants/separation = 20
+script = ExtResource("3_cj1lu")
+
+[node name="Input" type="LineEdit" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel2/MarginContainer/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_r62pu")
+text = "70.00"
+placeholder_text = "0.00"
+alignment = 1
+max_length = 5
+
+[node name="Slider" type="HSlider" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel2/MarginContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 60.0
+step = 0.05
+value = 69.7
 
 [node name="Audio" type="Control" parent="Control/HBoxContainer/TABCustom/TabContainer"]
 visible = false
@@ -708,6 +819,7 @@ layout_mode = 2
 metadata/_tab_index = 3
 
 [node name="Debug" type="VBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
@@ -775,4 +887,5 @@ settings_key = "audio_path"
 [connection signal="pressed" from="Control/HBoxContainer/TABCustom/TabButtons/Graphics" to="." method="_on_graphics_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/TABCustom/TabButtons/Audio" to="." method="_on_audio_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/TABCustom/TabButtons/Debug" to="." method="_on_debug_pressed"]
+[connection signal="item_selected" from="Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel/MarginContainer/HBoxContainer/HBoxContainer/Effects" to="." method="_on_effects_item_selected"]
 [connection signal="item_selected" from="Control/HBoxContainer/TABCustom/TabContainer/Debug/Panel/MarginContainer/HBoxContainer/HBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]

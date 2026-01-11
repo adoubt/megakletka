@@ -7,7 +7,7 @@ func update(_delta: float) -> void:
 		return
 
 	# Берём игроков и фильтруем живых
-	var players = get_entities_with(["ControllerStateComponent", "TransformComponent"])
+	var players = get_entities_with(["PlayerComponent", "TransformComponent"])
 	var alive_players := []
 	for pid in players:
 		if not cs.has_component(pid, "DeadComponent"):
@@ -16,7 +16,7 @@ func update(_delta: float) -> void:
 	var player_id := -1
 	var player_pos := Vector3.ZERO
 	if alive_players.size() > 0:
-		player_id = alive_players[0]
+		player_id = alive_players.pick_random()
 		player_pos = cs.get_component(player_id, "TransformComponent").position
 
 	for enemy_id in enemies:

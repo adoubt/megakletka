@@ -1,6 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bsoxxlhnjn45f"]
+[gd_scene load_steps=5 format=3 uid="uid://bsoxxlhnjn45f"]
 
 [ext_resource type="Script" uid="uid://fbejyr264y40" path="res://UI/intro.gd" id="1_s2ta7"]
+[ext_resource type="Material" uid="uid://d4culp27pja5e" path="res://assets/Materials/intro.tres" id="2_gpvol"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_gpvol"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_lc2xo"]
 font_size = 24
@@ -16,6 +19,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_s2ta7")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = ExtResource("2_gpvol")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("PlaceholderTexture2D_gpvol")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1

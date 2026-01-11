@@ -37,11 +37,11 @@ func _activate_poi_on_floor():
 			var data: Dictionary = db.poi_configs[poi_name]
 			cs.add_component(poi_id, "RenderComponent", RenderComponent.new(data["scene"]))
 			cs.add_component(poi_id, "CollisionComponent", CollisionComponent.new(
-				CollisionLayers.Layer.WORLD, 
-				CollisionLayers.Layer.PLAYER |
-				CollisionLayers.Layer.ENEMY | 
-				CollisionLayers.Layer.ENEMY_PROJECTILE |
-				CollisionLayers.Layer.PLAYER_PROJECTILE,
+				CollisionLayers.WORLD, 
+				CollisionLayers.PLAYER |
+				CollisionLayers.ENEMY | 
+				CollisionLayers.ENEMY_PROJECTILE |
+				CollisionLayers.PLAYER_PROJECTILE,
 				data["collider_radius"]))
 			cs.add_component(poi_id, "InteractionTargetComponent", InteractionTargetComponent.new(data["interact_radius"], data["target_priority"]))
 		else:

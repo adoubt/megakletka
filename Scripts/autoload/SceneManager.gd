@@ -3,7 +3,7 @@ extends Node
 # Жёстко прописанные пути сцен
 const SCENES := {
 	"Intro": "uid://bsoxxlhnjn45f",
-	"MainMenu": "uid://dcirc02tx3del",
+	"MainMenu": "uid://bapk8ffqxb4j1",
 	"GameTest":  "uid://bkfn061oy0fu0",
 	"BigRoomTest": "uid://6g1u6okbk7nj",
 }
@@ -15,22 +15,27 @@ var current_scene_name: String = "Intro"
 
 func go_to_intro():
 	_change_scene("Intro")
-
+	
+	
 func go_to_main_menu():
 	_change_scene("MainMenu")
-
-
+	
+	
 func go_to_game_test():
 	_change_scene("GameTest")
 
+	
 func _go_to_big_room_test():
 	_change_scene("BigRoomTest")
+
 	
 func restart_current():
 	_change_scene(current_scene_name)
+
+	
 func exit():
 	get_tree().quit()
-
+	
 # ---------------- INTERNAL ----------------
 
 func _change_scene(_name: String):
@@ -45,14 +50,14 @@ func _change_scene(_name: String):
 	UIManager.close_all()
 	
 func _update_ui_for_scene():
-
+	
 	# форс курсор через UIManager
 	if current_scene_name in ["MainMenu"]:
 		UIManager.force_cursor_visible = true
 	else:
 		UIManager.force_cursor_visible = false
-	#UIManager._update_ui_state()
+	UIManager._update_ui_state()
 	if current_scene_name in ["BigRoomTest","GameTest"]:
-		UIManager.hud_show()
+		UIManager.open_hud()
 	else:
-		UIManager.hud_hide()
+		UIManager.close_hud()

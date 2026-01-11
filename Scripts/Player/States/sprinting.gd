@@ -5,7 +5,7 @@ func enter(previous_state_path: String, data := {}) -> void:
 	player.current_state = name
 	
 	print(previous_state_path, " -> Sprinting")
-	player.animation_player.speed_scale = 1.3
+	player.animation_player.speed_scale = 1.8
 	
 	player.animation_player.play("Pack/run_fast", 0.25)
 
