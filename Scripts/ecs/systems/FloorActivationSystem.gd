@@ -1,13 +1,13 @@
 extends BaseSystem
 class_name FloorActivationSystem
 
-var event_bus: EventBus
+
 var db: DataBase
 var object_pool: ObjectPool
 
-func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _db: DataBase, _event_bus: EventBus,_object_pool: ObjectPool ):
-	super._init(_entity_manager, _component_store)
-	event_bus = _event_bus
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _event_bus: EventBus,_db: DataBase,_object_pool: ObjectPool ):
+	super._init(_entity_manager, _component_store, _event_bus)
+	
 	db = _db
 	object_pool = _object_pool
 	

@@ -1,14 +1,14 @@
 extends BaseSystem
 class_name DEVPanelSystem
 
-var pool_system: ObjectPool
+var object_pool: ObjectPool
 var _timer := 0.0
 const UPDATE_INTERVAL := 1.0
 
 
-func _init(_entity_manager, _component_store, _pool_system:ObjectPool):
-	super._init(_entity_manager, _component_store)
-	pool_system = _pool_system
+func _init(_entity_manager :EntityManager, _component_store :ComponentStore, _event_bus :EventBus,_object_pool:ObjectPool):
+	super._init(_entity_manager, _component_store, _event_bus)
+	object_pool = _object_pool
 
 
 func update(_delta: float) -> void:
@@ -17,7 +17,7 @@ func update(_delta: float) -> void:
 		return
 	_timer = 0.0
 
-	var stats: Dictionary = pool_system.get_debug_stats()
+	var stats: Dictionary = object_pool.get_debug_stats()
 
 	UIManager.dev_panel.update_pool_stats(stats)
 	#var enemies = get_entities_with(["TeamComponent"])

@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=4 uid="uid://2byjvuqbx7jn"]
+[gd_scene load_steps=15 format=4 uid="uid://2byjvuqbx7jn"]
 
 [ext_resource type="Script" uid="uid://c1u5kbo7gert2" path="res://UI/level_up_scene.gd" id="1_5ksud"]
 [ext_resource type="Texture2D" uid="uid://dmlj8n3eq6vxw" path="res://import/wodden panel/doska_Image_0.png" id="2_f6gl1"]
+[ext_resource type="Script" uid="uid://b7rbsbbuu4j0" path="res://UI/board.gd" id="2_iypi6"]
 [ext_resource type="Texture2D" uid="uid://ocp2uesuesui" path="res://import/wodden panel/doska_Image_1.png" id="3_iypi6"]
 [ext_resource type="Texture2D" uid="uid://cbnoveup3dhsn" path="res://import/wodden panel/doska_Image_2.png" id="4_yh6kj"]
 
@@ -49,15 +50,18 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_roudi")
 
-[sub_resource type="BoxMesh" id="BoxMesh_2xl73"]
-size = Vector3(0.1, 0.1, 0.1)
+[sub_resource type="BoxShape3D" id="BoxShape3D_f6gl1"]
+size = Vector3(0.32409668, 0.03265381, 1.2142944)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iypi6"]
+size = Vector3(0.34326172, 0.036132813, 1.1695557)
 
 [sub_resource type="Animation" id="Animation_dsp3i"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Board:rotation")
+tracks/0/path = NodePath("SubViewport/Pos/Board:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -69,7 +73,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Board:position")
+tracks/1/path = NodePath("SubViewport/Pos/Board:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -85,7 +89,7 @@ length = 0.856
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Board:rotation")
+tracks/0/path = NodePath("SubViewport/Pos/Board:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -97,7 +101,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Board:position")
+tracks/1/path = NodePath("SubViewport/Pos/Board:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -112,7 +116,7 @@ resource_name = "show_board"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Board:rotation")
+tracks/0/path = NodePath("SubViewport/Pos/Board:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -124,7 +128,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Board:position")
+tracks/1/path = NodePath("SubViewport/Pos/Board:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -141,60 +145,66 @@ _data = {
 &"show_board": SubResource("Animation_2b3xr")
 }
 
-[node name="LevelUpPanel" type="Node3D"]
+[node name="LevelUpScene" type="Node"]
 script = ExtResource("1_5ksud")
 
-[node name="Board" type="Node3D" parent="."]
-transform = Transform3D(2.4999998, 0, 0, 0, 2.5, 0, 0, 0, 2.4999998, 1, 1.4, 0.69)
+[node name="SubViewport" type="SubViewport" parent="."]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
 
-[node name="Plank2_Plank_0" type="MeshInstance3D" parent="Board"]
+[node name="CameraPivot" type="Node3D" parent="SubViewport"]
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport/CameraPivot"]
+transform = Transform3D(-0.070347905, 0.48432106, -0.87205756, 0.038943134, 0.8748904, 0.48275286, 0.9967621, 0, -0.08040769, -1.2871144, 0.7080468, -1.1564909)
+current = true
+
+[node name="Pos" type="Node3D" parent="SubViewport"]
+
+[node name="Board" type="Node3D" parent="SubViewport/Pos"]
+transform = Transform3D(2.4999998, 0, 0, 0, 2.5, 0, 0, 0, 2.4999998, 1, 1.4, 0.69)
+script = ExtResource("2_iypi6")
+
+[node name="Plank2_Plank_0" type="MeshInstance3D" parent="SubViewport/Pos/Board"]
 transform = Transform3D(1.0000001, -1.8626451e-08, 0, -2.2351742e-08, 1.0000001, -1.4901161e-08, -2.9802322e-08, 1.4901161e-08, 1, -0.016052578, 0.02285733, 0.073960975)
 mesh = SubResource("ArrayMesh_hx3oq")
 skeleton = NodePath("")
 
-[node name="ItemRoot" type="Node3D" parent="Board"]
+[node name="ItemRoot" type="Node3D" parent="SubViewport/Pos/Board"]
 transform = Transform3D(0.37473753, -0.10514758, -0.09228123, 0.093040176, 0.3843548, -0.06012417, 0.10447659, 0.034862295, 0.3845378, 0.061859407, -0.095198885, 0.014191301)
 
-[node name="Slot" type="Marker3D" parent="Board/ItemRoot"]
+[node name="Slot" type="Marker3D" parent="SubViewport/Pos/Board/ItemRoot"]
 transform = Transform3D(1, 0, 0, -2.3092639e-14, 1, 0, 0, 0, 1, -0.5027558, 0.4964344, -1.0641327)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Board/ItemRoot/Slot"]
-mesh = SubResource("BoxMesh_2xl73")
-
-[node name="Slot2" type="Marker3D" parent="Board/ItemRoot"]
+[node name="Slot2" type="Marker3D" parent="SubViewport/Pos/Board/ItemRoot"]
 transform = Transform3D(1, 0, 0, -3.907985e-14, 1, 0, 0, 0, 1, -0.38749418, 0.49584404, -0.7971135)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Board/ItemRoot/Slot2"]
-mesh = SubResource("BoxMesh_2xl73")
-
-[node name="Slot3" type="Marker3D" parent="Board/ItemRoot"]
+[node name="Slot3" type="Marker3D" parent="SubViewport/Pos/Board/ItemRoot"]
 transform = Transform3D(1, 0, 0, -3.0198066e-14, 1, 0, 0, 0, 1, -0.28838593, 0.4902572, -0.5138334)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Board/ItemRoot/Slot3"]
-mesh = SubResource("BoxMesh_2xl73")
-
-[node name="Slot4" type="Marker3D" parent="Board/ItemRoot"]
+[node name="Slot4" type="Marker3D" parent="SubViewport/Pos/Board/ItemRoot"]
 transform = Transform3D(1, 0, 0, -3.5527137e-14, 1, 0, 0, 0, 1, -0.22235808, 0.5185277, -0.14537346)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Board/ItemRoot/Slot4"]
-mesh = SubResource("BoxMesh_2xl73")
+[node name="Area3D" type="Area3D" parent="SubViewport/Pos/Board"]
 
-[node name="Board2" type="Node3D" parent="."]
-transform = Transform3D(0.9440123, -0.32954744, 0.015468778, -0.32711485, -0.92889285, 0.17364816, -0.04285647, -0.16898605, -0.9846861, -0.8580643, -0.10739279, -1.6593281)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewport/Pos/Board/Area3D"]
+transform = Transform3D(1.0000002, 5.5879354e-08, -5.9604645e-08, -2.6077032e-08, 1.0000007, 2.5331974e-07, 2.9802322e-08, 0, 1.0000002, -0.0029907525, 0.018402249, 0.07241828)
+shape = SubResource("BoxShape3D_f6gl1")
 
-[node name="Plank2_Plank_0" type="MeshInstance3D" parent="Board2"]
-mesh = SubResource("ArrayMesh_hx3oq")
-skeleton = NodePath("")
+[node name="SnapPoint" type="Node3D" parent="SubViewport/Pos/Board"]
+transform = Transform3D(1.0000002, 1.1175871e-07, -4.4703484e-08, 2.9802322e-08, 1.0000001, 2.9802322e-08, 2.9802322e-08, 0, 1, -0.13225588, -0.12950051, -0.5795738)
 
-[node name="Lighting" type="Node3D" parent="."]
+[node name="Lighting" type="Node3D" parent="SubViewport/Pos"]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Lighting"]
+[node name="OmniLight3D" type="OmniLight3D" parent="SubViewport/Pos/Lighting"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.84334433, 1.0652664, 0.27716374)
 light_color = Color(0.76513064, 0.34599128, 0, 1)
 light_energy = 0.7
 light_bake_mode = 0
 
-[node name="SpotLight3D" type="SpotLight3D" parent="Lighting"]
+[node name="SpotLight3D" type="SpotLight3D" parent="SubViewport/Pos/Lighting"]
 transform = Transform3D(-1, -7.5710346e-08, 4.3711385e-08, 0, 0.49999997, 0.86602545, -8.742278e-08, 0.86602545, -0.49999997, -0.56857324, 2.4216084, -1.9373789)
 light_color = Color(1.540184e-06, 0.7977, 0.65703297, 1)
 light_energy = 3.0
@@ -204,13 +214,22 @@ spot_range = 4.386
 spot_angle = 29.13
 spot_angle_attenuation = 0.9330347
 
-[node name="CameraPivot" type="Node3D" parent="."]
+[node name="Board2" type="Node3D" parent="SubViewport/Pos"]
+transform = Transform3D(0.9440123, -0.32954744, 0.015468778, -0.32711485, -0.92889285, 0.17364816, -0.04285647, -0.16898605, -0.9846861, -0.85806274, -0.10739279, -1.6593285)
+script = ExtResource("2_iypi6")
 
-[node name="SubViewport" type="SubViewport" parent="CameraPivot"]
-size = Vector2i(1152, 648)
+[node name="Plank2_Plank_0" type="MeshInstance3D" parent="SubViewport/Pos/Board2"]
+mesh = SubResource("ArrayMesh_hx3oq")
+skeleton = NodePath("")
 
-[node name="Camera3D" type="Camera3D" parent="CameraPivot/SubViewport"]
-transform = Transform3D(-0.070347905, 0.48432106, -0.87205756, 0.038943134, 0.8748904, 0.48275286, 0.9967621, -6.4879547e-18, -0.08040769, -1.2760336, 0.77322, -1.2198738)
+[node name="Area3D" type="Area3D" parent="SubViewport/Pos/Board2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewport/Pos/Board2/Area3D"]
+transform = Transform3D(0.99999624, 0, -2.644956e-07, 9.662472e-07, 0.9999995, -7.599592e-07, 4.0978193e-08, -2.9802322e-08, 0.999992, 0.0046388507, -1.1920929e-07, -0.011902332)
+shape = SubResource("BoxShape3D_iypi6")
+
+[node name="SnapPoint" type="Node3D" parent="SubViewport/Pos/Board2"]
+transform = Transform3D(0.9999994, 4.656613e-10, -1.8626451e-08, 1.8440187e-07, 0.99999964, -8.940697e-08, 0, -2.9802322e-08, 0.9999995, 0.13801777, -0.7918433, -0.7036573)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

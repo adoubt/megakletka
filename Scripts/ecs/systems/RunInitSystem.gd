@@ -1,17 +1,17 @@
 extends BaseSystem
 class_name RunInitSystem
 
-var event_bus:EventBus
+
 var db : DataBase
 const ANTES := 3
 const FLOORS_PER_ANTE := 5
-const BASE_BATTERY := 50
-const BATTERY_STEP := 20
+const BASE_BATTERY := 100
+
 const POI_ON_FLOOR : int = 3
 
-func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _db: DataBase, _event_bus: EventBus):
-	super._init(_entity_manager, _component_store)
-	event_bus = _event_bus
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus, _db: DataBase ):
+	super._init(_entity_manager, _component_store, _event_bus)
+	
 	db = _db
 	event_bus.subscribe("run_started", _init_run)
 
@@ -52,9 +52,9 @@ func _init_floors()	-> void:
 			var budget: int = int(BASE_BATTERY + (floor_index*10)* multiplier * ante_multiplier)
 			cs.add_component(floor_entity,"BatteryComponent",BatteryComponent.new(budget))
 			
-			floor_index += 1
-			print("floor ", floor_index+1, ": budget ",budget)
 			
+			print("floor ", floor_index+1, ": budget ",budget)
+			floor_index += 1
 	event_bus.emit("FLOORS_CREATED")		
 	
 	

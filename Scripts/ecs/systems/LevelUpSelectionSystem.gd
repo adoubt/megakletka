@@ -1,11 +1,11 @@
 extends BaseSystem
 class_name LevelUpSelectionSystem
 
-var event_bus: EventBus
+
 
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
-	super._init(_entity_manager, _component_store)
-	event_bus = _event_bus
+	super._init(_entity_manager, _component_store,_event_bus)
+
 	
 func update(_delta: float) -> void:
 	var offers = get_entities_with(["LevelUpOfferComponent"])

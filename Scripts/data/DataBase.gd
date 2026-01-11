@@ -1,7 +1,7 @@
 extends Resource
 class_name DataBase
 
-var enemy_configs = {
+@export var enemy_configs = {
 		"Aboba": {
 			"scene": "res://Scenes/Enemy/Aboba.tscn",
 			"hp": 10,
@@ -12,7 +12,7 @@ var enemy_configs = {
 		}
 	}
 	
-var poi_configs = {
+@export var poi_configs = {
 		"fortune_teller": {
 			"scene": "res://Scenes/POI/fortune_teller.tscn",
 			"interact_radius": 2.5,
@@ -34,7 +34,7 @@ var poi_configs = {
 		#"merchant": {"scene": "...", "drop_weight": 4},
 	
 
-var char_configs = {
+@export var char_configs = {
 		"Rigman": {
 			"scene": "res://Scenes/Player/Player.tscn",
 			"hp": 10,
@@ -48,7 +48,7 @@ var char_configs = {
 	}
 	
 	
-var weapon_configs = {
+@export var weapon_configs = {
 		
 		"cheese": {
 			"scene": "res://Scenes/Weapons/Projectiles/cheese.tscn",
@@ -75,16 +75,17 @@ var weapon_configs = {
 			"weapon_radius": 1.0,
 		}
 }
-var upgrades_configs = {
+@export var upgrades_configs = {
 	
 	}
 
-var item_configs = {
+@export var item_configs = {
 	"heart_card": {
 		"name": "Heart Boost",
 		"suit": "hearts",
 		"description": "+50% MaxHP",
 		"icon": "res://assets/icons/Cards/Sprite-0002.png",
+		"scene": "res://Scenes/Items/test_item.tscn",
 		"abilities": {"stat": MaxHpMultComponent, "value": 1.5},
 		"cost": 50,            # магазинная стоимость
 		"drop_weight": 10      # шанс выпасть в апгрейде
@@ -94,6 +95,7 @@ var item_configs = {
 		"suit": "hearts",
 		"description": "Heal 1% on hit",
 		"icon": "res://assets/icons/Cards/Diamonds.png",
+		"scene": "res://Scenes/Items/test_item.tscn",
 		"abilities": {"stat": LifestealComponent, "value": 0.1},
 		"cost": 100,
 		"drop_weight": 5
@@ -103,6 +105,7 @@ var item_configs = {
 		"suit": "spades",
 		"description": "+ 1 projectiles",
 		"icon": "res://assets/icons/Cards/Spades.png",
+		"scene": "res://Scenes/Items/test2_item.tscn",
 		"abilities": {"stat": ProjectileCountComponent, "value": 1.0},
 		"cost": 100,
 		"drop_weight": 30
@@ -112,6 +115,7 @@ var item_configs = {
 		"suit": "spades",
 		"description": "+ 10% attack speed",
 		"icon": "res://assets/icons/Cards/Clubs.png",
+		"scene": "res://Scenes/Items/test2_item.tscn",
 		"abilities": {"stat": AttackSpeedComponent, "value": 0.10},
 		"cost": 100,
 		"drop_weight": 10
@@ -121,6 +125,7 @@ var item_configs = {
 		"suit": "spades",
 		"description": "[color=red]Destroy[/color] random card",
 		"icon": "res://assets/icons/Cards/tiktokcard2.png",
+		"scene": "res://Scenes/Items/test2_item.tscn",
 		"abilities": {"stat": AttackSpeedComponent, "value": 1.02},
 		"cost": 100,
 		"drop_weight": 5
@@ -130,6 +135,7 @@ var item_configs = {
 		"suit": "spades",
 		"description": "+1 projectile speed",
 		"icon": "res://assets/icons/Cards/Clubs.png",
+		"scene": "res://Scenes/Items/test_item.tscn",
 		"abilities": {"stat": ProjectileSpeedComponent, "value": 1},
 		"cost": 100,
 		"drop_weight": 30
@@ -139,6 +145,7 @@ var item_configs = {
 		"suit": "Hearts",
 		"description": "+50% size",
 		"icon": "res://assets/icons/Cards/Hearts.png",
+		"scene": "res://Scenes/Items/test_item.tscn",
 		"abilities": [
 			{"stat": WeaponRadiusComponent, "value": 0.0},
 			{"stat": ProjectileRadiusComponent, "value": 0.5}],
@@ -146,3 +153,31 @@ var item_configs = {
 		"drop_weight": 99
 	},
 }	
+
+@export var sound_configs = {
+	"diegetic": {
+		"one_shot": {
+			"enemy_death" : "res://assets/sounds/diegetic/one_shot/enemy_death.wav",
+			"enemy_death2" : "res://assets/sounds/diegetic/one_shot/enemy_death_2.wav",
+			"enemy_death3" : "res://assets/sounds/diegetic/one_shot/enemy_death_3.wav",
+			"enemy_death4" : "res://assets/sounds/diegetic/one_shot/enemy_death_4.wav",
+			"enemy_death5" : "res://assets/sounds/diegetic/one_shot/enemy_death_5.wav",
+			"enemy_death6" : "res://assets/sounds/diegetic/one_shot/enemy_death_6.wav",
+			"enemy_hitted" : "res://assets/sounds/diegetic/one_shot/enemy_damaged.wav",
+			"enemy_hitted2" : "res://assets/sounds/diegetic/one_shot/enemy_damaged_2.wav",
+		},
+		"persistent": {
+			
+		},
+	},
+	"non_diegetic": {
+		"music": {
+			
+		},
+		"ui": {
+			"game_start" : "res://assets/sounds/non_diegetic/ui/Game Start.mp3",
+			"level_up" :"res://assets/sounds/non_diegetic/ui/level_up.wav",
+			
+		},
+	}
+}

@@ -1,74 +1,87 @@
 extends BaseSystem
 class_name CollisionSystem
 
-var contact_cache := {}
-var cell_size: float = 0.9 # подбирай под радиусы мобов/пуль
-###тут будет баг в дальнейшем, когда енеми встает в модельку и не коцает, думаю имеет смысл для этого чистить кеш между кулдаунами или чот такое
+var contact_cache := {} # key:int -> true
+
+var tf_cache := {}  
+var col_cache := {} 
+
+var cell_size: float = 0.9
+
+
 func update(_delta: float) -> void:
-	
-	var entities := get_entities_with(["TransformComponent", "CollisionComponent"], ["DeadComponent"])
+	tf_cache.clear()
+	col_cache.clear()
+
+	var entities := get_entities_with(
+		["TransformComponent", "CollisionComponent"],
+		["DeadComponent"]
+	)
+
 	var count := entities.size()
 	if count < 2:
 		contact_cache.clear()
 		return
 
-	# Построение грида: ключ = Vector3i, значение = массив entity_id
-	var grid := {}
+	for id in entities:
+		tf_cache[id] = cs.get_component(id, "TransformComponent")
+		col_cache[id] = cs.get_component(id, "CollisionComponent")
+
+
+	var grid := {} # Vector3i -> Array[int]
 
 	for id in entities:
-		var tf = cs.get_component(id, "TransformComponent")
+		var tf = tf_cache[id]
 		if tf == null:
 			continue
-		var cell := _to_cell(tf.position)
 
+		var cell := _to_cell(tf.position)
 		if not grid.has(cell):
 			grid[cell] = []
 		grid[cell].append(id)
 
 	var new_cache := {}
 
-	# перебор ячеек + соседей
+
 	for cell in grid.keys():
 		var list_a: Array = grid[cell]
 
-		_check_pairs(list_a, new_cache) # внутри ячейки
+		_check_pairs(list_a, new_cache)
 
-		for x in range(-1, 2):
-			for y in range(-1, 2):
-				for z in range(-1, 2):
+		for x in range(-1,2):
+			for y in range(-1,2):
+				for z in range(-1,2):
 					var neigh: Vector3i = cell + Vector3i(x, y, z)
 					if neigh == cell:
 						continue
 					if not grid.has(neigh):
 						continue
 
-					var list_b: Array = grid[neigh]
-					_check_cross_pairs(list_a, list_b, new_cache)
+					if neigh < cell:
+						continue
 
+					_check_cross_pairs(list_a, grid[neigh], new_cache)
 
 	contact_cache = new_cache
-
-
-# ======== ПАРНЫЕ ПРОВЕРКИ =========
-
+	
 func _check_pairs(list: Array, new_cache: Dictionary) -> void:
-	var n := list.size()
+	var n : int = list.size()
 	for i in range(n):
-		var a = list[i]
-		var a_tf = cs.get_component(a, "TransformComponent")
-		var a_col = cs.get_component(a, "CollisionComponent")
+		var a :int= list[i]
+		var a_tf = tf_cache[a]
+		var a_col = col_cache[a]
 		if not a_tf or not a_col:
 			continue
 
 		for j in range(i + 1, n):
-			var b = list[j]
+			var b :int = list[j]
 			_check_entities(a, b, a_tf, a_col, new_cache)
 
 
 func _check_cross_pairs(list_a: Array, list_b: Array, new_cache: Dictionary) -> void:
 	for a in list_a:
-		var a_tf = cs.get_component(a, "TransformComponent")
-		var a_col = cs.get_component(a, "CollisionComponent")
+		var a_tf = tf_cache[a]
+		var a_col = col_cache[a]
 		if not a_tf or not a_col:
 			continue
 
@@ -76,24 +89,65 @@ func _check_cross_pairs(list_a: Array, list_b: Array, new_cache: Dictionary) -> 
 			if a >= b:
 				continue
 			_check_entities(a, b, a_tf, a_col, new_cache)
-
-
-func _check_entities(a:int, b:int, a_tf, a_col, new_cache: Dictionary) -> void:
-	var b_tf = cs.get_component(b, "TransformComponent")
-	var b_col = cs.get_component(b, "CollisionComponent")
+func _check_entities(
+	a: int,
+	b: int,
+	a_tf,
+	a_col,
+	new_cache: Dictionary
+) -> void:
+	var b_tf = tf_cache[b]
+	var b_col = col_cache[b]
 	if not b_tf or not b_col:
 		return
 
 	if not _layers_match(a_col, b_col):
 		return
 
-	var radius_sum = a_col.radius + b_col.radius
-	if a_tf.position.distance_squared_to(b_tf.position) <= radius_sum * radius_sum:
+	var r :float = a_col.radius + b_col.radius
+	if a_tf.position.distance_squared_to(b_tf.position) <= r * r:
 		_process_collision(a, b, new_cache)
+func _process_collision(a: int, b: int, new_cache: Dictionary) -> void:
+	_process_one_way(a, b, new_cache)
+	_process_one_way(b, a, new_cache)
 
 
-# ======== СТАРАЯ ЛОГИКА БЕЗ ИЗМЕНЕНИЙ =========
+func _process_one_way(source: int, target: int, new_cache: Dictionary) -> void:
+	var s_col = col_cache[source]
+	var t_col = col_cache[target]
+	if not s_col or not t_col:
+		return
 
+	var key := _pair_key(source, target)
+
+	if s_col.is_player_projectile() and t_col.is_enemy():
+		_register_hit(source, target, key, new_cache)
+
+	elif s_col.is_enemy() and t_col.is_enemy():
+		var climber = _choose_climber_by_target(source, target)
+		if climber != -1 and not cs.has_component(climber, "ClimbComponent"):
+			cs.add_component(climber, "ClimbComponent", ClimbComponent.new())
+
+	elif s_col.is_enemy_projectile() and t_col.is_player():
+		_register_hit(source, target, key, new_cache)
+
+	elif s_col.is_enemy() and t_col.is_player():
+		_register_hit(source, target, key, new_cache)
+func _register_hit(
+	source: int,
+	target: int,
+	key: int,
+	new_cache: Dictionary) -> void:
+	if contact_cache.has(key):
+		new_cache[key] = true
+		return
+
+	if not cs.has_component(target, "HitComponent"):
+		var hit := HitComponent.new()
+		hit.source_id = source
+		cs.add_component(target, "HitComponent", hit)
+
+	new_cache[key] = true
 func _layers_match(a_col, b_col) -> bool:
 	return (
 		(a_col.collision_mask & b_col.collision_layer) != 0 and
@@ -101,49 +155,9 @@ func _layers_match(a_col, b_col) -> bool:
 	)
 
 
-func _process_collision(a:int, b:int, new_cache: Dictionary) -> void:
-	var pairs = [[a, b], [b, a]]
+func _pair_key(a: int, b: int) -> int:
+	return (a << 32) | (b & 0xffffffff)
 
-	for pair in pairs:
-		var source = pair[0]
-		var target = pair[1]
-
-		var s_col = cs.get_component(source, "CollisionComponent")
-		var t_col = cs.get_component(target, "CollisionComponent")
-
-		var key = Vector2(source, target)
-
-		if s_col.is_player_projectile() and t_col.is_enemy():
-			_register_hit(source, target, key, new_cache)
-		elif s_col.is_enemy() and t_col.is_enemy():
-			var climber = _choose_climber_by_target(a, b)
-			if climber != -1 and not cs.has_component(climber, "ClimbComponent"):
-				cs.add_component(climber, "ClimbComponent", ClimbComponent.new())
-			#if not cs.has_component(source, "ClimbComponent"):
-				#cs.add_component(source, "ClimbComponent", ClimbComponent.new())
-		elif s_col.is_enemy_projectile() and t_col.is_player():
-			_register_hit(source, target, key, new_cache)
-		elif s_col.is_enemy() and t_col.is_player():
-			_register_hit(source, target, key, new_cache)
-		#elif s_col.is_projectile() and t_col.is_world():
-			#if not cs.has_component(source, "BounceComponent"):
-				#cs.add_component(source, "BounceComponent", BounceComponent.new())
-
-
-func _register_hit(source:int, target:int, key: Vector2, new_cache: Dictionary) -> void:
-	if contact_cache.has(key):
-		new_cache[key] = true
-		return
-
-	if not cs.has_component(target, "HitComponent"):
-		var hit_comp := HitComponent.new()
-		hit_comp.source_id = source
-		cs.add_component(target, "HitComponent", hit_comp)
-
-	new_cache[key] = true
-
-
-# ======== ГРИД ОПЕРАЦИИ =========
 
 func _to_cell(pos: Vector3) -> Vector3i:
 	return Vector3i(
@@ -151,26 +165,24 @@ func _to_cell(pos: Vector3) -> Vector3i:
 		int(pos.y / cell_size),
 		int(pos.z / cell_size)
 	)
-	
-func _choose_climber_by_target(a:int, b:int) -> int:
+
+func _choose_climber_by_target(a: int, b: int) -> int:
 	var a_target = cs.get_component(a, "TargetComponent")
 	var b_target = cs.get_component(b, "TargetComponent")
 
 	if not a_target or not b_target:
 		return -1
-
 	if a_target.target_id != b_target.target_id:
 		return -1
 
-	var target_tf = cs.get_component(a_target.target_id, "TransformComponent")
+	var target_tf = tf_cache.get(a_target.target_id)
 	if not target_tf:
 		return -1
 
-	var a_tf = cs.get_component(a, "TransformComponent")
-	var b_tf = cs.get_component(b, "TransformComponent")
+	var a_tf = tf_cache[a]
+	var b_tf = tf_cache[b]
 
 	var da = a_tf.position.distance_squared_to(target_tf.position)
 	var db = b_tf.position.distance_squared_to(target_tf.position)
 
-	# дальше от цели → climber
 	return a if da > db else b

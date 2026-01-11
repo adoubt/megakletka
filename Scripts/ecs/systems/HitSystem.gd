@@ -1,6 +1,7 @@
 extends BaseSystem
 class_name HitSystem
 
+
 func update(delta: float):
 	var entities = get_entities_with(["HitComponent", "CurrentHpComponent"],["DeadComponent"])
 	for entity_id in entities:

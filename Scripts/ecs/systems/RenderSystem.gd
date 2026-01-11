@@ -5,13 +5,14 @@ class_name RenderSystem
 
 const SHADOW_Y := 0.05
 const SHADOW_SCENE : String = "res://Scenes/shadow.tscn"
-var pool_system: ObjectPool
+const FLASH_HIT_MATERIAL := preload("res://assets/Materials/flash_hit.tres")
+var object_pool: ObjectPool
 var smoothness := 200.0 # чем больше, тем быстрее догоняет (в кадрах/сек)
 
 
-func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _pool_system:ObjectPool):
-	super._init(_entity_manager, _component_store)
-	pool_system = _pool_system
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _event_bus: EventBus, _object_pool:ObjectPool):
+	super._init(_entity_manager, _component_store, _event_bus)
+	object_pool = _object_pool
 	
 func update(_delta: float) -> void:
 	var entities = get_entities_with(["TransformComponent", "RenderComponent"],["DeadComponent"])
@@ -23,11 +24,23 @@ func update(_delta: float) -> void:
 	
 		# Создаём сцену, если ещё не создана
 		if render.instance == null:
-			render.instance = pool_system.get_instance(render.scene_path)
+			
+			render.instance = object_pool.get_instance(render.scene_path)
 			render.instance.global_position = transform.position
+			if cs.has_component(entity_id,"EnemyComponent"):
+				var mat = render.instance.material_override
+				if mat:
+					mat = mat.duplicate()
+				else:
+					mat = StandardMaterial3D.new()
+
+				render.instance.material_override = mat
+
+				# делаем УНИКАЛЬНЫЙ next_pass
+				render.hit_flash_material = FLASH_HIT_MATERIAL.duplicate()
 
 		if render.shadow and render.shadow_instance == null:
-			render.shadow_instance = pool_system.get_instance(SHADOW_SCENE)
+			render.shadow_instance = object_pool.get_instance(SHADOW_SCENE)
 			var base_mesh:QuadMesh = render.shadow_instance.mesh
 			render.shadow_instance.mesh = base_mesh.duplicate()
 			var col := cs.get_component(entity_id, "CollisionComponent")

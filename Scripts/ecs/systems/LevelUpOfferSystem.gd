@@ -1,11 +1,11 @@
 extends BaseSystem
 class_name LevelUpOfferSystem
 
-var event_bus:EventBus
+
 var db :DataBase
 
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus,_database :DataBase):
-	super._init(_entity_manager, _component_store)
+	super._init(_entity_manager, _component_store, _event_bus)
 	event_bus = _event_bus
 	db =_database
 	event_bus.subscribe("upgrade_chosen", _on_upgrade_chosen)

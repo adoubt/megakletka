@@ -5,12 +5,12 @@ class_name FactorySystem
 ## решение - методы сделать так же под дату
 ## TODO push_warning = cringe. Must have logging 
 var db = DataBase
-var event_bus : EventBus
 
-func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_db :DataBase,_event_bus : EventBus): 
-	super._init(_entity_manager,_component_store)
+
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus : EventBus,_db :DataBase): 
+	super._init(_entity_manager,_component_store,_event_bus)
 	db = _db
-	event_bus = _event_bus
+	
 	event_bus.subscribe("create_poi", _create_poi)
 	event_bus.subscribe("create_item", _create_item)
 	event_bus.subscribe("create_char", _create_char)
@@ -85,6 +85,7 @@ func _create_enemy(data_array: Array) -> void:
 		cs.add_component(entity_id,"ProjectileSpeedComponent",ProjectileSpeedComponent.new())
 		cs.add_component(entity_id,"GroundedComponent", GroundedComponent.new())
 		cs.add_component(entity_id, "DamageComponent", DamageComponent.new())
+		
 		
 	
 

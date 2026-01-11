@@ -4,7 +4,6 @@ extends Control
 const ANIMATION_DURATION: float = 0.7
 var offer_id:int = -1
 var has_upgrade: bool = false
-var db: DataBase
 @onready var fps_label: Label = $HUD/VBoxContainer/Control/FPS
 @onready var upgrade_panel:ColorRect = $HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers
 @onready var upgrade_offers: VBoxContainer = $HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer
@@ -127,7 +126,7 @@ func setup_upgrade_buttons(_offer_id,offer: Array) -> void:
 
 		if i < offer.size():
 			btn.visible = true
-			var data = db.item_configs[str(offer[i])]
+			var data = DatabaseManager.db.item_configs[str(offer[i])]
 			btn.choice_name.text = data["name"]
 			btn.icon.texture = load(data["icon"])
 			btn.choice_decs.text = data["description"]

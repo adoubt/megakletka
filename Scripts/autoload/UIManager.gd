@@ -11,6 +11,7 @@ extends Node
 @onready var level_up_panel = preload("res://UI/level_up_panel.tscn").instantiate()
 
 var event_bus: EventBus
+
 var player_camera
 var upgrade_menu 
 var panels: Dictionary = {}
@@ -25,10 +26,10 @@ var game_paused: bool = false
 func open_level_up_panel():
 	
 	open_panel("LevelUpPanel")
-	level_up_panel.scene.show_anim_board()
+	level_up_panel.background_scene.show_anim_board()
 
 func close_level_up_panel() -> void:
-	level_up_panel.scene.hide_anim_board()
+	level_up_panel.background_scene.hide_anim_board()
 	close_panel("LevelUpPanel")	
 	
 func toggle_level_up_panel() -> void:
@@ -270,8 +271,8 @@ func _input(event: InputEvent) -> void:
 			toggle_dev_panel()
 	if event.is_action_pressed("upgrade_menu"):
 		if hud.has_upgrade and SceneManager.current_scene_name in ["BigRoomTest","GameTest"] and not escape_menu.visible:
-			#toggle_level_up_panel()
-			#event_bus.emit("level_up_panel_toggled") 
-			toggle_upgrade_menu()
+			toggle_level_up_panel()
+			event_bus.emit("level_up_panel_toggled") 
+			#toggle_upgrade_menu()
 
 	

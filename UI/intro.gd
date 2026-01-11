@@ -2,6 +2,8 @@ extends Control
 
 var pressed := false
 
+	
+	
 func _ready():
 	
 	$Label.modulate.a = 0.0

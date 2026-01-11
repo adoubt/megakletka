@@ -16,7 +16,7 @@ func update(_delta: float) -> void:
 			level.current_xp -= level.xp_to_next
 			level.level += 1
 			level.skill_points += 1
-
+			
 			# пересчитываем требуемый XP
 			level.xp_to_next = get_required_xp(level.level)
 			var xp_mult_comp = cs.get_component(e_id, "XPMultComponent")
@@ -27,7 +27,7 @@ func update(_delta: float) -> void:
 					xp_mult_comp.final_value -= 1.0
 
 				
-			# можно заспавнить LevelUpEvent (чтобы другие системы отреагировали)
+			event_bus.emit("level_up", {"e_id":e_id})
 			# cs.add_component(e_id, "LevelUpEvent", LevelUpEvent.new())
 
 		# Если хочешь обновлять HUD напрямую

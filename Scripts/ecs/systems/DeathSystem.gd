@@ -9,13 +9,19 @@ func update(_delta: float):
 		if hp.final_value > 0:
 			continue
 		
+		
 		if cs.has_component(e_id,"PlayerComponent"): 
 			var death_frame: int = Engine.get_process_frames()
 			cs.add_component(e_id, "RespawnableComponent", RespawnableComponent.new(death_frame))
 			cs.get_component(e_id, "RenderComponent").instance.death_anim.play("grave_on")
 			cs.get_component(e_id, "RenderComponent").instance.hide_level_up()
+			print(e_id, "player just died")
+			continue
+		
 		cs.add_component(e_id, "DeadComponent", DeadComponent.new(0.0))
 		var pos: Vector3 = cs.get_component(e_id,"TransformComponent").position
+		event_bus.emit("enemy_died",{"e_id": e_id,"position": pos})
+		
 		var xp_reward = cs.get_component(e_id,"XPRewardComponent")
 		if xp_reward:
 			var exp_id = em.create_entity()

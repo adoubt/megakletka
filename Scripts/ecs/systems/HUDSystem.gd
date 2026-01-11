@@ -1,12 +1,11 @@
 extends BaseSystem
 class_name  HUDSystem
 
-var event_bus:EventBus
 
 
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
-	super._init(_entity_manager, _component_store)
-	event_bus = _event_bus
+	super._init(_entity_manager, _component_store, _event_bus)
+
 
 	event_bus.subscribe("level_up_offer_created", _on_level_up_offer_created)
 	event_bus.subscribe("level_up_panel_toggled", _on_level_up_panel_toggled)
@@ -25,7 +24,7 @@ func update(delta: float) -> void:
 func _on_level_up_offer_created(callback_data: Dictionary):
 		
 	UIManager.hud.setup_upgrade_buttons(callback_data["offer_id"], callback_data["offer"])
-		
+	UIManager.level_up_panel.setup_background(callback_data["offer"])
 
 func _on_level_up_panel_toggled()-> void:
 	var entities = get_entities_with(["LevelUpOfferComponent"])

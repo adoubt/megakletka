@@ -5,11 +5,11 @@ class_name BaseSystem
 
 var em: EntityManager
 var cs: ComponentStore
-
-func _init(_entity_manager: EntityManager, _component_store: ComponentStore):
+var event_bus: EventBus
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus):
 	em = _entity_manager
 	cs = _component_store
-
+	event_bus = _event_bus
 
 func get_entities_with(component_names: Array, exclude: Array = []) -> Array:
 	if component_names.is_empty():
