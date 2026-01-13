@@ -99,7 +99,7 @@ func _get_random_position_in_radius(min_radius: float= 10.0, max_radius: float= 
 	var x := cos(angle) * radius
 	var z := sin(angle) * radius
 
-	return Vector3(x, 0.0, z)
+	return Vector3(x, 0.5, z)
 
 	
 

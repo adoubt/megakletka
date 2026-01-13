@@ -15,7 +15,7 @@ const MAX_ENEMIES := 100
 const BATTERY_BUDGET_RATIO := 0.5   # 50% бюджета
 const MAX_PER_TICK := 5            # защита от лагов
 
-const WORLD_SIZE := Vector2(75.0, -5.0)
+const WORLD_SIZE := Vector2(75.0, 75.0)
 
 
 #cashe

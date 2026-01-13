@@ -7,7 +7,7 @@ var radius: float = 0.5
 var collision_layer: int
 var collision_mask: int
 var debug_collider: MeshInstance3D = null
-
+var debug_collider_scene_path: String = "res://Scenes/debug_collider.tscn"
 func _init(layer: int, mask: int, _radius: float = 0.5):
 	collision_layer = layer
 	collision_mask = mask

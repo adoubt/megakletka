@@ -9,7 +9,7 @@ func update(_delta: float):
 		if hp.final_value > 0:
 			continue
 		
-		cs.add_component(e_id, "DeadComponent", DeadComponent.new(0.0))
+		cs.add_component(e_id, "DeadComponent", DeadComponent.new())
 		var pos: Vector3 = cs.get_component(e_id,"TransformComponent").position
 		if cs.has_component(e_id,"PlayerComponent"): 
 			var death_frame: int = Engine.get_process_frames()

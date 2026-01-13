@@ -109,12 +109,8 @@ func clear_all() -> void:
 func _disable(node: Node3D) -> void:
 	node.visible = false
 	node.process_mode = Node.PROCESS_MODE_DISABLED
-	node.global_position = Vector3.ZERO
+	node.global_position.y = -10
 
-	if node.has_meta("shape_ref"):
-		var shape = node.get_meta("shape_ref")
-		if is_instance_valid(shape):
-			shape.disabled = true
 
 	if node.has_meta("anim_ref"):
 		var anim = node.get_meta("anim_ref")
@@ -122,13 +118,9 @@ func _disable(node: Node3D) -> void:
 			anim.stop()
 
 func _enable(node: Node3D) -> void:
-	node.visible = true
+	
 	node.process_mode = Node.PROCESS_MODE_INHERIT
 
-	if node.has_meta("shape_ref"):
-		var shape = node.get_meta("shape_ref")
-		if is_instance_valid(shape):
-			shape.disabled = false
 
 func get_debug_stats() -> Dictionary:
 	var result: Dictionary = {}

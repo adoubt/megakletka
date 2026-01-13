@@ -1,9 +1,8 @@
 extends BaseSystem
 class_name MovementSystem
 
-const GRAVITY :float= -9.8
-const CLIMB_SPEED :float= 5.0
-const FLOOR_Y :float= 0.6
+const GRAVITY := -9.8
+const FLOOR_Y := 0.0
 
 func update(delta: float) -> void:
 	var entities := get_entities_with(
@@ -11,81 +10,28 @@ func update(delta: float) -> void:
 		["DeadComponent"]
 	)
 
-	for id in entities:
-		var tf = cs.get_component(id, "TransformComponent")
-		if cs.has_component(id, "ProjectileComponent"):
-			# только интеграция
-			tf.position += tf.velocity * delta
+	for e_id in entities:
+		var tf := cs.get_component(e_id, "TransformComponent")
+		if tf == null:
 			continue
-		var speed = cs.get_component(id, "SpeedComponent") 
-		if not speed:
-			speed = cs.get_component(id, "ProjectileSpeedComponent")
-		var target = cs.get_component(id, "TargetComponent")
+		if cs.has_component(e_id, "MovementIntentComponent"):
+			var move := cs.get_component(e_id, "MovementIntentComponent")
+			tf.velocity.x = move.direction.x * move.speed
+			tf.velocity.z = move.direction.z * move.speed
+		# -------- MOB MOVEMENT --------
+		if cs.has_component(e_id, "MovementComponent"):
+			var move := cs.get_component(e_id, "MovementComponent")
+			tf.velocity.x = move.direction.x * move.speed
+			tf.velocity.z = move.direction.z * move.speed
 
-		if not tf or not speed or not target:
-			continue
-
-		# ---- XZ движение к цели ----
-		if target.target_id != -1:
-			var target_tf = cs.get_component(target.target_id, "TransformComponent")
-			if target_tf:
-				var dx = target_tf.position.x - tf.position.x
-				var dz = target_tf.position.z - tf.position.z
-				var len = dx * dx + dz * dz
-
-				if len > 0.001:
-					len = sqrt(len)
-					var inv = 1.0 / len
-					tf.velocity.x = dx * inv * speed.final_value
-					tf.velocity.z = dz * inv * speed.final_value
-				else:
-					tf.velocity.x = 0
-					tf.velocity.z = 0
-		else:
-			tf.velocity.x = 0
-			tf.velocity.z = 0
-			
-		
-
-		# ---- ГРАВИТАЦИЯ ----
-		
-		if tf.position.y + cs.get_component(id, "CollisionComponent").radius > FLOOR_Y:
-			tf.velocity.y += GRAVITY * delta
-		
-		elif cs.has_component(id, "ClimbComponent"):
-			var vel :Vector3= tf.velocity
-
-			# направление вперёд (куда моб ХОТЕЛ идти)
-			var forward := Vector3(vel.x, 0, vel.z)
-			var _speed := forward.length()
-
-			if _speed > 0.01:
-				forward = forward.normalized()
+		# -------- GRAVITY --------
+		var col = cs.get_component(e_id, "CollisionComponent")
+		if col and not cs.has_component(e_id, "POIComponent"):
+			if tf.position.y - col.radius > FLOOR_Y:
+				tf.velocity.y += GRAVITY * delta
 			else:
-				forward = Vector3.ZERO
+				tf.position.y = FLOOR_Y + col.radius
+				tf.velocity.y = 0.0
 
-			# вектор вбок (перпендикуляр)
-			var side := Vector3(-forward.z, 0, forward.x)
-
-			# случайно влево или вправо
-			if randf() < 0.5:
-				side = -side
-
-			# ---- ПАРАМЕТРЫ ----
-			var side_push := CLIMB_SPEED * 0.6
-			var brake := 0.5 # 0.0 = стоп, 1.0 = без тормоза
-
-			# ---- ПРИМЕНЕНИЕ ----
-			vel.x = forward.x * _speed * brake + side.x * side_push
-			vel.z = forward.z * _speed * brake + side.z * side_push
-			vel.z = CLIMB_SPEED 
-			# слегка прижать вниз, чтобы не подпрыгивал
-			#vel.y = min(vel.y, 0.0)
-
-			tf.velocity = vel
-			cs.remove_component(id, "ClimbComponent")
-
-		else: 
-			tf.velocity.y = FLOOR_Y
-		# ---- ИНТЕГРАЦИЯ ----
-		tf.position += tf.velocity * delta 
+		# -------- INTEGRATION --------
+		tf.position += tf.velocity * delta

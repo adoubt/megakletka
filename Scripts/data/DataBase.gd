@@ -7,9 +7,13 @@ class_name DataBase
 			"hp": 10,
 			"attack_speed":1.7,
 			"collider_radius":0.25,
-			"movespeed": 3.0,
+			"movespeed": 2.0,
 			"xp_reward": 2.0,
-			"budget" : 2
+			"budget" : 2,
+			"pierce": 1,
+			"bounce":0,
+			
+			
 		},
 		"CarrotAboba": {
 			"scene": "res://Scenes/Enemy/Aboba.tscn",
@@ -18,8 +22,10 @@ class_name DataBase
 			"collider_radius":0.25,
 			"movespeed": 3.0,
 			"xp_reward": 10.0,
-			
-			"budget" : 5
+			"weapon_name" : "ash",
+			"budget" : 5,
+			"pierce": 1,
+			"bounce":0,
 			
 		}
 	}
@@ -50,18 +56,22 @@ class_name DataBase
 		"Rigman": {
 			"scene": "res://Scenes/Player/Player.tscn",
 			"hp": 10,
+			"attack_speed":1.7,
 			"attack_speed_mult":1,
-			"collider_radius": 0.4,
+			"collider_radius": 0.3,
 			"movespeed": 10,
+			"projectile_speed" : 1.0,
 			"xp_pickup_range": 1.5,
 			"weapon_name" : "nut",
+			"weapon_radius": 1.0,
 			"slots": 3,
-			
+			"pierce": 1,
+			"bounce":0,
 		}
 	}
 	
 	
-@export var weapon_configs = {
+@export var weapon_configs = {	
 		
 		
 		"carrot": {
@@ -72,7 +82,8 @@ class_name DataBase
 			"projectile_radius" : 0.3,
 			"weapon_radius": 1.5,
 			"projectile_speed": 2.0,
-			"duration": 3.0
+			"duration": 3.0,
+			
 		},
 		"aura":{
 			"scene": "res://Scenes/Weapons/AOE/Aura.tscn",
@@ -81,14 +92,32 @@ class_name DataBase
 			"weapon_radius": 1.0,
 		},
 		"nut":{
-			"scene": "res://Scenes/Weapons/Projectiles/carrot.tscn",
-			"cd": 0.5,
-			"damage" : 1,
+			"scene": "res://Scenes/Weapons/Projectiles/player_proj1.tscn",
+			"cd": 1.5,
+			"damage" : 2,
 			"projectile_count" : 1.0,
 			"projectile_radius" : 0.3,
-			"projectile_speed": 20.0,
-			"duration": 2.0
+			"projectile_speed": 6.0,
+			"weapon_radius": 20.0,
+			"duration": 2.0,
+			"pierce": 1,
+			"bounce":0,
+			"target": true
 		}
+		,
+		"ash":{
+			"scene": "res://Scenes/Weapons/Projectiles/enemy_proj.tscn",
+			"cd": 3.5,
+			"damage" : 1,
+			"projectile_count" : 1.0,
+			"projectile_radius" : 0.1,
+			"projectile_speed": 4.0,
+			"weapon_radius": 30.0,
+			"duration": 1.5,
+			"pierce": 1,
+			"bounce":0,
+			"target": true
+		}	
 }
 
 @export var item_configs = {

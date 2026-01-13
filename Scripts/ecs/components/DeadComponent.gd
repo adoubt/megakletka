@@ -5,5 +5,5 @@ class_name DeadComponent
 var decay_time: float = 0.1
 
 
-func _init(_decay_time : float = 0.1) -> void:
+func _init(_decay_time : float = 0.2) -> void:
 	decay_time = _decay_time

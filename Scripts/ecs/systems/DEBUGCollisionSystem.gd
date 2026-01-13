@@ -20,6 +20,15 @@ func update(_delta: float) -> void:
 		var collision = cs.get_component(entity_id, "CollisionComponent")
 		if not collision.debug_collider:
 			collision.debug_collider = object_pool.get_instance("res://Scenes/debug_collider.tscn")
+			
+			var mat = collision.debug_collider.mesh.material
+			# гарантируем уникальный меш
+			var mesh := CapsuleMesh.new()
+			mesh.radius = collision.radius
+			mesh.height = collision.radius * 2.0
+			
+			collision.debug_collider.mesh = mesh
+			collision.debug_collider.mesh.material = mat
+			collision.debug_collider.visible = true
 		collision.debug_collider.global_position = transform.position
-		collision.debug_collider.mesh.radius = collision.radius
-		collision.debug_collider.mesh.height = collision.radius*2
+		

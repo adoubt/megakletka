@@ -6,7 +6,7 @@ var contact_cache := {} # key:int -> true
 var tf_cache := {}  
 var col_cache := {} 
 
-var cell_size: float = 0.9
+var cell_size: float = 1.3
 
 
 func update(_delta: float) -> void:
@@ -172,8 +172,8 @@ func _to_cell(pos: Vector3) -> Vector3i:
 	)
 
 func _choose_climber_by_target(a: int, b: int) -> int:
-	var a_target = cs.get_component(a, "TargetComponent")
-	var b_target = cs.get_component(b, "TargetComponent")
+	var a_target = cs.get_component(a, "AimComponent")
+	var b_target = cs.get_component(b, "AimComponent")
 
 	if not a_target or not b_target:
 		return -1
