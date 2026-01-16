@@ -2,5 +2,5 @@ extends Resource
 class_name PickUpComponent
 
 var pickable: bool = true
-var speed: float = 0.0
-var magnetized: bool = false
+
+var target_id : int = -1 # -1 = не игрок

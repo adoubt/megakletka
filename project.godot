@@ -15,10 +15,6 @@ run/main_scene="uid://bsoxxlhnjn45f"
 config/features=PackedStringArray("4.5", "Forward Plus")
 boot_splash/bg_color=Color(0.07233263, 0.23703453, 0.122048356, 1)
 
-[audio]
-
-buses/default_bus_layout=""
-
 [autoload]
 
 DatabaseManager="*res://scripts/autoload/DatabaseManager.gd"
@@ -183,4 +179,6 @@ common/physics_interpolation=true
 global_illumination/gi/use_half_resolution=true
 shading/overrides/force_vertex_shading=true
 global_illumination/sdfgi/probe_ray_count=0
+global_illumination/sdfgi/frames_to_converge=0
+global_illumination/sdfgi/frames_to_update_lights=4
 occlusion_culling/use_occlusion_culling=true

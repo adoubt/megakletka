@@ -398,6 +398,7 @@ spring_arm = NodePath("../SpringArm3D/SpringArmPosition")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="CameraController/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.9613998)
+visible = false
 light_bake_mode = 0
 spot_range = 11.7052145
 spot_angle = 28.565193

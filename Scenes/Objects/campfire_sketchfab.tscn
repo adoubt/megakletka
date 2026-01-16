@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://di8by8aa5pquu"]
+
+[ext_resource type="PackedScene" uid="uid://06qereirur5o" path="res://import/campfire_low_poly_pixel_texture.glb" id="1_bdbph"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_bdbph")]

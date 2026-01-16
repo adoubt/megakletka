@@ -8,8 +8,7 @@ class_name DataBase
 			"attack_speed":1.7,
 			"collider_radius":0.25,
 			"movespeed": 2.0,
-			"xp_reward": 2.0,
-			"budget" : 2,
+			"budget" : 1,
 			"pierce": 1,
 			"bounce":0,
 			
@@ -21,9 +20,8 @@ class_name DataBase
 			"attack_speed":1.7,
 			"collider_radius":0.25,
 			"movespeed": 3.0,
-			"xp_reward": 10.0,
 			"weapon_name" : "ash",
-			"budget" : 5,
+			"budget" : 2,
 			"pierce": 1,
 			"bounce":0,
 			
@@ -46,6 +44,14 @@ class_name DataBase
 			"target_priority" : 1,
 			"slots": 2
 		},
+		"campfire": {
+			"scene": "res://Scenes/POI/campfire_poi.tscn",
+			
+			"interact_radius": 1.5,
+			"collider_radius":1.0,
+			"target_priority" : 1,
+			"slots": 2
+		}
 }
 		#"chest_big": {"scene": "...", "drop_weight": 1},
 		#"altar": {"scene": "...", "drop_weight": 2},
@@ -65,7 +71,7 @@ class_name DataBase
 			"weapon_name" : "nut",
 			"weapon_radius": 1.0,
 			"slots": 3,
-			"pierce": 1,
+			"pierce": 10,
 			"bounce":0,
 		}
 	}
@@ -206,9 +212,10 @@ class_name DataBase
 			"enemy_death6" : "res://assets/sounds/diegetic/one_shot/enemy_death_6.wav",
 			"enemy_hitted" : "res://assets/sounds/diegetic/one_shot/enemy_damaged.wav",
 			"enemy_hitted2" : "res://assets/sounds/diegetic/one_shot/enemy_damaged_2.wav",
+			
 		},
 		"persistent": {
-			
+			"campfire_crackling" : "res://assets/sounds/diegetic/persistent/campfire-crackling-sound.mp3"
 		},
 	},
 	"non_diegetic": {
@@ -218,7 +225,7 @@ class_name DataBase
 		"ui": {
 			"game_start" : "res://assets/sounds/non_diegetic/ui/Game Start.mp3",
 			"level_up" :"res://assets/sounds/non_diegetic/ui/level_up.wav",
-			
+			"day_changed" : "res://assets/sounds/non_diegetic/ui/day_changed.mp3"
 		},
 	}
 }

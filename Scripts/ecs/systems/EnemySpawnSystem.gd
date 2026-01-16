@@ -11,9 +11,9 @@ var spawning := false
 var spawn_interval := 5       
 var spawn_timer := 0.0
 
-const MAX_ENEMIES := 100
+const MAX_ALIVE_ENEMIES := 50
 const BATTERY_BUDGET_RATIO := 0.5   # 50% бюджета
-const MAX_PER_TICK := 5            # защита от лагов
+const MAX_PER_TICK := 10            # защита от лагов
 
 const WORLD_SIZE := Vector2(75.0, 75.0)
 
@@ -72,7 +72,7 @@ func _try_spawn() -> void:
 	var enemies := get_entities_with(["EnemyComponent"], ["DeadComponent"])
 	var enemy_count := enemies.size()
 
-	if enemy_count >= MAX_ENEMIES:
+	if enemy_count >= MAX_ALIVE_ENEMIES:
 		return
 
 	var max_budget_allowed :int = battery.budget * BATTERY_BUDGET_RATIO
@@ -86,7 +86,7 @@ func _try_spawn() -> void:
 
 	var enemies_to_create := []
 	var can_spawn :int = min(
-		MAX_ENEMIES - enemy_count,
+		MAX_ALIVE_ENEMIES - enemy_count,
 		MAX_PER_TICK
 	)
 

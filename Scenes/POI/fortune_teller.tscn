@@ -241,3 +241,11 @@ texture_filter = 4
 outline_render_priority = -6
 text = "[E]   Interact"
 outline_size = 15
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 3, 0)
+light_color = Color(0.51766974, 0.8251632, 0.30149937, 1)
+light_energy = 3.496
+light_bake_mode = 0
+spot_range = 6.454
+spot_angle = 47.68

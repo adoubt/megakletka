@@ -1,0 +1,161 @@
+[gd_scene load_steps=24 format=3 uid="uid://wgwpug4g8rv8"]
+
+[ext_resource type="Script" uid="uid://dyv66n3a3fshe" path="res://scripts/objects/poi.gd" id="1_8qyrm"]
+[ext_resource type="PackedScene" uid="uid://difk87vdakb8o" path="res://Scenes/Objects/campfire_logs.tscn" id="1_rwyyc"]
+[ext_resource type="Shader" uid="uid://debcdgcea63wn" path="res://assets/Shaders/campfire/campfire.tres" id="2_3ueme"]
+[ext_resource type="Texture2D" uid="uid://cmypam8e5rtcu" path="res://assets/shader_pics/image-from-rawpixel-id-13189023-png.png" id="3_5aa2q"]
+[ext_resource type="Texture2D" uid="uid://v3ey6gtm1at" path="res://assets/shader_pics/toppng.com-smoke-effect-png-photo-edting-smoke-cloud-transparent-900x489.png" id="4_kw6ck"]
+[ext_resource type="Shader" uid="uid://cq7w71cvsqt2j" path="res://assets/Shaders/campfire/campfire2.tres" id="5_qb3hq"]
+[ext_resource type="Texture2D" uid="uid://bhns03k4m0nhr" path="res://assets/shader_pics/T_VFX_Flare_251.jpg" id="6_qjumg"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_no8uq"]
+noise_type = 0
+frequency = 0.0366
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_m4txs"]
+noise = SubResource("FastNoiseLite_no8uq")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mw62k"]
+render_priority = 0
+shader = ExtResource("2_3ueme")
+shader_parameter/MainTexture = ExtResource("3_5aa2q")
+shader_parameter/DissolveTilling = Vector2(0.395, 0.205)
+shader_parameter/DissolveSpeed = Vector2(0, 0.2)
+shader_parameter/DissolveTexture = SubResource("NoiseTexture2D_m4txs")
+shader_parameter/DissolveAmount = 0.1810000085975
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bigvi"]
+gravity = Vector3(0, 0, 0)
+color = Color(10.346253, 3.7004986, 0, 0.91764706)
+
+[sub_resource type="QuadMesh" id="QuadMesh_o6phn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s7wx7"]
+render_priority = 0
+shader = ExtResource("2_3ueme")
+shader_parameter/MainTexture = ExtResource("4_kw6ck")
+shader_parameter/DissolveTilling = Vector2(0.1, 0.2)
+shader_parameter/DissolveSpeed = Vector2(0, 0)
+shader_parameter/DissolveAmount = 1.0
+
+[sub_resource type="Curve" id="Curve_4wyr0"]
+_data = [Vector2(0, 0.047357917), 0.0, 0.0, 0, 0, Vector2(0.18041237, 0.52691925), 0.0, 0.0, 0, 0, Vector2(0.93814427, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_y74s2"]
+curve = SubResource("Curve_4wyr0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_38yw6"]
+emission_shape_offset = Vector3(0, 0.14, 0)
+emission_shape = 1
+emission_sphere_radius = 0.2
+angle_min = -179.99998
+angle_max = 418.80002
+spread = 0.0
+gravity = Vector3(0, 3, 0)
+scale_min = 0.7
+scale_max = 0.79999995
+scale_curve = SubResource("CurveTexture_y74s2")
+color = Color(3.6837127, 1.0518198, 0, 0.972549)
+
+[sub_resource type="QuadMesh" id="QuadMesh_1plvg"]
+
+[sub_resource type="Gradient" id="Gradient_gn013"]
+offsets = PackedFloat32Array(0.3314917, 0.9917127)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lrick"]
+gradient = SubResource("Gradient_gn013")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ek8hu"]
+resource_local_to_scene = true
+emission_shape_offset = Vector3(0, 0.275, 0)
+emission_shape = 1
+emission_sphere_radius = 0.2
+angle_min = -179.99998
+angle_max = 418.80002
+spread = 0.0
+gravity = Vector3(0, 3, 0)
+scale_min = 0.7
+scale_max = 0.79999995
+scale_curve = SubResource("CurveTexture_y74s2")
+color = Color(1, 1, 1, 0.6666667)
+color_initial_ramp = SubResource("GradientTexture1D_lrick")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yxn4k"]
+render_priority = 0
+shader = ExtResource("5_qb3hq")
+shader_parameter/MainTexture = ExtResource("6_qjumg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2vygo"]
+emission_shape_offset = Vector3(0, 0.585, 0)
+emission_shape = 6
+emission_ring_axis = Vector3(0, -18.56, 1)
+emission_ring_height = 1.85
+emission_ring_radius = 0.0
+emission_ring_inner_radius = 1.0
+emission_ring_cone_angle = 3.44
+gravity = Vector3(0, 4, 0)
+scale_min = 0.01
+scale_max = 0.12
+color = Color(1.6400867, 0.684906, 0, 0.91764706)
+turbulence_enabled = true
+turbulence_noise_strength = 5.0
+turbulence_noise_scale = 5.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_0rewv"]
+
+[node name="CampFire" type="Node3D"]
+script = ExtResource("1_8qyrm")
+
+[node name="logs" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.135, 0)
+
+[node name="Sketchfab_Scene" parent="logs" instance=ExtResource("1_rwyyc")]
+
+[node name="fire" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41207004, -0.18065152)
+
+[node name="StaticFlame" type="GPUParticles3D" parent="fire"]
+transform = Transform3D(0.245, 0, 0, 0, 0.245, 0, 0, 0, 0.245, 0, 0.17632943, 0)
+material_override = SubResource("ShaderMaterial_mw62k")
+amount = 2
+lifetime = 1.2
+local_coords = true
+draw_order = 3
+process_material = SubResource("ParticleProcessMaterial_bigvi")
+draw_pass_1 = SubResource("QuadMesh_o6phn")
+
+[node name="Flame" type="GPUParticles3D" parent="fire"]
+material_override = SubResource("ShaderMaterial_s7wx7")
+process_material = SubResource("ParticleProcessMaterial_38yw6")
+draw_pass_1 = SubResource("QuadMesh_1plvg")
+
+[node name="Smoke" type="GPUParticles3D" parent="fire"]
+material_override = SubResource("ShaderMaterial_s7wx7")
+amount = 15
+lifetime = 1.5
+process_material = SubResource("ParticleProcessMaterial_ek8hu")
+draw_pass_1 = SubResource("QuadMesh_1plvg")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="fire"]
+sorting_offset = 1.0
+material_override = SubResource("ShaderMaterial_yxn4k")
+amount = 30
+lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_2vygo")
+draw_pass_1 = SubResource("QuadMesh_0rewv")
+
+[node name="Hint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.524246, 0)
+visible = false
+
+[node name="Label3D2" type="Label3D" parent="Hint"]
+visibility_range_end = 70.95
+billboard = 1
+no_depth_test = true
+texture_filter = 4
+outline_render_priority = -6
+text = "[E]   Interact"
+outline_size = 15
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]

@@ -91,6 +91,7 @@ func _create_poi(data_array: Array) -> void:
 		var slots := int(e_data.get("slots", 0))
 		for slot in slots:
 			event_bus.emit("сreate_slot", [{"owner_id": entity_id}])
+		if poi_name == "campfire": event_bus.emit("campfire_created")	
 	event_bus.emit("POI_CREATED")
 
 func _create_enemy(data_array: Array) -> void:
@@ -111,7 +112,7 @@ func _create_enemy(data_array: Array) -> void:
 		#cs.add_component(entity_id, "TargetComponent",TargetComponent.new())
 		cs.add_component(entity_id, "MovementComponent", MovementComponent.new(e_data["movespeed"]))
 		#cs.add_component(entity_id, "TeamComponent", TeamComponent.new(2))
-		cs.add_component(entity_id, "XPRewardComponent", XPRewardComponent.new(e_data['xp_reward']))
+		cs.add_component(entity_id, "XPRewardComponent", XPRewardComponent.new(e_data['budget']))
 		cs.add_component(entity_id, "AttackSpeedComponent", AttackSpeedComponent.new(e_data["attack_speed"]))
 		cs.add_component(entity_id, "CollisionComponent",CollisionComponent.new(
 			CollisionLayers.ENEMY,
@@ -157,10 +158,9 @@ func _create_char(data_array: Array):
 		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"],true))
 		cs.add_component(entity_id, "DamageComponent", DamageComponent.new())
 		cs.add_component(entity_id, "ControllerStateComponent", ControllerStateComponent.new())
-		#cs.add_component(entity_id, "TeamComponent", TeamComponent.new(3))
 		cs.add_component(entity_id, "LevelComponent", LevelComponent.new())
-		cs.add_component(entity_id, "LifestealComponent", LifestealComponent.new(0))
-		cs.add_component(entity_id, "XPPickUpRangeComponent", XPPickUpRangeComponent.new(e_data["xp_pickup_range"]))
+		cs.add_component(entity_id, "LifestealComponent", LifestealComponent.new(0.0))
+		cs.add_component(entity_id, "PickUpRangeComponent", PickUpRangeComponent.new(e_data["xp_pickup_range"]))
 		cs.add_component(entity_id, "XPMultComponent", XPMultComponent.new())
 		cs.add_component(entity_id, "AttackSpeedComponent", AttackSpeedComponent.new(e_data["attack_speed"]))
 		cs.add_component(entity_id, "HUDComponent", HUDComponent.new(entity_id))
@@ -189,10 +189,11 @@ func _create_xp(data_array: Array):
 	for data in data_array:
 		
 		var entity_id = em.create_entity()
-		cs.add_component(entity_id,"TransformComponent", TransformComponent.new(data["position"]))
-		cs.add_component(entity_id,"XPRewardComponent",XPRewardComponent.new(data["xp_value"]))
-		cs.add_component(entity_id,"RenderComponent", RenderComponent.new("uid://dosmechqhf3sw"))
-		cs.add_component(entity_id,"PickUpComponent", PickUpComponent.new())
+		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(data["position"]))
+		cs.add_component(entity_id, "XPRewardComponent",XPRewardComponent.new(data["xp_value"]))
+		cs.add_component(entity_id, "RenderComponent", RenderComponent.new("uid://dosmechqhf3sw"))
+		cs.add_component(entity_id, "PickUpComponent", PickUpComponent.new())
+		cs.add_component(entity_id, "MovementComponent", MovementComponent.new())
 		
 func _create_weapon(data_array: Array):
 	for data in data_array:

@@ -1,47 +1,36 @@
 extends BaseSystem
 class_name XPPickUpSystem
 
-func update(delta: float) -> void:
-	var players = get_entities_with(["PlayerComponent"],["DeadComponent"])
-	var orbs = get_entities_with(["PickUpComponent"],["DeadComponent"])
+func update(_delta: float) -> void:
+	var picked := get_entities_with(
+		["XPRewardComponent", "PickedUpComponent"],
+		["DeadComponent"]
+	)
 
-	if players.is_empty() or orbs.is_empty():
+	if picked.is_empty():
 		return
 
-	var player_id = players[0]
-	var p_transform = cs.get_component(player_id, "TransformComponent")
-	var target_pos = p_transform.position + Vector3(0.0,0.7,0.0)
-	var p_level = cs.get_component(player_id, "LevelComponent")
-	var pickup_radius = cs.get_component(player_id, "XPPickUpRangeComponent").final_value
+	var players := get_entities_with(
+		["PlayerComponent", "LevelComponent", "XPMultComponent"],
+		["DeadComponent"]
+	)
 
-	for orb_id in orbs:
-		var pickup = cs.get_component(orb_id, "PickUpComponent")
-		var orb_transform = cs.get_component(orb_id, "TransformComponent")
+	if players.is_empty():
+		return
 
-		# 1. Если орб ещё НЕ магнитится
-		#    — проверяем радиус
-		if !pickup.magnetized:
-			var dist = target_pos.distance_to(orb_transform.position)
-			if dist <= pickup_radius:
-				pickup.magnetized = true
-				pickup.speed = 0.0
-			else:
-				continue
+	var player_count := players.size()
 
-		# 2. Если магнитится — летим к игроку
-		pickup.speed += delta * 30.0 # ускорение
-		var dir = (target_pos - orb_transform.position).normalized()
-		orb_transform.position += dir * pickup.speed * delta
+	for orb_id in picked:
+		var reward := cs.get_component(orb_id, "XPRewardComponent")
+		if not reward:
+			continue
 
-		# 3. Если долетел — подбираем
-		if orb_transform.position.distance_to(target_pos) < 0.1:
-			# добавляем XP, если есть XPRewardComponent
-			var reward = cs.get_component(orb_id, "XPRewardComponent")
-			if reward:
-				p_level.current_xp += reward.final_value * cs.get_component(player_id,"XPMultComponent").final_value
+		var base_xp :float= reward.final_value / float(player_count)
 
-			# можно универсально: если есть компонент GoldReward — добавляешь золото
-			# если есть HealReward — хилишь — всё в одном месте
-			
-			# удаляем объект
-			cs.add_component(orb_id, "DeadComponent", DeadComponent.new())
+		for pid in players:
+			var lvl := cs.get_component(pid, "LevelComponent")
+			var mult := cs.get_component(pid, "XPMultComponent")
+
+			lvl.current_xp += base_xp * mult.final_value
+
+		cs.add_component(orb_id, "DeadComponent", DeadComponent.new())

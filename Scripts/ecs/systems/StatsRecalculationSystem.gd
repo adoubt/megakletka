@@ -11,7 +11,7 @@ func update(_delta: float) -> void:
 		cs.get_component(player,"MaxHpComponent").final_value = cs.get_component(player,"MaxHpComponent").base_value
 		cs.get_component(player,"CurrentHpComponent").base_value = cs.get_component(player,"CurrentHpComponent").final_value
 		cs.get_component(player,"LifestealComponent").final_value = cs.get_component(player,"LifestealComponent").base_value
-		cs.get_component(player,"XPPickUpRangeComponent").final_value = cs.get_component(player,"XPPickUpRangeComponent").base_value
+		cs.get_component(player,"PickUpRangeComponent").final_value = cs.get_component(player,"PickUpRangeComponent").base_value
 		cs.get_component(player,"AttackSpeedComponent").final_value = cs.get_component(player,"AttackSpeedComponent").base_value
 		cs.get_component(player,"ProjectileRadiusComponent").final_value = cs.get_component(player,"ProjectileRadiusComponent").base_value
 		cs.get_component(player,"WeaponRadiusComponent").final_value = cs.get_component(player,"WeaponRadiusComponent").base_value
@@ -43,9 +43,9 @@ func update(_delta: float) -> void:
 		if attack_speed:
 			cs.get_component(owner_id,"AttackSpeedComponent").final_value = cs.get_component(owner_id,"AttackSpeedComponent").final_value + attack_speed.final_value
 		
-		var xp_pick_up_range = cs.get_component(item,"XPPickUpRangeComponent")
+		var xp_pick_up_range = cs.get_component(item,"PickUpRangeComponent")
 		if xp_pick_up_range:
-			cs.get_component(owner_id,"XPPickUpRangeComponent").final_value = cs.get_component(owner_id,"XPPickUpRangeComponent").final_value + xp_pick_up_range.final_value
+			cs.get_component(owner_id,"PickUpRangeComponent").final_value = cs.get_component(owner_id,"PickUpRangeComponent").final_value + xp_pick_up_range.final_value
 		
 		var damage = cs.get_component(item,"DamageComponent")
 		if damage:

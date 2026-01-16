@@ -6,7 +6,7 @@ var contact_cache := {} # key:int -> true
 var tf_cache := {}  
 var col_cache := {} 
 
-var cell_size: float = 1.3
+var cell_size: float = 0.3
 
 
 func update(_delta: float) -> void:
@@ -172,22 +172,30 @@ func _to_cell(pos: Vector3) -> Vector3i:
 	)
 
 func _choose_climber_by_target(a: int, b: int) -> int:
-	var a_target = cs.get_component(a, "AimComponent")
-	var b_target = cs.get_component(b, "AimComponent")
+	var a_has := cs.has_component(a, "AimComponent")
+	var b_has := cs.has_component(b, "AimComponent")
 
-	if not a_target or not b_target:
-		return -1
-	if a_target.target_id != b_target.target_id:
-		return -1
+	# если у одного нет цели — он и лезет
+	if a_has and not b_has:
+		return b
+	if b_has and not a_has:
+		return a
 
-	var target_tf = tf_cache.get(a_target.target_id)
-	if not target_tf:
-		return -1
+	# если ни у кого нет цели — фиксируем порядок
+	if not a_has and not b_has:
+		return a if a < b else b
+
+	var a_target: AimComponent = cs.get_component(a, "AimComponent")
+	var b_target: AimComponent = cs.get_component(b, "AimComponent")
 
 	var a_tf = tf_cache[a]
 	var b_tf = tf_cache[b]
 
-	var da = a_tf.position.distance_squared_to(target_tf.position)
-	var db = b_tf.position.distance_squared_to(target_tf.position)
+	var da = a_tf.position.distance_squared_to(a_target.position)
+	var db = b_tf.position.distance_squared_to(b_target.position)
+
+	# кто дальше — тот уступает (лезет)
+	if abs(da - db) < 0.01:
+		return a if a < b else b
 
 	return a if da > db else b

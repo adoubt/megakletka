@@ -38,31 +38,31 @@ func get_entities_with(component_names: Array, exclude: Array = []) -> Array:
 
 	return result_dict.keys()
 
-
-
-
-
-func get_entities_in_radius(entity_id: int, radius: float) -> Array:
-	var result = []
-
-	# Берём позицию исходной сущности
-	var pos_component = cs.get_component(entity_id, "TransformComponent")
-	if pos_component == null:
-		return result
-	var origin = pos_component.position  # Vector3
-
-	# Проходим все сущности с PositionComponent
-	var all_entities = get_entities_with(["TransformComponent"])
-	for other_id in all_entities:
-		if other_id == entity_id:
-			continue  # не учитываем себя
-
-		var other_pos = cs.get_component(other_id, "TransformComponent")
-		if other_pos == null:
-			continue
-
-		var distance = origin.distance_to(other_pos.position)
-		if distance <= radius:
-			result.append(other_id)
-
-	return result
+#
+#
+#
+#
+#func get_entities_in_radius(entity_id: int, radius: float) -> Array:
+	#var result = []
+#
+	## Берём позицию исходной сущности
+	#var pos_component = cs.get_component(entity_id, "TransformComponent")
+	#if pos_component == null:
+		#return result
+	#var origin = pos_component.position  # Vector3
+#
+	## Проходим все сущности с PositionComponent
+	#var all_entities = get_entities_with(["TransformComponent"])
+	#for other_id in all_entities:
+		#if other_id == entity_id:
+			#continue  # не учитываем себя
+#
+		#var other_pos = cs.get_component(other_id, "TransformComponent")
+		#if other_pos == null:
+			#continue
+#
+		#var distance = origin.distance_to(other_pos.position)
+		#if distance <= radius:
+			#result.append(other_id)
+#
+	#return result

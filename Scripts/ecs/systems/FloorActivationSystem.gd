@@ -11,7 +11,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	db = _db
 	object_pool = _object_pool
 	
-	event_bus.subscribe("floor_changed", _activate_poi_on_floor)
+	event_bus.subscribe("day_changed", _activate_poi_on_floor)
 	event_bus.subscribe("POI_CREATED", _activate_poi_on_floor)
 	
 func _activate_poi_on_floor():
@@ -30,7 +30,7 @@ func _activate_poi_on_floor():
 	for poi_id in pois:
 		var floor_id = cs.get_component(poi_id, "FloorIdComponent").id
 		var poi_name =cs.get_component(poi_id, "POIComponent").name
-		if poi_name == "wagon": 
+		if poi_name == "campfire": 
 			floor_id = current_floor
 			continue
 		if floor_id == current_floor:
@@ -55,3 +55,4 @@ func _activate_poi_on_floor():
 			cs.remove_component(poi_id, "RenderComponent")		
 			cs.remove_component(poi_id, "CollisionComponent")	
 			cs.remove_component(poi_id, "InteractionTargetComponent")
+	event_bus.emit

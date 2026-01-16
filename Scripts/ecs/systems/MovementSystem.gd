@@ -18,20 +18,24 @@ func update(delta: float) -> void:
 			var move := cs.get_component(e_id, "MovementIntentComponent")
 			tf.velocity.x = move.direction.x * move.speed
 			tf.velocity.z = move.direction.z * move.speed
-		# -------- MOB MOVEMENT --------
-		if cs.has_component(e_id, "MovementComponent"):
+			tf.velocity.y = move.direction.y * move.speed
+		# -------- MOB MOVEMENT / PickUps--------
+		elif cs.has_component(e_id, "MovementComponent"):
 			var move := cs.get_component(e_id, "MovementComponent")
 			tf.velocity.x = move.direction.x * move.speed
 			tf.velocity.z = move.direction.z * move.speed
-
+			tf.velocity.y = move.direction.y * move.speed
 		# -------- GRAVITY --------
-		var col = cs.get_component(e_id, "CollisionComponent")
-		if col and not cs.has_component(e_id, "POIComponent"):
-			if tf.position.y - col.radius > FLOOR_Y:
-				tf.velocity.y += GRAVITY * delta
-			else:
-				tf.position.y = FLOOR_Y + col.radius
-				tf.velocity.y = 0.0
+		var climb = cs.has_component(e_id, "ClimbComponent")
+		if not climb:
+			var col = cs.get_component(e_id, "CollisionComponent")
+			if col and not cs.has_component(e_id, "POIComponent"):
+				if tf.position.y - col.radius > FLOOR_Y:
+					tf.velocity.y += GRAVITY * delta
+				else:
+					tf.position.y = FLOOR_Y + col.radius
+					tf.velocity.y = 0.0
+		else: cs.remove_component(e_id, "ClimbComponent")
 
 		# -------- INTEGRATION --------
 		tf.position += tf.velocity * delta

@@ -4,10 +4,17 @@
 
 [resource]
 background_mode = 2
+background_energy_multiplier = 2.1
 sky = ExtResource("1_uhkc6")
 ambient_light_source = 3
 ambient_light_color = Color(0.5058824, 0.5176471, 0.72156864, 1)
-sdfgi_y_scale = 0
-glow_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_bounce_feedback = 0.0
 glow_normalized = true
+fog_depth_curve = 0.3077852
+fog_depth_end = 63.0
 volumetric_fog_enabled = true
+volumetric_fog_density = 0.1105
+volumetric_fog_albedo = Color(0, 0, 0, 1)
+volumetric_fog_length = 31.75

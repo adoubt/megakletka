@@ -8,6 +8,8 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 	event_bus.subscribe("enemy_died", _on_enemy_died)
 	event_bus.subscribe("enemy_damaged", _on_enemy_hitted)
 	event_bus.subscribe("level_up", _on_level_up)
+	event_bus.subscribe("campfire_created",_on_campfire_created)
+	event_bus.subscribe("day_changed", _on_day_changed)
 func _on_enemy_died(data: Dictionary):
 	var _sounds = [
 		"enemy_death",
@@ -107,8 +109,8 @@ func _on_enemy_hitted(data: Dictionary):
 #
 	#event_bus.subscribe("menu_opened", _on_menu_opened)
 	#event_bus.subscribe("menu_closed", _on_menu_closed)
-
-func _on_level_up(data: Dictionary):
+	
+func _on_level_up(_data: Dictionary = {}):
 	var _sounds = [
 		
 		"level_up"
@@ -117,3 +119,18 @@ func _on_level_up(data: Dictionary):
 	var rand_index = randi() % _sounds.size()
 	var chosen_sound = _sounds[rand_index]
 	AudioManager.play_ui_sound(chosen_sound)
+	
+func _on_campfire_created(_data: Dictionary = {})-> void:
+	
+	AudioManager.play_spatial_loop("campfire0", "campfire_crackling", Vector3.ZERO, 0.0, 50.0)
+
+func _on_combat_started(_data: Dictionary = {}) -> void:
+	AudioManager.play_ui_sound("combat_started")
+	
+	
+func _on_combat_completed(_data: Dictionary = {}) -> void:
+	AudioManager.play_ui_sound("combat_comleted")
+
+	
+func _on_day_changed(_data: Dictionary = {}) -> void:
+	AudioManager.play_ui_sound("day_changed")

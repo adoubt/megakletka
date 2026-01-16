@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://y7obu221tx47"
-path.s3tc="res://.godot/imported/T_VFX_Heal7.png-0b6e972e02fc7417c9f28638c1fbfe3a.s3tc.ctex"
+uid="uid://b6unneohabar8"
+path.s3tc="res://.godot/imported/image-from-rawpixel-id-3417898-png.png-f073881690c5d58f9085d5f0eb58ac07.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/shader_pics/T_VFX_Heal7.png"
-dest_files=["res://.godot/imported/T_VFX_Heal7.png-0b6e972e02fc7417c9f28638c1fbfe3a.s3tc.ctex"]
+source_file="res://assets/shader_pics/image-from-rawpixel-id-3417898-png.png"
+dest_files=["res://.godot/imported/image-from-rawpixel-id-3417898-png.png-f073881690c5d58f9085d5f0eb58ac07.s3tc.ctex"]
 
 [params]
 
