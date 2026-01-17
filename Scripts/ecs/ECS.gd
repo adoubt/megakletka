@@ -46,6 +46,7 @@ func initialize():
 	
 	#1 INIT / SPAWN
 	#system_manager.add_system(InputSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(ConsoleSystem.new(entity_manager, component_store,event_bus, db))
 	system_manager.add_system(RunInitSystem.new(entity_manager, component_store,event_bus, db))
 	system_manager.add_system(CombatSystem.new(entity_manager, component_store,event_bus))
 	#system_manager.add_system(SpatialGridSystem.new(entity_manager, component_store, grid))

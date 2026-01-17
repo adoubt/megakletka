@@ -1,10 +1,9 @@
-[gd_scene load_steps=31 format=4 uid="uid://csuaael2v81ju"]
+[gd_scene load_steps=29 format=4 uid="uid://csuaael2v81ju"]
 
 [ext_resource type="Script" uid="uid://cbd1ujwj68mhr" path="res://scripts/Player/player_controller.gd" id="1_4wape"]
 [ext_resource type="PackedScene" uid="uid://cg8diy5mqdnwf" path="res://Scenes/Popups/LevelUpPopup.tscn" id="2_spxdj"]
 [ext_resource type="Script" uid="uid://carpmnj3q04tb" path="res://scripts/rigman.gd" id="4_825xp"]
 [ext_resource type="AnimationLibrary" uid="uid://dfguaj6wqckad" path="res://assets/Animations/Pack.res" id="5_i5acl"]
-[ext_resource type="Shader" uid="uid://dr0vqu5xql5ot" path="res://assets/Shaders/colored_glass.gdshader" id="7_6tu5v"]
 [ext_resource type="Script" uid="uid://b42vadtcmbto5" path="res://scripts/FSM/StateMachine.gd" id="7_825xp"]
 [ext_resource type="Material" uid="uid://b6jm1dn3iwhm1" path="res://assets/Materials/DarkenedBlur.tres" id="7_esmjy"]
 [ext_resource type="Script" uid="uid://2n8wyyoku3aj" path="res://scripts/Player/States/idle.gd" id="8_0kmp4"]
@@ -151,21 +150,6 @@ bind/33/pose = Transform3D(1.0000001, 1.5716068e-09, 8.2013685e-08, 6.884602e-08
 bind/34/name = &"mixamorig_RightToeBase_end"
 bind/34/bone = -1
 bind/34/pose = Transform3D(-0.999877, -0.0010168278, -0.015657833, -0.015673673, 0.018240046, 0.99971, -0.0007309296, 0.9998333, -0.018253865, -0.5062448, -0.52968585, -0.013143377)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_spxdj"]
-render_priority = 0
-shader = ExtResource("7_6tu5v")
-shader_parameter/albedo = Color(1, 1, 1, 0)
-shader_parameter/roughness = 0.15
-shader_parameter/refraction = 0.5
-shader_parameter/refraction_texture_channel = Vector4(1, 0, 0, 0)
-shader_parameter/normal_strength = 0.0
-shader_parameter/edge_color = Color(0, 0, 0, 1)
-shader_parameter/surface_contribution = 0.2
-shader_parameter/specular_contribution = 0.2
-shader_parameter/refraction_contribution = 1.0
-shader_parameter/uv1_scale = Vector3(1, 1, 1)
-shader_parameter/uv1_offset = Vector3(0, 0, 0)
 
 [sub_resource type="Animation" id="Animation_njoq3"]
 resource_name = "Idle"
@@ -667,7 +651,6 @@ bone_idx = 5
 transform = Transform3D(1, 0, 1.7484555e-07, 0, 1, 0, -1.7484555e-07, 0, 1, 0, 0, 0)
 mesh = SubResource("ArrayMesh_hkp2m")
 skin = SubResource("Skin_s73ts")
-surface_material_override/0 = SubResource("ShaderMaterial_spxdj")
 
 [node name="RightHandHeld" type="BoneAttachment3D" parent="Model/Armature/GeneralSkeleton"]
 transform = Transform3D(0.9037333, -0.39660367, 0.16046493, -0.13965943, -0.62746626, -0.7652388, 0.40467453, 0.66916114, -0.62245166, -0.93038267, 1.6416382, -0.39903057)

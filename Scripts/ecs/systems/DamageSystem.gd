@@ -28,7 +28,7 @@ func update(_delta: float):
 				cs.add_component(popup_entity, "TransformComponent", TransformComponent.new(owner_tf.position))
 				cs.add_component(popup_entity, "RenderComponent",RenderComponent.new("res://Scenes/Popups/DamagePopup.tscn"))
 				cs.add_component(popup_entity, "LifetimeComponent",LifetimeComponent.new(1.0))
-				event_bus.emit("enemy_damaged", {"position": owner_tf.position, "e_id": e_id})
+				event_bus.emit("enemy_hitted", {"position": owner_tf.position, "e_id": e_id})
 		print(e_id," (", hp_before, ") took ", damage_done, " dmg from ", pd.source_id) 
 		
 			

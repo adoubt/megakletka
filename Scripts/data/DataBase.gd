@@ -204,15 +204,17 @@ class_name DataBase
 @export var sound_configs = {
 	"diegetic": {
 		"one_shot": {
-			"enemy_death" : "res://assets/sounds/diegetic/one_shot/enemy_death.wav",
-			"enemy_death2" : "res://assets/sounds/diegetic/one_shot/enemy_death_2.wav",
-			"enemy_death3" : "res://assets/sounds/diegetic/one_shot/enemy_death_3.wav",
-			"enemy_death4" : "res://assets/sounds/diegetic/one_shot/enemy_death_4.wav",
-			"enemy_death5" : "res://assets/sounds/diegetic/one_shot/enemy_death_5.wav",
-			"enemy_death6" : "res://assets/sounds/diegetic/one_shot/enemy_death_6.wav",
-			"enemy_hitted" : "res://assets/sounds/diegetic/one_shot/enemy_damaged.wav",
-			"enemy_hitted2" : "res://assets/sounds/diegetic/one_shot/enemy_damaged_2.wav",
-			
+			"enemy_died": [ "res://assets/sounds/diegetic/one_shot/enemy_death.mp3",
+				"res://assets/sounds/diegetic/one_shot/enemy_death_2.mp3",
+				"res://assets/sounds/diegetic/one_shot/enemy_death_3.mp3"
+				],
+			"enemy_hitted": [
+				"res://assets/sounds/diegetic/one_shot/enemy_hitted.mp3",
+				"res://assets/sounds/diegetic/one_shot/enemy_hitted_2.mp3",
+				"res://assets/sounds/diegetic/one_shot/enemy_hitted_3.mp3",
+				"res://assets/sounds/diegetic/one_shot/enemy_hitted_4.mp3",
+			],
+			"custom_sounds": []
 		},
 		"persistent": {
 			"campfire_crackling" : "res://assets/sounds/diegetic/persistent/campfire-crackling-sound.mp3"
@@ -220,12 +222,17 @@ class_name DataBase
 	},
 	"non_diegetic": {
 		"music": {
+			"tera" : "res://assets/sounds/non_diegetic/music/3 ost tera no drums.mp3",
+			"idle_theme" : "res://assets/sounds/non_diegetic/music/idle theme.mp3"
+			
+			
 			
 		},
 		"ui": {
 			"game_start" : "res://assets/sounds/non_diegetic/ui/Game Start.mp3",
 			"level_up" :"res://assets/sounds/non_diegetic/ui/level_up.wav",
-			"day_changed" : "res://assets/sounds/non_diegetic/ui/day_changed.mp3"
+			"day_changed" : "res://assets/sounds/non_diegetic/ui/day_changed.mp3",
+			"combat_completed":"res://assets/sounds/non_diegetic/ui/combat_completed.mp3"
 		},
 	}
 }

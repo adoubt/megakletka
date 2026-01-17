@@ -3,11 +3,15 @@ class_name DevPanel
 
 
 
-@onready var list: VBoxContainer = $MarginContainer/HBoxContainer/MarginContainer/VBoxContainer2/List
+@onready var list: VBoxContainer = $MarginContainer/HBoxContainer/MarginContainer2/Pools/List
 
-@onready var systems_list: VBoxContainer = $MarginContainer/HBoxContainer/ScrollContainer/SystemsList
+@onready var console_input: LineEdit = $MarginContainer/HBoxContainer/MarginContainer2/console_input
 
+@onready var console_output: RichTextLabel = $MarginContainer/HBoxContainer/MarginContainer2/console_output
 
+@onready var systems_list: VBoxContainer = $MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer/SystemsList
+func _ready() -> void:
+	console_input.text_submitted.connect(_on_command)
 # кеш строк
 var system_rows :Dictionary= {} # system_name -> HBoxContainer
 # кеш строк чтобы не пересоздавать каждый апдейт
@@ -148,3 +152,16 @@ func _update_row(row: HBoxContainer, scene_path: String, data: Dictionary) -> vo
 		bar.modulate = Color(1, 0.4, 0.4)
 	else:
 		bar.modulate = Color(0.4, 1, 0.4)
+
+func _log(text: String):
+	console_output.append_text(text + "\n")
+	console_output.scroll_to_line(console_output.get_line_count())
+
+func _on_command(cmd: String):
+	if cmd in ["help","h","/h","help"]:
+		_log("Commands:\n/h -help")
+	else:
+		UIManager.event_bus.emit(cmd,{"console": true})
+		_log("> " + cmd)
+	console_input.clear()
+	

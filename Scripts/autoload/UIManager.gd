@@ -124,7 +124,8 @@ func close_escape_menu() -> void:
 	game_paused = false
 func open_dev_panel() -> void:
 	open_panel("DEV_PANEL")
-
+	await get_tree().process_frame
+	dev_panel.console_input.grab_focus()
 func close_dev_panel() -> void:
 	close_panel("DEV_PANEL")
 
@@ -287,7 +288,7 @@ func _input(event: InputEvent) -> void:
 		if SceneManager.current_scene_name in ["BigRoomTest","GameTest"]:
 			toggle_dev_panel()
 	if event.is_action_pressed("upgrade_menu"):
-		if hud.has_upgrade and SceneManager.current_scene_name in ["BigRoomTest","GameTest"] and not escape_menu.visible:
+		if not _any_ui_open() and hud.has_upgrade and SceneManager.current_scene_name in ["BigRoomTest","GameTest"] and not escape_menu.visible:
 			toggle_level_up_panel()
 			event_bus.emit("level_up_panel_toggled") 
 			#toggle_upgrade_menu()

@@ -16,10 +16,26 @@ func _ready() -> void:
 	ui_player= AudioStreamPlayer.new()
 	add_child(ui_player)
 ## One-shot sound within 3D Position
-func play_sound(_name: String, _position: Vector3, volume_db: float = 0.0, pitch_range: Vector2 = Vector2(0.9,1.1), max_distance: float = 15.0) -> void:
-	var path = DatabaseManager.db.sound_configs["diegetic"]["one_shot"].get(_name, null)
-	if path == null:
+func play_sound(
+	_name: String,
+	_position: Vector3,
+	volume_db: float = 0.0,
+	pitch_range: Vector2 = Vector2(0.9,1.1),
+	max_distance: float = 15.0) -> void:
+
+	var entry = DatabaseManager.db.sound_configs["diegetic"]["one_shot"].get(_name, null)
+	if entry == null:
 		push_error("AudioManager: sound not found in DB: %s" % _name)
+		return
+
+	var path: String
+
+	if entry is Array:
+		path = entry.pick_random()
+	elif entry is String:
+		path = entry
+	else:
+		push_error("AudioManager: invalid sound entry: %s" % _name)
 		return
 
 	var player = AudioStreamPlayer3D.new()
@@ -27,16 +43,40 @@ func play_sound(_name: String, _position: Vector3, volume_db: float = 0.0, pitch
 	player.global_transform.origin = _position
 	player.volume_db = volume_db
 	player.pitch_scale = randf_range(pitch_range.x, pitch_range.y)
-	
-
 	player.max_distance = max_distance
 	player.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_DISTANCE
 
 	add_child(player)
 	player.play()
 	dynamic_sources.append(player)
-
 	player.connect("finished", Callable(self, "_on_dynamic_finished").bind(player))
+
+func play_sound_with_fallback(
+	primary_key: String,
+	fallback_key: String,
+	_position: Vector3,
+	volume_db: float = 0.0,
+	pitch_range: Vector2 = Vector2(0.9, 1.1),
+	max_distance: float = 15.0) -> void:
+
+	var one_shot = DatabaseManager.db.sound_configs["diegetic"]["one_shot"]
+
+	var sounds: Array = []
+
+	if one_shot.has(primary_key):
+		sounds = one_shot[primary_key]
+	elif one_shot.has(fallback_key):
+		sounds = one_shot[fallback_key]
+	else:
+		push_error(
+			"AudioManager: sound not found (%s, %s)" %
+			[primary_key, fallback_key]
+		)
+		return
+
+	var path :String = sounds.pick_random()
+
+	_play_path(path, _position, volume_db, pitch_range, max_distance)
 
 
 func _on_dynamic_finished(player: AudioStreamPlayer3D):
@@ -85,7 +125,7 @@ func play_music(_name: String, volume_db: float = 0.0, loop: bool = true) -> voi
 	var player = AudioStreamPlayer3D.new()
 	player.stream = load(path)
 	player.volume_db = volume_db
-	player.loop = loop
+	player.stream.loop = true
 	player.play()
 	add_child(player)
 	music_players[_name] = player
@@ -172,3 +212,27 @@ func stop_spatial_loop(key: String) -> void:
 func update_spatial_loop_position(key: String, position: Vector3) -> void:
 	if spatial_loops.has(key):
 		spatial_loops[key].global_position = position
+
+func _play_path(
+	path: String,
+	_position: Vector3,
+	volume_db: float,
+	pitch_range: Vector2,
+	max_distance: float
+) -> void:
+	var player := AudioStreamPlayer3D.new()
+	player.stream = load(path)
+	player.global_transform.origin = _position
+	player.volume_db = volume_db
+	player.pitch_scale = randf_range(pitch_range.x, pitch_range.y)
+	player.max_distance = max_distance
+	player.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_DISTANCE
+
+	add_child(player)
+	player.play()
+	dynamic_sources.append(player)
+	player.finished.connect(_on_dynamic_finished.bind(player))
+
+func play_music_delayed(_name: String,delay: float,volume_db: float = 0.0,loop: bool = true) -> void:
+	var timer := get_tree().create_timer(delay)
+	timer.timeout.connect(func(): play_music(_name, volume_db, loop))
