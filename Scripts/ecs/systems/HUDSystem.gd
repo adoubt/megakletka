@@ -23,7 +23,7 @@ func update(delta: float) -> void:
 		
 func _on_level_up_offer_created(callback_data: Dictionary):
 		
-	UIManager.hud.setup_upgrade_buttons(callback_data["offer_id"], callback_data["offer"])
+	
 	UIManager.level_up_panel.setup_background(callback_data["offer"])
 
 func _on_level_up_panel_toggled()-> void:

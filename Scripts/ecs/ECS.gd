@@ -8,7 +8,7 @@ var object_pool : ObjectPool
 var grid : SpatialGrid
 var event_bus: EventBus
 var db: DataBase
-var debug_collision :bool = false
+var debug_collision :bool = true
 func initialize():
 	name = "ECS"
 	db = DatabaseManager.db
@@ -70,6 +70,7 @@ func initialize():
 	#4. PHYSICS / MOVEMENT
 	system_manager.add_system(PickUpSystem.new(entity_manager,component_store, event_bus))
 	system_manager.add_system(ClimbSystem.new(entity_manager,component_store, event_bus))
+	system_manager.add_system(GravitySystem.new(entity_manager,component_store, event_bus))
 	system_manager.add_system(MovementSystem.new(entity_manager, component_store,event_bus))
 	#system_manager.add_system(PhysicsSystem.new(entity_manager, component_store,event_bus))
 	

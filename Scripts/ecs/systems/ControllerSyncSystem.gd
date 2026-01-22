@@ -12,7 +12,7 @@ func update(_delta:float) -> void:
 		if render.instance == null: 
 			continue
 		## Обновляю позицию игрока
-		cs.get_component(entity_id, "TransformComponent").position =  render.instance.global_position
+		cs.get_component(entity_id, "TransformComponent").position =  render.instance.global_position + Vector3(0.0, 0.3,0.0)
 		
 		## Обновляю STATE (На будущие модификаторы пригодится)
 		#var controller = cs.get_component(entity_id, "ControllerStateComponent")

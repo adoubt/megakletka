@@ -41,8 +41,11 @@ func update(_delta: float) -> void:
 			cs.add_component(e_id, "AimComponent", AimComponent.new(best_pos))
 			if req.one_shot:
 				cs.remove_component(e_id, "TargetRequestComponent")
-
-			
+		###TODO (this block added to just avoid the bug - the enemies keeps climbing after player's death
+		else: 
+			cs.add_component(e_id, "AimComponent", AimComponent.new(Vector3.ZERO + Vector3(randf_range(-20,20),0.0,randf_range(-20,20))))
+			if req.one_shot:
+				cs.remove_component(e_id, "TargetRequestComponent")		
 func _get_candidates(target_layers: int) -> Array:
 	var result: Array = []
 

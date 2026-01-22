@@ -5,9 +5,8 @@ const ANIMATION_DURATION: float = 0.7
 var offer_id:int = -1
 var has_upgrade: bool = false
 @onready var fps_label: Label = $HUD/VBoxContainer/Control/FPS
-@onready var upgrade_panel:ColorRect = $HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers
-@onready var upgrade_offers: VBoxContainer = $HUD/VBoxContainer/Control/MarginContainer/LeftPanel/ColorRect/UpgradeOffers/VBoxContainer/Upgrades/MarginContainer/VBoxContainer
-@onready var upgrade_vfx: TextureRect = $UpgradeVFX
+
+@onready var dayboard_panel:= $HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel
 
 # === HP ===
 @export var min_hp: float = 0.0
@@ -39,7 +38,7 @@ func _ready() -> void:
 	xp_shader =  current_xp_texture.material
 	update_current_hp_texture(0)
 	update_current_xp_texture(0)
-	upgrade_panel.visible = false
+
 	visible = false
 
 # ================= HP =================
@@ -105,37 +104,12 @@ func get_tween() -> Tween:
 	return _tween
 
 	
-func on_upgrade_button_pressed(index: int):
-	print('Upgrade btn chosen(delete massage 107 )')
-
-	UIManager.event_bus.emit("upgrade_chosen", {
-	"entity_id": offer_id,
-	"choice_index": index
-})
-	has_upgrade = false
-	UIManager.close_upgrade_menu()
 	
+func update_dayboard(data: Array):
+	var current_day: int
+	var day_index: int = 0 
+	for day in data:
+		if day.current: current_day = day_index
+			
+	pass
 	
-	
-func setup_upgrade_buttons(_offer_id,offer: Array) -> void:
-	offer_id = _offer_id
-	has_upgrade = true
-	# Перебираем все кнопки внутри контейнера
-	for i in range(upgrade_offers.get_child_count()):
-		var btn := upgrade_offers.get_child(i) as TextureButton
-
-		if i < offer.size():
-			btn.visible = true
-			var data = DatabaseManager.db.item_configs[str(offer[i])]
-			btn.choice_name.text = data["name"]
-			btn.icon.texture = load(data["icon"])
-			btn.choice_decs.text = data["description"]
-			if btn.is_connected("pressed", Callable(self, "on_upgrade_button_pressed")):
-				btn.disconnect("pressed", Callable(self, "on_upgrade_button_pressed"))
-			btn.pressed.connect(func(): on_upgrade_button_pressed(i))
-		else:
-			btn.visible = false
-
-
-func _on_button_pressed() -> void:
-	print("REROLL")

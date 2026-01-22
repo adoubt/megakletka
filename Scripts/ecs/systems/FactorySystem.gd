@@ -134,7 +134,8 @@ func _create_enemy(data_array: Array) -> void:
 		cs.add_component(entity_id, "BounceComponent",BounceComponent.new(e_data.bounce))
 		if e_data.has("weapon_name"):
 			event_bus.emit("create_weapon", [{"weapon_name":e_data["weapon_name"],"owner_id": entity_id}])
-		
+		if not e_data.has("flying"):
+			cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 			
 		
 	

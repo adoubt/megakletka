@@ -24,6 +24,8 @@ var post_process_canvas :CanvasLayer
 var game_paused: bool = false
 # ========== PUBLIC API ==========
 
+
+
 func open_level_up_panel():
 	
 	open_panel("LevelUpPanel")
@@ -55,21 +57,6 @@ func open_main_menu() -> void:
 	open_panel("MainMenu")
 	game_paused = false
 	
-func open_upgrade_menu() -> void:
-	open_panel("UpgradeMenu", true)
-	open_panel("UpgradeVFX", true)
-	game_paused = true
-	
-func close_upgrade_menu() -> void:
-	close_panel("UpgradeMenu")
-	close_panel("UpgradeVFX")
-	game_paused = false
-	
-func toggle_upgrade_menu() -> void:
-	if hud.upgrade_panel.visible:
-		close_upgrade_menu()
-	else:
-		open_upgrade_menu() 
 		
 func open_hud() -> void:
 	open_panel("HUD")
@@ -210,11 +197,10 @@ func _ready() -> void:
 		"MainMenu": main_menu,
 		"Settings": settings_menu,
 		"DEV_PANEL" : dev_panel,
-		"UpgradeMenu": hud.upgrade_panel,
 		"LevelUpPanel": level_up_panel,
-		"UpgradeVFX": hud.upgrade_vfx,
 		"WagonPanel": wagon_panel,
-		"HUD" :hud
+		"HUD" :hud,
+		"DayBoard" : hud.dayboard_panel
 	}
 	
 	close_all()

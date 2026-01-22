@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="MegaKletka"
+config/name="As Long It's Warm"
 run/main_scene="uid://bsoxxlhnjn45f"
 config/features=PackedStringArray("4.5", "Forward Plus")
 boot_splash/bg_color=Color(0.07233263, 0.23703453, 0.122048356, 1)
