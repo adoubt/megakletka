@@ -8,7 +8,7 @@ var object_pool : ObjectPool
 var grid : SpatialGrid
 var event_bus: EventBus
 var db: DataBase
-var debug_collision :bool = true
+var debug_collision :bool = false
 func initialize():
 	name = "ECS"
 	db = DatabaseManager.db
@@ -37,23 +37,26 @@ func initialize():
 	"res://Scenes/POI/fortune_teller.tscn":3,
 	"res://Scenes/debug_collider.tscn":200 if debug_collision else 0,
 	"res://Scenes/Weapons/Projectiles/enemy_proj.tscn" : 150,
-	"res://Scenes/Weapons/Projectiles/carrot.tscn": 30
-	
+	"res://Scenes/Weapons/Projectiles/carrot.tscn": 30,
+	"res://Scenes/player_camera.tscn" :1
 	
 
 })
 	grid = SpatialGrid.new()
 	
 	#1 INIT / SPAWN
-	#system_manager.add_system(InputSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(InputSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(JumpSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(CameraSystem.new(entity_manager,component_store,event_bus))
+	system_manager.add_system(PlayerControlSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(ConsoleSystem.new(entity_manager, component_store,event_bus, db))
 	system_manager.add_system(RunInitSystem.new(entity_manager, component_store,event_bus, db))
 	system_manager.add_system(CombatSystem.new(entity_manager, component_store,event_bus))
 	#system_manager.add_system(SpatialGridSystem.new(entity_manager, component_store, grid))
-	system_manager.add_system(ControllerSyncSystem.new(entity_manager, component_store,event_bus))
+	#system_manager.add_system(ControllerSyncSystem.new(entity_manager, component_store,event_bus))
 	#system_manager.add_system(CameraSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(EnemySpawnSystem.new(entity_manager, component_store,event_bus, db))
-	system_manager.add_system(FactorySystem.new(entity_manager, component_store,event_bus,db))
+	system_manager.add_system(FactorySystem.new(entity_manager, component_store,event_bus,db,object_pool))
 	system_manager.add_system(StatsRecalculationSystem.new(entity_manager, component_store,event_bus))
 	
 	#2 AI / DECISION
@@ -72,6 +75,7 @@ func initialize():
 	system_manager.add_system(ClimbSystem.new(entity_manager,component_store, event_bus))
 	system_manager.add_system(GravitySystem.new(entity_manager,component_store, event_bus))
 	system_manager.add_system(MovementSystem.new(entity_manager, component_store,event_bus))
+	
 	#system_manager.add_system(PhysicsSystem.new(entity_manager, component_store,event_bus))
 	
 	#5. COLLISION / DAMAGE
@@ -90,7 +94,7 @@ func initialize():
 	system_manager.add_system(LevelSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(LevelUpSelectionSystem.new(entity_manager,component_store,event_bus,))
 	#7. RENDER
-	
+	system_manager.add_system(CameraEffectSystem.new(entity_manager,component_store,event_bus,))
 	
 	system_manager.add_system(LevelUpOfferSystem.new(entity_manager,component_store,event_bus,db))
 	system_manager.add_system(Interactionsystem.new(entity_manager,component_store,event_bus))
@@ -108,4 +112,7 @@ func initialize():
 func update(delta):
 	if  UIManager.game_paused:
 		return
+	
 	system_manager.update_all(delta)
+
+			

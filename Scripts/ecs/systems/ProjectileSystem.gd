@@ -3,7 +3,7 @@ class_name ProjectileSystem
 
 func update(delta: float) -> void:
 	var projectiles := get_entities_with(
-		["ProjectileComponent"],
+		["ProjectileComponent",],
 		["DeadComponent"]
 	)
 
@@ -19,7 +19,8 @@ func update(delta: float) -> void:
 
 		match proj.move_type:
 			ProjectileMoveType.LINEAR:
-				tf.velocity = proj.direction.normalized() * proj.speed
+				pass
+			
 			ProjectileMoveType.CHASE:
 		
 				var aim: AimComponent = cs.get_component(e_id, "AimComponent")
@@ -30,4 +31,4 @@ func update(delta: float) -> void:
 					continue
 
 				tf.velocity = dir.normalized() * proj.speed
-		cs.remove_component(e_id, "AimComponent")
+				cs.remove_component(e_id, "AimComponent")

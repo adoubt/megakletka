@@ -6,7 +6,7 @@ func update(_delta: float) -> void:
 		"EnemyComponent",
 		"TransformComponent",
 		"AimComponent",
-		"MovementComponent"
+		"MovementIntentComponent"
 	])
 
 	for e_id in enemies:
@@ -14,7 +14,7 @@ func update(_delta: float) -> void:
 
 		var tf := cs.get_component(e_id, "TransformComponent")
 		var aim := cs.get_component(e_id, "AimComponent")
-		var move := cs.get_component(e_id, "MovementComponent")
+		var move := cs.get_component(e_id, "MovementIntentComponent")
 
 		var dir :Vector3= aim.position - tf.position
 		if dir.length_squared() < 0.01:

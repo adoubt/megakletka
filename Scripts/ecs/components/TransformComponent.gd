@@ -6,7 +6,7 @@ var position: Vector3 = Vector3.ZERO
 
 ## Rotation in radians (optional)
 var rotation: Quaternion = Quaternion.IDENTITY
-
+var grounded: bool = false
 var velocity: Vector3 = Vector3.ZERO
 ## Scale factor
 var scale: Vector3 = Vector3.ONE

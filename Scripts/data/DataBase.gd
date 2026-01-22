@@ -60,12 +60,12 @@ class_name DataBase
 
 @export var char_configs = {
 		"Rigman": {
-			"scene": "res://Scenes/Player/Player.tscn",
+			"scene": "res://Scenes/Player/character.tscn",
 			"hp": 10,
 			"attack_speed":1.7,
 			"attack_speed_mult":1,
 			"collider_radius": 0.3,
-			"movespeed": 10,
+			"movespeed": 5,
 			"projectile_speed" : 1.0,
 			"xp_pickup_range": 1.5,
 			"weapon_name" : "nut",
@@ -73,6 +73,7 @@ class_name DataBase
 			"slots": 3,
 			"pierce": 10,
 			"bounce":0,
+			"jumps":1
 		}
 	}
 	
@@ -119,7 +120,7 @@ class_name DataBase
 			"projectile_radius" : 0.1,
 			"projectile_speed": 4.0,
 			"weapon_radius": 30.0,
-			"duration": 1.5,
+			"duration": 2.5,
 			"pierce": 1,
 			"bounce":0,
 			"target": true

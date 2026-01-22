@@ -16,6 +16,8 @@ func _finish_combat(_data)-> void:
 	
 
 func update(delta: float) -> void:
+	if not combat:
+		return
 	var weapons = get_entities_with(["WeaponComponent"], ["FireRequestComponent","DeadComponent"])
 
 	for weapon_id in weapons:

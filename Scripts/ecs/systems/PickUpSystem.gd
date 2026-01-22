@@ -18,7 +18,7 @@ func update(delta: float) -> void:
 		["DeadComponent"]
 	)
 	var pickups = get_entities_with(
-		["PickUpComponent", "MovementComponent"],
+		["PickUpComponent"],
 		["DeadComponent"]
 	)
 
@@ -28,8 +28,8 @@ func update(delta: float) -> void:
 	for pid in pickups:
 		var pickup : PickUpComponent = cs.get_component(pid, "PickUpComponent")
 		var ptf : TransformComponent = cs.get_component(pid, "TransformComponent")
-		var move : MovementComponent = cs.get_component(pid, "MovementComponent")
-
+		var move : MovementIntentComponent = cs.get_component(pid, "MovementIntentComponent")
+		var speed: MoveSpeedComponent = cs.get_component(pid, "MoveSpeedComponent")
 		if pickup.target_id == -1:
 			for player_id in players:
 				var tf := cs.get_component(player_id, "TransformComponent")
@@ -40,7 +40,7 @@ func update(delta: float) -> void:
 
 				if ptf.position.distance_to(tf.position) <= radius:
 					pickup.target_id = player_id
-					move.speed = 0.0
+					speed.final_value = 0.0
 					break
 
 			continue
@@ -49,7 +49,7 @@ func update(delta: float) -> void:
 		var target_tf := cs.get_component(pickup.target_id, "TransformComponent")
 		if target_tf == null:
 			pickup.target_id = -1
-			move.speed = 0.0
+			speed.final_value = 0.0
 			continue
 
 		var target_pos :Vector3= target_tf.position + HEIGHT_OFFSET
@@ -60,10 +60,10 @@ func update(delta: float) -> void:
 			continue
 
 		move.direction = dir.normalized()
-		move.speed += ACCEL * delta
+		speed.final_value += ACCEL * delta
 
 		if dist <= PICKUP_DIST:
-			move.speed = 0.0
+			speed.final_value = 0.0
 			cs.add_component(pid, "PickedUpComponent", PickedUpComponent.new())
 			
 func _magnetize_all_xp(data) -> void:

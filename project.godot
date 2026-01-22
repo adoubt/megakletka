@@ -21,7 +21,7 @@ DatabaseManager="*res://scripts/autoload/DatabaseManager.gd"
 SettingsManager="*res://scripts/autoload/SettingsManager.gd"
 UIManager="*res://scripts/autoload/UIManager.gd"
 SceneManager="*res://scripts/autoload/SceneManager.gd"
-ControllerManager="*res://scripts/autoload/ControllerManager.gd"
+ControllerManager="res://scripts/autoload/ControllerManager.gd"
 AudioManager="*res://scripts/autoload/AudioManager.gd"
 
 [debug_draw_3d]
@@ -170,7 +170,6 @@ sensors/enable_magnetometer=true
 
 [physics]
 
-common/physics_jitter_fix=0.0
 3d/physics_engine="Jolt Physics"
 common/physics_interpolation=true
 

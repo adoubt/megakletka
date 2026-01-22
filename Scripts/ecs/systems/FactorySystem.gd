@@ -4,12 +4,13 @@ class_name FactorySystem
 ##TODO сейчас методы на мульти спавн принимают Array а потом вызывают метод с позиционными аргументами, 
 ## решение - методы сделать так же под дату
 ## TODO push_warning = cringe. Must have logging 
-var db = DataBase
+var db : DataBase
+var object_pool : ObjectPool
 
-
-func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus : EventBus,_db :DataBase): 
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus : EventBus,_db :DataBase, _object_pool: ObjectPool): 
 	super._init(_entity_manager,_component_store,_event_bus)
 	db = _db
+	object_pool = _object_pool
 	
 	event_bus.subscribe("create_poi", _create_poi)
 	event_bus.subscribe("create_item", _create_item)
@@ -19,19 +20,20 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_eve
 	event_bus.subscribe("create_weapon", _create_weapon)
 	event_bus.subscribe("create_xp", _create_xp)
 	event_bus.subscribe("create_projectile", _create_projectile)
+	event_bus.subscribe("create_camera", _create_camera)
 	
 func _create_projectile(data_array: Array) -> void:
 	for data in data_array:
 		var entity_id := em.create_entity()
-		
+		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(data.get("projectile_speed",0)))
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(data.position))
-
+		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 		var proj = ProjectileComponent.new()
 		proj.owner_id = data.owner_id
 		proj.move_type = data.move_type
 		proj.speed = data.projectile_speed
 		
-		
+
 		if data.has("pierce"):
 			cs.add_component(entity_id, "PierceComponent", PierceComponent.new(data.pierce))
 		if data.has("bounce"):
@@ -45,22 +47,24 @@ func _create_projectile(data_array: Array) -> void:
 
 		if data.has("lifetime"):
 			cs.add_component(entity_id, "LifetimeComponent", LifetimeComponent.new(data.lifetime))
+		
 			
 		
 		if data.move_type == ProjectileMoveType.ORBIT:
 			var orbit := OrbitComponent.new()
 			orbit.radius = data.orbit_radius
-			orbit.speed = data.orbit_speed
 			orbit.angle = data.orbit_angle
 			orbit.height = data.orbit_height
 			cs.add_component(entity_id, "OrbitComponent", orbit)
 			
 		elif data.move_type == ProjectileMoveType.LINEAR and data.has("direction"):
-			proj.direction = data.direction
+			cs.add_component(entity_id, "MovementIntentComponent", MovementIntentComponent.new(data.direction))	
+			
 		if data.has("render_path") and data.render_path != "":
 			cs.add_component(entity_id, "RenderComponent",
 				RenderComponent.new(data.render_path, data.render_shadow,	data.get("render_scale", Vector3.ONE)))
 		cs.add_component(entity_id, "ProjectileComponent", proj)
+
 func _create_poi(data_array: Array) -> void:
 	for data in data_array:
 			
@@ -110,7 +114,8 @@ func _create_enemy(data_array: Array) -> void:
 		cs.add_component(entity_id, "CurrentHpRatioComponent", CurrentHpRatioComponent.new())
 		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"],true))
 		#cs.add_component(entity_id, "TargetComponent",TargetComponent.new())
-		cs.add_component(entity_id, "MovementComponent", MovementComponent.new(e_data["movespeed"]))
+		cs.add_component(entity_id, "MoveSpeedComponent",MoveSpeedComponent.new(e_data.movespeed))
+		cs.add_component(entity_id, "MovementIntentComponent", MovementIntentComponent.new())
 		#cs.add_component(entity_id, "TeamComponent", TeamComponent.new(2))
 		cs.add_component(entity_id, "XPRewardComponent", XPRewardComponent.new(e_data['budget']))
 		cs.add_component(entity_id, "AttackSpeedComponent", AttackSpeedComponent.new(e_data["attack_speed"]))
@@ -150,8 +155,10 @@ func _create_char(data_array: Array):
 		
 		var e_data = db.char_configs[char_name]
 		var entity_id = em.create_entity()
+		cs.add_component(entity_id, "InputComponent", InputComponent.new())
+		cs.add_component(entity_id, "MovementIntentComponent", MovementIntentComponent.new())
 		cs.add_component(entity_id, "PlayerComponent", PlayerComponent.new())
-		cs.add_component(entity_id, "SpeedComponent", SpeedComponent.new(e_data["movespeed"]))
+		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(e_data["movespeed"]))
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(position))
 		cs.add_component(entity_id, "MaxHpComponent", MaxHpComponent.new(e_data["hp"]))
 		cs.add_component(entity_id, "CurrentHpComponent",CurrentHpComponent.new(e_data["hp"]))
@@ -165,7 +172,7 @@ func _create_char(data_array: Array):
 		cs.add_component(entity_id, "XPMultComponent", XPMultComponent.new())
 		cs.add_component(entity_id, "AttackSpeedComponent", AttackSpeedComponent.new(e_data["attack_speed"]))
 		cs.add_component(entity_id, "HUDComponent", HUDComponent.new(entity_id))
-		
+		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 		cs.add_component(entity_id, "CollisionComponent",
 		CollisionComponent.new(
 			CollisionLayers.PLAYER,
@@ -179,12 +186,13 @@ func _create_char(data_array: Array):
 		cs.add_component(entity_id, "ProjectileSpeedComponent",ProjectileSpeedComponent.new())
 		cs.add_component(entity_id, "PierceComponent",PierceComponent.new(e_data.pierce))
 		cs.add_component(entity_id, "BounceComponent",BounceComponent.new(e_data.bounce))
-		
+		cs.add_component(entity_id, "JumpComponent", JumpComponent.new(e_data.jumps))
 		event_bus.emit("create_weapon", [{"weapon_name":e_data["weapon_name"],"owner_id": entity_id}])
 		
 		for slot in e_data["slots"]:
 			event_bus.emit("create_slot", [{"owner_id": entity_id}])
-			
+		if data.has("camera") and data.camera: 
+			event_bus.emit("create_camera", [{"owner_id": entity_id}])	
 #TODO create new rombs for biggef xp_value, get this from db	
 func _create_xp(data_array: Array):
 	for data in data_array:
@@ -194,7 +202,8 @@ func _create_xp(data_array: Array):
 		cs.add_component(entity_id, "XPRewardComponent",XPRewardComponent.new(data["xp_value"]))
 		cs.add_component(entity_id, "RenderComponent", RenderComponent.new("uid://dosmechqhf3sw"))
 		cs.add_component(entity_id, "PickUpComponent", PickUpComponent.new())
-		cs.add_component(entity_id, "MovementComponent", MovementComponent.new())
+		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new())
+		cs.add_component(entity_id, "MovementIntentComponent", MovementIntentComponent.new())
 		
 func _create_weapon(data_array: Array):
 	for data in data_array:
@@ -257,3 +266,19 @@ func _create_slot(data_array: Array) -> void:
 		var entity_id = em.create_entity()
 		cs.add_component(entity_id, "SlotComponent", SlotComponent.new(owner_id,owner_slots))
 	event_bus.emit("slots_created")
+
+func _create_camera(data_array: Array) -> void:
+	for data in data_array:
+		var owner_id = data["owner_id"]
+		var entity_id = em.create_entity()
+
+		var cam_comp = CameraComponent.new(owner_id)
+		cam_comp.camera_instance = object_pool.get_instance("res://Scenes/player_camera.tscn")
+		cam_comp.camera_instance.current = true
+		cam_comp.camera_instance.visible = true
+		#ControllerManager.register(cam_comp.camera_instance)
+		#ControllerManager.activate_default(cam_comp.camera_instance)
+		cs.add_component(entity_id, "CameraComponent", cam_comp)
+		cs.add_component(entity_id, "CameraEffectsComponent",CameraEffectsComponent.new())
+		cs.add_component(entity_id, "TransformComponent", TransformComponent.new())
+		

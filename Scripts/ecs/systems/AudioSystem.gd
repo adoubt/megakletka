@@ -38,7 +38,8 @@ func _on_enemy_hitted(data: Dictionary) -> void:
 	AudioManager.play_sound_with_fallback(
 		primary_key,
 		fallback_key,
-		pos
+		pos,
+		-20.0
 	)
 	
 func _on_level_up(_data: Dictionary = {}):

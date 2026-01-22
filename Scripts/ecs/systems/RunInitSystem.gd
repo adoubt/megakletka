@@ -26,7 +26,7 @@ func _init_run(data: Dictionary) -> void:
 	event_bus.emit("create_poi",[{ "poi_name": "campfire", "floor_id" :0, "position": Vector3.ZERO}])
 	_init_poi()
 	
-	event_bus.emit("create_char", [{ "char_name": "Rigman", "position": Vector3(-3.0,0,0)}])
+	event_bus.emit("create_char", [{ "camera":true, "char_name": "Rigman", "position": Vector3(-5.0,5,0)}])
 	event_bus.emit("day_changed",)
 func _init_floors()	-> void:
 

@@ -43,7 +43,7 @@ func _change_scene(_name: String):
 		push_error("SceneManager: сцена не найдена: %s" % _name)
 		return
 	current_scene_name = _name
-	ControllerManager.refresh()
+	#ControllerManager.refresh()
 	get_tree().change_scene_to_file(SCENES[_name])
 	
 	_update_ui_for_scene()

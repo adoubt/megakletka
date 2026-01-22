@@ -159,7 +159,6 @@ render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="SubViewport/CameraPivot"]
 transform = Transform3D(-0.070347905, 0.48432106, -0.87205756, 0.038943134, 0.8748904, 0.48275286, 0.9967621, 0, -0.08040769, -1.2871144, 0.7080468, -1.1564909)
-current = true
 
 [node name="Pos" type="Node3D" parent="SubViewport"]
 

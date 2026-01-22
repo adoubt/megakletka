@@ -22,9 +22,13 @@ const BASE_RESOLUTION := Vector2(1152, 648)
 var canvas :CanvasLayer
 var post_process_canvas :CanvasLayer
 var game_paused: bool = false
+var _mouse_delta: Vector2 = Vector2.ZERO
 # ========== PUBLIC API ==========
 
-
+func consume_mouse_delta() -> Vector2:
+	var d := _mouse_delta
+	_mouse_delta = Vector2.ZERO
+	return d
 
 func open_level_up_panel():
 	
@@ -279,4 +283,11 @@ func _input(event: InputEvent) -> void:
 			event_bus.emit("level_up_panel_toggled") 
 			#toggle_upgrade_menu()
 
-	
+func _unhandled_input(event):
+	if game_paused:
+		return
+
+	if event is InputEventMouseMotion \
+	and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		_mouse_delta += event.relative	
+		

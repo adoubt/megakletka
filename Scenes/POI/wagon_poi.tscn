@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://ouaivsktf5ss"]
+[gd_scene load_steps=33 format=4 uid="uid://ouaivsktf5ss"]
 
 [ext_resource type="Script" uid="uid://x454ibbgwp7n" path="res://addons/SimpleDungeons/DungeonRoom3D.gd" id="1_1slpl"]
 [ext_resource type="Texture2D" uid="uid://cg2wehvntla0p" path="res://import/fnaf_ar_dark_circus_dlc_map/textures/CurtainHammerFireworks_baseColor.png" id="3_ow2h7"]
@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://rb75500tcb5a" path="res://import/fnaf_ar_dark_circus_dlc_map/textures/Hanging_ChainsHooks_baseColor.png" id="6_chehv"]
 [ext_resource type="Texture2D" uid="uid://cigwlimlirqa8" path="res://import/textures/Material_baseColor.png" id="7_4eaih"]
 [ext_resource type="Texture2D" uid="uid://dw2dcoxn1ke1q" path="res://import/textures/Material_metallicRoughness.png" id="8_eg8jg"]
-[ext_resource type="Script" uid="uid://ccdlmovr0p2j8" path="res://scripts/Unsorted/camera_3d.gd" id="10_h1s71"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7c28l"]
 resource_name = "Makeup_Table"
@@ -419,4 +418,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0701263, -3.6587, 0)
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
 transform = Transform3D(-4.208575e-08, 0.27018037, -0.96280974, 1.1809959e-08, 0.96280974, 0.27018037, 1, 8.881784e-16, -4.3711392e-08, -0.453, 0.797, 0)
 fov = 123.8
-script = ExtResource("10_h1s71")
