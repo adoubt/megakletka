@@ -21,7 +21,7 @@ func update(delta: float):
 		#cs.add_component(popup_entity, "DamagePopupComponent",DamagePopupComponent.new(damage_done,"physical",e_id,owner_tf.position))
 		#cs.add_component(popup_entity, "TransformComponent", TransformComponent.new(owner_tf.position))
 		#cs.add_component(popup_entity, "RenderComponent",RenderComponent.new("res://Scenes/Popups/DamagePopup.tscn"))
-		#cs.add_component(popup_entity, "LifetimeComponent",LifetimeComponent.new(1.0))
+		#cs.add_component(popup_entity, "LifeTimeComponent",LifeTimeComponent.new(1.0))
 #
 		## ✅ Чистим буфер урона
 		cs.remove_component(e_id, "PendingHealthComponent")

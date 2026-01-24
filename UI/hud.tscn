@@ -1,7 +1,6 @@
-[gd_scene load_steps=17 format=3 uid="uid://dxtmay68ca301"]
+[gd_scene load_steps=13 format=3 uid="uid://dxtmay68ca301"]
 
 [ext_resource type="Script" uid="uid://b1g5iaiket2lr" path="res://UI/HUD.gd" id="1_8uiqn"]
-[ext_resource type="Shader" uid="uid://brfe1o0lxeqv8" path="res://assets/Shaders/SpeedLines.gdshader" id="2_s7b2q"]
 [ext_resource type="Shader" uid="uid://dprejvyaisqwb" path="res://assets/Materials/hud_current_exp.gdshader" id="3_b1lf8"]
 [ext_resource type="Texture2D" uid="uid://brgymp5obg6sn" path="res://addons/icon.svg" id="3_i0a73"]
 [ext_resource type="Shader" uid="uid://dxopctb7n76ft" path="res://assets/Shaders/upgrade_vfx.gdshader" id="3_pf7ph"]
@@ -9,25 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://bwytw0ow7mxht" path="res://assets/icons/campfire_logo.png" id="7_i0a73"]
 [ext_resource type="Script" uid="uid://ct6l8id863xcc" path="res://UI/day_board_panel.gd" id="7_pf7ph"]
 [ext_resource type="Texture2D" uid="uid://3tqlp1wuenk6" path="res://assets/icons/dot.png" id="8_8uiqn"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_bnpwn"]
-noise_type = 3
-frequency = 1.0
-domain_warp_enabled = true
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_36jdj"]
-noise = SubResource("FastNoiseLite_bnpwn")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xfvwf"]
-shader = ExtResource("2_s7b2q")
-shader_parameter/noise = SubResource("NoiseTexture2D_36jdj")
-shader_parameter/line_color = Color(0.813258, 0.813258, 0.813258, 1)
-shader_parameter/line_count = 0.4
-shader_parameter/line_density = 0.0
-shader_parameter/line_faloff = 0.25
-shader_parameter/mask_size = 0.1
-shader_parameter/mask_edge = 0.5
-shader_parameter/animation_speed = 20.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vs5gg"]
 shader = ExtResource("3_pf7ph")
@@ -47,7 +27,7 @@ shader_parameter/yshift = -0.5600000098348801
 shader = ExtResource("3_b1lf8")
 shader_parameter/progress = 0.0
 shader_parameter/progress_tail = 0.0
-shader_parameter/tail_color = Color(0.77909577, 1, 1, 1)
+shader_parameter/tail_color = Color(0.8980392, 0.827451, 0.7058824, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rnl6m"]
 shader = ExtResource("4_rnl6m")
@@ -70,17 +50,6 @@ current_hp = null
 min_xp = null
 max_xp = null
 current_xp = null
-
-[node name="SpeedLines" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_xfvwf")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-color = Color(1, 1, 1, 0)
 
 [node name="UpgradeVFX" type="TextureRect" parent="."]
 visible = false
@@ -155,7 +124,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(8.085966e-06, 0.7599176, 0.969438, 1)
+color = Color(0.7607843, 0.6392157, 0.40784314, 1)
 
 [node name="CurrentLevel" type="Label" parent="HUD/VBoxContainer/Header"]
 layout_mode = 1
@@ -247,7 +216,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.8126073, 0.108499564, 0.17000303, 1)
+color = Color(0.72156864, 0.22745098, 0.1764706, 1)
 
 [node name="CurrentHPLabel" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer/Control"]
 layout_mode = 1

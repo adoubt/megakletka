@@ -7,7 +7,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	super._init(_entity_manager, _component_store, _event_bus)
 
 	event_bus.subscribe("combat_started", _start_combat)
-	event_bus.subscribe("combat_finished", _finish_combat)
+	event_bus.subscribe("combat_completed", _finish_combat)
 	
 func _start_combat(_data) -> void:
 	combat = true
@@ -24,8 +24,7 @@ func update(delta: float) -> void:
 		var weapon = cs.get_component(weapon_id, "WeaponComponent")
 		var owner_id = weapon.owner_id
 		
-		var dead = cs.get_component(owner_id, "DeadComponent")
-		if dead:
+		if cs.has_component(owner_id, "DeadComponent"):
 			cs.add_component(weapon_id, "DeadComponent", DeadComponent.new())
 			continue
 			

@@ -11,7 +11,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 	event_bus.subscribe("campfire_created",_on_campfire_created)
 	event_bus.subscribe("day_changed", _on_day_changed)
 	event_bus.subscribe("combat_completed", _on_combat_completed)
-	
+	event_bus.subscribe("combat_started", _on_combat_started)
 	
 func _on_enemy_died(data: Dictionary) -> void:
 	var enemy_name: String = data.get("_name", "")
@@ -57,12 +57,15 @@ func _on_campfire_created(_data: Dictionary = {})-> void:
 	AudioManager.play_spatial_loop("campfire0", "campfire_crackling", Vector3.ZERO, 0.0, 50.0)
 
 func _on_combat_started(_data: Dictionary = {}) -> void:
-	AudioManager.play_ui_sound("combat_started")
+	AudioManager.play_music_delayed("combat_started_signal",0.0,0.0,false)
+	
+	AudioManager.play_music_delayed("combat_started",2.0,0.0,true)
 	
 	
 func _on_combat_completed(_data: Dictionary = {}) -> void:
-	AudioManager.play_ui_sound("combat_completed")
-	AudioManager.play_music_delayed("tera",4.0,-10.0)
+	AudioManager.play_music_delayed("combat_completed_signal",0.0,0.0,false)
+	
+	AudioManager.play_music_delayed("combat_completed",4.0,0.0,true)
 	
 func _on_day_changed(_data: Dictionary = {}) -> void:
-	AudioManager.play_ui_sound("day_changed")
+	AudioManager.play_music_delayed("day_changed",0.0,0.0,false)

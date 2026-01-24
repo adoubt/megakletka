@@ -33,4 +33,4 @@ func update(_delta: float) -> void:
 
 			lvl.current_xp += base_xp * mult.final_value
 
-		cs.add_component(orb_id, "DeadComponent", DeadComponent.new())
+		cs.add_component(orb_id, "DeadComponent", DeadComponent.new(0.0))

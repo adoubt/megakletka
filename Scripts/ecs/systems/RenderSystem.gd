@@ -50,15 +50,17 @@ func update(_delta: float) -> void:
 			
 		if render.shadow and render.shadow_instance == null:
 			render.shadow_instance = object_pool.get_instance(SHADOW_SCENE)
+			render.shadow_instance.visible = true
 			var base_mesh:QuadMesh = render.shadow_instance.mesh
 			render.shadow_instance.mesh = base_mesh.duplicate()
+			
 			var col := cs.get_component(entity_id, "CollisionComponent")
 			if col:
-				render.shadow_instance.mesh.size = Vector2(col.radius,col.radius)
+				render.shadow_instance.mesh.size = Vector2(col.radius,col.radius) * 1.2
 			else: 
 				render.shadow_instance.mesh.size = Vector2(0.5,0.5)
 	
-		_update_shadow(render.shadow_instance, transform)
+		_update_shadow(render.shadow_instance, transform, _delta)
 		
 		#if  cs.has_component(entity_id, "PlayerComponent"): 
 				#render.instance.visible = true
@@ -74,11 +76,11 @@ func update(_delta: float) -> void:
 				render.time_to_render -=_delta
 				render.instance.visible = true
 				continue	
-func _update_shadow(shadow: Node3D, tf) -> void:
+func _update_shadow(shadow: Node3D, tf, _delta) -> void:
 	if not shadow:
 		return
 
-	shadow.global_position.x = tf.position.x
-	shadow.global_position.z = tf.position.z
+	shadow.global_position.x = lerp(shadow.global_position.x, tf.position.x, clamp(_delta * smoothness, 0, 1))
+	shadow.global_position.z = lerp(shadow.global_position.z, tf.position.z, clamp(_delta * smoothness, 0, 1))
 	shadow.global_position.y = SHADOW_Y
 		

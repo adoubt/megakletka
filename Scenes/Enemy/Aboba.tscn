@@ -22,6 +22,6 @@ mesh = SubResource("SphereMesh_rlo7i")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.046016738, 0.17839456)
+transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.046016738, 0.10317698)
 mesh = SubResource("CapsuleMesh_65dl7")
 skeleton = NodePath("../../..")

@@ -19,6 +19,6 @@ func update(_delta: float) -> void:
 		var dir :Vector3= aim.position - tf.position
 		if dir.length_squared() < 0.01:
 			continue
-
+		dir.y = 0.0
 		move.direction = dir.normalized()
 		cs.remove_component(e_id,"AimComponent")

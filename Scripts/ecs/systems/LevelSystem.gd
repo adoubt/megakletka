@@ -1,6 +1,10 @@
 extends BaseSystem
 class_name LevelSystem
 
+const START_POINT: float = 45
+const MULT: float = 1.09
+
+
 func update(_delta: float) -> void:
 	var entities = get_entities_with(["LevelComponent"], ["DeadComponent"])
 	if entities.is_empty():
@@ -37,27 +41,23 @@ func update(_delta: float) -> void:
 			UIManager.hud.current_level.text = "LVL %d" % [int(level.level)]
 
 func get_required_xp(level: int) -> float:
-	## базовая логика как в Vampire Survivors:
-	## до 20 уровня растёт на +10 XP
-	## с 21 по 40 — на +13 XP
-	## после 41 — на +16 XP
-	## а на 20 и 40 уровнях добавляется фикс. бонус
+	### базовая логика как в Vampire Survivors:
+	### до 20 уровня растёт на +10 XP
+	### с 21 по 40 — на +13 XP
+	### после 41 — на +16 XP
+	### а на 20 и 40 уровнях добавляется фикс. бонус
+#
+	#var required_xp: float
+#
+	#if level <= 1:
+		#required_xp = 5.0
+	#elif level <= 20:
+		#required_xp = 5.0 + (level - 1) * 10.0
+	#elif level <= 40:
+		#required_xp = (5.0 + 19 * 10.0) + (level - 20) * 13.0
+	#else:
+		#required_xp = (5.0 + 19 * 10.0) + (20 * 13.0) + (level - 40) * 16.0
 
-	var required_xp: float
 
-	if level <= 1:
-		required_xp = 5.0
-	elif level <= 20:
-		required_xp = 5.0 + (level - 1) * 10.0
-	elif level <= 40:
-		required_xp = (5.0 + 19 * 10.0) + (level - 20) * 13.0
-	else:
-		required_xp = (5.0 + 19 * 10.0) + (20 * 13.0) + (level - 40) * 16.0
 
-	# фиксированные пики
-	if level == 20:
-		required_xp += 600.0
-	elif level == 40:
-		required_xp += 2400.0
-
-	return required_xp
+	return int(START_POINT * pow(MULT, level))

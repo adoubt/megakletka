@@ -4,27 +4,32 @@ class_name DataBase
 @export var enemy_configs = {
 		"Aboba": {
 			"scene": "res://Scenes/Enemy/Aboba.tscn",
-			"hp": 10,
-			"attack_speed":1.7,
-			"collider_radius":0.25,
-			"movespeed": 2.0,
-			"budget" : 1,
-			"pierce": 1,
-			"bounce":0,
-			
-			
-		},
-		"CarrotAboba": {
-			"scene": "res://Scenes/Enemy/Aboba.tscn",
-			"hp": 10,
+			"hp": 5,
 			"attack_speed":1.7,
 			"collider_radius":0.25,
 			"movespeed": 3.0,
-			"weapon_name" : "ash",
+			"weapon_radius": 0.2,
+			"budget" : 1,
+			"pierce": 1,
+			"bounce":0,
+			"duration": 1.0,
+			"agr_radius": 40.0,
+			"damage":0.5
+		},
+		"AbobaWithIceShard": {
+			"scene": "res://Scenes/Enemy/AbobaWithIceShard.tscn",
+			"hp": 2,
+			"attack_speed":5.0,
+			"collider_radius":0.25,
+			"movespeed": 2.0,
+			"weapon_radius": 0.2,
+			"weapon_name" : "ice_shard",
 			"budget" : 2,
 			"pierce": 1,
 			"bounce":0,
-			
+			"duration": 1.0,
+			"agr_radius": 40.0,
+			"damage":0.5
 		}
 	}
 	
@@ -62,14 +67,16 @@ class_name DataBase
 		"Rigman": {
 			"scene": "res://Scenes/Player/character.tscn",
 			"hp": 10,
-			"attack_speed":1.7,
+			"damage":1,
+			"attack_speed":1.0,
 			"attack_speed_mult":1,
 			"collider_radius": 0.3,
 			"movespeed": 5,
 			"projectile_speed" : 1.0,
-			"xp_pickup_range": 1.5,
-			"weapon_name" : "nut",
+			"pickup_range": 1.5,
+			"weapon_name" : "fire_shard",
 			"weapon_radius": 1.0,
+			"duration": 1.0,
 			"slots": 3,
 			"pierce": 10,
 			"bounce":0,
@@ -79,28 +86,10 @@ class_name DataBase
 	
 	
 @export var weapon_configs = {	
-		
-		
-		"carrot": {
-			"scene": "res://Scenes/Weapons/Projectiles/carrot.tscn",
-			"cd": 5,
-			"damage" : 4,
-			"projectile_count" : 1.0,
-			"projectile_radius" : 0.3,
-			"weapon_radius": 1.5,
-			"projectile_speed": 2.0,
-			"duration": 3.0,
-			
-		},
-		"aura":{
-			"scene": "res://Scenes/Weapons/AOE/Aura.tscn",
-			"cd": 1,
-			"damage" : 4,
-			"weapon_radius": 1.0,
-		},
-		"nut":{
-			"scene": "res://Scenes/Weapons/Projectiles/player_proj1.tscn",
-			"cd": 1.5,
+
+		"fire_shard":{
+			"scene": "res://Scenes/Weapons/Projectiles/fire_shard.tscn",
+			"cd": 0.5,
 			"damage" : 2,
 			"projectile_count" : 1.0,
 			"projectile_radius" : 0.3,
@@ -109,21 +98,23 @@ class_name DataBase
 			"duration": 2.0,
 			"pierce": 1,
 			"bounce":0,
-			"target": true
+			"target": true,
+			"shadow": true,
 		}
 		,
-		"ash":{
-			"scene": "res://Scenes/Weapons/Projectiles/enemy_proj.tscn",
+		"ice_shard":{
+			"scene": "res://Scenes/Weapons/Projectiles/ice_shard.tscn",
 			"cd": 3.5,
 			"damage" : 1,
 			"projectile_count" : 1.0,
 			"projectile_radius" : 0.1,
 			"projectile_speed": 4.0,
-			"weapon_radius": 30.0,
+			"weapon_radius": 20.0,
 			"duration": 2.5,
 			"pierce": 1,
 			"bounce":0,
-			"target": true
+			"target": true,
+			"shadow": true,
 		}	
 }
 
@@ -223,17 +214,46 @@ class_name DataBase
 	},
 	"non_diegetic": {
 		"music": {
-			"tera" : "res://assets/sounds/non_diegetic/music/3 ost tera no drums.mp3",
-			"idle_theme" : "res://assets/sounds/non_diegetic/music/idle theme.mp3"
-			
-			
+			"combat_started":[
+				
+				"res://assets/sounds/non_diegetic/music/idle theme.mp3"
+			],
+			"combat_completed":[
+				"res://assets/sounds/non_diegetic/music/3 ost tera no drums.mp3",
+			],
+			"game_start" : 
+				["res://assets/sounds/non_diegetic/ui/Game Start.mp3",
+				],
+			"level_up" :
+				["res://assets/sounds/non_diegetic/ui/level_up.wav",
+				],
+			"day_changed" : 
+				["res://assets/sounds/non_diegetic/ui/day_changed.mp3",
+				],
+			"combat_completed_signal":
+				["res://assets/sounds/non_diegetic/ui/combat_completed.mp3",
+				],
+			"combat_started_signal":
+				[
+				]
 			
 		},
 		"ui": {
-			"game_start" : "res://assets/sounds/non_diegetic/ui/Game Start.mp3",
-			"level_up" :"res://assets/sounds/non_diegetic/ui/level_up.wav",
-			"day_changed" : "res://assets/sounds/non_diegetic/ui/day_changed.mp3",
-			"combat_completed":"res://assets/sounds/non_diegetic/ui/combat_completed.mp3"
+			"game_start" : 
+				["res://assets/sounds/non_diegetic/ui/Game Start.mp3",
+				],
+			"level_up" :
+				["res://assets/sounds/non_diegetic/ui/level_up.wav",
+				],
+			"day_changed" : 
+				["res://assets/sounds/non_diegetic/ui/day_changed.mp3",
+				],
+			"combat_completed":
+				["res://assets/sounds/non_diegetic/ui/combat_completed.mp3",
+				],
+			"combat_started":
+				["",
+				]
 		},
 	}
 }
@@ -241,6 +261,17 @@ class_name DataBase
 @export var shaders_config = {
 	"vhs" : "res://assets/Shaders/PostProcess/vhscamera3.gdshader",
 	"vhs2": "res://assets/Shaders/PostProcess/vhs_shader.gdshader",
-	"kuwahara" : "res://assets/Shaders/PostProcess/kuwahara.gdshader"
+	"vhs3" : "res://assets/Shaders/PostProcess/VHS3.gdshader",
+	"kuwahara" : "res://assets/Shaders/PostProcess/kuwahara.gdshader",
+	"vignette" :"res://assets/Shaders/PostProcess/Vignette.gdshader",
+	"Film": "res://assets/Shaders/PostProcess/Film.gdshader"
 	
+	
+}
+
+@export var vfx_configs = {
+	"base_hit": {
+		"scene" : "res://Scenes/hit_particle.tscn",
+		"duration" : 0.5
+	}
 }

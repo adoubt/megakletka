@@ -7,14 +7,12 @@ var scale_factor: float = 0.02
 
 
 func update(delta: float) -> void:
-	var popups = get_entities_with(["DamagePopupComponent", "LifetimeComponent", "TransformComponent"])
+	var popups = get_entities_with(["DamagePopupComponent", "LifeTimeComponent", "TransformComponent"], ["DeadComponent"])
 	for e_id in popups:
 		var popup = cs.get_component(e_id, "DamagePopupComponent")
 		var tf = cs.get_component(e_id, "TransformComponent")
-		var lifetime = cs.get_component(e_id, "LifetimeComponent")
+		var lifetime = cs.get_component(e_id, "LifeTimeComponent")
 		
-		if popup == null or tf == null or lifetime == null:
-			continue
 		
 		# --- Обновляем позицию ---
 		var owner_tf = cs.get_component(popup.owner_id, "TransformComponent")
@@ -46,9 +44,3 @@ func update(delta: float) -> void:
 					"ice": color = Color(0.5, 0.8, 1,lifetime.time_left/0.5)
 				render.instance.set_modulate(color)
 				render.instance.set_text(str(popup.value))
-		
-		# --- Уменьшаем Lifetime ---
-		lifetime.time_left -= delta
-		if lifetime.time_left <= 0.0:
-			if not cs.has_component(e_id, "DeadComponent"):
-				cs.add_component(e_id, "DeadComponent", DeadComponent.new())

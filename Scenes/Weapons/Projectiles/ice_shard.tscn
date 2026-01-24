@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bcxcp788uk6ch"]
 
-[ext_resource type="Shader" uid="uid://cajqarq0eotjh" path="res://assets/Shaders/Projectiles/enemy_bullet.gdshader" id="1_gn52d"]
+[ext_resource type="Shader" uid="uid://cajqarq0eotjh" path="res://assets/Shaders/Projectiles/enemy_bullet.gdshader" id="1_scka1"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_gn52d"]
 radial_segments = 4
@@ -8,8 +8,8 @@ rings = 3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bkjte"]
 render_priority = 0
-shader = ExtResource("1_gn52d")
-shader_parameter/bullet_color = Color(0.44422638, 0, 0, 1)
+shader = ExtResource("1_scka1")
+shader_parameter/bullet_color = Color(0, 1.0365599, 1.0964829, 1)
 shader_parameter/min_power = 1.2
 shader_parameter/max_power = 7.045
 shader_parameter/blink_speed = 8.345

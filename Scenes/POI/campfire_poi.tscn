@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://wgwpug4g8rv8"]
+[gd_scene load_steps=26 format=3 uid="uid://wgwpug4g8rv8"]
 
 [ext_resource type="Script" uid="uid://dyv66n3a3fshe" path="res://scripts/objects/poi.gd" id="1_8qyrm"]
 [ext_resource type="PackedScene" uid="uid://difk87vdakb8o" path="res://Scenes/Objects/campfire_logs.tscn" id="1_rwyyc"]
@@ -42,7 +42,7 @@ shader_parameter/DissolveAmount = 1.0
 _data = [Vector2(0, 0.047357917), 0.0, 0.0, 0, 0, Vector2(0.18041237, 0.52691925), 0.0, 0.0, 0, 0, Vector2(0.93814427, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_y74s2"]
+[sub_resource type="CurveTexture" id="CurveTexture_8qyrm"]
 curve = SubResource("Curve_4wyr0")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_38yw6"]
@@ -55,7 +55,7 @@ spread = 0.0
 gravity = Vector3(0, 3, 0)
 scale_min = 0.7
 scale_max = 0.79999995
-scale_curve = SubResource("CurveTexture_y74s2")
+scale_curve = SubResource("CurveTexture_8qyrm")
 color = Color(3.6837127, 1.0518198, 0, 0.972549)
 
 [sub_resource type="QuadMesh" id="QuadMesh_1plvg"]
@@ -63,8 +63,15 @@ color = Color(3.6837127, 1.0518198, 0, 0.972549)
 [sub_resource type="Gradient" id="Gradient_gn013"]
 offsets = PackedFloat32Array(0.3314917, 0.9917127)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_lrick"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8qyrm"]
 gradient = SubResource("Gradient_gn013")
+
+[sub_resource type="Curve" id="Curve_d353m"]
+_data = [Vector2(0, 0.047357917), 0.0, 0.0, 0, 0, Vector2(0.18041237, 0.52691925), 0.0, 0.0, 0, 0, Vector2(0.93814427, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_weewd"]
+curve = SubResource("Curve_d353m")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ek8hu"]
 resource_local_to_scene = true
@@ -77,9 +84,9 @@ spread = 0.0
 gravity = Vector3(0, 3, 0)
 scale_min = 0.7
 scale_max = 0.79999995
-scale_curve = SubResource("CurveTexture_y74s2")
+scale_curve = SubResource("CurveTexture_weewd")
 color = Color(1, 1, 1, 0.6666667)
-color_initial_ramp = SubResource("GradientTexture1D_lrick")
+color_initial_ramp = SubResource("GradientTexture1D_8qyrm")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yxn4k"]
 render_priority = 0

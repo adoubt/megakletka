@@ -48,7 +48,7 @@ func _change_scene(_name: String):
 	
 	_update_ui_for_scene()
 	UIManager.close_all()
-	
+	AudioManager.stop_all_music()
 func _update_ui_for_scene():
 	
 	# форс курсор через UIManager

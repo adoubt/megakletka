@@ -1,0 +1,120 @@
+[gd_scene load_steps=16 format=3 uid="uid://dcys5405ptd8g"]
+
+[ext_resource type="Shader" uid="uid://debcdgcea63wn" path="res://assets/Shaders/campfire/campfire.tres" id="1_r65lw"]
+[ext_resource type="Texture2D" uid="uid://v3ey6gtm1at" path="res://assets/shader_pics/toppng.com-smoke-effect-png-photo-edting-smoke-cloud-transparent-900x489.png" id="2_76ax0"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_gn52d"]
+radial_segments = 4
+rings = 3
+
+[sub_resource type="Shader" id="Shader_8hoav"]
+code = "shader_type spatial;
+render_mode  cull_disabled;
+
+uniform vec3 bullet_color : source_color = vec3(1.0, 0.2, 0.2);
+uniform float min_power = 1.2;
+uniform float max_power = 2.5;
+uniform float blink_speed = 2.0;
+
+void fragment() {
+	float pulse = mix(
+		min_power,
+		max_power,
+		0.5 + 0.5 * sin(TIME * blink_speed)
+	);
+
+	ALBEDO = vec3(0.0);              // не влияет, но явно
+	EMISSION = bullet_color * pulse;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bkjte"]
+render_priority = 0
+shader = SubResource("Shader_8hoav")
+shader_parameter/bullet_color = Color(0.83514804, 0, 0.076441236, 1)
+shader_parameter/min_power = 1.2
+shader_parameter/max_power = 7.045
+shader_parameter/blink_speed = 8.345
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lu4p0"]
+render_priority = 0
+shader = ExtResource("1_r65lw")
+shader_parameter/MainTexture = ExtResource("2_76ax0")
+shader_parameter/DissolveTilling = Vector2(0.1, 0.2)
+shader_parameter/DissolveSpeed = Vector2(0, 0)
+shader_parameter/DissolveAmount = 1.0
+
+[sub_resource type="Curve" id="Curve_r65lw"]
+_data = [Vector2(0, 0.047357917), 0.0, 0.0, 0, 0, Vector2(0.18041237, 0.52691925), 0.0, 0.0, 0, 0, Vector2(0.93814427, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_y74s2"]
+curve = SubResource("Curve_r65lw")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r65lw"]
+emission_shape_offset = Vector3(0, 0.14, 0)
+emission_shape = 1
+emission_sphere_radius = 0.2
+angle_min = -179.99998
+angle_max = 418.80002
+spread = 0.0
+gravity = Vector3(0, 1, 0)
+scale_min = 0.7
+scale_max = 0.79999995
+scale_curve = SubResource("CurveTexture_y74s2")
+color = Color(3.6837127, 1.0518198, 0, 0.972549)
+
+[sub_resource type="QuadMesh" id="QuadMesh_58gtl"]
+size = Vector2(0.5, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_76ax0"]
+render_priority = 0
+shader = ExtResource("1_r65lw")
+shader_parameter/MainTexture = ExtResource("2_76ax0")
+shader_parameter/DissolveTilling = Vector2(0.1, 0.2)
+shader_parameter/DissolveSpeed = Vector2(0, 0)
+shader_parameter/DissolveAmount = 1.0
+
+[sub_resource type="Gradient" id="Gradient_lu4p0"]
+offsets = PackedFloat32Array(0.3314917, 0.9917127)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lrick"]
+gradient = SubResource("Gradient_lu4p0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_d353m"]
+resource_local_to_scene = true
+emission_shape_offset = Vector3(0, 0.275, 0)
+emission_shape = 1
+emission_sphere_radius = 0.2
+angle_min = -179.99998
+angle_max = 418.80002
+spread = 0.0
+gravity = Vector3(0, 1, 0)
+scale_min = 0.7
+scale_max = 0.79999995
+scale_curve = SubResource("CurveTexture_y74s2")
+color = Color(1, 1, 1, 0.6666667)
+color_initial_ramp = SubResource("GradientTexture1D_lrick")
+
+[sub_resource type="QuadMesh" id="QuadMesh_amrv6"]
+
+[node name="Node3D" type="MeshInstance3D"]
+gi_mode = 0
+mesh = SubResource("SphereMesh_gn52d")
+surface_material_override/0 = SubResource("ShaderMaterial_bkjte")
+
+[node name="Flame" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.085787, -0.17079699, 0)
+material_override = SubResource("ShaderMaterial_lu4p0")
+amount = 3
+speed_scale = 3.34
+process_material = SubResource("ParticleProcessMaterial_r65lw")
+draw_pass_1 = SubResource("QuadMesh_58gtl")
+
+[node name="Smoke" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18325496, -0.014823198)
+material_override = SubResource("ShaderMaterial_76ax0")
+amount = 5
+lifetime = 1.14
+process_material = SubResource("ParticleProcessMaterial_d353m")
+draw_pass_1 = SubResource("QuadMesh_amrv6")

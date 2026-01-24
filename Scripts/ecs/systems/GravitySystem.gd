@@ -2,7 +2,7 @@ extends BaseSystem
 class_name GravitySystem
 
 const FLOOR_Y: float = 0.0
-const GRAVITY: float = -9.8
+
 
 func update(delta: float) -> void:
 	var entities := get_entities_with(
@@ -13,7 +13,7 @@ func update(delta: float) -> void:
 	for e_id in entities:
 		var tf := cs.get_component(e_id, "TransformComponent")
 		var col := cs.get_component(e_id, "CollisionComponent")
-
+		var gravity:= cs.get_component(e_id, "GravityComponent")
 		# ================= CLIMB =================
 		if cs.has_component(e_id, "ClimbComponent"):
 			cs.remove_component(e_id, "ClimbComponent")
@@ -22,8 +22,9 @@ func update(delta: float) -> void:
 			continue
 
 		# ================= GRAVITY =================
-		tf.velocity.y += GRAVITY * delta
-		tf.position.y += tf.velocity.y * delta
+		tf.velocity.y += gravity.gravity * delta
+		
+		#tf.position.y += tf.velocity.y * delta
 
 		var floor_y : float = FLOOR_Y + col.radius
 

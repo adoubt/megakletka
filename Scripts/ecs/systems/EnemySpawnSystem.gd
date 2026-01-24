@@ -8,16 +8,16 @@ var current_floor: int = -1
 var spawning := false
 
 
-var spawn_interval := 5       
+var spawn_interval := 0.5      
 var spawn_timer := 0.0
 
 const MAX_ALIVE_ENEMIES := 50
-const BATTERY_BUDGET_RATIO := 0.5   # 50% бюджета
-const MAX_PER_TICK := 10            # защита от лагов
+const BATTERY_BUDGET_RATIO := 1   # 50% бюджета
+const MAX_PER_TICK := 1            # защита от лагов
 
 const WORLD_SIZE := Vector2(75.0, 75.0)
-
-
+const MAX_SPAWN_RANGE :float = 15.0
+const MIN_SPAWN_RANGE :float = 5.0
 #cashe
 var players: Array = []
 var players_update_timer := 0.0
@@ -36,8 +36,8 @@ func _init(
 
 
 	event_bus.subscribe("combat_started", _on_combat_started)
-	event_bus.subscribe("combat_finished", _on_combat_finished)
-
+	event_bus.subscribe("combat_completed", _on_combat_finished)
+	event_bus.subscribe("day_skipped", _on_combat_finished)
 
 func update(delta: float) -> void:
 	if not spawning:
@@ -112,6 +112,8 @@ func _try_spawn() -> void:
 # ===== СОБЫТИЯ =====
 
 func _on_combat_started(data: Dictionary) -> void:
+	if not data.has("current_floor"):
+		return
 	spawning = true
 	current_floor = data["current_floor"]
 
@@ -134,7 +136,7 @@ func _get_enemy_cost(_enemy_name: String) -> int:
 
 
 
-func _get_spawn_position(min_radius := 20.0, max_radius := 40.0) -> Vector3:
+func _get_spawn_position() -> Vector3:
 	if players.is_empty():
 		return Vector3.ZERO
 
@@ -143,7 +145,7 @@ func _get_spawn_position(min_radius := 20.0, max_radius := 40.0) -> Vector3:
 		return Vector3.ZERO
 
 	var angle := randf() * TAU
-	var r := sqrt(randf_range(min_radius * min_radius, max_radius * max_radius))
+	var r := sqrt(randf_range(MIN_SPAWN_RANGE * MIN_SPAWN_RANGE, MAX_SPAWN_RANGE * MAX_SPAWN_RANGE))
 
 	var pos :Vector3= tf.position + Vector3(
 		cos(angle) * r,

@@ -2,15 +2,15 @@ extends BaseSystem
 class_name PickUpSystem
 
 const ACCEL := 10.0
-const PICKUP_DIST := 0.45
-const HEIGHT_OFFSET := Vector3(0, 1.3, 0)
+const PICKUP_DIST := 0.5
+const HEIGHT_OFFSET := Vector3(0, 1.0, 0)
 
 func _init(
 	_entity_manager: EntityManager,
 	_component_store: ComponentStore,
 	_event_bus: EventBus,):
 	super._init(_entity_manager, _component_store,_event_bus)
-	event_bus.subscribe("combat_finished", _magnetize_all_xp)
+	event_bus.subscribe("combat_completed", _magnetize_all_xp)
 	
 func update(delta: float) -> void:
 	var players = get_entities_with(
@@ -53,7 +53,7 @@ func update(delta: float) -> void:
 			continue
 
 		var target_pos :Vector3= target_tf.position + HEIGHT_OFFSET
-		var dir :Vector3= target_pos - ptf.position
+		var dir :Vector3= target_pos - ptf.position 
 		var dist :float= dir.length()
 
 		if dist < 0.001:
@@ -61,9 +61,10 @@ func update(delta: float) -> void:
 
 		move.direction = dir.normalized()
 		speed.final_value += ACCEL * delta
-
+		ptf.velocity.y += move.direction.y * speed.final_value
+		
 		if dist <= PICKUP_DIST:
-			speed.final_value = 0.0
+			#speed.final_value = 0.0
 			cs.add_component(pid, "PickedUpComponent", PickedUpComponent.new())
 			
 func _magnetize_all_xp(data) -> void:

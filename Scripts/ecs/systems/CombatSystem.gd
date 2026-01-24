@@ -27,8 +27,8 @@ func update(_delta: float) -> void:
 		var enemies = get_entities_with(["EnemyComponent"])
 		if battery.current_budget <= 0 and enemies.is_empty() :
 			combat.state = CombatState.COMPLETED
-			print('combat_finished')
-			event_bus.emit("combat_finished", { "current_floor": current_floor })
+			print('combat_completed')
+			event_bus.emit("combat_completed", { "current_floor": current_floor })
 					
 func _player_left_safe_zone() -> bool:
 	var players = get_entities_with(["PlayerComponent", "TransformComponent"])

@@ -11,9 +11,10 @@ func update(delta: float) -> void:
 
 		if not flash.started:
 			render.instance.material_override.next_pass = render.hit_flash_material
-
+			render.instance.scale *= 1.3
 		flash.time_left -= delta
 
 		if flash.time_left <= 0.0:
 			render.instance.material_override.next_pass = null
+			render.instance.scale /= 1.3
 			cs.remove_component(e, "HitFlashComponent")

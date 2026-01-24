@@ -1,0 +1,46 @@
+[gd_scene load_steps=9 format=3 uid="uid://eyxhyv1uv26h"]
+
+[ext_resource type="Script" uid="uid://bdulpfuy1h6la" path="res://scripts/Unsorted/HitVFX.gd" id="1_px2i2"]
+[ext_resource type="Shader" uid="uid://7ipe3kslwf8e" path="res://assets/Shaders/hit_particle.tres" id="1_u81ow"]
+[ext_resource type="Texture2D" uid="uid://c2ugflyl0k27n" path="res://assets/shader_pics/T_VFX_Glow31.png" id="2_oqrur"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oqrur"]
+render_priority = 0
+shader = ExtResource("1_u81ow")
+shader_parameter/ColorParameter = Color(0.51269937, 0, 0.036280237, 1)
+shader_parameter/Texture2DParameter = ExtResource("2_oqrur")
+
+[sub_resource type="Curve" id="Curve_px2i2"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.35714287, 0.9183674), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_hnhce"]
+curve = SubResource("Curve_px2i2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6kgxi"]
+angle_min = -208.29999
+angle_max = 132.80002
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 1.0
+initial_velocity_max = 3.0
+gravity = Vector3(0, -3, 0)
+scale_min = 0.0
+scale_curve = SubResource("CurveTexture_hnhce")
+
+[sub_resource type="QuadMesh" id="QuadMesh_8td18"]
+size = Vector2(0.5, 0.5)
+
+[node name="HitParticle" type="Node3D"]
+script = ExtResource("1_px2i2")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_oqrur")
+cast_shadow = 0
+emitting = false
+amount = 10
+lifetime = 1.32
+one_shot = true
+speed_scale = 2.0
+process_material = SubResource("ParticleProcessMaterial_6kgxi")
+draw_pass_1 = SubResource("QuadMesh_8td18")

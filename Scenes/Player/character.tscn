@@ -216,6 +216,7 @@ script = ExtResource("1_i0wak")
 
 [node name="LevelUpPopUp" parent="." instance=ExtResource("1_thri5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0148833, 0)
+visible = false
 
 [node name="DeathAnim" type="AnimationPlayer" parent="."]
 libraries = {

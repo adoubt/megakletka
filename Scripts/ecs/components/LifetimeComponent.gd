@@ -1,5 +1,5 @@
 extends Resource
-class_name LifetimeComponent
+class_name LifeTimeComponent
 
 ## Remaining lifetime in seconds
 var time_left: float = 1.0

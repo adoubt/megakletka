@@ -33,7 +33,7 @@ shader = ExtResource("2_hl7n5")
 shader_parameter/amplitude = 1.0
 shader_parameter/bounce_speed = 3.0
 shader_parameter/rotate_speed = 2.0
-shader_parameter/tint_color = Color(0.30588236, 0.84313726, 1, 0.5176471)
+shader_parameter/tint_color = Color(0.7607843, 0.6392157, 0.40784314, 0.5058824)
 shader_parameter/fresnel_intensity = 0.3
 shader_parameter/fresnel_blue_boost = 0.4
 
@@ -51,8 +51,7 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 
 [sub_resource type="Gradient" id="Gradient_l3sqc"]
-offsets = PackedFloat32Array(0, 0.84347826)
-colors = PackedColorArray(0, 0.8023774, 0.852857, 1, 1, 1, 1, 1)
+colors = PackedColorArray(0.7607843, 0.6392157, 0.40784314, 1, 0.89411765, 0.827451, 0.7058824, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_kpvrd"]
 gradient = SubResource("Gradient_l3sqc")
@@ -91,7 +90,7 @@ color_ramp = SubResource("GradientTexture1D_kpvrd")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.054570287, 0)
-light_color = Color(0, 1, 1, 1)
+light_color = Color(0.7607843, 0.6392157, 0.40784314, 1)
 distance_fade_enabled = true
 omni_range = 1.0
 

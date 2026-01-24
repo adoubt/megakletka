@@ -57,7 +57,7 @@ color_ramp = SubResource("GradientTexture1D_kpvrd")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fk0n2"]
 render_priority = 0
 shader = ExtResource("2_kpvrd")
-shader_parameter/main_color = Color(0.34409294, 0.887035, 1, 1)
+shader_parameter/main_color = Color(0.76862746, 0.6392157, 0.40784314, 1)
 shader_parameter/transparency_texture = ExtResource("3_b6xcu")
 shader_parameter/blinking_sped = 2.0
 
@@ -83,11 +83,11 @@ mesh = SubResource("QuadMesh_svao1")
 
 [node name="Label3D" type="Label3D" parent="."]
 visibility_range_end = 100.0
-billboard = 2
+billboard = 1
 alpha_cut = 1
+texture_filter = 1
 outline_render_priority = -2
-modulate = Color(0.73403823, 1, 1, 0.586)
-outline_modulate = Color(0, 0, 0, 0.574)
+modulate = Color(0.89411765, 0.827451, 0.7058824, 1)
 text = "[R]   Upgrade"
 font_size = 24
 outline_size = 10

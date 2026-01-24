@@ -6,7 +6,7 @@
 shading_mode = 2
 diffuse_mode = 3
 specular_mode = 1
-albedo_color = Color(0.7554169, 1, 0, 1)
+albedo_color = Color(0.4129728, 0.7855738, 0.9516776, 1)
 albedo_texture = ExtResource("1_7nolw")
 uv1_scale = Vector3(0.25, 0.25, 0.25)
 uv1_triplanar = true

@@ -21,13 +21,15 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_eve
 	event_bus.subscribe("create_xp", _create_xp)
 	event_bus.subscribe("create_projectile", _create_projectile)
 	event_bus.subscribe("create_camera", _create_camera)
+	event_bus.subscribe("damage_done", _create_damage_popup)
+	event_bus.subscribe("damage_done", _create_hit_vfx)
 	
 func _create_projectile(data_array: Array) -> void:
 	for data in data_array:
 		var entity_id := em.create_entity()
 		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(data.get("projectile_speed",0)))
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(data.position))
-		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
+		#cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 		var proj = ProjectileComponent.new()
 		proj.owner_id = data.owner_id
 		proj.move_type = data.move_type
@@ -45,9 +47,8 @@ func _create_projectile(data_array: Array) -> void:
 			cs.add_component(entity_id,"CollisionComponent",
 				CollisionComponent.new(data.collision_layer, data.collision_mask, data.projectile_radius))
 
-		if data.has("lifetime"):
-			cs.add_component(entity_id, "LifetimeComponent", LifetimeComponent.new(data.lifetime))
-		
+		if data.has("duration"):
+			cs.add_component(entity_id, "LifeTimeComponent", LifeTimeComponent.new(data.duration))
 			
 		
 		if data.move_type == ProjectileMoveType.ORBIT:
@@ -112,11 +113,11 @@ func _create_enemy(data_array: Array) -> void:
 		cs.add_component(entity_id, "MaxHpComponent", MaxHpComponent.new(e_data["hp"]))
 		cs.add_component(entity_id, "CurrentHpComponent",CurrentHpComponent.new(e_data["hp"]))
 		cs.add_component(entity_id, "CurrentHpRatioComponent", CurrentHpRatioComponent.new())
-		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"],true))
-		#cs.add_component(entity_id, "TargetComponent",TargetComponent.new())
+		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"], true))
+	
 		cs.add_component(entity_id, "MoveSpeedComponent",MoveSpeedComponent.new(e_data.movespeed))
 		cs.add_component(entity_id, "MovementIntentComponent", MovementIntentComponent.new())
-		#cs.add_component(entity_id, "TeamComponent", TeamComponent.new(2))
+
 		cs.add_component(entity_id, "XPRewardComponent", XPRewardComponent.new(e_data['budget']))
 		cs.add_component(entity_id, "AttackSpeedComponent", AttackSpeedComponent.new(e_data["attack_speed"]))
 		cs.add_component(entity_id, "CollisionComponent",CollisionComponent.new(
@@ -127,12 +128,13 @@ func _create_enemy(data_array: Array) -> void:
 			e_data["collider_radius"]
 		))
 		cs.add_component(entity_id, "ProjectileRadiusComponent", ProjectileRadiusComponent.new())
-		cs.add_component(entity_id, "WeaponRadiusComponent", WeaponRadiusComponent.new())
+		cs.add_component(entity_id, "DurationComponent", DurationComponent.new(e_data.duration))
+		cs.add_component(entity_id, "WeaponRadiusComponent", WeaponRadiusComponent.new(e_data.weapon_radius))
 		cs.add_component(entity_id, "ProjectileCountComponent", ProjectileCountComponent.new(0))
 		cs.add_component(entity_id, "ProjectileSpeedComponent",ProjectileSpeedComponent.new())
 		cs.add_component(entity_id, "GroundedComponent", GroundedComponent.new())
-		cs.add_component(entity_id, "DamageComponent", DamageComponent.new())
-		cs.add_component(entity_id, "TargetRequestComponent",TargetRequestComponent.new(40.0,
+		cs.add_component(entity_id, "DamageComponent", DamageComponent.new(e_data.damage))
+		cs.add_component(entity_id, "TargetRequestComponent",TargetRequestComponent.new(e_data.agr_radius,
 		CollisionLayers.PLAYER,false
 		))
 		cs.add_component(entity_id, "PierceComponent",PierceComponent.new(e_data.pierce))
@@ -158,19 +160,20 @@ func _create_char(data_array: Array):
 		cs.add_component(entity_id, "InputComponent", InputComponent.new())
 		cs.add_component(entity_id, "MovementIntentComponent", MovementIntentComponent.new())
 		cs.add_component(entity_id, "PlayerComponent", PlayerComponent.new())
-		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(e_data["movespeed"]))
+		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(e_data.movespeed))
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(position))
-		cs.add_component(entity_id, "MaxHpComponent", MaxHpComponent.new(e_data["hp"]))
-		cs.add_component(entity_id, "CurrentHpComponent",CurrentHpComponent.new(e_data["hp"]))
+		cs.add_component(entity_id, "MaxHpComponent", MaxHpComponent.new(e_data.hp))
+		cs.add_component(entity_id, "CurrentHpComponent",CurrentHpComponent.new(e_data.hp))
 		cs.add_component(entity_id, "CurrentHpRatioComponent", CurrentHpRatioComponent.new())
-		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"],true))
-		cs.add_component(entity_id, "DamageComponent", DamageComponent.new())
+		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data.scene,true))
+		cs.add_component(entity_id, "DamageComponent", DamageComponent.new(e_data.damage))
 		cs.add_component(entity_id, "ControllerStateComponent", ControllerStateComponent.new())
 		cs.add_component(entity_id, "LevelComponent", LevelComponent.new())
+		cs.add_component(entity_id, "DurationComponent", DurationComponent.new(e_data.duration))
 		cs.add_component(entity_id, "LifestealComponent", LifestealComponent.new(0.0))
-		cs.add_component(entity_id, "PickUpRangeComponent", PickUpRangeComponent.new(e_data["xp_pickup_range"]))
+		cs.add_component(entity_id, "PickUpRangeComponent", PickUpRangeComponent.new(e_data.pickup_range))
 		cs.add_component(entity_id, "XPMultComponent", XPMultComponent.new())
-		cs.add_component(entity_id, "AttackSpeedComponent", AttackSpeedComponent.new(e_data["attack_speed"]))
+		cs.add_component(entity_id, "AttackSpeedComponent", AttackSpeedComponent.new(e_data.attack_speed))
 		cs.add_component(entity_id, "HUDComponent", HUDComponent.new(entity_id))
 		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 		cs.add_component(entity_id, "CollisionComponent",
@@ -200,11 +203,11 @@ func _create_xp(data_array: Array):
 		var entity_id = em.create_entity()
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(data["position"]))
 		cs.add_component(entity_id, "XPRewardComponent",XPRewardComponent.new(data["xp_value"]))
-		cs.add_component(entity_id, "RenderComponent", RenderComponent.new("uid://dosmechqhf3sw"))
+		cs.add_component(entity_id, "RenderComponent", RenderComponent.new("uid://dosmechqhf3sw", true))
 		cs.add_component(entity_id, "PickUpComponent", PickUpComponent.new())
 		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new())
 		cs.add_component(entity_id, "MovementIntentComponent", MovementIntentComponent.new())
-		
+		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 func _create_weapon(data_array: Array):
 	for data in data_array:
 		var _name = data["weapon_name"]
@@ -217,7 +220,7 @@ func _create_weapon(data_array: Array):
 		
 		cs.add_component(entity_id,"WeaponComponent",WeaponComponent.new(_name, e_data["cd"], owner_id, e_data.get("target",false)))
 		cs.add_component(entity_id, "DamageComponent", DamageComponent.new(e_data["damage"]))
-		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"], false))
+		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"], e_data.shadow))
 		
 		if e_data.has("projectile_speed"):
 			cs.add_component(entity_id,"ProjectileSpeedComponent",ProjectileSpeedComponent.new(e_data["projectile_speed"]))
@@ -230,7 +233,7 @@ func _create_weapon(data_array: Array):
 		if e_data.has("weapon_radius"):
 			cs.add_component(entity_id, "WeaponRadiusComponent", WeaponRadiusComponent.new(e_data["weapon_radius"]))
 		if e_data.has("duration"):
-			cs.add_component(entity_id, "LifetimeComponent", LifetimeComponent.new(e_data["duration"]))
+			cs.add_component(entity_id, "DurationComponent", DurationComponent.new(e_data["duration"]))
 		
 func _create_item(data_array: Array):
 	for data in data_array:
@@ -282,3 +285,21 @@ func _create_camera(data_array: Array) -> void:
 		cs.add_component(entity_id, "CameraEffectsComponent",CameraEffectsComponent.new())
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new())
 		
+func _create_hit_vfx(data_array: Array) -> void:
+	for data in data_array:
+		var vfx_name = data.damage_type
+		var e_data = db.vfx_configs[vfx_name]
+		var entity_id = em.create_entity()
+		cs.add_component(entity_id, "HitVFXComponent", HitVFXComponent.new(data.owner_id))
+		cs.add_component(entity_id, "TransformComponent",TransformComponent.new(data.position))
+		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data.scene))
+		cs.add_component(entity_id, "LifeTimeComponent", LifeTimeComponent.new(e_data.duration))
+
+func _create_damage_popup(data_array: Array) -> void:
+	for data in data_array:
+		var popup_entity = em.create_entity()
+		cs.add_component(popup_entity, "DamagePopupComponent",DamagePopupComponent.new(data.damage,data.damage_type,data.owner_id,data.position))
+		cs.add_component(popup_entity, "TransformComponent", TransformComponent.new(data.position))
+		cs.add_component(popup_entity, "RenderComponent",RenderComponent.new("res://Scenes/Popups/DamagePopup.tscn"))
+		cs.add_component(popup_entity, "LifeTimeComponent",LifeTimeComponent.new(1.0))
+			

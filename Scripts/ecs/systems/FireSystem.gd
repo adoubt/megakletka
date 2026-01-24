@@ -10,9 +10,9 @@ func update(_delta: float) -> void:
 			
 			continue
 		match weapon.name:
-			"nut":
+			"fire_shard":
 				_fire_projectile(weapon.owner_id, weapon_id,weapon.target)
-			"ash":
+			"ice_shard":
 				_fire_projectile(weapon.owner_id, weapon_id,weapon.target)
 			"carrot":
 				_fire_orbit(weapon.owner_id, weapon_id)
@@ -55,9 +55,11 @@ func _compute_stats(owner_id: int, weapon_id: int) -> Dictionary:
 	if owner_proj_radius != 1.0 or weapon_proj_radius != 1.0:
 		data["projectile_radius"] = owner_proj_radius * weapon_proj_radius
 
-	comp = cs.get_component(weapon_id, "LifetimeComponent")
-	if comp != null:
-		data["lifetime"] = comp.time_left
+	comp = cs.get_component(owner_id, "DurationComponent")
+	var owner_duration: float = comp.final_value if comp else 1.0
+	comp = cs.get_component(weapon_id, "DurationComponent")
+	var weapon_duration: float = comp.final_value if comp else 1.0
+	data["duration"] =  owner_duration * weapon_duration
 
 	comp = cs.get_component(owner_id, "WeaponRadiusComponent")
 	var owner_weapon_radius: float = comp.final_value if comp else 0.0
@@ -106,8 +108,8 @@ func _base_projectile_data(stats: Dictionary, position: Vector3) -> Dictionary:
 		data["projectile_radius"] = stats.projectile_radius
 	if stats.has("weapon_radius"):
 			data["weapon_radius"]= stats.weapon_radius
-	if stats.has("lifetime"):
-		data["lifetime"] = stats.lifetime
+	if stats.has("duration"):
+		data["duration"] = stats.duration
 
 	if stats.is_enemy:
 		data["collision_layer"] = CollisionLayers.ENEMY_PROJECTILE

@@ -27,7 +27,7 @@ func initialize():
 	
 	object_pool = ObjectPool.new(self)
 	object_pool.prewarm({
-	"res://Scenes/Enemy/Aboba.tscn": 100,
+	db.enemy_configs.get("Aboba").scene: 100,
 	"res://Scenes/shadow.tscn": 300,
 	"res://Scenes/Objects/grave.tscn": 3,
 	"res://Scenes/romb.tscn": 40,
@@ -38,7 +38,8 @@ func initialize():
 	"res://Scenes/debug_collider.tscn":200 if debug_collision else 0,
 	"res://Scenes/Weapons/Projectiles/enemy_proj.tscn" : 150,
 	"res://Scenes/Weapons/Projectiles/carrot.tscn": 30,
-	"res://Scenes/player_camera.tscn" :1
+	"res://Scenes/player_camera.tscn" :1,
+	db.vfx_configs.get("base_hit").scene: 50,
 	
 
 })
@@ -88,6 +89,7 @@ func initialize():
 	
 	#6. UI / META
 	system_manager.add_system(DamagePopupSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(HitVFXSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(InteractionProximitySystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(InteractionUISystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(XPPickUpSystem.new(entity_manager,component_store,event_bus))
@@ -106,6 +108,7 @@ func initialize():
 	system_manager.add_system(RenderSystem.new(entity_manager, component_store,event_bus, object_pool))
 	system_manager.add_system(AudioSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HitFlashSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(LifeTimeSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(CleanerSystem.new(entity_manager, component_store,event_bus, object_pool))
 	if debug_collision: system_manager.add_system(DEBUGCollisionSystem.new(entity_manager, component_store,event_bus, object_pool)) 
 	

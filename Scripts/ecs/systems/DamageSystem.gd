@@ -23,12 +23,9 @@ func update(_delta: float):
 					cs.add_component(e_id, "HitFlashComponent", HitFlashComponent.new())
 				
 				var owner_tf = cs.get_component(e_id, "TransformComponent")
-				var popup_entity = em.create_entity()
-				cs.add_component(popup_entity, "DamagePopupComponent",DamagePopupComponent.new(damage_done,"physical",e_id,owner_tf.position))
-				cs.add_component(popup_entity, "TransformComponent", TransformComponent.new(owner_tf.position))
-				cs.add_component(popup_entity, "RenderComponent",RenderComponent.new("res://Scenes/Popups/DamagePopup.tscn"))
-				cs.add_component(popup_entity, "LifetimeComponent",LifetimeComponent.new(1.0))
+				event_bus.emit("damage_done", [{"position": owner_tf.position, "owner_id": e_id, "damage": damage_done, "damage_type": "base_hit"}])
 				event_bus.emit("enemy_hitted", {"position": owner_tf.position, "e_id": e_id})
+			
 		print(e_id," (", hp_before, ") took ", damage_done, " dmg from ", pd.source_id) 
 		
 			

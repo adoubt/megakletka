@@ -15,6 +15,33 @@ var ui_player: AudioStreamPlayer
 func _ready() -> void:
 	ui_player= AudioStreamPlayer.new()
 	add_child(ui_player)
+	
+	
+## One-shot UI sound
+func play_ui_sound(_name: String, volume_db: float = -10.0, pitch_range: Vector2 = Vector2(1.0,1.0)) -> void:
+	var entry = DatabaseManager.db.sound_configs["non_diegetic"]["ui"].get(_name, null)
+	if entry == null:
+		push_error("AudioManager: sound not found in DB: %s" % _name)
+		return
+
+	var path: String
+
+	if entry is Array:
+		path = entry.pick_random()
+	elif entry is String:
+		path = entry
+	else:
+		push_error("AudioManager: invalid sound entry: %s" % _name)
+		return
+
+	
+	ui_player.stream = load(path)
+	ui_player.volume_db = volume_db
+	ui_player.pitch_scale = randf_range(pitch_range.x, pitch_range.y)
+
+	
+	ui_player.play()
+	
 ## One-shot sound within 3D Position
 func play_sound(
 	_name: String,
@@ -85,20 +112,7 @@ func _on_dynamic_finished(player: AudioStreamPlayer3D):
 	if is_instance_valid(player):
 		player.queue_free()
 
-## One-shot UI sound
-func play_ui_sound(_name: String, volume_db: float = -10.0, pitch_range: Vector2 = Vector2(1.0,1.0)) -> void:
-	var path = DatabaseManager.db.sound_configs["non_diegetic"]["ui"][_name]
-	if path == null:
-		push_error("AudioManager: UI sound not found: %s" % _name)
-		return
 
-	
-	ui_player.stream = load(path)
-	ui_player.volume_db = volume_db
-	ui_player.pitch_scale = randf_range(pitch_range.x, pitch_range.y)
-
-	
-	ui_player.play()
 
 	
 
@@ -110,34 +124,71 @@ func _on_ui_finished(player: AudioStreamPlayer):
 
 ## UI play music
 func play_music(_name: String, volume_db: float = 0.0, loop: bool = true) -> void:
-	if music_players.has(_name):
-		var existing = music_players[_name]
-		existing.volume_db = volume_db
-		if not existing.playing:
-			existing.play()
+	_stop_non_diegetic_music()
+	
+
+	var entry = DatabaseManager.db.sound_configs["non_diegetic"]["music"].get(_name, null)
+	if entry == null:
+		push_error("AudioManager: sound not found in DB: %s" % _name)
 		return
 
-	var path = DatabaseManager.db.sound_configs["non_diegetic"]["music"][_name]
-	if path == null:
-		push_error("AudioManager: music not found: %s" % _name)
+	var path: String
+
+	if entry is Array and entry.size() > 0:
+		path = entry.pick_random()
+	elif entry is String:
+		path = entry
+	else:
+		push_error("AudioManager: invalid sound entry: %s" % _name)
 		return
 
-	var player = AudioStreamPlayer3D.new()
+	var player = AudioStreamPlayer.new()
 	player.stream = load(path)
 	player.volume_db = volume_db
-	player.stream.loop = true
-	player.play()
-	add_child(player)
-	music_players[_name] = player
+	player.stream.loop = loop
 	
-## UI stop music
-func stop_music(_name: String) -> void:
-	if music_players.has(_name):
-		var player = music_players[_name]
-		player.stop()
+	add_child(player)
+	player.play()
+	music_players[_name] = player
+
+func stop_all_music():
+	_stop_diegetic_music()
+	_stop_non_diegetic_music()
+	
+func _stop_non_diegetic_music():
+	for s in music_players.keys():
+		stop_music(s)
+		
+func _stop_diegetic_music():
+	for s in spatial_loops.keys():
+		stop_spatial_loop(s)
+		
+		
+## UI stop music (with fade out)
+func stop_music(_name: String, fade_time: float = 3.0) -> void:
+	if not music_players.has(_name):
+		return
+
+	var player: AudioStreamPlayer = music_players[_name]
+
+	if not is_instance_valid(player):
+		music_players.erase(_name)
+		return
+
+	var tween := create_tween()
+	tween.tween_property(
+		player,
+		"volume_db",
+		-80.0,
+		fade_time
+	).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
+
+	tween.finished.connect(func():
 		if is_instance_valid(player):
+			player.stop()
 			player.queue_free()
 		music_players.erase(_name)
+	)
 
 ## Play persistent source sound, also check unregister_persistent()
 func register_persistent(_name: String, node: Node3D, loop: bool = true, volume_db: float = 0.0) -> void:
@@ -236,3 +287,90 @@ func _play_path(
 func play_music_delayed(_name: String,delay: float,volume_db: float = 0.0,loop: bool = true) -> void:
 	var timer := get_tree().create_timer(delay)
 	timer.timeout.connect(func(): play_music(_name, volume_db, loop))
+
+func _resolve_audio_entry(entry) -> String:
+	if entry == null:
+		return ""
+
+	if entry is Array:
+		if entry.is_empty():
+			return ""
+		return entry.pick_random()
+
+	if entry is String:
+		return entry
+
+	return ""
+
+
+func play_ui_sound_with_fallback(
+	primary_key: String,
+	fallback_key: String,
+	volume_db: float = -10.0,
+	pitch_range: Vector2 = Vector2(1.0, 1.0)
+) -> void:
+	var ui_db = DatabaseManager.db.sound_configs["non_diegetic"]["ui"]
+
+	var entry = null
+	if ui_db.has(primary_key):
+		entry = ui_db[primary_key]
+	elif ui_db.has(fallback_key):
+		entry = ui_db[fallback_key]
+	else:
+		push_error(
+			"AudioManager: UI sound not found (%s, %s)" %
+			[primary_key, fallback_key]
+		)
+		return
+
+	var path := _resolve_audio_entry(entry)
+	if path == "":
+		push_error("AudioManager: invalid UI sound entry")
+		return
+
+	ui_player.stream = load(path)
+	ui_player.volume_db = volume_db
+	ui_player.pitch_scale = randf_range(pitch_range.x, pitch_range.y)
+	ui_player.play()
+
+func play_music_with_fallback(
+	primary_key: String,
+	fallback_key: String,
+	volume_db: float = 0.0,
+	loop: bool = true
+) -> void:
+	if music_players.has(primary_key):
+		var existing = music_players[primary_key]
+		existing.volume_db = volume_db
+		if not existing.playing:
+			existing.play()
+		return
+
+	var music_db = DatabaseManager.db.sound_configs["non_diegetic"]["music"]
+
+	var entry = null
+	if music_db.has(primary_key):
+		entry = music_db[primary_key]
+	elif music_db.has(fallback_key):
+		entry = music_db[fallback_key]
+	else:
+		push_error(
+			"AudioManager: music not found (%s, %s)" %
+			[primary_key, fallback_key]
+		)
+		return
+
+	var path := _resolve_audio_entry(entry)
+	if path == "":
+		push_error("AudioManager: invalid music entry")
+		return
+
+	var player := AudioStreamPlayer.new()
+	player.stream = load(path)
+	player.stream.loop = loop
+	player.volume_db = volume_db
+
+	add_child(player)
+	player.play()
+
+	music_players[primary_key] = player

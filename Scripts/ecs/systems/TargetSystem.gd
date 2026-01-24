@@ -12,6 +12,7 @@ func update(_delta: float) -> void:
 			var weapon = cs.get_component(e_id, "WeaponComponent")
 			if weapon:
 				tf = cs.get_component(weapon.owner_id, "TransformComponent")
+				if not tf: continue
 				
 		var req: TargetRequestComponent = cs.get_component(e_id, "TargetRequestComponent")
 
@@ -42,17 +43,17 @@ func update(_delta: float) -> void:
 			if req.one_shot:
 				cs.remove_component(e_id, "TargetRequestComponent")
 		###TODO (this block added to just avoid the bug - the enemies keeps climbing after player's death
-		else: 
-			cs.add_component(e_id, "AimComponent", AimComponent.new(Vector3.ZERO + Vector3(randf_range(-20,20),0.0,randf_range(-20,20))))
-			if req.one_shot:
-				cs.remove_component(e_id, "TargetRequestComponent")		
+		#else: 
+			#cs.add_component(e_id, "AimComponent", AimComponent.new(Vector3.ZERO + Vector3(randf_range(-20,20),0.0,randf_range(-20,20))))
+			#if req.one_shot:
+				#cs.remove_component(e_id, "TargetRequestComponent")		
 func _get_candidates(target_layers: int) -> Array:
 	var result: Array = []
 
 	if (target_layers & CollisionLayers.PLAYER) != 0:
-		result += get_entities_with(["PlayerComponent", "TransformComponent"])
+		result += get_entities_with(["PlayerComponent", "TransformComponent"],["DeadComponent"])
 
 	if (target_layers & CollisionLayers.ENEMY) != 0:
-		result += get_entities_with(["EnemyComponent", "TransformComponent"])
+		result += get_entities_with(["EnemyComponent", "TransformComponent"],["DeadComponent"])
 
 	return result

@@ -32,7 +32,7 @@ func _run():
 		"TransformComponent",
 		"VelocityComponent",
 		"InputComponent",
-		"LifetimeComponent",
+		"LifeTimeComponent",
 		"RenderComponent",
 		"AnimationComponent",
 		"ColliderComponent",

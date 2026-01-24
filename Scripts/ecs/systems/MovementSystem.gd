@@ -17,7 +17,7 @@ func update(delta: float) -> void:
 			var move := cs.get_component(e_id, "MovementIntentComponent")
 			tf.velocity.x = move.direction.x * speed.final_value
 			tf.velocity.z = move.direction.z * speed.final_value
-			tf.velocity.y += move.direction.y * speed.final_value
+			#tf.velocity.y += move.direction.y * speed.final_value
 		
 	
 
