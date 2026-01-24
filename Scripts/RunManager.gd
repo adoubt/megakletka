@@ -1,18 +1,18 @@
 # RunManager.gd
 extends Node
 
-@export var total_floors := 10
+@export var total_days := 10
 @export var vertical_offset := Vector3(0, 0.05, 0) # Офсет для спавна объектов в лифте
 @onready var dungeon_generator := $"../BaseLevelFloor"
 
 var run_seed: int
-var floor_seeds: Array[int] = []
-var current_floor := 0
+var day_seeds: Array[int] = []
+var current_day := 0
 var pending_contents: Array = []
 
 
 func _ready():
-	dungeon_generator.done_generating.connect(_on_floor_generated)
+	dungeon_generator.done_generating.connect(_on_day_generated)
 	start_new_run()
 
 
@@ -25,42 +25,42 @@ func start_new_run():
 	var rng = RandomNumberGenerator.new()
 	rng.seed = run_seed
 
-	floor_seeds.clear()
-	for i in range(total_floors):
-		floor_seeds.append(rng.randi())
+	day_seeds.clear()
+	for i in range(total_days):
+		day_seeds.append(rng.randi())
 
 	print("Run seed:", run_seed)
-	print("Floor seeds:", floor_seeds)
+	print("Floor seeds:", day_seeds)
 
-	load_floor(0)
+	load_day(0)
 
 
-func load_floor(index: int):
-	if index < 0 or index >= total_floors:
+func load_day(index: int):
+	if index < 0 or index >= total_days:
 		return
-	current_floor = index
-	print("Loading floor", index, "with seed", floor_seeds[index])
-	dungeon_generator.call_deferred("generate", floor_seeds[index])
+	current_day = index
+	print("Loading day", index, "with seed", day_seeds[index])
+	dungeon_generator.call_deferred("generate", day_seeds[index])
 
 
 
-func load_next_floor():
-	if current_floor < total_floors - 1:
+func load_next_day():
+	if current_day < total_days - 1:
 		_save_elevator_contents()
-		load_floor(current_floor + 1)
+		load_day(current_day + 1)
 
 
-func load_prev_floor():
-	if current_floor > 0:
+func load_prev_day():
+	if current_day > 0:
 		_save_elevator_contents()
-		load_floor(current_floor - 1)
+		load_day(current_day - 1)
 
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("dev_floor_up"):
-		load_next_floor()
-	elif Input.is_action_just_pressed("dev_floor_down"):
-		load_prev_floor()
+	if Input.is_action_just_pressed("dev_day_up"):
+		load_next_day()
+	elif Input.is_action_just_pressed("dev_day_down"):
+		load_prev_day()
 
 
 # =====================================================
@@ -116,7 +116,7 @@ func _save_elevator_contents():
 #  ВОССТАНОВЛЕНИЕ ОБЪЕКТОВ
 # =====================================================
 
-func _on_floor_generated():
+func _on_day_generated():
 	_restore_elevator_contents()
 
 
@@ -128,7 +128,7 @@ func _restore_elevator_contents():
 	var scan = get_elevator_scan()
 	
 	if not scan:
-		push_error("No elevator scan found on new floor!")
+		push_error("No elevator scan found on new day!")
 		return
 
 	var elevator_basis = scan.global_transform.basis
@@ -153,4 +153,4 @@ func _restore_elevator_contents():
 			#cam.input_rotation.y = new_y
 
 	pending_contents.clear()
-	print("Contents restored to new floor.")
+	print("Contents restored to new day.")

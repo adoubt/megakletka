@@ -23,8 +23,10 @@ var current_state : String
 @onready var death_anim: AnimationPlayer = $DeathAnim
 
 func _ready() -> void:
-	ControllerManager.register(self)
-	ControllerManager.activate_default(self)
+	
+	#ControllerManager.register(self)
+	#ControllerManager.activate_default(self)
+	pass
 func set_input_enabled(state: bool) -> void:
 	input_enabled = state
 

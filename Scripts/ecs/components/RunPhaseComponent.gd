@@ -5,7 +5,7 @@ class_name RunPhaseComponent
 enum Phase {
 	INIT,
 	DIFFICULTY_READY,
-	FLOORS_CREATED,
+	DAYS_CREATED,
 	POI_READY,
 	RUNNING
 }

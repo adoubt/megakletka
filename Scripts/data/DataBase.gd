@@ -108,7 +108,7 @@ class_name DataBase
 			"damage" : 1,
 			"projectile_count" : 1.0,
 			"projectile_radius" : 0.1,
-			"projectile_speed": 4.0,
+			"projectile_speed": 3.0,
 			"weapon_radius": 20.0,
 			"duration": 2.5,
 			"pierce": 1,

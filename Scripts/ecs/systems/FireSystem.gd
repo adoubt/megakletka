@@ -169,11 +169,42 @@ func _fire_projectile(owner_id: int, weapon_id: int, aim :bool = false) -> void:
 	var data_array: Array = []
 
 	for i in range(stats.projectile_count):
-		var d: Dictionary = _base_projectile_data(stats, owner_tf.position)
+		var d: Dictionary = _base_projectile_data(stats, owner_tf.position + Vector3(0.0,0.5,0.0))
 		d["move_type"] = ProjectileMoveType.LINEAR
 		if aim: 
 			var aim_pos = cs.get_component(weapon_id, "AimComponent")
-			d["direction"] = (aim_pos.position - owner_tf.position).normalized()
+			#d["direction"] = (aim_pos.position - owner_tf.position).normalized()
+			var from :Vector3 = owner_tf.position 
+			var to :Vector3 = aim_pos.position
+			var speed :float= stats.projectile_speed
+			var g :float = 9.8
+
+			var diff := to - from
+			var diff_xz := Vector3(diff.x, 0, diff.z)
+			var dist := diff_xz.length()
+			var dy := diff.y
+
+			var v2 := speed * speed
+			var root := v2*v2 - g * (g * dist * dist + 2.0 * dy * v2)
+
+			if root <= 0.0:
+				var dir_xz := diff_xz.normalized()
+				d["direction"] = (dir_xz + Vector3.UP * 0.35).normalized()
+
+			else:
+				var angle := atan((v2 - sqrt(root)) / (g * dist))
+				var dir_xz := diff_xz.normalized()
+
+				# 👇 ВАЖНО: ЭТО НЕ нормализованный вектор
+				var launch_dir :Vector3 =dir_xz * cos(angle) + Vector3.UP * sin(angle)
+
+				d["direction"] = launch_dir
+			print("dist:", dist)
+			print("dy:", dy)
+			print("speed:", speed)
+			print("v2:", v2)
+			print("root:", root)
+			print()
 			
 		data_array.append(d)
 	cs.remove_component(weapon_id,"AimComponent")

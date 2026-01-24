@@ -4,7 +4,7 @@ class_name EnemySpawnSystem
 
 var db: DataBase
 
-var current_floor: int = -1
+var current_day: int = -1
 var spawning := false
 
 
@@ -64,7 +64,7 @@ func _update_players() -> void:
 
 
 func _try_spawn() -> void:
-	var battery := cs.get_component(current_floor, "BatteryComponent")
+	var battery := cs.get_component(current_day, "BatteryComponent")
 	if battery == null:
 		return
 
@@ -112,10 +112,10 @@ func _try_spawn() -> void:
 # ===== СОБЫТИЯ =====
 
 func _on_combat_started(data: Dictionary) -> void:
-	if not data.has("current_floor"):
+	if not data.has("current_day"):
 		return
 	spawning = true
-	current_floor = data["current_floor"]
+	current_day = data["current_day"]
 
 	# 🔥 первый спавн — СРАЗУ
 	spawn_timer = 0.0

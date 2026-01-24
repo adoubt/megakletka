@@ -1,5 +1,5 @@
 extends Resource
-class_name FloorIdComponent
+class_name DayIdComponent
 
 var id: int = -1
 

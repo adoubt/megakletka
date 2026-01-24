@@ -12,7 +12,8 @@ func _ready():
 	add_child(ecs)  # если ECS Node, чтобы он был в сцене и мог вызывать _ready/_process при необходимости
 	ecs.initialize()  # инициализация EntityManager, ComponentStore, SystemManager
 	var run_seed = randi()
-	ecs.event_bus.emit("run_started", { "seed": run_seed })
+	ecs.event_bus.emit("run_started",{"seed":run_seed})
+	
 	
 	
 	

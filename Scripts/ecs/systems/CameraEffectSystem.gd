@@ -39,7 +39,8 @@ func update(delta):
 func _on_grounded(data: Dictionary) -> void:
 	var e_id :int= data.entity
 	var impact = data.impact
-
+	if impact == 0.0:
+		return
 	# находим камеру, которая смотрит на эту энтити
 	var cam_e :int
 	var cameras = get_entities_with(["CameraComponent"])

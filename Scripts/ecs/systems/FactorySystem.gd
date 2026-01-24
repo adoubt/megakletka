@@ -29,7 +29,7 @@ func _create_projectile(data_array: Array) -> void:
 		var entity_id := em.create_entity()
 		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(data.get("projectile_speed",0)))
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(data.position))
-		#cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
+		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 		var proj = ProjectileComponent.new()
 		proj.owner_id = data.owner_id
 		proj.move_type = data.move_type
@@ -73,7 +73,7 @@ func _create_poi(data_array: Array) -> void:
 		if not db.poi_configs.has(poi_name):
 			push_warning("Unknown enemy name: %s" % poi_name)
 			
-		var floor_id:int= data["floor_id"]
+		var day_id:int= data["day_id"]
 		var position: Vector3 = data["position"]
 		
 		
@@ -81,7 +81,7 @@ func _create_poi(data_array: Array) -> void:
 		var entity_id = em.create_entity()	
 		
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(position))
-		cs.add_component(entity_id, "FloorIdComponent", FloorIdComponent.new(floor_id))
+		cs.add_component(entity_id, "DayIdComponent", DayIdComponent.new(day_id))
 		cs.add_component(entity_id, "POIComponent", POIComponent.new(poi_name))
 		cs.add_component(entity_id, "InteractionTargetComponent", InteractionTargetComponent.new(e_data["interact_radius"], e_data["target_priority"]))
 		cs.add_component(entity_id, "CollisionComponent", CollisionComponent.new(
@@ -91,12 +91,13 @@ func _create_poi(data_array: Array) -> void:
 			CollisionLayers.ENEMY_PROJECTILE |
 			CollisionLayers.PLAYER_PROJECTILE,
 			e_data["collider_radius"]))
+		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 		cs.add_component(entity_id, "RenderComponent", RenderComponent.new(e_data["scene"]))
 		
 		var slots := int(e_data.get("slots", 0))
 		for slot in slots:
 			event_bus.emit("сreate_slot", [{"owner_id": entity_id}])
-		if poi_name == "campfire": event_bus.emit("campfire_created")	
+		if poi_name == "campfire": event_bus.emit("campfire_created",[])	
 	event_bus.emit("POI_CREATED")
 
 func _create_enemy(data_array: Array) -> void:
@@ -132,7 +133,7 @@ func _create_enemy(data_array: Array) -> void:
 		cs.add_component(entity_id, "WeaponRadiusComponent", WeaponRadiusComponent.new(e_data.weapon_radius))
 		cs.add_component(entity_id, "ProjectileCountComponent", ProjectileCountComponent.new(0))
 		cs.add_component(entity_id, "ProjectileSpeedComponent",ProjectileSpeedComponent.new())
-		cs.add_component(entity_id, "GroundedComponent", GroundedComponent.new())
+		
 		cs.add_component(entity_id, "DamageComponent", DamageComponent.new(e_data.damage))
 		cs.add_component(entity_id, "TargetRequestComponent",TargetRequestComponent.new(e_data.agr_radius,
 		CollisionLayers.PLAYER,false
