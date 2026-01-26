@@ -11,10 +11,13 @@ func update(_delta: float) -> void:
 	for e_id in projectiles:
 		var tf: TransformComponent = cs.get_component(e_id, "TransformComponent")
 		var proj: ProjectileComponent = cs.get_component(e_id, "ProjectileComponent")
+		var move := cs.get_component(e_id, "MovementIntentComponent")
+		var speed:= cs.get_component(e_id,"MoveSpeedComponent")
+		
 		if tf.grounded:
 			cs.add_component(e_id,"DeadComponent", DeadComponent.new())
 			continue
-			
+		tf.velocity.y =  move.direction.y * speed.final_value
 		match proj.move_type:
 			ProjectileMoveType.LINEAR:
 				pass

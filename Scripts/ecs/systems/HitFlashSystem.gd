@@ -3,7 +3,7 @@ class_name HitFlashSystem
 
 
 func update(delta: float) -> void:
-	var entities = get_entities_with(["HitFlashComponent", "RenderComponent"])
+	var entities = get_entities_with(["HitFlashComponent", "RenderComponent"], ["DeadComponent"])
 
 	for e in entities:
 		var flash = cs.get_component(e, "HitFlashComponent")

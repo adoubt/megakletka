@@ -19,8 +19,8 @@ func update(_delta: float):
 					
 					object_pool.release_instance(render.scene_path, render.instance)
 					
-				if cs.has_component(entity_id,"HitFlashComponent"):
-					render.instance.material_override.next_pass = null
+					if cs.has_component(entity_id,"HitFlashComponent"):
+						render.instance.material_override.next_pass = null
 				if render.shadow_instance:
 					object_pool.release_instance("res://Scenes/shadow.tscn", render.shadow_instance)
 			var collision = cs.get_component(entity_id, "CollisionComponent")

@@ -75,10 +75,9 @@ func update(delta):
 			fx.kick_yaw   = lerp(fx.kick_yaw,   0.0, delta * fx.shake_decay)
 			fx.fov_offset = lerp(fx.fov_offset, 0.0, delta * fx.shake_decay)
 
-		# ================= DIRECTIONS =================
-		var forward := rot.z
-		forward.y = 0
-		forward = forward.normalized()
+		var forward_3d := rot.z.normalized() # полный 3D, для стрельбы
+		var forward_xz := Vector3(forward_3d.x, 0, forward_3d.z).normalized() # для движения
 
-		cam.forward = forward
-		cam.right = Vector3.UP.cross(cam.forward).normalized()
+		cam.forward_3d = forward_3d
+		cam.forward = forward_xz
+		cam.right = Vector3.UP.cross(forward_xz).normalized()

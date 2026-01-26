@@ -33,17 +33,7 @@ func update(delta: float) -> void:
 		if weapon.cd_timer > 0.0 :
 			continue
 			
-		
-		if weapon.target:
-			var is_enemy_weapon = cs.has_component(owner_id,"EnemyComponent")
-		 
-			var weapon_radius:float = (cs.get_component(owner_id, "WeaponRadiusComponent").final_value * 
-			cs.get_component(weapon_id, "WeaponRadiusComponent").final_value)
-			
-			cs.add_component(weapon_id, "TargetRequestComponent",TargetRequestComponent.new(
-				weapon_radius,
-				CollisionLayers.PLAYER if is_enemy_weapon else CollisionLayers.ENEMY
-				))
+		cs.add_component(weapon_id, "AimRequestComponent", AimRequestComponent.new())
 		
 		cs.add_component(weapon_id, "FireRequestComponent", FireRequestComponent.new(owner_id))
 		

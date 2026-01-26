@@ -27,13 +27,13 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_eve
 func _create_projectile(data_array: Array) -> void:
 	for data in data_array:
 		var entity_id := em.create_entity()
-		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(data.get("projectile_speed",0)))
-		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(data.position))
+		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(data.projectile_speed))
+		
+		cs.add_component(entity_id, "TransformComponent",TransformComponent.new(data.position, data.direction* data.projectile_speed))
 		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 		var proj = ProjectileComponent.new()
 		proj.owner_id = data.owner_id
 		proj.move_type = data.move_type
-		proj.speed = data.projectile_speed
 		
 
 		if data.has("pierce"):
@@ -84,13 +84,13 @@ func _create_poi(data_array: Array) -> void:
 		cs.add_component(entity_id, "DayIdComponent", DayIdComponent.new(day_id))
 		cs.add_component(entity_id, "POIComponent", POIComponent.new(poi_name))
 		cs.add_component(entity_id, "InteractionTargetComponent", InteractionTargetComponent.new(e_data["interact_radius"], e_data["target_priority"]))
-		cs.add_component(entity_id, "CollisionComponent", CollisionComponent.new(
-			CollisionLayers.WORLD, 
-			CollisionLayers.PLAYER |
-			CollisionLayers.ENEMY | 
-			CollisionLayers.ENEMY_PROJECTILE |
-			CollisionLayers.PLAYER_PROJECTILE,
-			e_data["collider_radius"]))
+		#cs.add_component(entity_id, "CollisionComponent", CollisionComponent.new(
+			#CollisionLayers.WORLD, 
+			#CollisionLayers.PLAYER |
+			#CollisionLayers.ENEMY | 
+			#CollisionLayers.ENEMY_PROJECTILE |
+			#CollisionLayers.PLAYER_PROJECTILE,
+			#e_data["collider_radius"]))
 		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 		cs.add_component(entity_id, "RenderComponent", RenderComponent.new(e_data["scene"]))
 		
@@ -219,7 +219,7 @@ func _create_weapon(data_array: Array):
 		var e_data = db.weapon_configs[_name]
 		var entity_id = em.create_entity()
 		
-		cs.add_component(entity_id,"WeaponComponent",WeaponComponent.new(_name, e_data["cd"], owner_id, e_data.get("target",false)))
+		cs.add_component(entity_id,"WeaponComponent",WeaponComponent.new(_name, e_data.cd, owner_id, e_data.target))
 		cs.add_component(entity_id, "DamageComponent", DamageComponent.new(e_data["damage"]))
 		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"], e_data.shadow))
 		

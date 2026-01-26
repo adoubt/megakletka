@@ -1,6 +1,6 @@
 extends BaseSystem
 class_name PlayerControlSystem
-var camera_id: int = -1
+
 func update(_delta):
 	var players = get_entities_with([
 		"InputComponent",
@@ -14,11 +14,11 @@ func update(_delta):
 		# --- ищем камеру, которая смотрит на нас ---
 		var cam_forward := Vector3.FORWARD
 		var cam_right := Vector3.RIGHT
-		if camera_id == -1:
-			var cameras = get_entities_with(["CameraComponent"])
-			for cam_e in cameras:
-				if cs.get_component(cam_e, "CameraComponent").owner_id == e:
-					camera_id = cam_e
+		var camera_id = -1
+		for cam_e in get_entities_with(["CameraComponent"]):
+			if cs.get_component(cam_e, "CameraComponent").owner_id == e:
+				camera_id = cam_e
+				break
 					
 		var cam := cs.get_component(camera_id, "CameraComponent")
 		cam_forward = cam.forward

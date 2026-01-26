@@ -8,7 +8,7 @@ var object_pool : ObjectPool
 var grid : SpatialGrid
 var event_bus: EventBus
 var db: DataBase
-var debug_collision :bool = false
+var debug_collision :bool = true
 
 var pool_handler: Node
 var groound_handler: Node3D
@@ -76,8 +76,11 @@ func initialize():
 	#2 AI / DECISION
 	system_manager.add_system(EnemyChaseSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(WeaponSystem.new(entity_manager, component_store,event_bus))
-	system_manager.add_system(FireSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(AimSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(TargetSystem.new(entity_manager, component_store,event_bus))
+	
+	system_manager.add_system(FireSystem.new(entity_manager, component_store,event_bus))
+	
 	#system_manager.add_system(MovementIntentSystem.new(entity_manager, component_store,event_bus))
 	
 	#3. PROJECTILES LOGIC

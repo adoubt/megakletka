@@ -11,5 +11,5 @@ var velocity: Vector3 = Vector3.ZERO
 ## Scale factor
 var scale: Vector3 = Vector3.ONE
 
-func _init(_position  : Vector3 = Vector3.ZERO):
+func _init(_position  : Vector3 = Vector3.ZERO, velocity: Vector3 = Vector3.ZERO):
 	position = _position 

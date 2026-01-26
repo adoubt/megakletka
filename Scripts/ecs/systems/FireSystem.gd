@@ -6,7 +6,7 @@ func update(_delta: float) -> void:
 	for weapon_id in weapons:
 		var weapon = cs.get_component(weapon_id, "WeaponComponent")
 		
-		if weapon.target and not cs.has_component(weapon_id,"AimComponent"):
+		if weapon.target in [TargetType.CAMERA_ASSIST, TargetType.NORMAL] and not cs.has_component(weapon_id,"AimComponent"):
 			
 			continue
 		match weapon.name:
@@ -68,12 +68,10 @@ func _compute_stats(owner_id: int, weapon_id: int) -> Dictionary:
 	if owner_weapon_radius + weapon_radius > 0:
 		data["weapon_radius"] = owner_weapon_radius * weapon_radius
 
-	comp = cs.get_component(owner_id, "ProjectileSpeedComponent")
-	var owner_proj_speed: float = comp.final_value if comp else 1.0
-	comp = cs.get_component(weapon_id, "ProjectileSpeedComponent")
-	var weapon_proj_speed: float = comp.final_value if comp else 1.0
-	if owner_proj_speed != 1.0 or weapon_proj_speed != 1.0:
-		data["projectile_speed"] = owner_proj_speed * weapon_proj_speed
+	
+	
+	data["projectile_speed"] = (cs.get_component(owner_id, "ProjectileSpeedComponent").final_value *
+		cs.get_component(weapon_id, "ProjectileSpeedComponent").final_value)
 
 	data["is_enemy"] = cs.has_component(owner_id, "EnemyComponent")
 
@@ -157,55 +155,32 @@ func _fire_orbit(owner_id: int, weapon_id: int) -> void:
 	event_bus.emit("create_projectile", data_array)
 
 
-func _fire_projectile(owner_id: int, weapon_id: int, aim :bool = false) -> void:
-	var owner_tf = cs.get_component(owner_id, "TransformComponent")
+func _fire_projectile(owner_id: int, weapon_id: int, aim: int) -> void:
+	var owner_tf := cs.get_component(owner_id, "TransformComponent")
 	if owner_tf == null:
 		return
 
 	var stats: Dictionary = _compute_stats(owner_id, weapon_id)
-	if not stats.has("projectile_count") or stats.projectile_count <= 0:
+	if stats.projectile_count <= 0:
 		return
+
+	var aim_comp: AimComponent = cs.get_component(weapon_id, "AimComponent")
+	if aim_comp == null:
+		return
+
+	var from: Vector3 = owner_tf.position + Vector3(0.0,0.7,0.0)
+	var to: Vector3 = aim_comp.position 
 
 	var data_array: Array = []
 
 	for i in range(stats.projectile_count):
-		var d: Dictionary = _base_projectile_data(stats, owner_tf.position + Vector3(0.0,0.5,0.0))
+		var d := _base_projectile_data(stats, from)
 		d["move_type"] = ProjectileMoveType.LINEAR
-		if aim: 
-			var aim_pos = cs.get_component(weapon_id, "AimComponent")
-			#d["direction"] = (aim_pos.position - owner_tf.position).normalized()
-			var from :Vector3 = owner_tf.position 
-			var to :Vector3 = aim_pos.position
-			var speed :float= stats.projectile_speed
-			var g :float = 9.8
 
-			var diff := to - from
-			var diff_xz := Vector3(diff.x, 0, diff.z)
-			var dist := diff_xz.length()
-			var dy := diff.y
-
-			var v2 := speed * speed
-			var root := v2*v2 - g * (g * dist * dist + 2.0 * dy * v2)
-
-			if root <= 0.0:
-				var dir_xz := diff_xz.normalized()
-				d["direction"] = (dir_xz + Vector3.UP * 0.35).normalized()
-
-			else:
-				var angle := atan((v2 - sqrt(root)) / (g * dist))
-				var dir_xz := diff_xz.normalized()
-
-				# 👇 ВАЖНО: ЭТО НЕ нормализованный вектор
-				var launch_dir :Vector3 =dir_xz * cos(angle) + Vector3.UP * sin(angle)
-
-				d["direction"] = launch_dir
-			print("dist:", dist)
-			print("dy:", dy)
-			print("speed:", speed)
-			print("v2:", v2)
-			print("root:", root)
-			print()
+		if (aim & (TargetType.NORMAL | TargetType.CAMERA_ASSIST)) != 0:
+			d["direction"] = (to - from).normalized()
 			
 		data_array.append(d)
-	cs.remove_component(weapon_id,"AimComponent")
+
+	cs.remove_component(weapon_id, "AimComponent")
 	event_bus.emit("create_projectile", data_array)
