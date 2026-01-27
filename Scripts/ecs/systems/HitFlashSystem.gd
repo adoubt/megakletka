@@ -8,13 +8,14 @@ func update(delta: float) -> void:
 	for e in entities:
 		var flash = cs.get_component(e, "HitFlashComponent")
 		var render = cs.get_component(e, "RenderComponent")
-
+		if not render.instance: 
+			continue
 		if not flash.started:
 			render.instance.material_override.next_pass = render.hit_flash_material
-			render.instance.scale *= 1.3
+			cs.add_component(e, "ScaleRequestComponent", ScaleRequestComponent.new(flash.scale))
 		flash.time_left -= delta
 
 		if flash.time_left <= 0.0:
 			render.instance.material_override.next_pass = null
-			render.instance.scale /= 1.3
+			cs.add_component(e, "ScaleRequestComponent", ScaleRequestComponent.new())
 			cs.remove_component(e, "HitFlashComponent")

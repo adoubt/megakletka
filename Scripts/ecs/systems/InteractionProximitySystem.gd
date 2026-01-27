@@ -47,6 +47,7 @@ func update(_delta: float) -> void:
 				
 					if player_rander.instance:
 						player_rander.instance.show_level_up()
+						
 func _set_interaction(player_id: int, target_id: int):
 	if cs.has_component(player_id, "InRangeInteractionComponent"):
 		var cur = cs.get_component(player_id, "InRangeInteractionComponent")

@@ -35,18 +35,18 @@ func update_system_profile(stats: Dictionary) -> void:
 		_update_system_row(row, data)
 
 	# удалить исчезнувшие
-	for name in system_rows.keys():
-		if not alive.has(name):
-			system_rows[name].queue_free()
-			system_rows.erase(name)
+	for _name in system_rows.keys():
+		if not alive.has(_name):
+			system_rows[_name].queue_free()
+			system_rows.erase(_name)
 			
-func _create_system_row(name: String) -> HBoxContainer:
+func _create_system_row(_name: String) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	var label := Label.new()
 	label.name = "Name"
-	label.text = name
+	label.text = _name
 	
 	label.custom_minimum_size.x = 160
 	var settings := LabelSettings.new()
@@ -104,7 +104,7 @@ func update_pool_stats(stats: Dictionary) -> void:
 			rows[scene_path] = row
 			list.add_child(row)
 
-		_update_row(row, scene_path, data)
+		_update_row(row, data)
 
 	# 2. удаляем строки которых больше нет
 	for scene_path in rows.keys():
@@ -116,11 +116,11 @@ func _create_row(scene_path: String) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-	var name := Label.new()
-	name.name = "Name"
-	name.text = scene_path.get_file()
-	name.custom_minimum_size.x = 180
-	row.add_child(name)
+	var _name := Label.new()
+	_name.name = "Name"
+	_name.text = scene_path.get_file()
+	_name.custom_minimum_size.x = 180
+	row.add_child(_name)
 
 	var bar := ProgressBar.new()
 	bar.name = "Bar"
@@ -135,7 +135,7 @@ func _create_row(scene_path: String) -> HBoxContainer:
 
 	return row
 
-func _update_row(row: HBoxContainer, scene_path: String, data: Dictionary) -> void:
+func _update_row(row: HBoxContainer, data: Dictionary) -> void:
 	var used: int = data["used"]
 	var free: int = data["free"]
 	var total: int = max(1, data["total"]) # защита

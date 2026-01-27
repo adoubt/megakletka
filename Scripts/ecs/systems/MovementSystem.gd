@@ -1,7 +1,7 @@
 extends BaseSystem
 class_name MovementSystem
 
-func update(delta: float) -> void:
+func update(_delta: float) -> void:
 	var entities := get_entities_with(
 		["TransformComponent", "MoveSpeedComponent"],
 		["DeadComponent"]

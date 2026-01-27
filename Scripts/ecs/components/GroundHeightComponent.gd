@@ -13,9 +13,9 @@ func _init(x: int, z: int, cell: float):
 	heights = PackedFloat32Array()
 	heights.resize(size_x * size_z)
 
-func generate(seed: int, amp: float, freq: float, puddles: float) -> void:
+func generate(_seed: int, amp: float, freq: float, puddles: float) -> void:
 	var rng := RandomNumberGenerator.new()
-	rng.seed = seed
+	rng.seed = _seed
 
 	for z in range(size_z):
 		for x in range(size_x):
@@ -23,7 +23,7 @@ func generate(seed: int, amp: float, freq: float, puddles: float) -> void:
 			var nz = z * freq
 
 			# базовая мягкая волна
-			var base = sin(nx + seed) * cos(nz - seed)
+			var base = sin(nx + _seed) * cos(nz - _seed)
 
 			# пятна-лужи
 			var puddle_noise = rng.randf()

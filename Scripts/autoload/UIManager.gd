@@ -7,7 +7,6 @@ extends Node
 @onready var main_menu = preload("res://UI/main_menu.tscn").instantiate()
 @onready var dev_panel = preload("res://UI/dev_panel.tscn").instantiate()
 @onready var hud = preload("res://UI/hud.tscn").instantiate()
-@onready var wagon_panel = preload("res://UI/wagon_panel.tscn").instantiate()
 @onready var level_up_panel = preload("res://UI/level_up_panel.tscn").instantiate()
 
 @onready var post_process_panel:  = preload("res://UI/post_process_panel.tscn").instantiate()
@@ -45,17 +44,7 @@ func toggle_level_up_panel() -> void:
 	else:
 		open_level_up_panel() 
 		
-func open_wagon_panel() -> void:
-	open_panel("WagonPanel")
 
-func close_wagon_panel() -> void:
-	close_panel("WagonPanel")
-
-func toggle_wagon_panel() -> void:
-	if is_panel_open("WagonPanel"):
-		close_panel("WagonPanel")
-	else:
-		open_panel("WagonPanel") 
 	
 func open_main_menu() -> void:
 	open_panel("MainMenu")
@@ -183,7 +172,6 @@ func _ready() -> void:
 	add_child(canvas)
 	canvas.add_child(hud)
 	canvas.add_child(dev_panel)
-	canvas.add_child(wagon_panel)
 	canvas.add_child(level_up_panel)
 	canvas.add_child(escape_menu)
 	canvas.add_child(main_menu)
@@ -202,7 +190,6 @@ func _ready() -> void:
 		"Settings": settings_menu,
 		"DEV_PANEL" : dev_panel,
 		"LevelUpPanel": level_up_panel,
-		"WagonPanel": wagon_panel,
 		"HUD" :hud,
 		"DayBoard" : hud.dayboard_panel
 	}
@@ -278,7 +265,7 @@ func _input(event: InputEvent) -> void:
 		if SceneManager.current_scene_name in ["BigRoomTest","GameTest"]:
 			toggle_dev_panel()
 	if event.is_action_pressed("upgrade_menu"):
-		if not _any_ui_open() and hud.has_upgrade and SceneManager.current_scene_name in ["BigRoomTest","GameTest"] and not escape_menu.visible:
+		if hud.has_upgrade and SceneManager.current_scene_name in ["BigRoomTest","GameTest"] and not escape_menu.visible:
 			toggle_level_up_panel()
 			event_bus.emit("level_up_panel_toggled") 
 			#toggle_upgrade_menu()

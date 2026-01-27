@@ -67,7 +67,7 @@ func update(delta: float) -> void:
 			#speed.final_value = 0.0
 			cs.add_component(pid, "PickedUpComponent", PickedUpComponent.new())
 			
-func _magnetize_all_xp(data) -> void:
+func _magnetize_all_xp(_data) -> void:
 	var xp_orbs = get_entities_with(["XPRewardComponent","PickUpComponent"],["DeadComponent"])
 	for orb in xp_orbs:
 		var player = get_entities_with(["PlayerComponent"]).pick_random()

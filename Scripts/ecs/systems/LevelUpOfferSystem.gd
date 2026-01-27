@@ -59,7 +59,7 @@ func update(_delta: float) -> void:
 					
 		
 
-func generate_random_upgrades(e_id: int, count: int = 3) -> Array:
+func generate_random_upgrades(_e_id: int, count: int = 3) -> Array:
 	var pool := []
 
 	

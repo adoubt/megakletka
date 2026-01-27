@@ -6,7 +6,7 @@ var db : DataBase
 const ANTES := 3
 const DAYS_PER_ANTE := 5
 const BASE_BATTERY := 50
-const WORLD_SIZE : float = 75
+const WORLD_SIZE : int = 75
 const CELL_SIZE : float = 1.5
 const POI_ON_DAY : int = 3
 
@@ -19,19 +19,19 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_eve
 	#_init_run(run_seed)
 
 func _init_run(data: Dictionary) -> void:
-	var seed = data.seed
+	var _seed = data.seed
 	var run_entity = em.create_entity()
 	cs.add_component(run_entity,"RunComponent",RunComponent.new())
-	cs.add_component(run_entity,"SeedComponent", SeedComponent.new(seed))
+	cs.add_component(run_entity,"SeedComponent", SeedComponent.new(_seed))
 	cs.add_component(run_entity,"RunPhaseComponent",RunPhaseComponent.new(RunPhaseComponent.Phase.INIT))
 	cs.add_component(run_entity,"GroundHeightComponent",GroundHeightComponent.new(WORLD_SIZE, WORLD_SIZE, CELL_SIZE))
 	cs.add_component(run_entity,"GroundVisualComponent", GroundVisualComponent.new())
 	
-	_init_days(seed)
+	_init_days(_seed)
 	event_bus.emit("create_poi",[{ "poi_name": "campfire", "day_id" :0, "position": Vector3.ZERO}])
 	_init_poi()
 	
-	event_bus.emit("create_char", [{ "camera":true, "char_name": "Rigman", "position": Vector3(-5.0,10,0)}])
+	event_bus.emit("create_char", [{ "camera":true, "char_name": "Rigman", "position": Vector3(-3.0,3,0)}])
 	event_bus.emit("day_changed",{"current_day": 1})
 	
 	
@@ -52,9 +52,9 @@ func _init_days(run_seed: int) -> void:
 			var day := DayComponent.new()
 
 			# базовые параметры мира
-			day.height_amp = day_rng.randf_range(0.0, 5.0) ## height
+			day.height_amp = day_rng.randf_range(0.0, 2.0) ## height
 			day.frequency  = day_rng.randf_range(0.02, 0.9) ## flatness
-			day.puddles    = day_rng.randf_range(0.3, 5.1)
+			day.puddles    = day_rng.randf_range(4.3, 5.1)
 
 			day.biome     = day_rng.randi_range(0, 2)
 
@@ -79,8 +79,6 @@ func _init_days(run_seed: int) -> void:
 			cs.add_component(day_entity, "AnteComponent", AnteComponent.new(ante))
 			cs.add_component(day_entity, "CombatStateComponent", CombatStateComponent.new())
 
-			if day_index == 0:
-				cs.add_component(day_entity, "CurrentDayComponent", CurrentDayComponent.new())
 
 			# ---------- BUDGET ----------
 			var budget: int = int(

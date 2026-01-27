@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://q711du4prwgi"]
+[gd_scene format=4 uid="uid://q711du4prwgi"]
 
 [ext_resource type="Texture2D" uid="uid://dn5gdd0y6m68v" path="res://import/fortune_teller/textures/Fortune_baseColor.jpeg" id="1_80mew"]
 [ext_resource type="Script" uid="uid://dyv66n3a3fshe" path="res://scripts/objects/poi.gd" id="1_bn6a8"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://cxj8koaeuvkgd" path="res://import/fortune_teller/textures/Glass_metallicRoughness.png" id="9_w6rwn"]
 [ext_resource type="Texture2D" uid="uid://docawtlyrinkk" path="res://import/fortune_teller/textures/Glass_emissive.jpeg" id="10_ip5e1"]
 [ext_resource type="Texture2D" uid="uid://ce6i3p8iejd0k" path="res://import/fortune_teller/textures/Glass_normal.png" id="11_t5aww"]
+[ext_resource type="Shader" uid="uid://ck8u3vn741byu" path="res://assets/Shaders/r_progress.gdshader" id="13_y5hso"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mliw4"]
 resource_name = "Fortune"
@@ -194,44 +195,57 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_6l7ai")
 
-[node name="FortuneTeller" type="Node3D"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y5hso"]
+render_priority = 0
+shader = ExtResource("13_y5hso")
+shader_parameter/progress = 0.5910000280725
+shader_parameter/inner_radius = 0.6170000293075
+shader_parameter/outer_radius = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_d5ptw"]
+lightmap_size_hint = Vector2i(3, 3)
+material = SubResource("ShaderMaterial_y5hso")
+flip_faces = true
+size = Vector2(0.25, 0.25)
+
+[node name="FortuneTeller" type="Node3D" unique_id=2147446080]
 script = ExtResource("1_bn6a8")
 
-[node name="Model" type="Node3D" parent="."]
+[node name="Model" type="Node3D" parent="." unique_id=1711119332]
 transform = Transform3D(0.9967336, -0.047023028, -0.06565818, 0.060443036, -0.10484255, 0.99265033, -0.053561196, -0.9933765, -0.101657875, 0.043395493, 0.0048576333, 0.06718868)
 
-[node name="Zoltar_fbx" type="Node3D" parent="Model"]
+[node name="Zoltar_fbx" type="Node3D" parent="Model" unique_id=1262327670]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
 
-[node name="RootNode" type="Node3D" parent="Model/Zoltar_fbx"]
+[node name="RootNode" type="Node3D" parent="Model/Zoltar_fbx" unique_id=1787741428]
 
-[node name="Card" type="Node3D" parent="Model/Zoltar_fbx/RootNode"]
+[node name="Card" type="Node3D" parent="Model/Zoltar_fbx/RootNode" unique_id=620533847]
 transform = Transform3D(99.98348, -1.8158094, 0.09086612, 1.412595e-07, 4.9979196, 99.87502, -1.8180817, -99.85851, 4.9970937, -0.0012930728, 0.83680195, 0.09697247)
 
-[node name="Card_Fortune_0" type="MeshInstance3D" parent="Model/Zoltar_fbx/RootNode/Card"]
+[node name="Card_Fortune_0" type="MeshInstance3D" parent="Model/Zoltar_fbx/RootNode/Card" unique_id=62540554]
 mesh = SubResource("ArrayMesh_tucog")
 skeleton = NodePath("")
 
-[node name="Zoltar" type="Node3D" parent="Model/Zoltar_fbx/RootNode"]
+[node name="Zoltar" type="Node3D" parent="Model/Zoltar_fbx/RootNode" unique_id=1704176476]
 transform = Transform3D(100, 0, 0, 0, -1.6292068e-05, 100, 0, -100, -1.6292068e-05, 0, 0.70352864, 0)
 
-[node name="Zoltar_Cabinet_0" type="MeshInstance3D" parent="Model/Zoltar_fbx/RootNode/Zoltar"]
+[node name="Zoltar_Cabinet_0" type="MeshInstance3D" parent="Model/Zoltar_fbx/RootNode/Zoltar" unique_id=1183270533]
 mesh = SubResource("ArrayMesh_mv4dv")
 skeleton = NodePath("")
 
-[node name="Zoltar_Fortune_0" type="MeshInstance3D" parent="Model/Zoltar_fbx/RootNode/Zoltar"]
+[node name="Zoltar_Fortune_0" type="MeshInstance3D" parent="Model/Zoltar_fbx/RootNode/Zoltar" unique_id=403196436]
 mesh = SubResource("ArrayMesh_fqc37")
 skeleton = NodePath("")
 
-[node name="Zoltar_Glass_0" type="MeshInstance3D" parent="Model/Zoltar_fbx/RootNode/Zoltar"]
+[node name="Zoltar_Glass_0" type="MeshInstance3D" parent="Model/Zoltar_fbx/RootNode/Zoltar" unique_id=968085940]
 mesh = SubResource("ArrayMesh_eicxl")
 skeleton = NodePath("")
 
-[node name="Hint" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85435706, 0)
+[node name="Hint" type="Node3D" parent="." unique_id=803276794]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4952998, 0)
 visible = false
 
-[node name="Label3D2" type="Label3D" parent="Hint"]
+[node name="Label3D2" type="Label3D" parent="Hint" unique_id=1420246296]
 visibility_range_end = 70.95
 billboard = 1
 shaded = true
@@ -242,10 +256,32 @@ outline_render_priority = -6
 text = "[E]   Interact"
 outline_size = 15
 
-[node name="SpotLight3D" type="SpotLight3D" parent="."]
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1832946549]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 3, 0)
 light_color = Color(0.51766974, 0.8251632, 0.30149937, 1)
 light_energy = 3.496
 light_bake_mode = 0
 spot_range = 6.454
 spot_angle = 47.68
+
+[node name="HintR" type="Node3D" parent="." unique_id=568442433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3915757, 0)
+
+[node name="Label3D2" type="Label3D" parent="HintR" unique_id=1180151625]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7070181, 0)
+visibility_range_end = 70.95
+billboard = 1
+no_depth_test = true
+texture_filter = 4
+outline_render_priority = -6
+text = "[E]  Sleep (hold)
+"
+outline_size = 15
+
+[node name="RProgress" type="MeshInstance3D" parent="HintR" unique_id=141828681]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.636263, 0)
+top_level = true
+transparency = 0.24
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("QuadMesh_d5ptw")

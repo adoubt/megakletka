@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://xhppn74ioulx"]
+[gd_scene format=3 uid="uid://xhppn74ioulx"]
 
 [ext_resource type="Shader" uid="uid://dn5feoc5p3lc4" path="res://assets/Materials/circle_shader.tres" id="1_vsr1u"]
 
@@ -31,14 +31,14 @@ top_radius = 1.5
 bottom_radius = 1.5
 height = 0.3
 
-[node name="AOE" type="Node3D"]
+[node name="AOE" type="Node3D" unique_id=1070788769]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=66681264]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 0)
 material_override = SubResource("ShaderMaterial_otspj")
 mesh = SubResource("CylinderMesh_0bwja")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=250073894]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 0)
 material_override = SubResource("ShaderMaterial_vsr1u")
 mesh = SubResource("CylinderMesh_fxaub")

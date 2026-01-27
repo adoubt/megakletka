@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://citwkgeuw7oui"]
+[gd_scene format=3 uid="uid://citwkgeuw7oui"]
 
 [ext_resource type="Texture2D" uid="uid://cr4xsfmob0q10" path="res://assets/pics/dev_texture.png" id="1_c3sys"]
 
@@ -13,8 +13,8 @@ uv1_triplanar = true
 disable_receive_shadows = true
 
 [sub_resource type="SphereMesh" id="SphereMesh_rlo7i"]
-radius = 0.25
-height = 0.4
+radius = 1.0
+height = 1.6
 radial_segments = 5
 rings = 5
 
@@ -22,20 +22,21 @@ rings = 5
 albedo_color = Color(0, 2.51, 2.65, 1)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_65dl7"]
-lightmap_size_hint = Vector2i(5, 4)
+lightmap_size_hint = Vector2i(14, 10)
 material = SubResource("StandardMaterial3D_c3sys")
 add_uv2 = true
-radius = 0.1
-height = 0.3
+radius = 0.4
+height = 1.2
 radial_segments = 5
 rings = 1
 
-[node name="AbobaWithIceShard" type="MeshInstance3D"]
+[node name="AbobaWithIceShard" type="MeshInstance3D" unique_id=183877553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.018769383)
 material_override = SubResource("StandardMaterial3D_8kyru")
 mesh = SubResource("SphereMesh_rlo7i")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.04269637, 0.10326666)
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=371218699]
+transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.21662326, 0.5850455)
 mesh = SubResource("CapsuleMesh_65dl7")
 skeleton = NodePath("../../..")

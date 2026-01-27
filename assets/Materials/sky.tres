@@ -1,4 +1,4 @@
-[gd_resource type="Sky" load_steps=11 format=3 uid="uid://chle3jp3mirl1"]
+[gd_resource type="Sky" format=3 uid="uid://chle3jp3mirl1"]
 
 [ext_resource type="Shader" uid="uid://o3sk84snka5c" path="res://assets/Shaders/sky_shader.gdshader" id="1_yx6jq"]
 [ext_resource type="Texture2D" uid="uid://dsxmxbelw60bh" path="res://assets/shader_pics/white-lens-flare-11552154625amxuji8fmt.jpg" id="3_almpf"]

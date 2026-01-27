@@ -1,12 +1,13 @@
 
 extends Control
-
+var has_upgrade:bool =false
 const ANIMATION_DURATION: float = 0.7
 var offer_id:int = -1
-var has_upgrade: bool = false
+
 @onready var fps_label: Label = $HUD/VBoxContainer/Control/FPS
 
 @onready var dayboard_panel:= $HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel
+@onready var current_day: Label = $HUD/VBoxContainer/Header/VBoxContainer/CurrentDay
 
 # === HP ===
 @export var min_hp: float = 0.0
@@ -22,10 +23,10 @@ var has_upgrade: bool = false
 @export var max_xp: float = 100.0
 @export var current_xp: float = 0.0:
 	set = set_current_xp
-@onready var current_xp_texture: ColorRect = $HUD/VBoxContainer/Header/CurrentXP
-@onready var current_xp_label: Label = $HUD/VBoxContainer/Header/MarginContainer/CurrentXPLabel
+@onready var current_xp_texture: ColorRect = $HUD/VBoxContainer/Footer/HBoxContainer/Level/CurrentXP
+@onready var current_xp_label: Label = $HUD/VBoxContainer/Footer/HBoxContainer/Level/MarginContainer/CurrentXPLabel
 @onready var xp_shader: ShaderMaterial 
-@onready var current_level: Label = $HUD/VBoxContainer/Header/CurrentLevel
+@onready var current_level: Label = $HUD/VBoxContainer/Footer/HBoxContainer/Level/CurrentLevel
 
 # === Technical ===
 var _tween: Tween
@@ -106,10 +107,13 @@ func get_tween() -> Tween:
 	
 	
 func update_dayboard(data: Array):
-	var current_day: int
+	var current_day: int = -1
 	var day_index: int = 0 
 	for day in data:
-		if day.current: current_day = day_index
+		if day.current:
+			current_day = day_index
 			
 	pass
 	
+func set_current_day(value:int) -> void:
+	current_day.text = "Day " + str(value)

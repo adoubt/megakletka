@@ -3,7 +3,7 @@ class_name DamagePopupSystem
 
 # Настройки попапа
 var rise_speed: float = 0.6
-var scale_factor: float = 0.02
+const SCALE_FACTOR: float = 0.02
 
 
 func update(delta: float) -> void:
@@ -32,8 +32,10 @@ func update(delta: float) -> void:
 			var render = cs.get_component(e_id, "RenderComponent")
 			if render and render.instance:
 				# Масштаб пропорционально урону
-				var scale = 1.0 + popup.value * scale_factor
-				render.instance.scale = Vector3.ONE * scale * lifetime.time_left/0.8
+				
+				var scale = 1.0 + popup.value * SCALE_FACTOR * lifetime.time_left/0.8
+				cs.add_component(e_id, "ScaleRequestComponent", ScaleRequestComponent.new(scale))
+				 
 				
 				# Цвет по типу урона
 				var color = Color(0.543, 0.0, 0.1, 1.0)

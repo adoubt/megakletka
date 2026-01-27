@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=8 format=3 uid="uid://dwiow4n4m4d3u"]
+[gd_resource type="VisualShader" format=3 uid="uid://dwiow4n4m4d3u"]
 
 [ext_resource type="Texture2D" uid="uid://ynxt237srljg" path="res://assets/shader_pics/blurs 1.png" id="1_gypwc"]
 
@@ -26,24 +26,6 @@ default_input_values = [0, Vector2(0, 0)]
 op_type = 0
 
 [resource]
-code = "shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx;
-
-uniform sampler2D tex_vtx_3 : hint_normal;
-
-
-
-void vertex() {
-// Texture2D:3
-	vec4 n_out3p0 = texture(tex_vtx_3, UV);
-
-
-// Output:0
-	COLOR.a = n_out3p0.x;
-
-
-}
-"
 nodes/vertex/0/position = Vector2(780, 160)
 nodes/vertex/3/node = SubResource("VisualShaderNodeTexture_vowdk")
 nodes/vertex/3/position = Vector2(200, 540)

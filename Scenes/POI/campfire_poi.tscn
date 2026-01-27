@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://wgwpug4g8rv8"]
+[gd_scene format=3 uid="uid://wgwpug4g8rv8"]
 
 [ext_resource type="Script" uid="uid://dyv66n3a3fshe" path="res://scripts/objects/poi.gd" id="1_8qyrm"]
 [ext_resource type="PackedScene" uid="uid://difk87vdakb8o" path="res://Scenes/Objects/campfire_logs.tscn" id="1_rwyyc"]
@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://v3ey6gtm1at" path="res://assets/shader_pics/toppng.com-smoke-effect-png-photo-edting-smoke-cloud-transparent-900x489.png" id="4_kw6ck"]
 [ext_resource type="Shader" uid="uid://cq7w71cvsqt2j" path="res://assets/Shaders/campfire/campfire2.tres" id="5_qb3hq"]
 [ext_resource type="Texture2D" uid="uid://bhns03k4m0nhr" path="res://assets/shader_pics/T_VFX_Flare_251.jpg" id="6_qjumg"]
+[ext_resource type="Shader" uid="uid://dn5feoc5p3lc4" path="res://assets/Materials/circle_shader.tres" id="8_weewd"]
+[ext_resource type="Shader" uid="uid://ck8u3vn741byu" path="res://assets/Shaders/r_progress.gdshader" id="9_fjto3"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_no8uq"]
 noise_type = 0
@@ -111,18 +113,160 @@ turbulence_noise_scale = 5.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_0rewv"]
 
-[node name="CampFire" type="Node3D"]
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_weewd"]
+
+[sub_resource type="Gradient" id="Gradient_iwv1w"]
+offsets = PackedFloat32Array(0.32971016, 0.5036232, 0.6884058, 0.8115942, 0.8876812, 0.9782609)
+colors = PackedColorArray(0.043039158, 0.04303915, 0.04303915, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vybsq"]
+gradient = SubResource("Gradient_iwv1w")
+fill_from = Vector2(1, 1)
+fill_to = Vector2(0.99572647, 0)
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_fjto3"]
+output_port_for_preview = 0
+texture = SubResource("GradientTexture2D_vybsq")
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_687ab"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_262gu"]
+
+[sub_resource type="Gradient" id="Gradient_u71ha"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.5072464, 0.51086956, 0.54347825)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yxlqr"]
+gradient = SubResource("Gradient_u71ha")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_ec132"]
+texture = SubResource("GradientTexture2D_yxlqr")
+texture_type = 1
+
+[sub_resource type="Gradient" id="Gradient_lnyee"]
+offsets = PackedFloat32Array(0, 0.5289855, 0.5615942, 0.59782606, 0.65217394, 0.6956522, 0.71014494, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1, 0.42023903, 0.42023903, 0.42023903, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 0.75, 0.75, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pipvb"]
+gradient = SubResource("Gradient_lnyee")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_5nfpl"]
+output_port_for_preview = 1
+expanded_output_ports = [0]
+texture = SubResource("GradientTexture2D_pipvb")
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeUVFunc" id="VisualShaderNodeUVFunc_f4gvp"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_cj8kx"]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeVec2Parameter" id="VisualShaderNodeVec2Parameter_60c44"]
+parameter_name = "Speed"
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_50w1j"]
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0, 0)]
+op_type = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_qpp0c"]
+parameter_name = "ColorParameter"
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_mscji"]
+parameter_name = "Extra_Opacity"
+hint = 2
+step = 0.01
+
+[sub_resource type="VisualShader" id="VisualShader_lka6s"]
+flags/unshaded = true
+nodes/vertex/0/position = Vector2(720, 140)
+nodes/fragment/0/position = Vector2(1020, 80)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_5nfpl")
+nodes/fragment/2/position = Vector2(-160, 240)
+nodes/fragment/3/node = SubResource("VisualShaderNodeUVFunc_f4gvp")
+nodes/fragment/3/position = Vector2(-440, 240)
+nodes/fragment/4/node = SubResource("VisualShaderNodeInput_cj8kx")
+nodes/fragment/4/position = Vector2(-920, 300)
+nodes/fragment/6/node = SubResource("VisualShaderNodeVec2Parameter_60c44")
+nodes/fragment/6/position = Vector2(-920, 500)
+nodes/fragment/7/node = SubResource("VisualShaderNodeVectorOp_50w1j")
+nodes/fragment/7/position = Vector2(-640, 368)
+nodes/fragment/8/node = SubResource("VisualShaderNodeColorParameter_qpp0c")
+nodes/fragment/8/position = Vector2(60, -100)
+nodes/fragment/9/node = SubResource("VisualShaderNodeFloatParameter_mscji")
+nodes/fragment/9/position = Vector2(-140, 800)
+nodes/fragment/10/node = SubResource("VisualShaderNodeFloatOp_weewd")
+nodes/fragment/10/position = Vector2(140, 400)
+nodes/fragment/11/node = SubResource("VisualShaderNodeTexture_fjto3")
+nodes/fragment/11/position = Vector2(460, 1180)
+nodes/fragment/12/node = SubResource("VisualShaderNodeFloatOp_687ab")
+nodes/fragment/12/position = Vector2(660, 760)
+nodes/fragment/14/node = SubResource("VisualShaderNodeFloatOp_262gu")
+nodes/fragment/14/position = Vector2(360, 580)
+nodes/fragment/15/node = SubResource("VisualShaderNodeTexture_ec132")
+nodes/fragment/15/position = Vector2(100, 1060)
+nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 4, 0, 7, 0, 6, 0, 7, 1, 7, 0, 3, 2, 8, 0, 0, 0, 2, 1, 10, 1, 9, 0, 10, 0, 12, 0, 0, 1, 14, 0, 12, 0, 10, 0, 14, 0, 11, 0, 12, 1, 15, 0, 14, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fjto3"]
+render_priority = 0
+shader = SubResource("VisualShader_lka6s")
+shader_parameter/ColorParameter = Color(1, 0.5137255, 0, 1)
+shader_parameter/Extra_Opacity = 0.00999999977648
+shader_parameter/Speed = Vector2(0, 0.12)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_687ab"]
+lightmap_size_hint = Vector2i(159, 57)
+top_radius = 5.0
+bottom_radius = 10.0
+height = 10.0
+radial_segments = 20
+cap_top = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_262gu"]
+render_priority = 0
+shader = ExtResource("8_weewd")
+shader_parameter/ColorParameter = Color(2.7893052, 0, 0.6853492, 1)
+shader_parameter/Extra_Opacity = 0.0
+shader_parameter/Speed = Vector2(0, 0.1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ec132"]
+lightmap_size_hint = Vector2i(347, 124)
+flip_faces = true
+top_radius = 11.0
+bottom_radius = 10.0
+radial_segments = 28
+cap_top = false
+cap_bottom = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y5hso"]
+render_priority = 0
+shader = ExtResource("9_fjto3")
+shader_parameter/progress = 0.4350000206625
+shader_parameter/inner_radius = 0.6170000293075
+shader_parameter/outer_radius = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_fjto3"]
+lightmap_size_hint = Vector2i(3, 3)
+material = SubResource("ShaderMaterial_y5hso")
+flip_faces = true
+size = Vector2(0.25, 0.25)
+
+[node name="CampFire" type="Node3D" unique_id=1299806925]
 script = ExtResource("1_8qyrm")
 
-[node name="logs" type="Node3D" parent="."]
+[node name="logs" type="Node3D" parent="." unique_id=1931071797]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.135, 0)
 
-[node name="Sketchfab_Scene" parent="logs" instance=ExtResource("1_rwyyc")]
+[node name="Sketchfab_Scene" parent="logs" unique_id=671100962 instance=ExtResource("1_rwyyc")]
 
-[node name="fire" type="Node3D" parent="."]
+[node name="fire" type="Node3D" parent="." unique_id=182817902]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41207004, -0.18065152)
 
-[node name="StaticFlame" type="GPUParticles3D" parent="fire"]
+[node name="StaticFlame" type="GPUParticles3D" parent="fire" unique_id=791409655]
 transform = Transform3D(0.245, 0, 0, 0, 0.245, 0, 0, 0, 0.245, 0, 0.17632943, 0)
 material_override = SubResource("ShaderMaterial_mw62k")
 amount = 2
@@ -132,19 +276,19 @@ draw_order = 3
 process_material = SubResource("ParticleProcessMaterial_bigvi")
 draw_pass_1 = SubResource("QuadMesh_o6phn")
 
-[node name="Flame" type="GPUParticles3D" parent="fire"]
+[node name="Flame" type="GPUParticles3D" parent="fire" unique_id=943420631]
 material_override = SubResource("ShaderMaterial_s7wx7")
 process_material = SubResource("ParticleProcessMaterial_38yw6")
 draw_pass_1 = SubResource("QuadMesh_1plvg")
 
-[node name="Smoke" type="GPUParticles3D" parent="fire"]
+[node name="Smoke" type="GPUParticles3D" parent="fire" unique_id=1161936709]
 material_override = SubResource("ShaderMaterial_s7wx7")
-amount = 15
-lifetime = 1.5
+amount = 65
+lifetime = 7.93
 process_material = SubResource("ParticleProcessMaterial_ek8hu")
 draw_pass_1 = SubResource("QuadMesh_1plvg")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="fire"]
+[node name="GPUParticles3D" type="GPUParticles3D" parent="fire" unique_id=1784619088]
 sorting_offset = 1.0
 material_override = SubResource("ShaderMaterial_yxn4k")
 amount = 30
@@ -152,11 +296,10 @@ lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_2vygo")
 draw_pass_1 = SubResource("QuadMesh_0rewv")
 
-[node name="Hint" type="Node3D" parent="."]
+[node name="Hint" type="Node3D" parent="." unique_id=14646282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.524246, 0)
-visible = false
 
-[node name="Label3D2" type="Label3D" parent="Hint"]
+[node name="Label3D2" type="Label3D" parent="Hint" unique_id=844766973]
 visibility_range_end = 70.95
 billboard = 1
 no_depth_test = true
@@ -165,4 +308,42 @@ outline_render_priority = -6
 text = "[E]   Interact"
 outline_size = 15
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+[node name="Zone" type="Node3D" parent="." unique_id=1548298294]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Zone" unique_id=658338693]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4737144, 0)
+material_override = SubResource("ShaderMaterial_fjto3")
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("CylinderMesh_687ab")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Zone" unique_id=1095980407]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 0)
+material_override = SubResource("ShaderMaterial_262gu")
+mesh = SubResource("CylinderMesh_ec132")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=758556786]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+light_color = Color(0.99215686, 0.39215687, 0, 1)
+
+[node name="HintR" type="Node3D" parent="." unique_id=1535351645]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3915757, 0)
+
+[node name="Label3D2" type="Label3D" parent="HintR" unique_id=580549639]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7070181, 0)
+visibility_range_end = 70.95
+billboard = 1
+no_depth_test = true
+texture_filter = 4
+outline_render_priority = -6
+text = "[E]  Sleep (hold)
+"
+outline_size = 15
+
+[node name="RProgress" type="MeshInstance3D" parent="HintR" unique_id=75896316]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.636263, 0)
+top_level = true
+transparency = 0.24
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("QuadMesh_fjto3")

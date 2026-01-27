@@ -226,10 +226,10 @@ func play_spatial_loop(
 	max_distance: float = 20.0
 ) -> void:
 	if spatial_loops.has(key):
-		var player = spatial_loops[key]
-		player.global_position = _position
-		if not player.playing:
-			player.play()
+		var _player = spatial_loops[key]
+		_player.global_position = _position
+		if not _player.playing:
+			_player.play()
 		return
 
 	var path = DatabaseManager.db.sound_configs["diegetic"]["persistent"].get(sound_name, null)
@@ -238,6 +238,7 @@ func play_spatial_loop(
 		return
 
 	var player := AudioStreamPlayer3D.new()
+	add_child(player)
 	player.stream = load(path)
 	player.stream.loop = true
 	player.volume_db = volume_db
@@ -245,7 +246,7 @@ func play_spatial_loop(
 	player.max_distance = max_distance
 	player.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_DISTANCE
 
-	add_child(player)
+	
 	player.play()
 	spatial_loops[key] = player
 
@@ -260,9 +261,9 @@ func stop_spatial_loop(key: String) -> void:
 
 	spatial_loops.erase(key)
 ## Useless method
-func update_spatial_loop_position(key: String, position: Vector3) -> void:
+func update_spatial_loop_position(key: String, _position: Vector3) -> void:
 	if spatial_loops.has(key):
-		spatial_loops[key].global_position = position
+		spatial_loops[key].global_position = _position
 
 func _play_path(
 	path: String,
@@ -272,6 +273,7 @@ func _play_path(
 	max_distance: float
 ) -> void:
 	var player := AudioStreamPlayer3D.new()
+	add_child(player)
 	player.stream = load(path)
 	player.global_transform.origin = _position
 	player.volume_db = volume_db
@@ -279,7 +281,7 @@ func _play_path(
 	player.max_distance = max_distance
 	player.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_DISTANCE
 
-	add_child(player)
+	
 	player.play()
 	dynamic_sources.append(player)
 	player.finished.connect(_on_dynamic_finished.bind(player))
@@ -366,11 +368,12 @@ func play_music_with_fallback(
 		return
 
 	var player := AudioStreamPlayer.new()
+	add_child(player)
 	player.stream = load(path)
 	player.stream.loop = loop
 	player.volume_db = volume_db
 
-	add_child(player)
+	
 	player.play()
 
 	music_players[primary_key] = player

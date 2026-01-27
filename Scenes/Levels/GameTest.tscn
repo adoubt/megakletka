@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://bkfn061oy0fu0"]
+[gd_scene format=4 uid="uid://bkfn061oy0fu0"]
 
 [ext_resource type="Environment" uid="uid://f5b0km3n8yim" path="res://assets/Materials/night_sky.tres" id="1_rfiin"]
 [ext_resource type="PackedScene" uid="uid://dxtmay68ca301" path="res://UI/hud.tscn" id="4_3n25w"]
@@ -95,17 +95,17 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ypt82")
 
-[node name="GameTest" type="Node3D"]
+[node name="GameTest" type="Node3D" unique_id=830549638]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2065791118]
 environment = ExtResource("1_rfiin")
 
-[node name="HUDManager" parent="." instance=ExtResource("4_3n25w")]
+[node name="HUDManager" parent="." unique_id=1488260608 instance=ExtResource("4_3n25w")]
 visible = false
 
-[node name="GameManager" parent="." instance=ExtResource("10_yblsu")]
+[node name="GameManager" parent="." unique_id=1428799922 instance=ExtResource("10_yblsu")]
 
-[node name="Floor" type="CSGBox3D" parent="."]
+[node name="Floor" type="CSGBox3D" parent="." unique_id=303421348]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 visible = false
 operation = 1
@@ -115,89 +115,89 @@ collision_priority = 0.1
 size = Vector3(150, 1, 150)
 material = SubResource("StandardMaterial3D_ldlt8")
 
-[node name="Dark Circus DLC - Environment (Full)_Wooden Carriage_0" type="MeshInstance3D" parent="Floor"]
+[node name="Dark Circus DLC - Environment (Full)_Wooden Carriage_0" type="MeshInstance3D" parent="Floor" unique_id=1684916353]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.079, 0.5101427, -2.347)
 mesh = SubResource("ArrayMesh_fanm4")
 skeleton = NodePath("")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=95135005]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1906661180]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 65, 70)
 shape = SubResource("BoxShape3D_yblsu")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D" unique_id=109538154]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 65, -70)
 shape = SubResource("BoxShape3D_yblsu")
 
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="StaticBody3D" unique_id=1513397522]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 70, 65, 0)
 shape = SubResource("BoxShape3D_yblsu")
 
-[node name="CollisionShape3D4" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="StaticBody3D" unique_id=1120838155]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -70, 65, 0)
 shape = SubResource("BoxShape3D_yblsu")
 
-[node name="Trees" type="Node3D" parent="."]
+[node name="Trees" type="Node3D" parent="." unique_id=1320647840]
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_0" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_0" type="MeshInstance3D" parent="Trees" unique_id=168804783]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.598938, 0, 0.020294193)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_11" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_11" type="MeshInstance3D" parent="Trees" unique_id=1094623850]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.598938, 0, 0.020294193)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_1" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_1" type="MeshInstance3D" parent="Trees" unique_id=845097805]
 transform = Transform3D(0.8713937, 0, -0.4905844, 0, 1, 0, 0.4905844, 0, 0.8713937, 26.984215, 0, 33.322)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_2" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_2" type="MeshInstance3D" parent="Trees" unique_id=566467291]
 transform = Transform3D(0.3592151, 0, -0.9332548, 0, 1, 0, 0.9332548, 0, 0.3592151, 8.86184, 0, 33.322)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_3" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_3" type="MeshInstance3D" parent="Trees" unique_id=1193037615]
 transform = Transform3D(-0.26797828, 0, -0.9634249, 0, 1, 0, 0.9634249, 0, -0.26797828, -36.320793, 0, 25.397339)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_4" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_4" type="MeshInstance3D" parent="Trees" unique_id=682254255]
 transform = Transform3D(0.8366496, 0, -0.5477385, 0, 1, 0, 0.5477385, 0, 0.8366496, -36.320793, 0, -28.473913)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_5" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_5" type="MeshInstance3D" parent="Trees" unique_id=553637597]
 transform = Transform3D(0.9985909, 0, 0.053067893, 0, 1, 0, -0.053067893, 0, 0.9985909, -36.320793, 0, -11.738142)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_6" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_6" type="MeshInstance3D" parent="Trees" unique_id=395171579]
 transform = Transform3D(0.9985909, 0, 0.053067893, 0, 1, 0, -0.053067893, 0, 0.9985909, -36.320793, 0, 16.153856)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_7" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_7" type="MeshInstance3D" parent="Trees" unique_id=1465956472]
 transform = Transform3D(0.39556152, 0, -0.9184396, 0, 1, 0, 0.9184396, 0, 0.39556152, -19.68172, 0, -22.103178)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_8" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_8" type="MeshInstance3D" parent="Trees" unique_id=1375484830]
 transform = Transform3D(0.9977328, 0, -0.06730139, 0, 1, 0, 0.06730139, 0, 0.9977328, -9.539492, 0, -32.956726)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_9" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_9" type="MeshInstance3D" parent="Trees" unique_id=1261337700]
 transform = Transform3D(0.3967154, 0, 0.9179418, 0, 1, 0, -0.9179418, 0, 0.3967154, 37.743046, 0, -32.956726)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="Dark Circus DLC - Environment (Full)_Trees_10" type="MeshInstance3D" parent="Trees"]
+[node name="Dark Circus DLC - Environment (Full)_Trees_10" type="MeshInstance3D" parent="Trees" unique_id=611709096]
 transform = Transform3D(-0.71756744, 0, -0.6964892, 0, 1, 0, 0.6964892, 0, -0.71756744, 10.919754, 0, -31.186577)
 mesh = SubResource("ArrayMesh_sxmqd")
 skeleton = NodePath("")
 
-[node name="LevelUpScene" parent="." instance=ExtResource("12_sxmqd")]
+[node name="LevelUpScene" parent="." unique_id=994211900 instance=ExtResource("12_sxmqd")]

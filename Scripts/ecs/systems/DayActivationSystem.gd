@@ -11,20 +11,27 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	db = _db
 	object_pool = _object_pool
 	
-	event_bus.subscribe("day_changed", _activate_poi_on_day)
-	event_bus.subscribe("POI_CREATED", _activate_poi_on_day)
+	event_bus.subscribe("day_changed", _update_day)
+	event_bus.subscribe("POI_CREATED", _update_day)
 	
-func _activate_poi_on_day(data: Dictionary = {}):
+	
+	#event_bus.subscribe("poi_interacted", _sleep)
+	
+func _update_day(_data: Dictionary = {}) ->void:
 	if run_entity ==-1:
 		run_entity = get_entities_with(["RunComponent"])[0]
+	var current_day = cs.get_component(run_entity,"RunComponent").current_day
+	
+	_activate_poi_on_day(current_day, _data)
+	
+func _activate_poi_on_day(current_day:int, _data: Dictionary = {}) ->void:
+	
 		
 	var pois = get_entities_with(["DayIdComponent", "POIComponent"],["DeadComponent"])
-	var days = get_entities_with([
-	"DayComponent"
-	])
 
 
-	var current_day = cs.get_component(run_entity,"RunComponent").current_day
+
+	
 	
 	for poi_id in pois:
 		var day_id = cs.get_component(poi_id, "DayIdComponent").id

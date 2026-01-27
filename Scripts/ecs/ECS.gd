@@ -8,7 +8,7 @@ var object_pool : ObjectPool
 var grid : SpatialGrid
 var event_bus: EventBus
 var db: DataBase
-var debug_collision :bool = true
+var debug_collision :bool = false
 
 var pool_handler: Node
 var groound_handler: Node3D
@@ -39,6 +39,7 @@ func initialize():
 	object_pool = ObjectPool.new(pool_handler)
 	object_pool.prewarm({
 	db.enemy_configs.get("Aboba").scene: 100,
+	db.enemy_configs.get("AbobaWithIceShard").scene: 100,
 	"res://Scenes/shadow.tscn": 300,
 	"res://Scenes/Objects/grave.tscn": 3,
 	"res://Scenes/romb.tscn": 40,
@@ -47,8 +48,8 @@ func initialize():
 	"res://Scenes/Popups/DamagePopup.tscn":50,
 	"res://Scenes/POI/fortune_teller.tscn":3,
 	"res://Scenes/debug_collider.tscn":200 if debug_collision else 0,
-	"res://Scenes/Weapons/Projectiles/enemy_proj.tscn" : 150,
-	"res://Scenes/Weapons/Projectiles/carrot.tscn": 30,
+	"res://Scenes/Weapons/Projectiles/fire_shard.tscn" : 100,
+	"res://Scenes/Weapons/Projectiles/ice_shard.tscn": 100,
 	"res://Scenes/player_camera.tscn" :1,
 	db.vfx_configs.get("base_hit").scene: 50,
 	
@@ -114,15 +115,16 @@ func initialize():
 	system_manager.add_system(LevelUpSelectionSystem.new(entity_manager,component_store,event_bus,))
 	#7. RENDER
 	system_manager.add_system(CameraEffectSystem.new(entity_manager,component_store,event_bus,))
-	
 	system_manager.add_system(LevelUpOfferSystem.new(entity_manager,component_store,event_bus,db))
 	system_manager.add_system(Interactionsystem.new(entity_manager,component_store,event_bus))
 
 	system_manager.add_system(DEVPanelSystem.new(entity_manager, component_store,event_bus, object_pool))
 	
 	system_manager.add_system(HUDSystem.new(entity_manager, component_store,event_bus,))
+	system_manager.add_system(POIInteractionSystem.new(entity_manager, component_store,event_bus,))
 	system_manager.add_system(DayActivationSystem.new(entity_manager, component_store,event_bus, db, object_pool))
 	system_manager.add_system(RenderSystem.new(entity_manager, component_store,event_bus, object_pool))
+	system_manager.add_system(ScaleSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(AudioSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HitFlashSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(LifeTimeSystem.new(entity_manager, component_store,event_bus))

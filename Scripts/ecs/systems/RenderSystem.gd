@@ -42,7 +42,7 @@ func update(_delta: float) -> void:
 
 				# делаем УНИКАЛЬНЫЙ next_pass
 				render.hit_flash_material = FLASH_HIT_MATERIAL.duplicate()
-				
+			cs.add_component(entity_id, "ScaleRequestComponent", ScaleRequestComponent.new())	
 		var target = cs.get_component(entity_id, "MovementIntentComponent")
 		if target:
 			var target_pos = target.direction * 1000
@@ -55,12 +55,7 @@ func update(_delta: float) -> void:
 			render.shadow_instance.visible = true
 			var base_mesh:QuadMesh = render.shadow_instance.mesh
 			render.shadow_instance.mesh = base_mesh.duplicate()
-			
-			var col := cs.get_component(entity_id, "CollisionComponent")
-			if col:
-				render.shadow_instance.mesh.size = Vector2(col.radius,col.radius) * 1.2
-			else: 
-				render.shadow_instance.mesh.size = Vector2(0.5,0.5)
+			cs.add_component(entity_id, "ScaleRequestComponent", ScaleRequestComponent.new())
 	
 		_update_shadow(render.shadow_instance, transform, _delta, ground)
 		
@@ -69,8 +64,8 @@ func update(_delta: float) -> void:
 				#continue
 		
 		render.instance.global_position = render.instance.global_position.lerp(transform.position, clamp(_delta * smoothness, 0, 1))
-		#render.instance.scale = render.instance.scale.lerp(render.scale, clamp(_delta * smoothness, 0, 1))
-		render.instance.scale = render.scale
+
+		
 		
 		
 		

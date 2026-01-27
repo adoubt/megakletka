@@ -1,5 +1,5 @@
 [gd_scene format=3 uid="uid://bjdbfjpoxl4ag"]
 
-[node name="PlayerCamera" type="Camera3D"]
+[node name="PlayerCamera" type="Camera3D" unique_id=1097827928]
 current = true
-fov = 105.0
+fov = 85.0

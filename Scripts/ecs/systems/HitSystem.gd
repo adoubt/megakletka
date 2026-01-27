@@ -2,7 +2,7 @@ extends BaseSystem
 class_name HitSystem
 
 
-func update(delta: float):
+func update(_delta: float):
 	var entities = get_entities_with(["HitComponent", "CurrentHpComponent"],["DeadComponent"])
 	for entity_id in entities:
 		var hit = cs.get_component(entity_id, "HitComponent")

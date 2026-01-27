@@ -9,8 +9,8 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 
 	event_bus.subscribe("level_up_offer_created", _on_level_up_offer_created)
 	event_bus.subscribe("level_up_panel_toggled", _on_level_up_panel_toggled)
-	
-func update(delta: float) -> void:
+	event_bus.subscribe("day_changed", _on_day_changed)
+func update(_delta: float) -> void:
 	var entities = get_entities_with(["HUDComponent"])
 	for e_id in entities:
 		var current_hp = cs.get_component(e_id,"CurrentHpComponent")
@@ -38,6 +38,8 @@ func _on_level_up_panel_toggled()-> void:
 		else:
 			instance.show_level_up()
 			
-	
+func _on_day_changed(_data: Dictionary = {}) -> void:
+	var current_day = _data.current_day
+	UIManager.hud.set_current_day(current_day)	
 			
 		

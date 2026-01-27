@@ -48,12 +48,9 @@ func _compute_stats(owner_id: int, weapon_id: int) -> Dictionary:
 
 	data["damage"] = cs.get_component(owner_id, "DamageComponent").final_value * cs.get_component(weapon_id, "DamageComponent").final_value
 
-	comp = cs.get_component(owner_id, "ProjectileRadiusComponent")
-	var owner_proj_radius: float = comp.final_value if comp else 1.0
-	comp = cs.get_component(weapon_id, "ProjectileRadiusComponent")
-	var weapon_proj_radius: float = comp.final_value if comp else 1.0
-	if owner_proj_radius != 1.0 or weapon_proj_radius != 1.0:
-		data["projectile_radius"] = owner_proj_radius * weapon_proj_radius
+	
+	data["projectile_radius"] = (cs.get_component(owner_id, "ProjectileRadiusComponent").final_value * 
+	cs.get_component(weapon_id, "ProjectileRadiusComponent").final_value)
 
 	comp = cs.get_component(owner_id, "DurationComponent")
 	var owner_duration: float = comp.final_value if comp else 1.0

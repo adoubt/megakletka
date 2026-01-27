@@ -14,6 +14,7 @@ func update(_delta: float) -> void:
 
 		match offer.chosen_index:
 			-1:
+				UIManager.hud.has_upgrade = true
 				continue  # Waiting for the choise
 			-2:
 				# Reroll
@@ -24,7 +25,7 @@ func update(_delta: float) -> void:
 				var level = cs.get_component(offer.owner_id, "LevelComponent")
 				if level:
 					level.skill_points -= 1
-				
+				UIManager.hud.has_upgrade = false
 				
 				event_bus.emit("create_item", [{ "item_name": offer.choices[offer.chosen_index],
 				"owner_id": offer.owner_id

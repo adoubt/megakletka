@@ -13,4 +13,4 @@ func update(_delta):
 		var render = cs.get_component(ir.target_id, "RenderComponent")
 		if render.instance:
 			render.instance.show_hint()
-	
+			render.instance.show_hint_r()

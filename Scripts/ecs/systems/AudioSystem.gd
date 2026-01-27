@@ -42,7 +42,7 @@ func _on_enemy_hitted(data: Dictionary = {}) -> void:
 		-20.0
 	)
 	
-func _on_level_up(data: Dictionary = {}):
+func _on_level_up(_data: Dictionary = {}):
 	var _sounds = [
 		
 		"level_up"
@@ -52,20 +52,20 @@ func _on_level_up(data: Dictionary = {}):
 	var chosen_sound = _sounds[rand_index]
 	AudioManager.play_ui_sound(chosen_sound)
 	
-func _on_campfire_created(data: Dictionary = {})-> void:
+func _on_campfire_created(_data: Dictionary = {})-> void:
 	
 	AudioManager.play_spatial_loop("campfire0", "campfire_crackling", Vector3.ZERO, 0.0, 50.0)
 
-func _on_combat_started(data: Dictionary = {}) -> void:
+func _on_combat_started(_data: Dictionary = {}) -> void:
 	AudioManager.play_music_delayed("combat_started_signal",0.0,0.0,false)
 	
 	AudioManager.play_music_delayed("combat_started",2.0,0.0,true)
 	
 	
-func _on_combat_completed(data: Dictionary = {}) -> void:
+func _on_combat_completed(_data: Dictionary = {}) -> void:
 	AudioManager.play_music_delayed("combat_completed_signal",0.0,0.0,false)
 	
 	AudioManager.play_music_delayed("combat_completed",4.0,0.0,true)
 	
-func _on_day_changed(data: Dictionary = {}) -> void:
+func _on_day_changed(_data: Dictionary = {}) -> void:
 	AudioManager.play_music_delayed("day_changed",0.0,0.0,false)

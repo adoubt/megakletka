@@ -29,7 +29,7 @@ func _create_projectile(data_array: Array) -> void:
 		var entity_id := em.create_entity()
 		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(data.projectile_speed))
 		
-		cs.add_component(entity_id, "TransformComponent",TransformComponent.new(data.position, data.direction* data.projectile_speed))
+		cs.add_component(entity_id, "TransformComponent",TransformComponent.new(data.position))
 		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 		var proj = ProjectileComponent.new()
 		proj.owner_id = data.owner_id
@@ -63,7 +63,7 @@ func _create_projectile(data_array: Array) -> void:
 			
 		if data.has("render_path") and data.render_path != "":
 			cs.add_component(entity_id, "RenderComponent",
-				RenderComponent.new(data.render_path, data.render_shadow,	data.get("render_scale", Vector3.ONE)))
+				RenderComponent.new(data.render_path, data.render_shadow))
 		cs.add_component(entity_id, "ProjectileComponent", proj)
 
 func _create_poi(data_array: Array) -> void:
@@ -197,6 +197,7 @@ func _create_char(data_array: Array):
 			event_bus.emit("create_slot", [{"owner_id": entity_id}])
 		if data.has("camera") and data.camera: 
 			event_bus.emit("create_camera", [{"owner_id": entity_id}])	
+		
 #TODO create new rombs for biggef xp_value, get this from db	
 func _create_xp(data_array: Array):
 	for data in data_array:
