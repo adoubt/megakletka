@@ -25,4 +25,3 @@ func update(_delta: float):
 			if xp_reward:
 				event_bus.emit("create_xp",[{"e_id": e_id,"position": pos, "xp_value": xp_reward.final_value }])
 				
-		print(e_id, " just died")

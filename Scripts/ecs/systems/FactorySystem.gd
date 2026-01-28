@@ -115,7 +115,7 @@ func _create_enemy(data_array: Array) -> void:
 		cs.add_component(entity_id, "CurrentHpComponent",CurrentHpComponent.new(e_data["hp"]))
 		cs.add_component(entity_id, "CurrentHpRatioComponent", CurrentHpRatioComponent.new())
 		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"], true))
-	
+		cs.add_component(entity_id, "EnemyBudgetComponent", EnemyBudgetComponent.new(e_data["budget"]))
 		cs.add_component(entity_id, "MoveSpeedComponent",MoveSpeedComponent.new(e_data.movespeed))
 		cs.add_component(entity_id, "MovementIntentComponent", MovementIntentComponent.new())
 

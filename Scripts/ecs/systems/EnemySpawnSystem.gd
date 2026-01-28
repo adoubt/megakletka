@@ -11,9 +11,9 @@ var spawning := false
 var spawn_interval := 0.5      
 var spawn_timer := 0.0
 
-const MAX_ALIVE_ENEMIES := 50
-const BATTERY_BUDGET_RATIO := 1   # 50% бюджета
-const MAX_PER_TICK := 1            # защита от лагов
+const MAX_ALIVE_ENEMIES := 20
+const BATTERY_BUDGET_RATIO :float= 0.1   # 100% бюджета
+const MAX_PER_TICK := 5            
 
 const WORLD_SIZE := Vector2(75.0, 75.0)
 const MAX_SPAWN_RANGE :float = 15.0
@@ -104,10 +104,10 @@ func _try_spawn() -> void:
 			"enemy_name": enemy_name,
 			"position": _get_spawn_position()
 		})
-
+		
 	if not enemies_to_create.is_empty():
 		event_bus.emit("create_enemy", enemies_to_create)
-
+		
 
 # ===== СОБЫТИЯ =====
 

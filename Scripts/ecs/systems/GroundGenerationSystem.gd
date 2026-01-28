@@ -29,7 +29,6 @@ func _on_day_changed(data: Dictionary = {}):
 		if day_index == current_day:
 			day_comp = cs.get_component(d, "DayComponent")
 			break
-
 	ground.generate(
 		_seed.seed + data.current_day, 
 		day_comp.height_amp,

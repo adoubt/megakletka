@@ -59,6 +59,7 @@ func initialize():
 	
 	#1 INIT / SPAWN
 	system_manager.add_system(RunInitSystem.new(entity_manager, component_store,event_bus, db))
+	system_manager.add_system(DaySystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(GroundGenerationSystem.new(entity_manager, component_store,event_bus,groound_handler))
 	system_manager.add_system(InputSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(JumpSystem.new(entity_manager, component_store,event_bus))
@@ -81,7 +82,7 @@ func initialize():
 	system_manager.add_system(TargetSystem.new(entity_manager, component_store,event_bus))
 	
 	system_manager.add_system(FireSystem.new(entity_manager, component_store,event_bus))
-	
+	#system_maanger.add_system(EconomySystem.new(entity_manager, component_store,event_bus))
 	#system_manager.add_system(MovementIntentSystem.new(entity_manager, component_store,event_bus))
 	
 	#3. PROJECTILES LOGIC

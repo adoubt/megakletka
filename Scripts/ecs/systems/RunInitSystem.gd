@@ -78,7 +78,7 @@ func _init_days(run_seed: int) -> void:
 			cs.add_component(day_entity, "DayIdComponent", DayIdComponent.new(day_index + 1))
 			cs.add_component(day_entity, "AnteComponent", AnteComponent.new(ante))
 			cs.add_component(day_entity, "CombatStateComponent", CombatStateComponent.new())
-
+			cs.add_component(day_entity, "CombatRewardComponent", CombatRewardComponent.new(6.0))
 
 			# ---------- BUDGET ----------
 			var budget: int = int(

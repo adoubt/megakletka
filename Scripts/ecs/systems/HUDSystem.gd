@@ -10,6 +10,14 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 	event_bus.subscribe("level_up_offer_created", _on_level_up_offer_created)
 	event_bus.subscribe("level_up_panel_toggled", _on_level_up_panel_toggled)
 	event_bus.subscribe("day_changed", _on_day_changed)
+	event_bus.subscribe("phase_changed", _on_phase_changed)
+	
+	event_bus.subscribe("combat_started",_on_combat_started)
+	event_bus.subscribe("combat_completed",_on_combat_completed)
+	event_bus.subscribe("budget_changed",_on_budget_changed)
+	
+	
+## TODO переделать под ивент из системы
 func update(_delta: float) -> void:
 	var entities = get_entities_with(["HUDComponent"])
 	for e_id in entities:
@@ -38,8 +46,21 @@ func _on_level_up_panel_toggled()-> void:
 		else:
 			instance.show_level_up()
 			
-func _on_day_changed(_data: Dictionary = {}) -> void:
-	var current_day = _data.current_day
+func _on_day_changed(data: Dictionary = {}) -> void:
+	var current_day = data.current_day
 	UIManager.hud.set_current_day(current_day)	
 			
-		
+func _on_phase_changed(data: Dictionary = {}) -> void:		
+	var current_phase = data.current_phase
+	UIManager.hud.set_current_phase(current_phase)	
+	
+func _on_combat_started(_data: Dictionary = {}) -> void:	
+	UIManager.hud.show_combat_progress()
+	UIManager.hud.set_current_combat_progress(1.0)
+	
+func _on_combat_completed(_data: Dictionary = {}) -> void:	
+	UIManager.hud.hide_combat_progress()
+
+func _on_budget_changed(data: Dictionary = {}) -> void:
+	var progress: float = float(data.alive_budget) / float(data.max_budget)
+	UIManager.hud.set_current_combat_progress(progress)

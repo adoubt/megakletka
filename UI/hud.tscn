@@ -1,39 +1,58 @@
 [gd_scene format=3 uid="uid://dxtmay68ca301"]
 
 [ext_resource type="Script" uid="uid://b1g5iaiket2lr" path="res://UI/HUD.gd" id="1_8uiqn"]
+[ext_resource type="Texture2D" uid="uid://c6x4lnffuo2pf" path="res://assets/Hud/BackgroundHP.png" id="2_1ui3w"]
 [ext_resource type="Shader" uid="uid://dprejvyaisqwb" path="res://assets/Materials/hud_current_exp.gdshader" id="3_b1lf8"]
-[ext_resource type="Texture2D" uid="uid://brgymp5obg6sn" path="res://addons/icon.svg" id="3_i0a73"]
-[ext_resource type="Shader" uid="uid://dxopctb7n76ft" path="res://assets/Shaders/upgrade_vfx.gdshader" id="3_pf7ph"]
+[ext_resource type="Texture2D" uid="uid://dbsfwcyp0fnxl" path="res://assets/Hud/CurrentHP.png" id="4_0j753"]
 [ext_resource type="Shader" uid="uid://dbkh0dtt2pwj3" path="res://assets/Materials/hud_current_hp.gdshader" id="4_rnl6m"]
-[ext_resource type="Texture2D" uid="uid://bwytw0ow7mxht" path="res://assets/icons/campfire_logo.png" id="7_i0a73"]
-[ext_resource type="Script" uid="uid://ct6l8id863xcc" path="res://UI/day_board_panel.gd" id="7_pf7ph"]
+[ext_resource type="Texture2D" uid="uid://bgj31h1muposx" path="res://assets/Hud/Sprite-0006.png" id="6_0j753"]
 [ext_resource type="Texture2D" uid="uid://cq2vbq6w0tn64" path="res://assets/Hud/aim2.png" id="8_i0a73"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vs5gg"]
-shader = ExtResource("3_pf7ph")
-shader_parameter/amplitude = 728.0
-shader_parameter/frequency = 1.0
-shader_parameter/light_magnitude = 21.0
-shader_parameter/color_spread = 180.0
-shader_parameter/light_distance = 0.53999998792992
-shader_parameter/speed = 0.009977647776509
-shader_parameter/cut_angle = false
-shader_parameter/angle = 87.0
-shader_parameter/yshift = -0.5600000098348801
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rnl6m"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i0a73"]
 shader = ExtResource("4_rnl6m")
 shader_parameter/progress = 1.0
 shader_parameter/progress_tail = 1.0
 shader_parameter/tail_color = Color(1, 1, 1, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_pf7ph"]
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1ui3w"]
 shader = ExtResource("3_b1lf8")
-shader_parameter/progress = 0.0
+shader_parameter/progress = 0.8550000406125
 shader_parameter/progress_tail = 0.0
 shader_parameter/tail_color = Color(0.8980392, 0.827451, 0.7058824, 1)
+
+[sub_resource type="Shader" id="Shader_0j753"]
+code = "shader_type canvas_item;
+
+uniform float progress: hint_range(0.0, 1.0) = 1.0;
+uniform float progress_tail: hint_range(0.0, 1.0) = 1.0;
+uniform vec3 tail_color: source_color = vec3(1.0);
+
+void fragment() {
+	COLOR.a = UV.x> progress_tail ? 0.0 COLOR.a;
+	COLOR.rgb = UV.x >progress && UV.x < progress_tail ?tail_color : COLOR.rgb;
+}
+
+//void light() {
+//	// Called for every pixel for every light affecting the CanvasItem.
+//	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pf7ph"]
+shader = SubResource("Shader_0j753")
+shader_parameter/progress = 1.0
+shader_parameter/progress_tail = 1.0
+shader_parameter/tail_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vs5gg"]
+bg_color = Color(0.104636095, 0.26751766, 0.4217169, 0.8)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0, 0, 0, 0.57254905)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
 
 [node name="HUD" type="Control" unique_id=1150284546]
 layout_mode = 3
@@ -44,20 +63,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_8uiqn")
-
-[node name="UpgradeVFX" type="TextureRect" parent="." unique_id=1556500076]
-visible = false
-material = SubResource("ShaderMaterial_vs5gg")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("3_i0a73")
-expand_mode = 3
-flip_v = true
 
 [node name="HUD" type="MarginContainer" parent="." unique_id=661270111]
 layout_mode = 1
@@ -93,397 +98,253 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CurrentDay" type="Label" parent="HUD/VBoxContainer/Header/VBoxContainer" unique_id=206900506]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Day 1"
-
-[node name="Combat" type="PanelContainer" parent="HUD/VBoxContainer/Header/VBoxContainer" unique_id=1926412957]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Header/VBoxContainer" unique_id=1714926919]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="HUD/VBoxContainer" unique_id=485162996]
+[node name="LeftLine" type="MarginContainer" parent="HUD/VBoxContainer/Header/VBoxContainer/HBoxContainer" unique_id=456943826]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_right = 50
+
+[node name="ColorRect" type="ColorRect" parent="HUD/VBoxContainer/Header/VBoxContainer/HBoxContainer/LeftLine" unique_id=1627685304]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.85490197, 0.85490197, 0.85490197, 0.49019608)
+
+[node name="Control" type="Control" parent="HUD/VBoxContainer/Header/VBoxContainer/HBoxContainer" unique_id=1913827413]
+layout_mode = 2
+
+[node name="CurrentDay" type="Label" parent="HUD/VBoxContainer/Header/VBoxContainer/HBoxContainer/Control" unique_id=206900506]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5058824)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = -4
+theme_override_font_sizes/font_size = 23
+text = "Day 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RightLine" type="MarginContainer" parent="HUD/VBoxContainer/Header/VBoxContainer/HBoxContainer" unique_id=2078102627]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 300
+
+[node name="ColorRect" type="ColorRect" parent="HUD/VBoxContainer/Header/VBoxContainer/HBoxContainer/RightLine" unique_id=2108194131]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.85490197, 0.85490197, 0.85490197, 0.49019608)
+
+[node name="Body" type="Control" parent="HUD/VBoxContainer" unique_id=485162996]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 
-[node name="FPS" type="Label" parent="HUD/VBoxContainer/Control" unique_id=1894283439]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Body" unique_id=1195523311]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
-offset_left = -100.0
-offset_bottom = 39.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftPanel" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer" unique_id=1346636822]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="HP" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel" unique_id=558187113]
+custom_minimum_size = Vector2(200, 25)
+layout_mode = 2
+theme_override_constants/separation = -37
+
+[node name="MarginContainer2" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP" unique_id=1136165463]
+layout_mode = 2
+
+[node name="Background" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer2" unique_id=2077850536]
+layout_mode = 2
+texture = ExtResource("2_1ui3w")
+
+[node name="CurrentHp" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer2" unique_id=1850323699]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_i0a73")
+layout_mode = 2
+texture = ExtResource("4_0j753")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP" unique_id=177107681]
+layout_mode = 2
+
+[node name="CurrentHPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer" unique_id=1462399142]
+unique_name_in_owner = true
+layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 0
-theme_override_colors/font_color = Color(0.7581918, 0.7581918, 0.7581917, 1)
-theme_override_font_sizes/font_size = 26
-text = "FPS 144"
-uppercase = true
-
-[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control" unique_id=985224483]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-
-[node name="LeftPanel" type="HBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer" unique_id=250014718]
-layout_mode = 2
-theme_override_constants/separation = 50
-
-[node name="Control2" type="Control" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel" unique_id=1581237711]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 1
-
-[node name="HP" type="VBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2" unique_id=1003699639]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-
-[node name="Control" type="Control" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP" unique_id=1277498012]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control" unique_id=177107681]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_right = -301.0
-offset_bottom = 30.0
-grow_horizontal = 2
-
-[node name="Control" type="Control" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer" unique_id=2003472640]
-layout_mode = 2
-
-[node name="Background" type="ColorRect" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer/Control" unique_id=1066596633]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.18000486, 0.18000486, 0.18000486, 1)
-
-[node name="CurrentHP" type="ColorRect" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer/Control" unique_id=1356002758]
-material = SubResource("ShaderMaterial_rnl6m")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.72156864, 0.22745098, 0.1764706, 1)
-
-[node name="CurrentHPLabel" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer/Control" unique_id=1462399142]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 3
+theme_override_colors/font_color = Color(1, 1, 1, 0.60784316)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5411765)
 theme_override_constants/shadow_offset_y = 2
-theme_override_constants/outline_size = 3
-theme_override_constants/shadow_outline_size = 1
+theme_override_constants/outline_size = 2
 text = "100 / 100"
-horizontal_alignment = 1
 
-[node name="Control3" type="Control" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel" unique_id=2106726631]
+[node name="ColorRect" type="ColorRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel" unique_id=898614680]
+visible = false
+custom_minimum_size = Vector2(200, 2)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
+color = Color(0.85490197, 0.85490197, 0.85490197, 0.15294118)
 
-[node name="DayBoardPanel" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3" unique_id=788617996]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_top = 70
-script = ExtResource("7_pf7ph")
+[node name="Level" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel" unique_id=1342051532]
+custom_minimum_size = Vector2(200, 25)
+layout_mode = 2
+theme_override_constants/separation = -26
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel" unique_id=1347268252]
+[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level" unique_id=1203382899]
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="DayBoardPanel" type="Control" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer" unique_id=1500798635]
+[node name="Background" type="ColorRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/MarginContainer" unique_id=1460520611]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 1.53
+color = Color(1, 0.7490196, 0.4392157, 0.08235294)
 
-[node name="ColorRect" type="ColorRect" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel" unique_id=460134409]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.30097446, 0.39409754, 0.5842823, 0.3882353)
-
-[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel" unique_id=739117364]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = -0.043378994
-anchor_right = 1.0
-anchor_bottom = 1.043379
-offset_top = 9.5
-offset_bottom = -9.499985
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer" unique_id=1761307233]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer" unique_id=249231255]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Day" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=422603840]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day" unique_id=1256352690]
-layout_mode = 2
-
-[node name="DayTitle" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day/VBoxContainer" unique_id=1920171299]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-text = "Day 1"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day/VBoxContainer" unique_id=676334862]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("7_i0a73")
-
-[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day/VBoxContainer" unique_id=1611788530]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 5
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day/VBoxContainer/MarginContainer" unique_id=243398310]
-layout_mode = 2
-theme_override_constants/separation = 28
-
-[node name="SkipButton" type="Button" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day/VBoxContainer/MarginContainer/HBoxContainer" unique_id=475241339]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Skip:"
-
-[node name="SkipRewardHandler" type="Panel" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1819113478]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TagLabel" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day/VBoxContainer/MarginContainer/HBoxContainer/SkipRewardHandler" unique_id=526605298]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -18.5
-offset_top = -12.0
-offset_right = 18.5
-offset_bottom = 12.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Relic"
-
-[node name="SLEEP" type="Button" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day/VBoxContainer" unique_id=246223217]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Sleep
-"
-
-[node name="Day2" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=976353966]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day2" unique_id=1612351451]
-layout_mode = 2
-
-[node name="DayTitle" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day2/VBoxContainer" unique_id=2080527544]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-text = "Day 1"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day2/VBoxContainer" unique_id=1831999375]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("7_i0a73")
-
-[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day2/VBoxContainer" unique_id=296307785]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 5
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day2/VBoxContainer/MarginContainer" unique_id=1308060355]
-layout_mode = 2
-theme_override_constants/separation = 28
-
-[node name="SkipButton" type="Button" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day2/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1358423689]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Skip:"
-
-[node name="SkipRewardHandler" type="Panel" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day2/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1120175642]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TagLabel" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day2/VBoxContainer/MarginContainer/HBoxContainer/SkipRewardHandler" unique_id=505819831]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -18.5
-offset_top = -12.0
-offset_right = 18.5
-offset_bottom = 12.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Relic"
-
-[node name="SLEEP" type="Button" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day2/VBoxContainer" unique_id=685928474]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Sleep
-"
-
-[node name="Day3" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1366105859]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day3" unique_id=1625960967]
-layout_mode = 2
-
-[node name="DayTitle" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day3/VBoxContainer" unique_id=470267416]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-text = "Day 1"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day3/VBoxContainer" unique_id=1891735649]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("7_i0a73")
-
-[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day3/VBoxContainer" unique_id=1724750412]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 5
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day3/VBoxContainer/MarginContainer" unique_id=1916096643]
-layout_mode = 2
-theme_override_constants/separation = 28
-
-[node name="SkipButton" type="Button" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day3/VBoxContainer/MarginContainer/HBoxContainer" unique_id=957512224]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Skip:"
-
-[node name="SkipRewardHandler" type="Panel" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day3/VBoxContainer/MarginContainer/HBoxContainer" unique_id=491871818]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TagLabel" type="Label" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day3/VBoxContainer/MarginContainer/HBoxContainer/SkipRewardHandler" unique_id=568107980]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -18.5
-offset_top = -12.0
-offset_right = 18.5
-offset_bottom = 12.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Relic"
-
-[node name="SLEEP" type="Button" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer/DayBoardPanel/MarginContainer/VBoxContainer/HBoxContainer/Day3/VBoxContainer" unique_id=701463569]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Sleep
-"
-
-[node name="Control" type="Control" parent="HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel/VBoxContainer" unique_id=2115403389]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Footer" type="Control" parent="HUD/VBoxContainer" unique_id=372436128]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Footer" unique_id=1251992845]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Level" type="PanelContainer" parent="HUD/VBoxContainer/Footer/HBoxContainer" unique_id=1617674852]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Background" type="ColorRect" parent="HUD/VBoxContainer/Footer/HBoxContainer/Level" unique_id=1667633455]
-layout_mode = 2
-size_flags_horizontal = 4
-color = Color(0.099985994, 0.099985994, 0.099985994, 1)
-
-[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Footer/HBoxContainer/Level" unique_id=2107790660]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 10
-
-[node name="CurrentXPLabel" type="Label" parent="HUD/VBoxContainer/Footer/HBoxContainer/Level/MarginContainer" unique_id=800108135]
-layout_mode = 2
-size_flags_vertical = 1
-text = "0 / 100"
-label_settings = SubResource("LabelSettings_pf7ph")
-
-[node name="CurrentXP" type="ColorRect" parent="HUD/VBoxContainer/Footer/HBoxContainer/Level" unique_id=1388074464]
+[node name="CurrentXP" type="ColorRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/MarginContainer" unique_id=142108877]
+unique_name_in_owner = true
 material = SubResource("ShaderMaterial_1ui3w")
 layout_mode = 2
 color = Color(0.7607843, 0.6392157, 0.40784314, 1)
 
-[node name="CurrentLevel" type="Label" parent="HUD/VBoxContainer/Footer/HBoxContainer/Level" unique_id=826681890]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level" unique_id=1857826844]
 layout_mode = 2
-size_flags_vertical = 1
-text = "LVL 1"
-horizontal_alignment = 1
+theme_override_constants/separation = 18
 
-[node name="Control" type="Control" parent="HUD/VBoxContainer/Footer/HBoxContainer" unique_id=1382022000]
+[node name="CurrentLevel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer" unique_id=1492772077]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.9647059, 0.72156864, 0.42352942, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 3
+text = "LVL 1"
+
+[node name="CurrentXPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer" unique_id=1248485248]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.9647059, 0.72156864, 0.42352942, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 10
+text = "0 / 100"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Log" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel" unique_id=182800428]
+layout_mode = 2
+theme_override_constants/margin_left = 11
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Log" unique_id=774624186]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Log/HBoxContainer" unique_id=1512635074]
+layout_mode = 2
+size_flags_horizontal = 8
+texture = ExtResource("6_0j753")
+expand_mode = 3
+
+[node name="LogBalance" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Log/HBoxContainer" unique_id=406608736]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 25
+text = "x 3"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer" unique_id=465823346]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.98
+
+[node name="CombatPanel" type="PanelContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer" unique_id=1707010462]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_pf7ph")
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_vertical = 10
+size_flags_stretch_ratio = 7.1
+theme_override_styles/panel = SubResource("StyleBoxFlat_vs5gg")
+
+[node name="PhaseLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer/CombatPanel" unique_id=204083348]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.3019608)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = -2
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 3
+text = "Phase 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RightPanel" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer" unique_id=323899085]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Footer" type="Control" parent="HUD/VBoxContainer" unique_id=372436128]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/Footer" unique_id=1724012771]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Footer/VBoxContainer" unique_id=1251992845]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HUD/VBoxContainer/Footer/VBoxContainer/HBoxContainer" unique_id=1382022000]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="System" type="Panel" parent="HUD/VBoxContainer/Footer/VBoxContainer" unique_id=89532123]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="FPS" type="Label" parent="HUD/VBoxContainer/Footer/VBoxContainer/System" unique_id=1894283439]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 27.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.7581918, 0.7581918, 0.7581917, 1)
+theme_override_font_sizes/font_size = 18
+text = "FPS 144"
+uppercase = true
 
 [node name="Control" type="Control" parent="HUD" unique_id=1640570996]
 layout_mode = 2

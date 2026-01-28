@@ -191,7 +191,7 @@ func _ready() -> void:
 		"DEV_PANEL" : dev_panel,
 		"LevelUpPanel": level_up_panel,
 		"HUD" :hud,
-		"DayBoard" : hud.dayboard_panel
+
 	}
 	
 	close_all()

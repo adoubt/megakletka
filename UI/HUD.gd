@@ -4,29 +4,36 @@ var has_upgrade:bool =false
 const ANIMATION_DURATION: float = 0.7
 var offer_id:int = -1
 
-@onready var fps_label: Label = $HUD/VBoxContainer/Control/FPS
+@onready var fps_label: Label = %FPS
 
-@onready var dayboard_panel:= $HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control3/DayBoardPanel
-@onready var current_day: Label = $HUD/VBoxContainer/Header/VBoxContainer/CurrentDay
+@onready var combat_panel: PanelContainer = %CombatPanel
+
+@onready var current_day: Label = %CurrentDay
+@onready var log_balance: Label = %LogBalance
+@onready var phase_label: Label = %PhaseLabel
+
+var combat_progress : float= 0.0
+@export var max_combat_progress: float = 50.0
+@onready var combat_progress_shader: ShaderMaterial 
 
 # === HP ===
 @export var min_hp: float = 0.0
-@export var max_hp: float = 100.0
-@export var current_hp: float = 100.0:
+@export var max_hp: float = 10.0
+@export var current_hp: float = 10.0:
 	set = set_current_hp
-@onready var current_hp_texture: ColorRect = $HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer/Control/CurrentHP
-@onready var current_hp_label: Label = $HUD/VBoxContainer/Control/MarginContainer/LeftPanel/Control2/HP/Control/MarginContainer/Control/CurrentHPLabel
+@onready var current_hp_texture: TextureRect = %CurrentHp
+@onready var current_hp_label: Label = %CurrentHPLabel
 @onready var hp_shader: ShaderMaterial 
 
 # === XP ===
 @export var min_xp: float = 0.0
-@export var max_xp: float = 100.0
-@export var current_xp: float = 0.0:
+@export var max_xp: float = 10.0
+@export var current_xp: float = 10.0:
 	set = set_current_xp
-@onready var current_xp_texture: ColorRect = $HUD/VBoxContainer/Footer/HBoxContainer/Level/CurrentXP
-@onready var current_xp_label: Label = $HUD/VBoxContainer/Footer/HBoxContainer/Level/MarginContainer/CurrentXPLabel
+@onready var current_xp_texture: ColorRect = %CurrentXP
+@onready var current_xp_label: Label = %CurrentXPLabel
 @onready var xp_shader: ShaderMaterial 
-@onready var current_level: Label = $HUD/VBoxContainer/Footer/HBoxContainer/Level/CurrentLevel
+@onready var current_level: Label = %CurrentLevel
 
 # === Technical ===
 var _tween: Tween
@@ -37,11 +44,31 @@ var _refresh_interval := 0.5
 func _ready() -> void:
 	hp_shader = current_hp_texture.material
 	xp_shader =  current_xp_texture.material
-	update_current_hp_texture(0)
-	update_current_xp_texture(0)
-
+	combat_progress_shader = combat_panel.material
+	update_current_hp_texture(1)
+	update_current_xp_texture(1)
+	set_current_combat_progress(1.0)
+	hide_combat_progress()
 	visible = false
 
+func set_current_combat_progress(new_combat_progress: float):
+	var diff = new_combat_progress - combat_progress
+	combat_progress = clampf(new_combat_progress, 0.0, 1.0)
+	update_combat_progress_texture(sign(diff))
+	#update_current_hp(combat_progress)
+	
+	
+func update_combat_progress_texture(direction: int):
+	var progress = combat_progress  
+	if direction < 0:
+		get_tween().tween_property(combat_progress_shader, "shader_parameter/progress_tail", progress, ANIMATION_DURATION)
+		combat_progress_shader.set_shader_parameter("progress", progress)
+	elif direction > 0:
+		get_tween().tween_property(combat_progress_shader, "shader_parameter/progress", progress, ANIMATION_DURATION)
+		combat_progress_shader.set_shader_parameter("progress_tail", progress)
+	else:
+		combat_progress_shader.set_shader_parameter("progress_tail", progress)
+		combat_progress_shader.set_shader_parameter("progress", progress)
 # ================= HP =================
 func set_current_hp(new_current_hp: float):
 	var diff = new_current_hp - current_hp
@@ -73,7 +100,7 @@ func set_current_xp(new_current_xp: float):
 	update_current_xp(current_xp)
 
 func update_current_xp(_value: float):
-	current_xp_label.text = "%d / %d" % [int(_value), int(max_xp)]
+	current_xp_label.text = "exp %d / %d" % [int(_value), int(max_xp)]
 
 func update_current_xp_texture(_direction: int):
 	var progress = (current_xp - min_xp) / (max_xp - min_xp)
@@ -117,3 +144,16 @@ func update_dayboard(data: Array):
 	
 func set_current_day(value:int) -> void:
 	current_day.text = "Day " + str(value)
+
+func set_current_log_balance(value: int) -> void:
+	log_balance.text = "x " + str(value)
+
+func set_current_phase(value:int) -> void:
+	phase_label.text = "Phase " + str(value)
+
+func show_combat_progress() -> void:
+	set_current_phase(1)
+	combat_panel.show()
+	
+func hide_combat_progress() -> void:
+	combat_panel.hide()
