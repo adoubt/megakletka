@@ -37,5 +37,9 @@ func update(delta: float) -> void:
 		
 		cs.add_component(weapon_id, "FireRequestComponent", FireRequestComponent.new(owner_id))
 		
-		var atk_speed = cs.get_component(owner_id, "AttackSpeedComponent").final_value
-		weapon.cd_timer = weapon.cd / max(atk_speed, 0.001)
+		var atk_speed = cs.get_component(owner_id, "AttackSpeedComponent")
+		##TODO something wrong here
+		if not atk_speed:
+			cs.add_component(weapon_id, "DeadComponent", DeadComponent.new())
+			continue
+		weapon.cd_timer = weapon.cd / max(atk_speed.final_value, 0.001)

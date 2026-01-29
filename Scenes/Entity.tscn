@@ -1,9 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dcldrv65aiqnn"]
+[gd_scene format=3 uid="uid://dcldrv65aiqnn"]
 
 [ext_resource type="FontFile" uid="uid://bovkbdk3tu33y" path="res://assets/fonts/SFPRODISPLAYMEDIUM.OTF" id="1_4n0f1"]
 [ext_resource type="Texture2D" uid="uid://cr4xsfmob0q10" path="res://assets/pics/dev_texture.png" id="2_p2pde"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wtxqo"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4n0f1"]
 shading_mode = 2
 vertex_color_use_as_albedo = true
 albedo_color = Color(0.7554169, 0, 0, 1)
@@ -12,12 +12,18 @@ uv1_scale = Vector3(0.25, 0.25, 0.25)
 uv1_triplanar = true
 
 [sub_resource type="TextMesh" id="TextMesh_ipmbw"]
-material = SubResource("StandardMaterial3D_wtxqo")
+material = SubResource("StandardMaterial3D_4n0f1")
 text = "Error"
 font = ExtResource("1_4n0f1")
 uppercase = true
 
-[node name="Entity" type="Node3D"]
+[node name="Entity" type="Node3D" unique_id=89535376]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1347303632]
+transform = Transform3D(2.31, 0, 0, 0, 2.31, 0, 0, 0, 2.31, 0, 0.4259736, 0)
 mesh = SubResource("TextMesh_ipmbw")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1495971861]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2708092, 0)
+light_color = Color(0.70896775, 1.2562126e-05, 0.48625225, 1)
+omni_range = 2.7406707

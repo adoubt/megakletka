@@ -2,6 +2,7 @@ extends BaseSystem
 class_name  HUDSystem
 
 
+var players:=[]
 
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
 	super._init(_entity_manager, _component_store, _event_bus)
@@ -15,19 +16,20 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 	event_bus.subscribe("combat_started",_on_combat_started)
 	event_bus.subscribe("combat_completed",_on_combat_completed)
 	event_bus.subscribe("budget_changed",_on_budget_changed)
+	event_bus.subscribe("hp_changed",_on_hp_changed)
+	event_bus.subscribe("players_list_changed",_on_players_list_changed)
 	
-	
-## TODO переделать под ивент из системы
-func update(_delta: float) -> void:
-	var entities = get_entities_with(["HUDComponent"])
-	for e_id in entities:
-		var current_hp = cs.get_component(e_id,"CurrentHpComponent")
-		var max_hp = cs.get_component(e_id,"MaxHpComponent")
-
-		
-		if current_hp and max_hp:
-			UIManager.hud.current_hp = current_hp.final_value
-			UIManager.hud.max_hp = max_hp.final_value
+### TODO переделать под ивент из системы
+#func update(_delta: float) -> void:
+	#var entities = get_entities_with(["HUDComponent"])
+	#for e_id in entities:
+		#var current_hp = cs.get_component(e_id,"CurrentHpComponent")
+		#var max_hp = cs.get_component(e_id,"MaxHpComponent")
+#
+		#
+		#if current_hp and max_hp:
+			#UIManager.hud.current_hp = current_hp.final_value
+			#UIManager.hud.max_hp = max_hp.final_value
 		
 func _on_level_up_offer_created(callback_data: Dictionary):
 		
@@ -64,3 +66,23 @@ func _on_combat_completed(_data: Dictionary = {}) -> void:
 func _on_budget_changed(data: Dictionary = {}) -> void:
 	var progress: float = float(data.alive_budget) / float(data.max_budget)
 	UIManager.hud.set_current_combat_progress(progress)
+
+func _on_hp_changed(data: Dictionary = {}) -> void:
+	var e_id = data.e_id
+	if e_id not in players:
+		return
+	if UIManager.owner_id != e_id:
+		return
+	var max_hp = data.get("max_hp", null)
+	var current_hp = data.get("current_hp", null)
+	if max_hp:
+		UIManager.hud.set_max_hp(max_hp)
+	if current_hp:
+		UIManager.hud.set_current_hp(current_hp)
+	
+		
+func _on_players_list_changed(data:Dictionary = {}) ->void:
+	var new_player_id = data.get("new_player_id",null) 
+	if new_player_id and UIManager.owner_id == -1:
+		UIManager.set_owner_id(new_player_id)
+	players = get_entities_with(["PlayerComponent"])

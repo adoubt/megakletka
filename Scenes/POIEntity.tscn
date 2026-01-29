@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://cb4hoshf6m75k"]
+
+[ext_resource type="Script" uid="uid://dyv66n3a3fshe" path="res://scripts/objects/poi.gd" id="1_48iwt"]
+[ext_resource type="FontFile" uid="uid://bovkbdk3tu33y" path="res://assets/fonts/SFPRODISPLAYMEDIUM.OTF" id="2_dn03n"]
+[ext_resource type="Texture2D" uid="uid://cr4xsfmob0q10" path="res://assets/pics/dev_texture.png" id="3_mejld"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wtxqo"]
+shading_mode = 2
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.7554169, 0, 0, 1)
+albedo_texture = ExtResource("3_mejld")
+uv1_scale = Vector3(0.25, 0.25, 0.25)
+uv1_triplanar = true
+
+[sub_resource type="TextMesh" id="TextMesh_l8vrv"]
+material = SubResource("StandardMaterial3D_wtxqo")
+text = "Error"
+font = ExtResource("2_dn03n")
+uppercase = true
+
+[node name="POIEntity" type="Node3D" unique_id=1891108490]
+script = ExtResource("1_48iwt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1287899988]
+transform = Transform3D(2.31, 0, 0, 0, 2.31, 0, 0, 0, 2.31, 0, 0.4259736, 0)
+mesh = SubResource("TextMesh_l8vrv")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=3194067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2708092, 0)
+light_color = Color(0.70896775, 1.2562126e-05, 0.48625225, 1)
+omni_range = 2.7406707
+
+[node name="Hint" type="Node3D" parent="." unique_id=181343573]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4952998, 0)
+
+[node name="Label3D2" type="Label3D" parent="Hint" unique_id=670235137]
+visibility_range_end = 70.95
+billboard = 1
+shaded = true
+no_depth_test = true
+alpha_scissor_threshold = 1.0
+texture_filter = 4
+outline_render_priority = -6
+text = "[E]   Interact"
+outline_size = 15

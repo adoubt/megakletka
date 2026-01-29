@@ -72,6 +72,7 @@ func update(_delta: float) -> void:
 		if render.time_to_render > 0.0:
 				render.time_to_render -=_delta
 				render.instance.visible = true
+				
 				continue	
 func _update_shadow(shadow: Node3D, tf, _delta, ground) -> void:
 	if not shadow:

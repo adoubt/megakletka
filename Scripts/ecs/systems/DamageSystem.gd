@@ -25,7 +25,8 @@ func update(_delta: float):
 				var owner_tf = cs.get_component(e_id, "TransformComponent")
 				event_bus.emit("damage_done", [{"position": owner_tf.position, "owner_id": e_id, "damage": damage_done, "damage_type": "base_hit"}])
 				event_bus.emit("enemy_hitted", {"position": owner_tf.position, "e_id": e_id})
-			
+			else:
+				event_bus.emit("hp_changed",{"e_id":e_id, "current_hp":hp.final_value, })
 		print(e_id," (", hp_before, ") took ", damage_done, " dmg from ", pd.source_id) 
 		
 			

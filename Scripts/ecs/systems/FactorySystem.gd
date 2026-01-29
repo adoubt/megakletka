@@ -82,8 +82,12 @@ func _create_poi(data_array: Array) -> void:
 		
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(position))
 		cs.add_component(entity_id, "DayIdComponent", DayIdComponent.new(day_id))
-		cs.add_component(entity_id, "POIComponent", POIComponent.new(poi_name))
-		cs.add_component(entity_id, "InteractionTargetComponent", InteractionTargetComponent.new(e_data["interact_radius"], e_data["target_priority"]))
+		var is_mushroom = e_data.get("mushroom", false)
+		cs.add_component(entity_id, "POIComponent", POIComponent.new(poi_name, is_mushroom))
+		cs.add_component(entity_id, "InteractionTargetComponent", InteractionTargetComponent.new(
+			e_data.interact_radius, 
+			e_data.target_priority, 
+			e_data.interact_type))
 		#cs.add_component(entity_id, "CollisionComponent", CollisionComponent.new(
 			#CollisionLayers.WORLD, 
 			#CollisionLayers.PLAYER |
@@ -92,11 +96,17 @@ func _create_poi(data_array: Array) -> void:
 			#CollisionLayers.PLAYER_PROJECTILE,
 			#e_data["collider_radius"]))
 		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
-		cs.add_component(entity_id, "RenderComponent", RenderComponent.new(e_data["scene"]))
+		var scene = e_data.get("scene", null)
+		var render_comp = RenderComponent.new()
+		if scene: render_comp.scene_path = scene
+		cs.add_component(entity_id, "RenderComponent", render_comp)
 		
-		var slots := int(e_data.get("slots", 0))
-		for slot in slots:
-			event_bus.emit("сreate_slot", [{"owner_id": entity_id}])
+		var slots_to_create:=[]
+		for slot in e_data.get("slots", 0):
+			slots_to_create.append({"owner_id": entity_id})
+		if slots_to_create.size() > 0:
+			event_bus.emit("create_slot", slots_to_create)
+		
 		if poi_name == "campfire": event_bus.emit("campfire_created",[])	
 	event_bus.emit("POI_CREATED")
 
@@ -193,11 +203,16 @@ func _create_char(data_array: Array):
 		cs.add_component(entity_id, "JumpComponent", JumpComponent.new(e_data.jumps))
 		event_bus.emit("create_weapon", [{"weapon_name":e_data["weapon_name"],"owner_id": entity_id}])
 		
-		for slot in e_data["slots"]:
-			event_bus.emit("create_slot", [{"owner_id": entity_id}])
+		var slots_to_create:=[]
+		for slot in e_data.get("slots", 0):
+			slots_to_create.append({"owner_id": entity_id})
+		if slots_to_create.size() > 0:
+			event_bus.emit("create_slot", slots_to_create)
+			
 		if data.has("camera") and data.camera: 
 			event_bus.emit("create_camera", [{"owner_id": entity_id}])	
-		
+		event_bus.emit("players_list_changed",{"new_player_id":entity_id})
+		event_bus.emit("hp_changed", {"e_id":entity_id, "current_hp":e_data.hp, "max_hp":e_data.hp})
 #TODO create new rombs for biggef xp_value, get this from db	
 func _create_xp(data_array: Array):
 	for data in data_array:

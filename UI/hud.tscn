@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://dxtmay68ca301"]
 
 [ext_resource type="Script" uid="uid://b1g5iaiket2lr" path="res://UI/HUD.gd" id="1_8uiqn"]
-[ext_resource type="Texture2D" uid="uid://c6x4lnffuo2pf" path="res://assets/Hud/BackgroundHP.png" id="2_1ui3w"]
 [ext_resource type="Shader" uid="uid://dprejvyaisqwb" path="res://assets/Materials/hud_current_exp.gdshader" id="3_b1lf8"]
 [ext_resource type="Texture2D" uid="uid://dbsfwcyp0fnxl" path="res://assets/Hud/CurrentHP.png" id="4_0j753"]
 [ext_resource type="Shader" uid="uid://dbkh0dtt2pwj3" path="res://assets/Materials/hud_current_hp.gdshader" id="4_rnl6m"]
 [ext_resource type="Texture2D" uid="uid://bgj31h1muposx" path="res://assets/Hud/Sprite-0006.png" id="6_0j753"]
 [ext_resource type="Texture2D" uid="uid://cq2vbq6w0tn64" path="res://assets/Hud/aim2.png" id="8_i0a73"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1ui3w"]
+load_path = "res://.godot/imported/BackgroundHP.png-e2136cd97acf30d923c1b36d1ca1d67a.ctex"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i0a73"]
 shader = ExtResource("4_rnl6m")
@@ -106,13 +108,13 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-theme_override_constants/margin_left = 300
 theme_override_constants/margin_right = 50
 
 [node name="ColorRect" type="ColorRect" parent="HUD/VBoxContainer/Header/VBoxContainer/HBoxContainer/LeftLine" unique_id=1627685304]
-custom_minimum_size = Vector2(0, 2)
+custom_minimum_size = Vector2(50, 2)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 10
+size_flags_stretch_ratio = 0.0
 color = Color(0.85490197, 0.85490197, 0.85490197, 0.49019608)
 
 [node name="Control" type="Control" parent="HUD/VBoxContainer/Header/VBoxContainer/HBoxContainer" unique_id=1913827413]
@@ -143,12 +145,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_constants/margin_left = 50
-theme_override_constants/margin_right = 300
 
 [node name="ColorRect" type="ColorRect" parent="HUD/VBoxContainer/Header/VBoxContainer/HBoxContainer/RightLine" unique_id=2108194131]
-custom_minimum_size = Vector2(0, 2)
+custom_minimum_size = Vector2(50, 2)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 color = Color(0.85490197, 0.85490197, 0.85490197, 0.49019608)
 
 [node name="Body" type="Control" parent="HUD/VBoxContainer" unique_id=485162996]
@@ -170,22 +171,28 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 20
 
 [node name="HP" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel" unique_id=558187113]
-custom_minimum_size = Vector2(200, 25)
 layout_mode = 2
-theme_override_constants/separation = -37
+theme_override_constants/separation = -20
 
 [node name="MarginContainer2" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP" unique_id=1136165463]
 layout_mode = 2
 
-[node name="Background" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer2" unique_id=2077850536]
+[node name="MaxHp" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer2" unique_id=2077850536]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 25)
 layout_mode = 2
-texture = ExtResource("2_1ui3w")
+size_flags_horizontal = 0
+texture = SubResource("CompressedTexture2D_1ui3w")
+expand_mode = 1
 
 [node name="CurrentHp" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer2" unique_id=1850323699]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_i0a73")
+custom_minimum_size = Vector2(20, 25)
 layout_mode = 2
+size_flags_horizontal = 0
 texture = ExtResource("4_0j753")
+expand_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP" unique_id=177107681]
 layout_mode = 2
@@ -290,7 +297,6 @@ material = SubResource("ShaderMaterial_pf7ph")
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_vertical = 10
-size_flags_stretch_ratio = 7.1
 theme_override_styles/panel = SubResource("StyleBoxFlat_vs5gg")
 
 [node name="PhaseLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer/CombatPanel" unique_id=204083348]

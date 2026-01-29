@@ -8,9 +8,9 @@ func update(_delta: float) -> void:
 	)
 
 	var targets := get_entities_with(
-		["TransformComponent", "InteractionTargetComponent"]
+		["TransformComponent", "InteractionTargetComponent"],["DeadComponent"]
 	)
-
+	
 	for p in players:
 		var p_tf = cs.get_component(p, "TransformComponent")
 		
@@ -34,19 +34,24 @@ func update(_delta: float) -> void:
 
 		if best_target != -1:
 			_set_interaction(p, best_target)
+			
 		else:
 			var target = cs.get_component(p, "InRangeInteractionComponent")
-			if target:
-				var target_render = cs.get_component(target.target_id, "RenderComponent")
-				if target_render.instance:
-					target_render.instance.hide_hint()
-				cs.remove_component(p, "InRangeInteractionComponent")
-				UIManager.close_all()
-				if cs.get_component(p, "ActiveOfferComponent"):
-					var player_rander = cs.get_component(p, "RenderComponent")
-				
-					if player_rander.instance:
-						player_rander.instance.show_level_up()
+			if not target:
+				continue
+			var target_render = cs.get_component(target.target_id, "RenderComponent")
+			var it = cs.get_component(target.target_id,"InteractionTargetComponent")
+			if it.interact_type & InteractType.PRESS:
+				target_render.instance.hide_hint()
+			if it.interact_type & InteractType.HOLD:
+				target_render.instance.hide_hint_r()
+			cs.remove_component(p, "InRangeInteractionComponent")
+			UIManager.close_all()
+			if cs.get_component(p, "ActiveOfferComponent"):
+				var player_rander = cs.get_component(p, "RenderComponent")
+			
+				if player_rander.instance:
+					player_rander.instance.show_level_up()
 						
 func _set_interaction(player_id: int, target_id: int):
 	if cs.has_component(player_id, "InRangeInteractionComponent"):
@@ -55,9 +60,7 @@ func _set_interaction(player_id: int, target_id: int):
 			return
 		cur.target_id = target_id
 	else:
-		var comp := InRangeInteractionComponent.new()
-		comp.target_id = target_id
-		cs.add_component(player_id, "InRangeInteractionComponent", comp)
+		cs.add_component(player_id, "InRangeInteractionComponent", InRangeInteractionComponent.new(target_id))
 		var player_rander = cs.get_component(player_id, "RenderComponent")
 		if player_rander.instance:
 			player_rander.instance.hide_level_up()

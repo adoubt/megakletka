@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://kwyw6k55i2mb"]
+
+[ext_resource type="Script" uid="uid://dyv66n3a3fshe" path="res://scripts/objects/poi.gd" id="1_s8w4b"]
+[ext_resource type="Shader" uid="uid://dkna07j4n1v3u" path="res://assets/Shaders/Mushroom/mushroom_particles.tres" id="2_7om5m"]
+[ext_resource type="Texture2D" uid="uid://bhns03k4m0nhr" path="res://assets/shader_pics/T_VFX_Flare_251.jpg" id="3_tolwk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7gvl0"]
+albedo_color = Color(0.84497595, 0.550613, 0.06559633, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_muqnt"]
+top_radius = 0.0
+bottom_radius = 0.33
+height = 0.425
+radial_segments = 6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_gio5a"]
+top_radius = 0.05
+bottom_radius = 0.1
+height = 0.3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_khx0e"]
+render_priority = 0
+shader = ExtResource("2_7om5m")
+shader_parameter/ColorParameter = Color(5.9078126, 5.619674, 0, 1)
+shader_parameter/MainTexture = ExtResource("3_tolwk")
+
+[sub_resource type="Curve" id="Curve_m0c86"]
+_data = [Vector2(0, 0.029082775), 0.0, 0.0, 0, 0, Vector2(0.26683936, 0.10961974), 0.0, 0.0, 0, 0, Vector2(0.49999997, 0.08277404), 0.0, 0.0, 0, 0, Vector2(0.80569947, 0.08277404), -0.23550993, -0.23550993, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_q0tlq"]
+curve = SubResource("Curve_m0c86")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1c8m6"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+angle_min = 1.0728835e-05
+angle_max = 228.00002
+spread = 180.0
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, -1, 0)
+scale_curve = SubResource("CurveTexture_q0tlq")
+
+[sub_resource type="QuadMesh" id="QuadMesh_0ht8x"]
+
+[node name="XpLeftMushroom" type="Node3D" unique_id=1846214952]
+script = ExtResource("1_s8w4b")
+
+[node name="Hint" type="Node3D" parent="." unique_id=774074466]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.262548, 0)
+
+[node name="Label3D2" type="Label3D" parent="Hint" unique_id=182909478]
+visibility_range_end = 70.95
+billboard = 1
+shaded = true
+no_depth_test = true
+alpha_scissor_threshold = 1.0
+texture_filter = 4
+outline_render_priority = -6
+text = "[E]   Eat"
+outline_size = 15
+
+[node name="Model" type="Node3D" parent="." unique_id=307265370]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model" unique_id=611866561]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5314807, 0)
+material_override = SubResource("StandardMaterial3D_7gvl0")
+mesh = SubResource("CylinderMesh_muqnt")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Model" unique_id=882266058]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15524518, 0)
+mesh = SubResource("CylinderMesh_gio5a")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1764311767]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8072423, 0)
+material_override = SubResource("ShaderMaterial_khx0e")
+process_material = SubResource("ParticleProcessMaterial_1c8m6")
+draw_pass_1 = SubResource("QuadMesh_0ht8x")

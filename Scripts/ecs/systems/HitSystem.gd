@@ -19,14 +19,23 @@ func update(_delta: float):
 		
 		var owner = cs.get_component(hit.source_id, "ProjectileComponent")
 		## BullShit. I can't steal hp if an enemy blocked all the damage in its system. So it's a bad palce for lifesteal//// 
-		if owner:
-			if cs.get_component(owner.owner_id, "LifestealComponent") and dmg_comp.final_value > 0:
-				var pending_health = cs.get_component(owner.owner_id, "LifestealComponent").final_value * dmg_comp.final_value
-				cs.add_component(owner.owner_id, "PendingHealthComponent", PendingHealthComponent.new(pending_health))
-			var pierce = cs.get_component(hit.source_id, "PierceComponent")
-			if pierce: 
-				pierce.final_value -= 1
+		
+		var pierce = cs.get_component(hit.source_id, "PierceComponent")
+		if pierce: 
+			pierce.final_value -= 1
+			
+		cs.remove_component(entity_id, "HitComponent")
+		
+		if not owner:
+			continue
+		var lifesteal = cs.get_component(owner.owner_id, "LifestealComponent")
+		if not lifesteal or lifesteal.final_value <= 0.0 or dmg_comp.final_value <= 0.0:
+			continue
+	
+		var pending_health = cs.get_component(owner.owner_id, "LifestealComponent").final_value * dmg_comp.final_value
+		cs.add_component(owner.owner_id, "PendingHealthComponent", PendingHealthComponent.new(pending_health))
+		
 
 		
-		cs.remove_component(entity_id, "HitComponent")
+		
 		

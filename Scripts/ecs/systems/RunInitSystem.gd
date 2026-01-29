@@ -9,7 +9,7 @@ const BASE_BATTERY := 50
 const WORLD_SIZE : int = 75
 const CELL_SIZE : float = 1.5
 const POI_ON_DAY : int = 3
-
+const MUSHROOM_POI_ON_DAY: int = 30
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus, _db: DataBase ):
 	super._init(_entity_manager, _component_store, _event_bus)
 	
@@ -28,7 +28,7 @@ func _init_run(data: Dictionary) -> void:
 	cs.add_component(run_entity,"GroundVisualComponent", GroundVisualComponent.new())
 	
 	_init_days(_seed)
-	event_bus.emit("create_poi",[{ "poi_name": "campfire", "day_id" :0, "position": Vector3.ZERO}])
+	_init_campfire()
 	_init_poi()
 	
 	event_bus.emit("create_char", [{ "camera":true, "char_name": "Rigman", "position": Vector3(-3.0,3,0)}])
@@ -102,7 +102,9 @@ func _init_days(run_seed: int) -> void:
 
 	event_bus.emit("DAYS_CREATED")
 
-	
+func _init_campfire() -> void:
+	event_bus.emit("create_poi",[{ "poi_name": "campfire", "day_id" :0, "position": Vector3.ZERO}])
+
 	
 func _init_poi() -> void:
 	var entities = get_entities_with(["DayComponent"])
@@ -110,19 +112,24 @@ func _init_poi() -> void:
 	for e_id in entities:
 		var day_id = cs.get_component(e_id, "DayIdComponent").id
 		var pool := []
-
-	
+		var mushroom_pool := []
 		for poi_name in db.poi_configs.keys():
 			var poi_data = db.poi_configs[poi_name]
-			if not poi_data.has("drop_weight"):
+			if not poi_data.has("drop_weight") or poi_data.has("mushroom"):
 				continue
-			var weight = poi_data.get("drop_weight", 1)
+			var weight = poi_data.drop_weight
 			for i in range(weight):
 				pool.append(poi_name)
-
+		for poi_name in db.poi_configs.keys():
+			var poi_data = db.poi_configs[poi_name]
+			if not poi_data.has("drop_weight") and not poi_data.has("mushroom"):
+				continue
+			var weight = poi_data.drop_weight
+			for i in range(weight):
+				mushroom_pool.append(poi_name)
 		
 		pool.shuffle()
-
+		mushroom_pool.shuffle()
 		
 		var chosen := []
 		for poi_name in pool:
@@ -132,6 +139,18 @@ func _init_poi() -> void:
 			chosen.append(poi_name)
 			if chosen.size() >= POI_ON_DAY:
 				break
+				
+		chosen.clear()
+		for poi_name in mushroom_pool:
+			var position: Vector3 = _get_random_position_in_radius()
+			pois_to_create.append({"day_id":day_id, "poi_name":poi_name, "position": position})
+
+			chosen.append(poi_name)
+			if chosen.size() >= MUSHROOM_POI_ON_DAY:
+				break		
+		var merchant_pos: Vector3 = _get_random_position_in_radius(5.0, 9.0)
+		pois_to_create.append({"day_id":day_id, "poi_name": "merchant", "position": merchant_pos})
+
 	event_bus.emit("create_poi", pois_to_create)			
 	
 	

@@ -1,0 +1,26 @@
+[gd_resource type="VisualShader" format=3 uid="uid://dkna07j4n1v3u"]
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_eecod"]
+parameter_name = "MainTexture"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_02tjc"]
+source = 5
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_uuokr"]
+parameter_name = "ColorParameter"
+
+[sub_resource type="VisualShaderNodeBillboard" id="VisualShaderNodeBillboard_uu325"]
+billboard_type = 3
+keep_scale = true
+
+[resource]
+nodes/vertex/2/node = SubResource("VisualShaderNodeBillboard_uu325")
+nodes/vertex/2/position = Vector2(-96.78057, 386.27505)
+nodes/vertex/connections = PackedInt32Array(2, 0, 0, 10)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture2DParameter_eecod")
+nodes/fragment/2/position = Vector2(-896, 208)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_02tjc")
+nodes/fragment/3/position = Vector2(-400, 288)
+nodes/fragment/4/node = SubResource("VisualShaderNodeColorParameter_uuokr")
+nodes/fragment/4/position = Vector2(-896, -96)
+nodes/fragment/connections = PackedInt32Array(2, 0, 3, 2, 4, 0, 0, 0, 3, 0, 0, 1)

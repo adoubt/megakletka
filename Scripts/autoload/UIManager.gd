@@ -8,10 +8,10 @@ extends Node
 @onready var dev_panel = preload("res://UI/dev_panel.tscn").instantiate()
 @onready var hud = preload("res://UI/hud.tscn").instantiate()
 @onready var level_up_panel = preload("res://UI/level_up_panel.tscn").instantiate()
-
+@onready var merchant_panel = preload("res://UI/merchant_panel.tscn").instantiate()
 @onready var post_process_panel:  = preload("res://UI/post_process_panel.tscn").instantiate()
 var event_bus: EventBus
-
+var owner_id: int = -1
 var player_camera
 var upgrade_menu 
 var panels: Dictionary = {}
@@ -24,11 +24,19 @@ var game_paused: bool = false
 var _mouse_delta: Vector2 = Vector2.ZERO
 # ========== PUBLIC API ==========
 
+func set_owner_id(_owner_id : int) -> void:
+	owner_id = _owner_id
+	
 func consume_mouse_delta() -> Vector2:
 	var d := _mouse_delta
 	_mouse_delta = Vector2.ZERO
 	return d
 
+func open_merchant_panel():
+	open_panel("Merchant")
+func close_merchant_panel():
+	close_panel("Merchant")
+	
 func open_level_up_panel():
 	
 	open_panel("LevelUpPanel")
@@ -173,6 +181,7 @@ func _ready() -> void:
 	canvas.add_child(hud)
 	canvas.add_child(dev_panel)
 	canvas.add_child(level_up_panel)
+	canvas.add_child(merchant_panel)
 	canvas.add_child(escape_menu)
 	canvas.add_child(main_menu)
 	canvas.add_child(settings_menu)
@@ -190,8 +199,9 @@ func _ready() -> void:
 		"Settings": settings_menu,
 		"DEV_PANEL" : dev_panel,
 		"LevelUpPanel": level_up_panel,
+		"Merchant": merchant_panel,
 		"HUD" :hud,
-
+		
 	}
 	
 	close_all()

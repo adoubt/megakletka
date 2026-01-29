@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://mcibifvxgngd"]
+
+[ext_resource type="Script" uid="uid://dyv66n3a3fshe" path="res://scripts/objects/poi.gd" id="1_tqj2o"]
+[ext_resource type="Script" uid="uid://cacqbcutoini4" path="res://UI/merchant_scene.gd" id="2_mqf6q"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mqf6q"]
+shading_mode = 2
+diffuse_mode = 3
+albedo_color = Color(0.5588031, 0.34872505, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_72wy3"]
+material = SubResource("StandardMaterial3D_mqf6q")
+height = 0.84
+
+[sub_resource type="BoxMesh" id="BoxMesh_mqf6q"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="Merchant" type="Node3D" unique_id=449036048]
+script = ExtResource("1_tqj2o")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=180292939]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42093408, 0)
+mesh = SubResource("CylinderMesh_72wy3")
+
+[node name="Hint" type="Node3D" parent="." unique_id=833884270]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4952998, 0)
+
+[node name="Label3D2" type="Label3D" parent="Hint" unique_id=1599565576]
+visibility_range_end = 70.95
+billboard = 1
+shaded = true
+no_depth_test = true
+alpha_scissor_threshold = 1.0
+texture_filter = 4
+outline_render_priority = -6
+text = "[E]   Interact"
+outline_size = 15
+
+[node name="ViewPortRoot" type="Node" parent="." unique_id=20811863]
+script = ExtResource("2_mqf6q")
+
+[node name="SubViewport" type="SubViewport" parent="ViewPortRoot" unique_id=357705681]
+
+[node name="CameraPivot" type="Node3D" parent="ViewPortRoot/SubViewport" unique_id=106513623]
+
+[node name="Camera3D" type="Camera3D" parent="ViewPortRoot/SubViewport/CameraPivot" unique_id=1017764037]
+transform = Transform3D(1, 0, 0, 0, 0.9640491, 0.26572448, 0, -0.26572448, 0.9640491, -0.2048368, 1.405276, 0.7153294)
+fov = 93.6
+
+[node name="Pos" type="Node3D" parent="ViewPortRoot/SubViewport" unique_id=313408731]
+
+[node name="Slots" type="Node3D" parent="." unique_id=1060429371]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Slots" unique_id=628690253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_mqf6q")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Slots" unique_id=1348843042]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23614863, 1, 0)
+mesh = SubResource("BoxMesh_mqf6q")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Slots" unique_id=1548139834]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22249186, 1, 0)
+mesh = SubResource("BoxMesh_mqf6q")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1801182346]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.34539092, 1.325545, -0.31852734)
+light_color = Color(0.68421113, 0.45127255, 0.09408315, 1)
+light_energy = 5.205
+omni_range = 1.1544532

@@ -42,16 +42,10 @@ class_name DataBase
 			"scene": "res://Scenes/POI/fortune_teller.tscn",
 			"interact_radius": 2.5,
 			"collider_radius":1.25,
-			"drop_weight": 30,
-			"target_priority" : 1
-		},
-		"wagon": {
-			"scene": "res://Scenes/Objects/wagon.tscn",
-			
-			"interact_radius": 3.5,
-			"collider_radius":1.0,
+			"drop_weight": 2,
 			"target_priority" : 1,
-			"slots": 2
+			"interact_type": InteractType.PRESS,
+			
 		},
 		"campfire": {
 			"scene": "res://Scenes/POI/campfire_poi.tscn",
@@ -59,8 +53,54 @@ class_name DataBase
 			"interact_radius": 1.5,
 			"collider_radius":1.0,
 			"target_priority" : 1,
-			"slots": 2
-		}
+			"slots": 2,
+			"interact_type": InteractType.HOLD | InteractType.PRESS,
+		},
+		"merchant":{
+			"scene": "res://Scenes/POI/merchant_poi.tscn",
+			"interact_radius": 1.5,
+			"collider_radius":1.0,
+			"target_priority" : 1,
+			"slots": 3,
+			"interact_type": InteractType.PRESS,
+		},
+		"max_hp_mushroom":{
+			"scene": "res://Scenes/POI/max_hp_mushroom.tscn",
+			"interact_radius": 1.5,
+			"collider_radius":0.3,
+			"target_priority" : 1,
+			"interact_type": InteractType.PRESS,
+			"mushroom": true,
+			"drop_weight": 20,
+		},
+		"health_mushroom":{
+			"scene": "res://Scenes/POIEntity.tscn",
+			"interact_radius": 1.5,
+			"collider_radius":0.3,
+			"target_priority" : 1,
+			"interact_type": InteractType.PRESS,
+			"mushroom": true,
+			"drop_weight": 0,
+		},
+		"xp_left_mushroom":{
+			"scene": "res://Scenes/POI/xp_left_mushroom.tscn",
+			"interact_radius": 1.5,
+			"collider_radius":0.3,
+			"target_priority" : 1,
+			"interact_type": InteractType.PRESS,
+			"mushroom": true,
+			"drop_weight": 50,
+		},
+		"log_mushroom":{
+			"scene": "res://Scenes/POIEntity.tscn",
+			"interact_radius": 1.5,
+			"collider_radius":0.3,
+			"target_priority" : 1,
+			"interact_type": InteractType.PRESS,
+			"mushroom": true,
+			"drop_weight": 0,
+		},
+		
 }
 		#"chest_big": {"scene": "...", "drop_weight": 1},
 		#"altar": {"scene": "...", "drop_weight": 2},

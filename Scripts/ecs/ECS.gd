@@ -73,8 +73,9 @@ func initialize():
 	#system_manager.add_system(CameraSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(EnemySpawnSystem.new(entity_manager, component_store,event_bus, db))
 	system_manager.add_system(FactorySystem.new(entity_manager, component_store,event_bus,db,object_pool))
-	system_manager.add_system(StatsRecalculationSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(MushroomSystem.new(entity_manager, component_store,event_bus))
 	
+	system_manager.add_system(StatsRecalculationSystem.new(entity_manager, component_store,event_bus))
 	#2 AI / DECISION
 	system_manager.add_system(EnemyChaseSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(WeaponSystem.new(entity_manager, component_store,event_bus))
@@ -110,7 +111,7 @@ func initialize():
 	system_manager.add_system(DamagePopupSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HitVFXSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(InteractionProximitySystem.new(entity_manager, component_store,event_bus))
-	system_manager.add_system(InteractionUISystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(InteractionHintSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(XPPickUpSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(LevelSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(LevelUpSelectionSystem.new(entity_manager,component_store,event_bus,))

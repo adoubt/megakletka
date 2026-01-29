@@ -1,6 +1,6 @@
 
 extends Control
-var has_upgrade:bool =false
+var has_upgrade:bool = false
 const ANIMATION_DURATION: float = 0.7
 var offer_id:int = -1
 
@@ -18,12 +18,13 @@ var combat_progress : float= 0.0
 
 # === HP ===
 @export var min_hp: float = 0.0
-@export var max_hp: float = 10.0
-@export var current_hp: float = 10.0:
-	set = set_current_hp
+@export var max_hp: float = 5.0
+	
+@export var current_hp: float = 0.0
 @onready var current_hp_texture: TextureRect = %CurrentHp
 @onready var current_hp_label: Label = %CurrentHPLabel
 @onready var hp_shader: ShaderMaterial 
+@onready var max_hp_texture: TextureRect= %MaxHp
 
 # === XP ===
 @export var min_xp: float = 0.0
@@ -36,7 +37,9 @@ var combat_progress : float= 0.0
 @onready var current_level: Label = %CurrentLevel
 
 # === Technical ===
-var _tween: Tween
+var _hp_tween: Tween
+var _combat_tween: Tween
+var _xp_tween: Tween
 var _time_passed := 0.0
 var _refresh_interval := 0.5
 
@@ -45,12 +48,13 @@ func _ready() -> void:
 	hp_shader = current_hp_texture.material
 	xp_shader =  current_xp_texture.material
 	combat_progress_shader = combat_panel.material
-	update_current_hp_texture(1)
-	update_current_xp_texture(1)
+	#update_current_hp_texture(1)
+	#update_current_xp_texture(1)
 	set_current_combat_progress(1.0)
 	hide_combat_progress()
 	visible = false
-
+func refresh():
+	resize_hp_bar(max_hp)
 func set_current_combat_progress(new_combat_progress: float):
 	var diff = new_combat_progress - combat_progress
 	combat_progress = clampf(new_combat_progress, 0.0, 1.0)
@@ -61,10 +65,10 @@ func set_current_combat_progress(new_combat_progress: float):
 func update_combat_progress_texture(direction: int):
 	var progress = combat_progress  
 	if direction < 0:
-		get_tween().tween_property(combat_progress_shader, "shader_parameter/progress_tail", progress, ANIMATION_DURATION)
+		get_combat_tween().tween_property(combat_progress_shader, "shader_parameter/progress_tail", progress, ANIMATION_DURATION)
 		combat_progress_shader.set_shader_parameter("progress", progress)
 	elif direction > 0:
-		get_tween().tween_property(combat_progress_shader, "shader_parameter/progress", progress, ANIMATION_DURATION)
+		get_combat_tween().tween_property(combat_progress_shader, "shader_parameter/progress", progress, ANIMATION_DURATION)
 		combat_progress_shader.set_shader_parameter("progress_tail", progress)
 	else:
 		combat_progress_shader.set_shader_parameter("progress_tail", progress)
@@ -75,17 +79,32 @@ func set_current_hp(new_current_hp: float):
 	current_hp = clampf(new_current_hp, min_hp, max_hp)
 	update_current_hp_texture(sign(diff))
 	update_current_hp(current_hp)
-
+	
+func set_max_hp(new_max_hp:float):
+	max_hp = new_max_hp
+	resize_hp_bar(max_hp)
+	
+func resize_hp_bar(new_max_hp:float):
+	var _size = new_max_hp * 20
+	max_hp_texture.custom_minimum_size.x = _size
+	current_hp_texture.custom_minimum_size.x = _size
+	
+	
 func update_current_hp(_value: float):
-	current_hp_label.text = "%d / %d" % [int(_value), int(max_hp)]
+	current_hp_label.text = "%s / %s" % [fmt(_value), fmt(max_hp)]
+
+func fmt(v: float) -> String:
+	if is_equal_approx(v, round(v)):
+		return str(int(v))
+	return "%.1f" % v
 
 func update_current_hp_texture(direction: int):
 	var progress = current_hp  / (max_hp - min_hp)
 	if direction < 0:
-		get_tween().tween_property(hp_shader, "shader_parameter/progress_tail", progress, ANIMATION_DURATION)
+		get_hp_tween().tween_property(hp_shader, "shader_parameter/progress_tail", progress, ANIMATION_DURATION)
 		hp_shader.set_shader_parameter("progress", progress)
 	elif direction > 0:
-		get_tween().tween_property(hp_shader, "shader_parameter/progress", progress, ANIMATION_DURATION)
+		get_hp_tween().tween_property(hp_shader, "shader_parameter/progress", progress, ANIMATION_DURATION)
 		hp_shader.set_shader_parameter("progress_tail", progress)
 	else:
 		hp_shader.set_shader_parameter("progress_tail", progress)
@@ -106,10 +125,10 @@ func update_current_xp_texture(_direction: int):
 	var progress = (current_xp - min_xp) / (max_xp - min_xp)
 	# XP растёт только вперёд, поэтому анимируем только progress
 	if _direction < 0:
-		get_tween().tween_property(xp_shader, "shader_parameter/progress_tail", progress, 0.2)
+		get_xp_tween().tween_property(xp_shader, "shader_parameter/progress_tail", progress, 0.2)
 		xp_shader.set_shader_parameter("progress", progress)
 	elif _direction > 0:
-		get_tween().tween_property(xp_shader, "shader_parameter/progress", progress, ANIMATION_DURATION)
+		get_xp_tween().tween_property(xp_shader, "shader_parameter/progress", progress, ANIMATION_DURATION)
 		xp_shader.set_shader_parameter("progress_tail", progress)
 	else:
 		xp_shader.set_shader_parameter("progress_tail", progress)
@@ -125,12 +144,23 @@ func _update_fps(delta: float) -> void:
 		_time_passed = 0.0
 		fps_label.text = "FPS %d" % int(Engine.get_frames_per_second())
 
-func get_tween() -> Tween:
-	if _tween:
-		_tween.kill()
-	_tween = create_tween().set_ease(Tween.EASE_OUT)
-	return _tween
+func get_hp_tween() -> Tween:
+	if _hp_tween:
+		_hp_tween.kill()
+	_hp_tween = create_tween().set_ease(Tween.EASE_OUT)
+	return _hp_tween
 
+func get_xp_tween() -> Tween:
+	if _xp_tween:
+		_xp_tween.kill()
+	_xp_tween = create_tween().set_ease(Tween.EASE_OUT)
+	return _xp_tween
+
+func get_combat_tween() -> Tween:
+	if _combat_tween:
+		_combat_tween.kill()
+	_combat_tween = create_tween().set_ease(Tween.EASE_OUT)
+	return _combat_tween
 	
 	
 func update_dayboard(data: Array):

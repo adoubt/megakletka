@@ -1,0 +1,130 @@
+[gd_scene format=3 uid="uid://dcqxjuq3fm2lr"]
+
+[ext_resource type="Script" uid="uid://bbv63usdi0ej3" path="res://UI/merchant_panel.gd" id="1_n4wfu"]
+[ext_resource type="Script" uid="uid://7aiu8snflvkp" path="res://UI/drop_zone.gd" id="2_5bdn6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5lnka"]
+bg_color = Color(0.8745098, 0.627451, 0.35686275, 0.78431374)
+border_width_left = 10
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 0.39215687)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 35
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 35
+corner_detail = 2
+anti_aliasing_size = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dc25y"]
+bg_color = Color(0.39607844, 0.5294118, 0.38039216, 0.78431374)
+border_width_left = 10
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 0.39215687)
+corner_radius_top_left = 35
+corner_radius_top_right = 55
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+corner_detail = 2
+anti_aliasing_size = 10.0
+
+[node name="MerchantPanel" type="Control" unique_id=892930265]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n4wfu")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1074500238]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1224716500]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer" unique_id=1096145794]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 50
+
+[node name="SellZone" type="Control" parent="MarginContainer/VBoxContainer2" unique_id=838355914]
+visible = false
+custom_minimum_size = Vector2(300, 150)
+layout_mode = 2
+script = ExtResource("2_5bdn6")
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer2/SellZone" unique_id=484403505]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5lnka")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2/SellZone/Panel" unique_id=1782222316]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.39215687)
+theme_override_constants/line_spacing = -25
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 45
+text = "SELL
+$14"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UseZone" type="Control" parent="MarginContainer/VBoxContainer2" unique_id=1592387014]
+visible = false
+custom_minimum_size = Vector2(300, 150)
+layout_mode = 2
+script = ExtResource("2_5bdn6")
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer2/UseZone" unique_id=1036187678]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dc25y")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2/UseZone/Panel" unique_id=802243664]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.39215687)
+theme_override_constants/line_spacing = -25
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 45
+text = "USE"
+horizontal_alignment = 1
+vertical_alignment = 1
