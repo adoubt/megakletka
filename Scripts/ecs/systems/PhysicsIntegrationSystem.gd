@@ -2,49 +2,53 @@ extends BaseSystem
 class_name PhysicsIntegrationSystem
 
 
-var run_entity : int = -1
 
+var ground: GroundHeightComponent
+const GROUND_EPS := 0.01
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus ):
+	super._init(_entity_manager, _component_store, _event_bus)
+	event_bus.subscribe("ground_generated",_on_ground_generated)
+	arch = cs.register_archetype(
+	["TransformComponent", "GravityComponent"],
+	["DeadComponent"]
+)
+
+		
 func update(delta: float) -> void:
-	var entities := get_entities_with(
-		["TransformComponent"],
-		["DeadComponent"]
-	)
+	if ground == null:
+		return
 
-	if run_entity == -1:
-		run_entity = get_entities_with(["RunComponent"])[0]
-
-	var ground := cs.get_component(run_entity, "GroundHeightComponent")
-
+	var entities := arch.entities.duplicate()
 	for e_id in entities:
 		var tf := cs.get_component(e_id, "TransformComponent")
-		var col := cs.get_component(e_id, "CollisionComponent")
-		var col_offset: float = 0.0
-		if col: col_offset = col.radius
-		# ---------- INTEGRATION ----------
+		
 		tf.position += tf.velocity * delta
 
-		# ---------- GROUND COLLISION ----------
-		var ground_y :float = ground.get_height(tf.position.x, tf.position.z) + col_offset
+		var ground_y := ground.get_height(tf.position.x, tf.position.z)
 
-		if tf.position.y <= ground_y:
-			tf.position.y = ground_y
+		if tf.position.y <= ground_y + GROUND_EPS:
 
-			if tf.velocity.y < 0.0:
+			if tf.velocity.y < 0.01:
+				var impact_vy :float = tf.velocity.y
 				tf.velocity.y = 0.0
 
-			if not tf.grounded:
-				tf.grounded = true
+				if not tf.grounded:
+					tf.grounded = true
+					
 
-				# событие приземления
-				if cs.has_component(e_id, "CameraComponent"):
-					event_bus.emit("grounded", {
+					var jumps := cs.get_component(e_id, "JumpsCountComponent")
+					var jumps_left := cs.get_component(e_id, "JumpsLeftComponent")
+					if jumps and jumps_left:
+						event_bus.emit("grounded", {
 						"entity": e_id,
-						"impact": abs(tf.velocity.y)
+						"velocity_y": impact_vy
 					})
+						jumps_left.base_value = jumps.final_value
 
-				# reset прыжков
-				if cs.has_component(e_id, "JumpComponent"):
-					var jump := cs.get_component(e_id, "JumpComponent")
-					jump.jumps_left = jump.max_jumps
+			tf.position.y = ground_y
 		else:
 			tf.grounded = false
+
+
+func _on_ground_generated(data: Dictionary)-> void:
+	ground = data.ground

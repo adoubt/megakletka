@@ -1,25 +1,30 @@
 extends BaseSystem
 class_name GravitySystem
 
-func update(delta: float) -> void:
-	var entities := get_entities_with(
-		["TransformComponent", "GravityComponent"],
-		["DeadComponent"]
-	)
-
-	for e_id in entities:
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus ):
+	super._init(_entity_manager, _component_store, _event_bus)
+	
+	arch = cs.register_archetype(
+	["TransformComponent", "GravityComponent",],
+	["DeadComponent"]
+)
+	event_bus.subscribe("day_changed",_refresh_wind)
 		
-		var tf := cs.get_component(e_id, "TransformComponent")
-		if cs.has_component(e_id, "ClimbComponent"):
-			cs.remove_component(e_id, "ClimbComponent")
-			tf.velocity.y = 0.0
-			tf.grounded = false
-			continue
-			
-		var gravity := cs.get_component(e_id, "GravityComponent")
+var wind: Vector3 = Vector3.ZERO
 
-		# если стоим на земле — не накапливаем вниз
-		if tf.grounded and tf.velocity.y <= 0.0:
-			continue
+func update(delta: float) -> void:
 
+	for e_id in arch.entities:
+		
+		var tf: TransformComponent = cs.components["TransformComponent"][e_id]
+
+		if tf.grounded:
+			tf.velocity = tf.velocity.lerp(Vector3.ZERO,0.1)
+			continue
+		var gravity: GravityComponent = cs.components["GravityComponent"][e_id]
 		tf.velocity.y += gravity.gravity * delta
+		tf.velocity += wind * delta
+
+			
+func _refresh_wind(_data: Dictionary)-> void:
+	wind = Vector3(randf_range(-5.0,5.0),randf_range(-5.0,5.0),randf_range(-5.0,5.0))	

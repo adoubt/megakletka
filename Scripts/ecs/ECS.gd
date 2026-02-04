@@ -13,7 +13,8 @@ var debug_collision :bool = false
 var pool_handler: Node
 var groound_handler: Node3D
 
-func initialize():
+
+func initialize(run_seed: int):
 	name = "ECS"
 	pool_handler = Node.new()
 	pool_handler.name = "PoolHandler"
@@ -47,39 +48,45 @@ func initialize():
 	"res://Scenes/Popups/LevelUpPopup.tscn":2,
 	"res://Scenes/Popups/DamagePopup.tscn":50,
 	"res://Scenes/POI/fortune_teller.tscn":3,
-	"res://Scenes/debug_collider.tscn":200 if debug_collision else 0,
+	"res://Scenes/debug_collider.tscn": 200 if debug_collision else 0,
 	"res://Scenes/Weapons/Projectiles/fire_shard.tscn" : 100,
 	"res://Scenes/Weapons/Projectiles/ice_shard.tscn": 100,
 	"res://Scenes/player_camera.tscn" :1,
-	db.vfx_configs.get("base_hit").scene: 50,
+	db.vfx_configs.get("physics").scene: 50,
 	
 
-})
+})	
+	
 	grid = SpatialGrid.new()
 	
 	#1 INIT / SPAWN
-	system_manager.add_system(RunInitSystem.new(entity_manager, component_store,event_bus, db))
+	
+	system_manager.add_system(RunInitSystem.new(entity_manager, component_store,event_bus, db,run_seed,))
 	system_manager.add_system(DaySystem.new(entity_manager, component_store,event_bus))
+	
 	system_manager.add_system(GroundGenerationSystem.new(entity_manager, component_store,event_bus,groound_handler))
 	system_manager.add_system(InputSystem.new(entity_manager, component_store,event_bus))
-	system_manager.add_system(JumpSystem.new(entity_manager, component_store,event_bus))
+	
 	system_manager.add_system(CameraSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(PlayerControlSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(ConsoleSystem.new(entity_manager, component_store,event_bus, db))
+	system_manager.add_system(ResetStatsSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(HealthRatioReset.new(entity_manager, component_store,event_bus))
 	
+	system_manager.add_system(ItemAbilitySystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(ItemTriggerSystem.new(entity_manager, component_store,event_bus))
+	
+	system_manager.add_system(EmptySlotsRecalculateSystem.new(entity_manager, component_store,event_bus))
+	
+	system_manager.add_system(JumpSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(CombatSystem.new(entity_manager, component_store,event_bus))
-	#system_manager.add_system(SpatialGridSystem.new(entity_manager, component_store, grid))
-	#system_manager.add_system(ControllerSyncSystem.new(entity_manager, component_store,event_bus))
-	#system_manager.add_system(CameraSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(EnemySpawnSystem.new(entity_manager, component_store,event_bus, db))
 	system_manager.add_system(FactorySystem.new(entity_manager, component_store,event_bus,db,object_pool))
 	system_manager.add_system(MushroomSystem.new(entity_manager, component_store,event_bus))
-	
-	system_manager.add_system(StatsRecalculationSystem.new(entity_manager, component_store,event_bus))
 	#2 AI / DECISION
 	system_manager.add_system(EnemyChaseSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(WeaponSystem.new(entity_manager, component_store,event_bus))
-	system_manager.add_system(AimSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(WeaponAimSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(TargetSystem.new(entity_manager, component_store,event_bus))
 	
 	system_manager.add_system(FireSystem.new(entity_manager, component_store,event_bus))
@@ -91,11 +98,13 @@ func initialize():
 	system_manager.add_system(PierceSystem.new(entity_manager,component_store, event_bus))
 	
 	#4. PHYSICS / MOVEMENT
+	system_manager.add_system(FollowOwnerPositionSystem.new(entity_manager,component_store, event_bus))
 	system_manager.add_system(PickUpSystem.new(entity_manager,component_store, event_bus))
-	system_manager.add_system(ClimbSystem.new(entity_manager,component_store, event_bus))
+	
+	
 	system_manager.add_system(MovementSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(GravitySystem.new(entity_manager,component_store, event_bus))
-	
+	system_manager.add_system(ClimbSystem.new(entity_manager,component_store, event_bus))
 	system_manager.add_system(PhysicsIntegrationSystem.new(entity_manager, component_store,event_bus))
 	#system_manager.add_system(PhysicsSystem.new(entity_manager, component_store,event_bus))
 	
@@ -104,9 +113,10 @@ func initialize():
 	system_manager.add_system(CollisionSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HitSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(DamageSystem.new(entity_manager, component_store,event_bus))
-	system_manager.add_system(DeathSystem.new(entity_manager, component_store,event_bus))
-	system_manager.add_system(HealthSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(HealSystem.new(entity_manager, component_store,event_bus))
 	
+	system_manager.add_system(HealthSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(DeathSystem.new(entity_manager, component_store,event_bus))
 	#6. UI / META
 	system_manager.add_system(DamagePopupSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HitVFXSystem.new(entity_manager, component_store,event_bus))
@@ -115,6 +125,11 @@ func initialize():
 	system_manager.add_system(XPPickUpSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(LevelSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(LevelUpSelectionSystem.new(entity_manager,component_store,event_bus,))
+	
+	
+	system_manager.add_system(PurchaseSystem.new(entity_manager,component_store,event_bus,))
+	system_manager.add_system(ItemTransactionSystem.new(entity_manager,component_store,event_bus,))
+	system_manager.add_system(EconomySystem.new(entity_manager,component_store,event_bus,))
 	#7. RENDER
 	system_manager.add_system(CameraEffectSystem.new(entity_manager,component_store,event_bus,))
 	system_manager.add_system(LevelUpOfferSystem.new(entity_manager,component_store,event_bus,db))
@@ -125,6 +140,7 @@ func initialize():
 	system_manager.add_system(HUDSystem.new(entity_manager, component_store,event_bus,))
 	system_manager.add_system(POIInteractionSystem.new(entity_manager, component_store,event_bus,))
 	system_manager.add_system(DayActivationSystem.new(entity_manager, component_store,event_bus, db, object_pool))
+	system_manager.add_system(MerchantActivationSystem.new(entity_manager, component_store,event_bus, db, object_pool))
 	system_manager.add_system(RenderSystem.new(entity_manager, component_store,event_bus, object_pool))
 	system_manager.add_system(ScaleSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(AudioSystem.new(entity_manager, component_store,event_bus))
@@ -132,11 +148,12 @@ func initialize():
 	system_manager.add_system(LifeTimeSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(CleanerSystem.new(entity_manager, component_store,event_bus, object_pool))
 	if debug_collision: system_manager.add_system(DEBUGCollisionSystem.new(entity_manager, component_store,event_bus, object_pool)) 
-	
+	event_bus.emit("ecs_ready",{})
 func update(delta):
 	if  UIManager.game_paused:
 		return
 	
 	system_manager.update_all(delta)
+
 
 			

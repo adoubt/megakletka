@@ -7,19 +7,18 @@ const SHADOW_OFFSET := 0.05
 const SHADOW_SCENE : String = "res://Scenes/shadow.tscn"
 const FLASH_HIT_MATERIAL := preload("res://assets/Materials/flash_hit.tres")
 var object_pool: ObjectPool
-var smoothness := 15.0 # чем больше, тем быстрее догоняет (в кадрах/сек)
+var smoothness := 15.0 #
+var ground: GroundHeightComponent
 
-var run_entity: int = -1
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _event_bus: EventBus, _object_pool:ObjectPool):
 	super._init(_entity_manager, _component_store, _event_bus)
 	object_pool = _object_pool
-	
+	event_bus.subscribe("ground_generated", _on_ground_generated)
+	arch = cs.register_archetype(["TransformComponent", "RenderComponent"],["DeadComponent"])
+		
 func update(_delta: float) -> void:
-	var entities = get_entities_with(["TransformComponent", "RenderComponent"],["DeadComponent"])
-	if run_entity == -1:
-		run_entity = get_entities_with(["RunComponent",])[0]
-	var ground = cs.get_component(run_entity, "GroundHeightComponent")
-	for entity_id in entities:
+	
+	for entity_id in arch.entities:
 		var render = cs.get_component(entity_id, "RenderComponent")
 		
 		var transform = cs.get_component(entity_id, "TransformComponent")
@@ -32,16 +31,11 @@ func update(_delta: float) -> void:
 			render.instance.global_position = transform.position
 			render.instance.visible = false
 			if cs.has_component(entity_id,"EnemyComponent"):
-				var mat = render.instance.material_override
-				if mat:
-					mat = mat.duplicate()
-				else:
-					mat = StandardMaterial3D.new()
+				render.instance.ensure_unique_base_material()
 
-				render.instance.material_override = mat
-
+				
 				# делаем УНИКАЛЬНЫЙ next_pass
-				render.hit_flash_material = FLASH_HIT_MATERIAL.duplicate()
+				render.hit_flash_material = FLASH_HIT_MATERIAL
 			cs.add_component(entity_id, "ScaleRequestComponent", ScaleRequestComponent.new())	
 		var target = cs.get_component(entity_id, "MovementIntentComponent")
 		if target:
@@ -57,27 +51,26 @@ func update(_delta: float) -> void:
 			render.shadow_instance.mesh = base_mesh.duplicate()
 			cs.add_component(entity_id, "ScaleRequestComponent", ScaleRequestComponent.new())
 	
-		_update_shadow(render.shadow_instance, transform, _delta, ground)
+		_update_shadow(render.shadow_instance, transform, _delta)
 		
 		#if  cs.has_component(entity_id, "PlayerComponent"): 
 				#render.instance.visible = true
 				#continue
 		
 		render.instance.global_position = render.instance.global_position.lerp(transform.position, clamp(_delta * smoothness, 0, 1))
-
-		
-		
-		
 		
 		if render.time_to_render > 0.0:
 				render.time_to_render -=_delta
 				render.instance.visible = true
 				
 				continue	
-func _update_shadow(shadow: Node3D, tf, _delta, ground) -> void:
+func _update_shadow(shadow: Node3D, tf, _delta) -> void:
 	if not shadow:
 		return
 
 	shadow.global_position.x = lerp(shadow.global_position.x, tf.position.x, clamp(_delta * smoothness, 0, 1))
 	shadow.global_position.z = lerp(shadow.global_position.z, tf.position.z, clamp(_delta * smoothness, 0, 1))
 	shadow.global_position.y = ground.get_height(tf.position.x, tf.position.z) + SHADOW_OFFSET
+
+func _on_ground_generated(data: Dictionary) ->void:
+	ground = data.ground

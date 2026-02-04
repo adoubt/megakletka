@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://citwkgeuw7oui"]
 
+[ext_resource type="Script" uid="uid://d4gxq265hj0tr" path="res://scripts/enemy_instance.gd" id="1_8kyru"]
 [ext_resource type="Texture2D" uid="uid://cr4xsfmob0q10" path="res://assets/pics/dev_texture.png" id="1_c3sys"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8kyru"]
@@ -30,13 +31,19 @@ height = 1.2
 radial_segments = 5
 rings = 1
 
-[node name="AbobaWithIceShard" type="MeshInstance3D" unique_id=183877553]
+[node name="AbobaWithIceShard" type="Node3D" unique_id=917414062]
+script = ExtResource("1_8kyru")
+
+[node name="Model" type="Node3D" parent="." unique_id=1997142704]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.775, 0)
+
+[node name="Body" type="MeshInstance3D" parent="Model" unique_id=183877553]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.018769383)
 material_override = SubResource("StandardMaterial3D_8kyru")
 mesh = SubResource("SphereMesh_rlo7i")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=371218699]
-transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.21662326, 0.5850455)
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Model" unique_id=371218699]
+transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.21662326, 0.56627613)
 mesh = SubResource("CapsuleMesh_65dl7")
-skeleton = NodePath("../../..")
+skeleton = NodePath("../..")

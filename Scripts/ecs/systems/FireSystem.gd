@@ -1,14 +1,22 @@
 extends BaseSystem
 class_name FireSystem
 
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
+	super._init(_entity_manager, _component_store, _event_bus)
+	arch = cs.register_archetype(["WeaponComponent", "AimComponent", "TransformComponent","FireRequestComponent"],["DeadComponent"])
+	
+## TODO Reduce the amount of allocations for this system.
 func update(_delta: float) -> void:
-	var weapons : Array = get_entities_with(["FireRequestComponent"],["DeadComponent"])
+	var weapons = arch.entities.duplicate() 
+	
 	for weapon_id in weapons:
+		if cs.has_component(weapon_id, "AimRequestComponent"):
+			continue
 		var weapon = cs.get_component(weapon_id, "WeaponComponent")
 		
-		if weapon.target in [TargetType.CAMERA_ASSIST, TargetType.NORMAL] and not cs.has_component(weapon_id,"AimComponent"):
-			
-			continue
+		#if weapon.target in [TargetType.CAMERA_ASSIST, TargetType.NORMAL]:
+			#
+			#continue
 		match weapon.name:
 			"fire_shard":
 				_fire_projectile(weapon.owner_id, weapon_id,weapon.target)
@@ -46,7 +54,7 @@ func _compute_stats(owner_id: int, weapon_id: int) -> Dictionary:
 	if owner_proj_count + weapon_proj_count > 0:
 		data["projectile_count"] = int(owner_proj_count + weapon_proj_count)
 
-	data["damage"] = cs.get_component(owner_id, "DamageComponent").final_value * cs.get_component(weapon_id, "DamageComponent").final_value
+	data["damage"] = cs.get_component(owner_id, "DamageMultComponent").final_value * cs.get_component(weapon_id, "DamageComponent").final_value
 
 	
 	data["projectile_radius"] = (cs.get_component(owner_id, "ProjectileRadiusComponent").final_value * 
@@ -80,10 +88,8 @@ func _compute_stats(owner_id: int, weapon_id: int) -> Dictionary:
 
 
 func _collect_render(weapon_id: int) -> Dictionary:
-	var comp: Object = cs.get_component(weapon_id, "RenderComponent")
-	if comp == null:
-		return {}
-	return {"path": comp.scene_path, "shadow": comp.shadow}
+	var comp: WeaponComponent = cs.get_component(weapon_id, "WeaponComponent")
+	return {"path": comp.proj_scene, "shadow": true}
 
 
 func _base_projectile_data(stats: Dictionary, position: Vector3) -> Dictionary:
@@ -153,19 +159,18 @@ func _fire_orbit(owner_id: int, weapon_id: int) -> void:
 
 
 func _fire_projectile(owner_id: int, weapon_id: int, aim: int) -> void:
-	var owner_tf := cs.get_component(owner_id, "TransformComponent")
-	if owner_tf == null:
-		return
+	var tf := cs.get_component(weapon_id, "TransformComponent")
+	
 
 	var stats: Dictionary = _compute_stats(owner_id, weapon_id)
 	if stats.projectile_count <= 0:
 		return
 
 	var aim_comp: AimComponent = cs.get_component(weapon_id, "AimComponent")
-	if aim_comp == null:
+	if not aim_comp.has_position:
 		return
 
-	var from: Vector3 = owner_tf.position + Vector3(0.0,0.7,0.0)
+	var from: Vector3 = tf.position + Vector3(0.0,0.7,0.0)
 	var to: Vector3 = aim_comp.position 
 
 	var data_array: Array = []
@@ -179,5 +184,5 @@ func _fire_projectile(owner_id: int, weapon_id: int, aim: int) -> void:
 			
 		data_array.append(d)
 
-	cs.remove_component(weapon_id, "AimComponent")
+	#cs.remove_component(weapon_id, "AimComponent")
 	event_bus.emit("create_projectile", data_array)

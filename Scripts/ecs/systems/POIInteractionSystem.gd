@@ -20,14 +20,17 @@ func _on_poi_interacted(data: Dictionary) -> void:
 		"campfire":
 			event_bus.emit("change_day_request")
 		"merchant":
+			
+			var campfire_position = Vector3.ZERO
 			var pos = cs.get_component(poi_id,"TransformComponent").position
+			UIManager.merchant_panel.background_scene.update_camera_pos(campfire_position, pos)
 			var render = cs.get_component(poi_id,"RenderComponent")
 			var it = cs.get_component(poi_id,"InteractionTargetComponent")
 			if it.interact_type & InteractType.PRESS:
 				render.instance.hide_hint()
 			if it.interact_type & InteractType.HOLD:
 				render.instance.hide_hint_r()
-			UIManager.merchant_panel.background_scene.update_camera_pos(pos)
+			
 			UIManager.open_merchant_panel()
 		_:
 			printerr("POI not exist")

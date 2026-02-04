@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://c6tb2lr8ymttr"]
 
+[ext_resource type="Script" uid="uid://d4gxq265hj0tr" path="res://scripts/enemy_instance.gd" id="1_rlo7i"]
 [ext_resource type="Material" uid="uid://44k0m2yb0cqg" path="res://assets/Materials/DEV_material.tres" id="1_rsrbm"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_rlo7i"]
@@ -16,12 +17,18 @@ height = 1.2
 radial_segments = 5
 rings = 1
 
-[node name="Aboba" type="MeshInstance3D" unique_id=423979412]
+[node name="Aboba" type="Node3D" unique_id=1337469475]
+script = ExtResource("1_rlo7i")
+
+[node name="Model" type="Node3D" parent="." unique_id=135834018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.79, 0)
+
+[node name="Body" type="MeshInstance3D" parent="Model" unique_id=423979412]
 material_override = ExtResource("1_rsrbm")
 mesh = SubResource("SphereMesh_rlo7i")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=586704503]
-transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.16982983, 0.40032208)
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Model" unique_id=586704503]
+transform = Transform3D(0, -1.0000001, 0, 1.0000001, 0, 0, 0, 0, 1, 0, 0.20531403, 0.40032208)
 mesh = SubResource("CapsuleMesh_65dl7")
-skeleton = NodePath("../../..")
+skeleton = NodePath("../..")

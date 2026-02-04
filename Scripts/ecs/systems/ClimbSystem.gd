@@ -1,31 +1,49 @@
 extends BaseSystem
 class_name ClimbSystem
 
-const SIDE_PUSH := 0.4
-const CLIMB_Y := 0.8 # насколько "вверх"
+const SIDE_PUSH := 40.0        # горизонтальный импульс
+const CLIMB_UP_VELOCITY := 0.3 # скорость вверх
+const CLIMB_DAMP := 0.85      # чтобы не разгоняться бесконечно
 
-func update(_delta: float) -> void:
-	var entities = get_entities_with(
-		["ClimbComponent", "MovementComponent"],
-		["DeadComponent"]
-	)
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus ):
+	super._init(_entity_manager, _component_store, _event_bus)
+	
+	arch = cs.register_archetype(["ClimbComponent", "MovementIntentComponent", "TransformComponent"],
+		["DeadComponent"])
 
-	for e_id in entities:
-		var move := cs.get_component(e_id, "MovementComponent")
+func update(delta: float) -> void:
+	var enemies = arch.entities.duplicate()
+	for e_id in enemies:
+		var climb: ClimbComponent = cs.get_component(e_id, "ClimbComponent")
+		var move: MovementIntentComponent = cs.get_component(e_id, "MovementIntentComponent")
+		var tf: TransformComponent = cs.get_component(e_id, "TransformComponent")
 
-		var forward := Vector3(move.direction.x, 0, move.direction.z)
-		if forward.length() < 0.01:
+		# таймер
+		climb.climb_time_left -= delta
+		if climb.climb_time_left <= 0.0:
+			cs.remove_component(e_id, "ClimbComponent")
+			continue
+
+		# направление ввода (XZ)
+		var forward := Vector3(move.direction.x, 0.0, move.direction.z)
+		if forward.length_squared() < 0.0001:
 			continue
 
 		forward = forward.normalized()
-		var side := Vector3(-forward.z, 0, forward.x)
+		var side := Vector3(-forward.z, 0.0, forward.x)
 
-		if e_id % 2 == 0:
+		# небольшой рандом / чередование
+		if (e_id & 1) == 0:
 			side = -side
 
-		var new_dir := forward + side * SIDE_PUSH
-		new_dir.y = CLIMB_Y
+		# --- ПРИМЕНЕНИЕ К VELOCITY ---
+		# вертикаль — задаём минимум (не перетираем, если уже летит выше)
+		tf.velocity.y = max(tf.velocity.y, CLIMB_UP_VELOCITY)
 
-		move.direction = new_dir.normalized()
+		# горизонтальный толчок
+		tf.velocity.x = side.x * SIDE_PUSH * delta
+		tf.velocity.z = side.z * SIDE_PUSH * delta
 
-	
+		# лёгкое затухание, чтобы не улетать в космос
+		tf.velocity.x *= CLIMB_DAMP
+		tf.velocity.z *= CLIMB_DAMP

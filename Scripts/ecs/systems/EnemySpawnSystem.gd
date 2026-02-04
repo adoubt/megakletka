@@ -11,7 +11,7 @@ var spawning := false
 var spawn_interval := 0.5      
 var spawn_timer := 0.0
 
-const MAX_ALIVE_ENEMIES := 20
+const MAX_ALIVE_ENEMIES := 200
 const BATTERY_BUDGET_RATIO :float= 0.1   # 100% бюджета
 const MAX_PER_TICK := 5            
 
@@ -19,11 +19,11 @@ const WORLD_SIZE := Vector2(75.0, 75.0)
 const MAX_SPAWN_RANGE :float = 15.0
 const MIN_SPAWN_RANGE :float = 5.0
 #cashe
-var players: Array = []
 var players_update_timer := 0.0
 const PLAYERS_UPDATE_INTERVAL := 3.0
 # ====================
-
+var players_arch: Archetype
+var enemies_arch: Archetype
 func _init(
 	_entity_manager: EntityManager,
 	_component_store: ComponentStore,
@@ -38,7 +38,9 @@ func _init(
 	event_bus.subscribe("combat_started", _on_combat_started)
 	event_bus.subscribe("combat_completed", _on_combat_finished)
 	event_bus.subscribe("day_skipped", _on_combat_finished)
-
+	players_arch = cs.register_archetype(["PlayerComponent"],["DeadComponent"])
+	enemies_arch = cs.register_archetype(["EnemyComponent"],["DeadComponent"])
+	
 func update(delta: float) -> void:
 	if not spawning:
 		return
@@ -46,31 +48,22 @@ func update(delta: float) -> void:
 	spawn_timer -= delta
 	if spawn_timer > 0.0:
 		return
-	players_update_timer -= delta
-	if players_update_timer < 0.0 : 
-		_update_players()
-		players_update_timer = PLAYERS_UPDATE_INTERVAL
+	
 		
 		
 	spawn_timer = spawn_interval
 	_try_spawn()
 	
 		
-func _update_players() -> void:
-	players = get_entities_with(
-		["PlayerComponent"],
-		["DeadComponent"]
-	)
+
 
 
 func _try_spawn() -> void:
 	var battery := cs.get_component(current_day, "BatteryComponent")
 	if battery == null:
 		return
-
-	# Текущее количество врагов
-	var enemies := get_entities_with(["EnemyComponent"], ["DeadComponent"])
-	var enemy_count := enemies.size()
+	
+	var enemy_count := enemies_arch.entities.size()
 
 	if enemy_count >= MAX_ALIVE_ENEMIES:
 		return
@@ -137,10 +130,10 @@ func _get_enemy_cost(_enemy_name: String) -> int:
 
 
 func _get_spawn_position() -> Vector3:
-	if players.is_empty():
+	if players_arch.entities.is_empty():
 		return Vector3.ZERO
 
-	var tf = cs.get_component(players.pick_random(), "TransformComponent")
+	var tf = cs.get_component(players_arch.entities.pick_random(), "TransformComponent")
 	if tf == null:
 		return Vector3.ZERO
 

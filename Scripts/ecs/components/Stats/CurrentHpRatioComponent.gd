@@ -1,3 +1,3 @@
 # res://ecs/components/CurrentHpRatioComponent.gd
 extends StatComponent
-class_name CurrentHpRatioComponent
+class_name CurrentHPRatioComponent

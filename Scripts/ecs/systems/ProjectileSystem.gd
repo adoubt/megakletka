@@ -1,13 +1,15 @@
 extends BaseSystem
 class_name ProjectileSystem
 
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _event_bus: EventBus,):
+	super._init(_entity_manager, _component_store, _event_bus)
 
+	arch = cs.register_archetype(["ProjectileComponent","TransformComponent","MovementIntentComponent","MoveSpeedComponent"],["DeadComponent"])	
+	
+	
 func update(_delta: float) -> void:
-	var projectiles := get_entities_with(
-		["ProjectileComponent"],
-		["DeadComponent"]
-	)
 
+	var projectiles = arch.entities.duplicate()
 	for e_id in projectiles:
 		var tf: TransformComponent = cs.get_component(e_id, "TransformComponent")
 		var proj: ProjectileComponent = cs.get_component(e_id, "ProjectileComponent")
@@ -31,4 +33,4 @@ func update(_delta: float) -> void:
 					continue
 
 				tf.velocity = dir.normalized() * proj.speed
-				cs.remove_component(e_id, "AimComponent")
+				#cs.remove_component(e_id, "AimComponent")

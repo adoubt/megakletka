@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cfotm2yklii3d"]
+[gd_scene format=3 uid="uid://cfotm2yklii3d"]
 
 [ext_resource type="Script" uid="uid://dtauuveelqwwe" path="res://scripts/Player/char_instance.gd" id="1_i0wak"]
 [ext_resource type="PackedScene" uid="uid://cg8diy5mqdnwf" path="res://Scenes/Popups/LevelUpPopup.tscn" id="1_thri5"]
@@ -40,7 +40,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, -0.5, 0)]
+"values": [Vector3(0, 0.3, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -57,6 +57,7 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_w71ue"]
 resource_name = "grave_off"
+length = 1.0666667
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -110,7 +111,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.93333334),
 "transitions": PackedFloat32Array(1, 0.14358725),
 "update": 0,
-"values": [Vector3(0, -2.245, 0), Vector3(0, -0.5, 0)]
+"values": [Vector3(0, -2.245, 0), Vector3(0, 0.295, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_spxdj"]
@@ -155,9 +156,9 @@ tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0, 1.9666667),
-"transitions": PackedFloat32Array(12.553328, 1),
+"transitions": PackedFloat32Array(0.784583, 1),
 "update": 0,
-"values": [Vector3(0, -0.5, 0), Vector3(0, -2.245, 0)]
+"values": [Vector3(0, 0.305, 0), Vector3(0, -2.245, 0)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -211,35 +212,33 @@ bottom_radius = 0.3
 height = 0.1
 radial_segments = 6
 
-[node name="Character" type="Node3D"]
+[node name="Character" type="Node3D" unique_id=1315474817]
 script = ExtResource("1_i0wak")
 
-[node name="LevelUpPopUp" parent="." instance=ExtResource("1_thri5")]
+[node name="LevelUpPopUp" parent="." unique_id=756143982 instance=ExtResource("1_thri5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0148833, 0)
 visible = false
 
-[node name="DeathAnim" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_1e6p3")
-}
+[node name="DeathAnim" type="AnimationPlayer" parent="." unique_id=2054934978]
+libraries/ = SubResource("AnimationLibrary_1e6p3")
 
-[node name="GraveModel" parent="." instance=ExtResource("2_i0wak")]
+[node name="GraveModel" parent="." unique_id=1333774516 instance=ExtResource("2_i0wak")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 visible = false
 
-[node name="Model" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+[node name="Model" type="Node3D" parent="." unique_id=1117228585]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.73, 0, 0.48385143, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model" unique_id=23618097]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.73, 0, 0, 0)
 mesh = SubResource("CylinderMesh_thri5")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Model"]
-transform = Transform3D(0.9962989, 0.085955985, 0, -0.085955985, 0.9962989, 0, 0, 0, 1, 0.0133577585, 1.1290874, 0)
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Model" unique_id=1925991618]
+transform = Transform3D(0.9962989, 0.085955985, 0, -0.085955985, 0.9962989, 0, 0, 0, 1, 0.013, 0.691079, 0)
 material_override = SubResource("StandardMaterial3D_i0wak")
 mesh = SubResource("CylinderMesh_jjq5k")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 0.9919122, -0.12692611, 0, 0.12692611, 0.9919122, 0, 0.94080627, 0)
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Model" unique_id=1677269764]
+transform = Transform3D(1, 0, 0, 0, 0.9919122, -0.12692611, 0, 0.12692611, 0.9919122, 0, 0.477925, 0)
 material_override = SubResource("StandardMaterial3D_ia78k")
 mesh = SubResource("CylinderMesh_nhv0p")

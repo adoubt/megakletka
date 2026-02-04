@@ -1,2 +1,2 @@
 extends StatComponent
-class_name CurrentHpComponent
+class_name CurrentHPComponent

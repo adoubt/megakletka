@@ -1,41 +1,39 @@
 extends BaseSystem
 class_name GroundGenerationSystem
 
-var run_entity : int = -1
-var ecs : Node
 
-const PUDDLE_LEVEL := -0.15
+var ecs : Node
+var days_arch: Archetype
+const PUDDLE_LEVEL := -2.15
+
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus, _ecs: Node,):
 	super._init(_entity_manager,_component_store,_event_bus)
 	ecs = _ecs
 	event_bus.subscribe("day_changed", _on_day_changed)
-	
+	days_arch = cs.register_archetype(["DayComponent", "DayIdComponent"],["DeadComponent"])
 	
 func _on_day_changed(data: Dictionary = {}):
 	
-	if run_entity == -1:
-		run_entity = get_entities_with([
-			"RunComponent",
-		])[0]
 
-	var _seed = cs.get_component(run_entity, "SeedComponent")
-	var ground = cs.get_component(run_entity, "GroundHeightComponent")
-	var visual = cs.get_component(run_entity, "GroundVisualComponent")
-	var current_day = cs.get_component(run_entity, "RunComponent").current_day
+	var run_comp = cs.get_component(RUN, "RunComponent")
+	var ground = cs.get_component(RUN, "GroundHeightComponent")
+	var visual = cs.get_component(RUN, "GroundVisualComponent")
+	var current_day = run_comp.current_day
+	var _seed = run_comp.seed
 	var day_comp : DayComponent
-	var days = get_entities_with(["DayComponent"])
-	for d in days:
+	for d in days_arch.entities:
 		var day_index = cs.get_component(d, "DayIdComponent").id
 		if day_index == current_day:
 			day_comp = cs.get_component(d, "DayComponent")
 			break
 	ground.generate(
-		_seed.seed + data.current_day, 
+		_seed + data.current_day, 
 		day_comp.height_amp,
 		day_comp.frequency,
 		day_comp.puddles
 	)
 	_update_mesh(ground, visual)
+	event_bus.emit("ground_generated", {"ground": ground})
 
 func _update_mesh(ground, visual):
 	var st := SurfaceTool.new()

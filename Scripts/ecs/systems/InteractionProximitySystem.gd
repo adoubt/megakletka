@@ -1,66 +1,51 @@
 extends BaseSystem
 class_name InteractionProximitySystem
 
-##TODO InteractionProximitySystem can be faster using grid cells
-func update(_delta: float) -> void:
-	var players := get_entities_with(
-		["PlayerComponent"]
+var player_arch: Archetype
+
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
+	super._init(_entity_manager, _component_store, _event_bus)
+
+	player_arch = cs.register_archetype(
+		["PlayerComponent", "TransformComponent", "InRangeInteractionComponent"],
+		["DeadComponent"]
 	)
 
-	var targets := get_entities_with(
-		["TransformComponent", "InteractionTargetComponent"],["DeadComponent"]
+	arch = cs.register_archetype(
+		["TransformComponent", "InteractionTargetComponent"],
+		["DeadComponent"]
 	)
-	
-	for p in players:
-		var p_tf = cs.get_component(p, "TransformComponent")
-		
+
+func update(_delta: float) -> void:
+	for p in player_arch.entities:
+		var p_tf := cs.get_component(p, "TransformComponent")
+		var ir   := cs.get_component(p, "InRangeInteractionComponent")
+
 
 		var best_target := -1
 		var best_score := -INF
 
-		for t in targets:
-			var t_tf = cs.get_component(t, "TransformComponent")
-			var target = cs.get_component(t, "InteractionTargetComponent")
+		for t in arch.entities:
+			var t_tf := cs.get_component(t, "TransformComponent")
+			var target := cs.get_component(t, "InteractionTargetComponent")
+			if not t_tf or not target:
+				continue
 
-			var dist_sq = p_tf.position.distance_squared_to(t_tf.position)
+			var dist_sq :float= p_tf.position.distance_squared_to(t_tf.position)
 			if dist_sq > target.radius * target.radius:
 				continue
 
-			# приоритет + ближе = лучше
-			var score = target.priority * 1000 - dist_sq
+			var score :float= target.priority * 1000 - dist_sq
 			if score > best_score:
 				best_score = score
 				best_target = t
 
-		if best_target != -1:
-			_set_interaction(p, best_target)
-			
-		else:
-			var target = cs.get_component(p, "InRangeInteractionComponent")
-			if not target:
-				continue
-			var target_render = cs.get_component(target.target_id, "RenderComponent")
-			var it = cs.get_component(target.target_id,"InteractionTargetComponent")
-			if it.interact_type & InteractType.PRESS:
-				target_render.instance.hide_hint()
-			if it.interact_type & InteractType.HOLD:
-				target_render.instance.hide_hint_r()
-			cs.remove_component(p, "InRangeInteractionComponent")
-			UIManager.close_all()
-			if cs.get_component(p, "ActiveOfferComponent"):
-				var player_rander = cs.get_component(p, "RenderComponent")
-			
-				if player_rander.instance:
-					player_rander.instance.show_level_up()
-						
-func _set_interaction(player_id: int, target_id: int):
-	if cs.has_component(player_id, "InRangeInteractionComponent"):
-		var cur = cs.get_component(player_id, "InRangeInteractionComponent")
-		if cur.target_id == target_id:
-			return
-		cur.target_id = target_id
-	else:
-		cs.add_component(player_id, "InRangeInteractionComponent", InRangeInteractionComponent.new(target_id))
-		var player_rander = cs.get_component(player_id, "RenderComponent")
-		if player_rander.instance:
-			player_rander.instance.hide_level_up()
+		_update_interaction(ir, best_target)
+
+func _update_interaction(ir: InRangeInteractionComponent, new_target_id: int) -> void:
+	if ir.target_id == new_target_id:
+		return
+
+	# сохраняем старый
+	ir.previous_target_id = ir.target_id
+	ir.target_id = new_target_id

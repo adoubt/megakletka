@@ -1,9 +1,12 @@
 extends BaseSystem
 class_name HitVFXSystem
 
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
+	super._init(_entity_manager, _component_store, _event_bus)
+	arch = cs.register_archetype(["HitVFXComponent","RenderComponent"], ["DeadComponent"])
+	
 func update(_delta:float) -> void:
-	var entites = get_entities_with(["HitVFXComponent"], ["DeadComponent"])
-	for e in entites:
+	for e in arch.entities:
 		
 		var hit_vfx = cs.get_component(e,"HitVFXComponent")
 		
@@ -13,10 +16,5 @@ func update(_delta:float) -> void:
 				instance.shot()
 				hit_vfx.started = true
 			
-		if not hit_vfx.followed: 
-			continue
-		var owner_tf = cs.get_component(hit_vfx.owner_id, "TransformComponent")
-		if not owner_tf:
-			continue
-		cs.get_component(e, "TransformComponent").position = owner_tf.position
+		
 			

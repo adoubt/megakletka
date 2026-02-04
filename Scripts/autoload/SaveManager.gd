@@ -93,16 +93,6 @@ func save_ecs_state(ecs):
 	save_data["ecs"]["entities"] = entities_dict
 	save_game()
 
-# Восстанавливает ECS мир из сейва
-func load_ecs_state(ecs):
-	if not save_data["ecs"].has("entities"):
-		return
-	for entity_id in save_data["ecs"]["entities"].keys():
-		var comp_data = save_data["ecs"]["entities"][entity_id]
-		var new_entity = ecs.entity_manager.create_entity()
-		for comp_name in comp_data.keys():
-			var comp_instance = _deserialize_component(comp_name, comp_data[comp_name])
-			ecs.component_store.add_component(new_entity, comp_name, comp_instance)
 
 # ==========================
 #  INTERNAL HELPERS

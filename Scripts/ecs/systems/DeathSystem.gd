@@ -1,15 +1,17 @@
 extends BaseSystem
 class_name DeathSystem
 
-
+func _init(_entity_manager :EntityManager, _component_store :ComponentStore, _event_bus :EventBus,):
+	super._init(_entity_manager, _component_store, _event_bus)
+	arch = cs.register_archetype(["DeathRequestComponent","TransformComponent"],["DeadComponent"])	
+	
 func update(_delta: float):
-	var entities = get_entities_with(["CurrentHpComponent"],["DeadComponent", "RespawnableComponent"])
+	var entities = arch.entities.duplicate()
 	for e_id in entities:
-		var hp = cs.get_component(e_id, "CurrentHpComponent")
-		if hp.final_value > 0:
-			continue
 		
-		cs.add_component(e_id, "DeadComponent", DeadComponent.new())
+		cs.add_component(e_id,"DeadComponent", DeadComponent.new())
+		
+		
 		var pos: Vector3 = cs.get_component(e_id,"TransformComponent").position
 		if cs.has_component(e_id,"PlayerComponent"): 
 			var death_frame: int = Engine.get_process_frames()
@@ -20,8 +22,9 @@ func update(_delta: float):
 		
 		if cs.has_component(e_id,"EnemyComponent"): 
 			event_bus.emit("enemy_died",{"e_id": e_id,"position": pos})
-			
+			cs.add_component(e_id, "DeadComponent", DeadComponent.new())
 			var xp_reward = cs.get_component(e_id,"XPRewardComponent")
 			if xp_reward:
 				event_bus.emit("create_xp",[{"e_id": e_id,"position": pos, "xp_value": xp_reward.final_value }])
 				
+		cs.remove_component(e_id, "DeathRequestComponent")

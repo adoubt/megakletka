@@ -5,14 +5,15 @@ class_name GameManager
 var ecs: ECS
 
 func _ready():
-	print("Game started")
-	
+	print("ECS started")
+
 	# Создаём ECS при старте уровня
 	ecs = ECS.new()
 	add_child(ecs)  # если ECS Node, чтобы он был в сцене и мог вызывать _ready/_process при необходимости
-	ecs.initialize()  # инициализация EntityManager, ComponentStore, SystemManager
 	var run_seed = randi()
-	ecs.event_bus.emit("run_started",{"seed":run_seed})
+	ecs.initialize(run_seed)  # инициализация EntityManager, ComponentStore, SystemManager
+	
+	#ecs.event_bus.emit("run_started", {"seed": run_seed})
 	
 	
 	

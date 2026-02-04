@@ -4,15 +4,22 @@ const SHADOW_RESIZE: float = 0.7
 const PLAYER_HIGHLIGHT: float = 1.9
 const ENEMY_HIGHLIGHT: float = 0.8
 
-func update(_delta: float) -> void:
-	var entities: Array = get_entities_with(["ScaleRequestComponent"], ["DeadComponent"])
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
+	super._init(_entity_manager, _component_store, _event_bus) 
+	arch = cs.register_archetype(["ScaleRequestComponent","RenderComponent"], ["DeadComponent"])	
 	
+		
+func update(_delta: float) -> void:
+	
+	var entities = arch.entities.duplicate()
 	for e in entities:
 		var render = cs.get_component(e, "RenderComponent")
 		var col = cs.get_component(e, "CollisionComponent")
 		var scale_req = cs.get_component(e, "ScaleRequestComponent")
-		if not col or not render:
+		if  not render:
 			continue
+		var radius = 1.0
+		if col: radius = col.radius
 		if not render.instance:
 			continue
 		var higtlight = 1.0
@@ -20,7 +27,7 @@ func update(_delta: float) -> void:
 			higtlight = ENEMY_HIGHLIGHT
 		elif cs.has_component(e, "PlayerComponent"):
 			higtlight = PLAYER_HIGHLIGHT
-		var final_scale = col.radius * scale_req.mult_scale
+		var final_scale = radius * scale_req.mult_scale
 		if scale_req.debug_mode:
 			if not col.debug_collider:
 				continue
@@ -29,7 +36,7 @@ func update(_delta: float) -> void:
 		
 		render.instance.scale = Vector3.ONE * final_scale * higtlight
 		if render.shadow and render.shadow_instance:
-			render.shadow_instance.mesh.size = Vector2(col.radius,col.radius) * SHADOW_RESIZE * scale_req.mult_scale * higtlight
+			render.shadow_instance.mesh.size = Vector2(radius,radius) * SHADOW_RESIZE * scale_req.mult_scale * higtlight
 		cs.remove_component(e, "ScaleRequestComponent")
 		
 		

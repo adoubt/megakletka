@@ -1,2 +1,2 @@
 extends StatComponent
-class_name MaxHpComponent
+class_name MaxHPComponent

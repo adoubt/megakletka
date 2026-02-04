@@ -1,10 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2jiwiihwwjga"]
+[gd_scene format=3 uid="uid://d2jiwiihwwjga"]
 
 [ext_resource type="Script" uid="uid://c7pfotvq2tqo" path="res://UI/post_process_panel.gd" id="1_rf7cy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rf7cy"]
 
-[node name="PostProcessPanel" type="Control"]
+[node name="PostProcessPanel" type="Control" unique_id=1353161110]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_rf7cy")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1878055158]
 material = SubResource("ShaderMaterial_rf7cy")
 layout_mode = 1
 anchors_preset = 15

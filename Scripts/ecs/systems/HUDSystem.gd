@@ -2,7 +2,8 @@ extends BaseSystem
 class_name  HUDSystem
 
 
-var players:=[]
+var player_arch: Archetype
+var level_offer_arch: Archetype
 
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
 	super._init(_entity_manager, _component_store, _event_bus)
@@ -17,19 +18,13 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 	event_bus.subscribe("combat_completed",_on_combat_completed)
 	event_bus.subscribe("budget_changed",_on_budget_changed)
 	event_bus.subscribe("hp_changed",_on_hp_changed)
+	event_bus.subscribe("xp_changed", _on_xp_changed)
 	event_bus.subscribe("players_list_changed",_on_players_list_changed)
-	
-### TODO переделать под ивент из системы
-#func update(_delta: float) -> void:
-	#var entities = get_entities_with(["HUDComponent"])
-	#for e_id in entities:
-		#var current_hp = cs.get_component(e_id,"CurrentHpComponent")
-		#var max_hp = cs.get_component(e_id,"MaxHpComponent")
-#
-		#
-		#if current_hp and max_hp:
-			#UIManager.hud.current_hp = current_hp.final_value
-			#UIManager.hud.max_hp = max_hp.final_value
+	event_bus.subscribe("balance_changed",_on_balance_changed)
+
+	level_offer_arch = cs.register_archetype(["LevelUpOfferComponent"])
+	player_arch = cs.register_archetype(["PlayerComponent",])
+
 		
 func _on_level_up_offer_created(callback_data: Dictionary):
 		
@@ -37,8 +32,7 @@ func _on_level_up_offer_created(callback_data: Dictionary):
 	UIManager.level_up_panel.setup_background(callback_data["offer"])
 
 func _on_level_up_panel_toggled()-> void:
-	var entities = get_entities_with(["LevelUpOfferComponent"])
-	for entity_id in entities:
+	for entity_id in level_offer_arch.entities:
 		var owner_id = cs.get_component(entity_id,"LevelUpOfferComponent").owner_id
 		var instance = cs.get_component(owner_id, "RenderComponent").instance
 		if not instance: 
@@ -69,7 +63,7 @@ func _on_budget_changed(data: Dictionary = {}) -> void:
 
 func _on_hp_changed(data: Dictionary = {}) -> void:
 	var e_id = data.e_id
-	if e_id not in players:
+	if e_id not in player_arch.entities:
 		return
 	if UIManager.owner_id != e_id:
 		return
@@ -80,9 +74,24 @@ func _on_hp_changed(data: Dictionary = {}) -> void:
 	if current_hp:
 		UIManager.hud.set_current_hp(current_hp)
 	
-		
+func _on_xp_changed(data: Dictionary = {}) -> void:
+	var e_id = data.e_id
+	if e_id not in player_arch.entities:
+		return 
+	if UIManager.owner_id != e_id:
+		return
+	var current_level = data.get("ceurrent_level", null)
+	var current_xp = data.get("current_xp", null)
+	var xp_to_next = data.get("xp_to_next", null)
+	if xp_to_next: UIManager.hud.max_xp = xp_to_next
+	UIManager.hud.current_xp = current_xp
+	if current_level: UIManager.hud.current_level = current_level
+	
+	
+	
 func _on_players_list_changed(data:Dictionary = {}) ->void:
-	var new_player_id = data.get("new_player_id",null) 
-	if new_player_id and UIManager.owner_id == -1:
-		UIManager.set_owner_id(new_player_id)
-	players = get_entities_with(["PlayerComponent"])
+	pass
+func _on_balance_changed(data: Dictionary):
+	var current_balance: int = data.current_balance
+	var value:int= data.value
+	UIManager.hud.set_current_log_balance(current_balance)

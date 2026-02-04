@@ -2,47 +2,54 @@ extends BaseSystem
 class_name DamagePopupSystem
 
 # Настройки попапа
-var rise_speed: float = 0.6
-const SCALE_FACTOR: float = 0.02
+var RICE_SPEED: float = 0.7
+const SCALE_FACTOR: float = 10.1
 
 
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _event_bus: EventBus):
+	super._init(_entity_manager, _component_store, _event_bus)
+	
+	arch = cs.register_archetype(["DamagePopupComponent","RenderComponent", "LifeTimeComponent", "TransformComponent"], ["DeadComponent"])
+	
 func update(delta: float) -> void:
-	var popups = get_entities_with(["DamagePopupComponent", "LifeTimeComponent", "TransformComponent"], ["DeadComponent"])
-	for e_id in popups:
+	for e_id in arch.entities:
 		var popup = cs.get_component(e_id, "DamagePopupComponent")
 		var tf = cs.get_component(e_id, "TransformComponent")
 		var lifetime = cs.get_component(e_id, "LifeTimeComponent")
 		
 		
-		# --- Обновляем позицию ---
-		var owner_tf = cs.get_component(popup.owner_id, "TransformComponent")
-		if owner_tf != null:
-			# Если владелец жив, сохраняем его текущую позицию
-			popup.last_position = owner_tf.position
-		elif popup.last_position == null:
-			# На всякий случай, если нет last_position — используем текущую трансформ-позицию
-			popup.last_position = tf.position
 		
 		# --- Анимация движения вверх ---
-		popup.rise_offset += rise_speed * delta
-		tf.position = popup.last_position + Vector3(0, 1.0 + popup.rise_offset, 0)
-		
+		popup.rise_offset += RICE_SPEED * delta
+		tf.position = popup.last_position + Vector3(
+			popup.drift_x * popup.rise_offset, 1.0 + popup.rise_offset, 0
+			)
+
 		# --- Визуальные эффекты ---
-		if cs.has_component(e_id, "RenderComponent"):
-			var render = cs.get_component(e_id, "RenderComponent")
-			if render and render.instance:
-				# Масштаб пропорционально урону
-				
-				var scale = 1.0 + popup.value * SCALE_FACTOR * lifetime.time_left/0.8
-				cs.add_component(e_id, "ScaleRequestComponent", ScaleRequestComponent.new(scale))
-				 
-				
-				# Цвет по типу урона
-				var color = Color(0.543, 0.0, 0.1, 1.0)
-				
-				match popup.damage_type:
-					"physical": color = Color(0.543, 0.0, 0.1,lifetime.time_left/0.5)
-					"fire": color = Color(1, 0.5, 0,lifetime.time_left/0.5)
-					"ice": color = Color(0.5, 0.8, 1,lifetime.time_left/0.5)
-				render.instance.set_modulate(color)
-				render.instance.set_text(str(popup.value))
+		
+		var render = cs.get_component(e_id, "RenderComponent")
+		if not render.instance:
+			continue
+		# Масштаб пропорционально урону
+		if popup.render_priority == -1:
+			popup.render_priority = 0
+			render.instance.render_priority = 0
+		var damage_norm :float = clamp(popup.value / 50.0, 0.0, 1.0)
+	
+		var scale = 1+ damage_norm * SCALE_FACTOR * lifetime.time_left/RICE_SPEED
+		cs.add_component(e_id, "ScaleRequestComponent", ScaleRequestComponent.new(scale))
+		
+		
+		# Цвет по типу урона
+		var color = Color(0.543, 0.0, 0.1, 1.0)
+		var base_alpha :float = clamp(lifetime.time_left / RICE_SPEED, 0.0, 1.0)
+		var alpha_bonus :float= lerp(0.6, 1.2, damage_norm)
+		var alpha :float= clamp(base_alpha * alpha_bonus, 0.0, 1.0)
+
+		match popup.damage_type:
+			
+			"physics": color = Color(1.0, 1.0, 1.0,alpha)
+			"fire": color = Color(1, 0.5, 0,alpha)
+			"ice": color = Color(0.5, 0.8, 1,alpha)
+		render.instance.set_modulate(color)
+		render.instance.set_text(str(int(popup.value)))

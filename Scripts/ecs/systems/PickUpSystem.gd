@@ -4,7 +4,8 @@ class_name PickUpSystem
 const ACCEL := 10.0
 const PICKUP_DIST := 0.5
 const HEIGHT_OFFSET := Vector3(0, 1.0, 0)
-
+var player_arch: Archetype
+var xp_orb_arch: Archetype
 func _init(
 	_entity_manager: EntityManager,
 	_component_store: ComponentStore,
@@ -12,20 +13,23 @@ func _init(
 	super._init(_entity_manager, _component_store,_event_bus)
 	event_bus.subscribe("combat_completed", _magnetize_all_xp)
 	
+	player_arch = cs.register_archetype(
+		["PlayerComponent", "PickUpRangeComponent","TransformComponent"],
+		["DeadComponent"]
+	)
+	arch = cs.register_archetype(
+		["PickUpComponent","TransformComponent","MovementIntentComponent","MoveSpeedComponent"],
+		["DeadComponent"]
+	)
+	
+	xp_orb_arch = cs.register_archetype(["XPRewardComponent","PickUpComponent"],["DeadComponent"])
 func update(delta: float) -> void:
-	var players = get_entities_with(
-		["PlayerComponent", "PickUpRangeComponent"],
-		["DeadComponent"]
-	)
-	var pickups = get_entities_with(
-		["PickUpComponent"],
-		["DeadComponent"]
-	)
-
-	if players.is_empty() or pickups.is_empty():
+	var players = player_arch.entities.duplicate()
+	var pick_ups = arch.entities.duplicate()
+	if players.is_empty() or pick_ups.is_empty():
 		return
 
-	for pid in pickups:
+	for pid in pick_ups:
 		var pickup : PickUpComponent = cs.get_component(pid, "PickUpComponent")
 		var ptf : TransformComponent = cs.get_component(pid, "TransformComponent")
 		var move : MovementIntentComponent = cs.get_component(pid, "MovementIntentComponent")
@@ -40,7 +44,7 @@ func update(delta: float) -> void:
 
 				if ptf.position.distance_to(tf.position) <= radius:
 					pickup.target_id = player_id
-					speed.final_value = 0.0
+					speed.base_value = 0.0
 					break
 
 			continue
@@ -49,7 +53,7 @@ func update(delta: float) -> void:
 		var target_tf := cs.get_component(pickup.target_id, "TransformComponent")
 		if target_tf == null:
 			pickup.target_id = -1
-			speed.final_value = 0.0
+			speed.base_value = 0.0
 			continue
 
 		var target_pos :Vector3= target_tf.position + HEIGHT_OFFSET
@@ -60,7 +64,7 @@ func update(delta: float) -> void:
 			continue
 
 		move.direction = dir.normalized()
-		speed.final_value += ACCEL * delta
+		speed.base_value += ACCEL * delta
 		ptf.velocity.y += move.direction.y * speed.final_value
 		
 		if dist <= PICKUP_DIST:
@@ -68,7 +72,7 @@ func update(delta: float) -> void:
 			cs.add_component(pid, "PickedUpComponent", PickedUpComponent.new())
 			
 func _magnetize_all_xp(_data) -> void:
-	var xp_orbs = get_entities_with(["XPRewardComponent","PickUpComponent"],["DeadComponent"])
-	for orb in xp_orbs:
-		var player = get_entities_with(["PlayerComponent"]).pick_random()
+	
+	for orb in xp_orb_arch.entities:
+		var player = player_arch.entities.pick_random()
 		cs.get_component(orb,"PickUpComponent").target_id = player

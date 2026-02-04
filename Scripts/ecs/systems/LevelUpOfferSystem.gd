@@ -10,33 +10,18 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 	db =_database
 	event_bus.subscribe("upgrade_chosen", _on_upgrade_chosen)
 
-
-
-	
-func _on_upgrade_chosen(data: Dictionary):
-	var offer_entity = data["entity_id"]
-	var index = data["choice_index"]
-
-	if not cs.has_component(offer_entity, "LevelUpOfferComponent"):
-		return
-
-	var offer = cs.get_component(offer_entity, "LevelUpOfferComponent")
-	offer.chosen_index = index
-	
+	arch = cs.register_archetype(["LevelPointsCountComponent","RenderComponent"],
+		["DeadComponent", "ActiveOfferComponent"])	
 
 
 func update(_delta: float) -> void:
-	var players = get_entities_with(
-		["LevelComponent"],
-		["DeadComponent", "ActiveOfferComponent"]
-	)
-
-	for player in players:
-		var level = cs.get_component(player, "LevelComponent")
-		if level.skill_points <= 0:
+	var entities = arch.entities.duplicate()
+	for player in entities:
+		
+		if cs.get_component(player, "LevelPointsCountComponent").final_value <= 0:
 			continue
 
-		var choices = generate_random_upgrades(player)
+		var choices = _generate_random_upgrades(player)
 
 		var offer_id = em.create_entity()
 		 
@@ -59,7 +44,7 @@ func update(_delta: float) -> void:
 					
 		
 
-func generate_random_upgrades(_e_id: int, count: int = 3) -> Array:
+func _generate_random_upgrades(_e_id: int, count: int = 3) -> Array:
 	var pool := []
 
 	
@@ -82,3 +67,13 @@ func generate_random_upgrades(_e_id: int, count: int = 3) -> Array:
 			break
 
 	return chosen
+	
+func _on_upgrade_chosen(data: Dictionary):
+	var offer_entity = data["entity_id"]
+	var index = data["choice_index"]
+
+	if not cs.has_component(offer_entity, "LevelUpOfferComponent"):
+		return
+
+	var offer = cs.get_component(offer_entity, "LevelUpOfferComponent")
+	offer.chosen_index = index

@@ -1,39 +1,26 @@
 extends BaseSystem
 class_name HitSystem
 
-
-func update(_delta: float):
-	var entities = get_entities_with(["HitComponent", "CurrentHpComponent"],["DeadComponent"])
-	for entity_id in entities:
-		var hit = cs.get_component(entity_id, "HitComponent")
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
+	super._init(_entity_manager, _component_store, _event_bus)
+	arch = cs.register_archetype(["HitComponent"],["DeadComponent","PendingDamageComponent"])
 	
-		## Create PendingDamage if not exist
-		if not cs.has_component(entity_id, "PendingDamageComponent"):
-			cs.add_component(entity_id, "PendingDamageComponent", PendingDamageComponent.new())
-			
-			
-		var pd = cs.get_component(entity_id, "PendingDamageComponent")
+func update(_delta: float):
+	var hits = arch.entities.duplicate()
+	for entity_id in hits:
+		var hit = cs.get_component(entity_id, "HitComponent")
 		var dmg_comp = cs.get_component(hit.source_id, "DamageComponent")
 		if dmg_comp:
-			pd.amount = dmg_comp.final_value
-		
-		var owner = cs.get_component(hit.source_id, "ProjectileComponent")
-		## BullShit. I can't steal hp if an enemy blocked all the damage in its system. So it's a bad palce for lifesteal//// 
+			cs.add_component(entity_id, "PendingDamageComponent", PendingDamageComponent.new(dmg_comp.final_value, hit.source_id ))
 		
 		var pierce = cs.get_component(hit.source_id, "PierceComponent")
 		if pierce: 
-			pierce.final_value -= 1
+			pierce.base_value -= 1
 			
 		cs.remove_component(entity_id, "HitComponent")
 		
-		if not owner:
-			continue
-		var lifesteal = cs.get_component(owner.owner_id, "LifestealComponent")
-		if not lifesteal or lifesteal.final_value <= 0.0 or dmg_comp.final_value <= 0.0:
-			continue
-	
-		var pending_health = cs.get_component(owner.owner_id, "LifestealComponent").final_value * dmg_comp.final_value
-		cs.add_component(owner.owner_id, "PendingHealthComponent", PendingHealthComponent.new(pending_health))
+		
+		
 		
 
 		

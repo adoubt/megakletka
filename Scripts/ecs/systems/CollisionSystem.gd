@@ -8,29 +8,31 @@ var col_cache := {}
 
 var cell_size: float = 0.3
 
-
+func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus ):
+	super._init(_entity_manager, _component_store, _event_bus)
+	
+	arch = cs.register_archetype(["TransformComponent", "CollisionComponent"],
+		["DeadComponent"])
+	
 func update(_delta: float) -> void:
 	tf_cache.clear()
 	col_cache.clear()
 
-	var entities := get_entities_with(
-		["TransformComponent", "CollisionComponent"],
-		["DeadComponent"]
-	)
-
-	var count := entities.size()
+	
+	
+	var count := arch.entities.size()
 	if count < 2:
 		contact_cache.clear()
 		return
 
-	for id in entities:
+	for id in arch.entities:
 		tf_cache[id] = cs.get_component(id, "TransformComponent")
 		col_cache[id] = cs.get_component(id, "CollisionComponent")
 
 
 	var grid := {} # Vector3i -> Array[int]
 
-	for id in entities:
+	for id in arch.entities:
 		var tf = tf_cache[id]
 		if tf == null:
 			continue
@@ -172,30 +174,20 @@ func _to_cell(pos: Vector3) -> Vector3i:
 	)
 
 func _choose_climber_by_target(a: int, b: int) -> int:
-	var a_has := cs.has_component(a, "AimComponent")
-	var b_has := cs.has_component(b, "AimComponent")
-
-	# если у одного нет цели — он и лезет
-	if a_has and not b_has:
-		return b
-	if b_has and not a_has:
-		return a
-
-	# если ни у кого нет цели — фиксируем порядок
-	if not a_has and not b_has:
-		return a if a < b else b
-
 	var a_target: AimComponent = cs.get_component(a, "AimComponent")
 	var b_target: AimComponent = cs.get_component(b, "AimComponent")
 
-	var a_tf = tf_cache[a]
-	var b_tf = tf_cache[b]
+	var a_tf: TransformComponent = tf_cache[a]
+	var b_tf: TransformComponent = tf_cache[b]
 
-	var da = a_tf.position.distance_squared_to(a_target.position)
-	var db = b_tf.position.distance_squared_to(b_target.position)
+	var da := a_tf.position.distance_squared_to(a_target.position)
+	var db := b_tf.position.distance_squared_to(b_target.position)
 
-	# кто дальше — тот уступает (лезет)
-	if abs(da - db) < 0.01:
+	# кто ДАЛЬШЕ от своей цели — тот и лезет
+	if da > db:
+		return a
+	elif db > da:
+		return b
+	else:
+		# детерминированный тайбрейк
 		return a if a < b else b
-
-	return a if da > db else b

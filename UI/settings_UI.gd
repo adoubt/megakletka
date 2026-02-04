@@ -4,20 +4,17 @@ extends Control
 @onready var post_process_effects_button = $Control/HBoxContainer/TABCustom/TabContainer/Graphics2/Panel/MarginContainer/HBoxContainer/HBoxContainer/Effects
 
 func _ready() -> void:
-	#_apply_settings(self)
+	_apply_settings(self)
 	_load_effects()
-func _apply_settings(node: Node) -> void:
-	# Проверяем у текущей ноды
-	if "setting_key" in node:
-		var key: String = node.setting_key
-		if key != null and key != "":
-			if SettingsManager.has_value(key):
-				node.set("setting_value", SettingsManager.get_value(key))
 	
-	# Рекурсивно обходим детей
+func _apply_settings(node: Node) -> void:
+	if "setting_key" in node and "setting_property" in node:
+		node.set(node.setting_property,SettingsManager.get_value(node.setting_key))
+
 	for child in node.get_children():
-		if child is Node:
-			_apply_settings(child)
+		_apply_settings(child)
+
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 func _load_effects()-> void:
@@ -61,3 +58,4 @@ func _on_debug_pressed() -> void:
 
 func _on_effects_item_selected(index: int) -> void:
 	UIManager.post_process_panel.set_shader_by_index(index)
+	

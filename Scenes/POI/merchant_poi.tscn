@@ -6,14 +6,12 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mqf6q"]
 shading_mode = 2
 diffuse_mode = 3
-albedo_color = Color(0.5588031, 0.34872505, 0, 1)
+specular_mode = 1
+albedo_color = Color(0.34365907, 0.24661654, 0, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_72wy3"]
 material = SubResource("StandardMaterial3D_mqf6q")
 height = 0.84
-
-[sub_resource type="BoxMesh" id="BoxMesh_mqf6q"]
-size = Vector3(0.1, 0.1, 0.1)
 
 [node name="Merchant" type="Node3D" unique_id=449036048]
 script = ExtResource("1_tqj2o")
@@ -44,24 +42,9 @@ script = ExtResource("2_mqf6q")
 [node name="CameraPivot" type="Node3D" parent="ViewPortRoot/SubViewport" unique_id=106513623]
 
 [node name="Camera3D" type="Camera3D" parent="ViewPortRoot/SubViewport/CameraPivot" unique_id=1017764037]
-transform = Transform3D(1, 0, 0, 0, 0.9640491, 0.26572448, 0, -0.26572448, 0.9640491, -0.2048368, 1.405276, 0.7153294)
 fov = 93.6
 
 [node name="Pos" type="Node3D" parent="ViewPortRoot/SubViewport" unique_id=313408731]
-
-[node name="Slots" type="Node3D" parent="." unique_id=1060429371]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Slots" unique_id=628690253]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("BoxMesh_mqf6q")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Slots" unique_id=1348843042]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23614863, 1, 0)
-mesh = SubResource("BoxMesh_mqf6q")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="Slots" unique_id=1548139834]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22249186, 1, 0)
-mesh = SubResource("BoxMesh_mqf6q")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1801182346]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.34539092, 1.325545, -0.31852734)

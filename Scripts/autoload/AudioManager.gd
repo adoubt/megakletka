@@ -15,7 +15,7 @@ var ui_player: AudioStreamPlayer
 func _ready() -> void:
 	ui_player= AudioStreamPlayer.new()
 	add_child(ui_player)
-	
+	apply_master_volume(SettingsManager.get_value("master_volume"))
 	
 ## One-shot UI sound
 func play_ui_sound(_name: String, volume_db: float = -10.0, pitch_range: Vector2 = Vector2(1.0,1.0)) -> void:
@@ -377,3 +377,14 @@ func play_music_with_fallback(
 	player.play()
 
 	music_players[primary_key] = player
+
+
+
+func apply_master_volume(value: float) -> void:
+	value = clamp(value, 0.0, 1.0)
+
+	var db := linear_to_db(value)
+	AudioServer.set_bus_volume_db(
+		AudioServer.get_bus_index("Master"),
+		db
+	)

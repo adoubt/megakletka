@@ -5,11 +5,11 @@ class_name LevelUpSelectionSystem
 
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
 	super._init(_entity_manager, _component_store,_event_bus)
-
 	
+	arch = cs.register_archetype(["LevelUpOfferComponent"])	
 func update(_delta: float) -> void:
-	var offers = get_entities_with(["LevelUpOfferComponent"])
-	for e_id in offers:
+	var entities = arch.entities.duplicate()
+	for e_id in entities:
 		var offer = cs.get_component(e_id, "LevelUpOfferComponent")
 
 		match offer.chosen_index:
@@ -22,9 +22,8 @@ func update(_delta: float) -> void:
 				continue
 			_:
 				# Upgrade Chosen
-				var level = cs.get_component(offer.owner_id, "LevelComponent")
-				if level:
-					level.skill_points -= 1
+				 
+				cs.get_component(offer.owner_id, "LevelPointsCountComponent").base_value -= 1
 				UIManager.hud.has_upgrade = false
 				
 				event_bus.emit("create_item", [{ "item_name": offer.choices[offer.chosen_index],

@@ -17,7 +17,7 @@ var inverted_horisontal_axis:bool
 var inverted_vertical_axis:bool
 var hold_crouch: bool
 var hold_aim: bool
-
+var base_fov: float =100
 
 func _init(_owner_id: int = -1,) -> void:
 	owner_id = _owner_id

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bsoxxlhnjn45f"]
+[gd_scene format=3 uid="uid://bsoxxlhnjn45f"]
 
 [ext_resource type="Script" uid="uid://fbejyr264y40" path="res://UI/intro.gd" id="1_s2ta7"]
 [ext_resource type="Material" uid="uid://d4culp27pja5e" path="res://assets/Materials/intro.tres" id="2_gpvol"]
@@ -11,7 +11,7 @@ font_color = Color(0.805992, 0.727448, 0.992148, 1)
 outline_size = 5
 outline_color = Color(0.0467865, 0.0792043, 0.119716, 1)
 
-[node name="Intro" type="Control"]
+[node name="Intro" type="Control" unique_id=331792128]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_s2ta7")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1607699950]
 material = ExtResource("2_gpvol")
 layout_mode = 1
 anchors_preset = 15
@@ -31,7 +31,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = SubResource("PlaceholderTexture2D_gpvol")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=861788873]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

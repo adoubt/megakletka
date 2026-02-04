@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://b6mraboq8jtvy"]
+
+[ext_resource type="Script" uid="uid://dcfwasq74b73j" path="res://scripts/ItemInstance.gd" id="1_fjaty"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pq07g"]
+albedo_color = Color(0.47479695, 1.1130236e-06, 3.6098064e-07, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wrt64"]
+top_radius = 0.0
+bottom_radius = 0.33
+height = 0.425
+radial_segments = 6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1m0io"]
+top_radius = 0.05
+bottom_radius = 0.1
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wrt64"]
+albedo_color = Color(0.84497595, 0.550613, 0.06559633, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wfnmr"]
+top_radius = 0.0
+bottom_radius = 0.33
+height = 0.425
+radial_segments = 6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_064t3"]
+top_radius = 0.05
+bottom_radius = 0.1
+height = 0.3
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_klmbr"]
+size = Vector3(0.14355469, 0.13970947, 0.119140625)
+
+[node name="Mushrooms" type="Node3D" unique_id=14755423]
+script = ExtResource("1_fjaty")
+
+[node name="Model" type="Node3D" parent="." unique_id=1514617997]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model" unique_id=848230601]
+transform = Transform3D(0.5423833, -0.6777444, -1.3973217, -1.3035553, -1.003191, -0.01940819, -0.8441498, 1.1136855, -0.8678367, -0.38818195, -0.035101715, 0.3671605)
+material_override = SubResource("StandardMaterial3D_pq07g")
+mesh = SubResource("CylinderMesh_wrt64")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Model" unique_id=1922041573]
+transform = Transform3D(0.5423833, -0.6777444, -1.3973217, -1.3035553, -1.003191, -0.01940819, -0.8441498, 1.1136855, -0.8678367, -0.11515234, 0.30694962, -0.041070953)
+mesh = SubResource("CylinderMesh_1m0io")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Model" unique_id=2005456247]
+transform = Transform3D(1.4590002, 0.59841996, 0.4682271, -0.759831, 1.1490648, 0.8990728, -4.902482e-08, -1.0136905, 1.2955525, 0.33136663, -0.12433633, -0.48136538)
+material_override = SubResource("StandardMaterial3D_wrt64")
+mesh = SubResource("CylinderMesh_wfnmr")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Model" unique_id=539199301]
+transform = Transform3D(1.4590002, 0.59842026, 0.4682271, -0.7598312, 1.1490649, 0.8990725, 0, -1.0136904, 1.2955528, 0.09510848, -0.5502919, -0.11774883)
+mesh = SubResource("CylinderMesh_064t3")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1022628846]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1380415707]
+transform = Transform3D(1.11, 0, 0, 0, 1.11, 0, 0, 0, 1.11, 0, 0, 0)
+shape = SubResource("BoxShape3D_klmbr")

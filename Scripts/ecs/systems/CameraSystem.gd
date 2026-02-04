@@ -5,13 +5,13 @@ const MOUSE_SCALE: float = 0.0025
 const MAX_PITCH: float = 1.1
 const MIN_PITCH: float = -1.2
 
+func _init( _entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus):
+	super._init( _entity_manager, _component_store, _event_bus)
+	arch = cs.register_archetype(["CameraComponent","TransformComponent"],["DeadComponent"])
 func update(delta):
-	var entities = get_entities_with([
-		"CameraComponent",
-		"TransformComponent"
-	])
+	
 
-	for e in entities:
+	for e in arch.entities:
 		var cam: CameraComponent = cs.get_component(e, "CameraComponent")
 
 		if cam.owner_id == -1:
@@ -35,15 +35,18 @@ func update(delta):
 		var fx: CameraEffectsComponent = null
 		if cs.has_component(e, "CameraEffectsComponent"):
 			fx = cs.get_component(e, "CameraEffectsComponent")
+		
 
-		var kick_pitch := fx.kick_pitch if fx else 0.0
-		var kick_yaw   := fx.kick_yaw if fx else 0.0
-		var shake      := fx.shake_offset if fx else Vector3.ZERO
-		var fov_offset := fx.fov_offset if fx else 0.0
+		var kick_pitch :float= fx.kick_pitch if fx else 0.0
+		var kick_yaw   :float= fx.kick_yaw if fx else 0.0
+		var shake      :Vector3 = fx.shake_offset if fx else Vector3.ZERO
+		var fov_offset :float= fx.fov_offset if fx else 0.0
 
 		# ================= TARGET =================
 		var target_tf := cs.get_component(cam.owner_id, "TransformComponent")
-		var pivot = target_tf.position + cam.offset
+
+		var drop := fx.drop_offset if fx else 0.0
+		var pivot = target_tf.position + cam.offset + Vector3(0, drop, 0)
 
 		# ================= ROTATION =================
 		var yaw_basis   := Basis(Vector3.UP, cam.yaw + kick_yaw)
@@ -60,21 +63,12 @@ func update(delta):
 
 		cam.camera_instance.global_position = desired_pos
 		cam.camera_instance.global_basis = rot
+		
 
 		if fov_offset != 0.0:
-			cam.camera_instance.fov += fov_offset
+			cam.camera_instance.fov = cam.base_fov + fov_offset
 
-		# ================= EFFECT DECAY =================
-		if fx:
-			fx.shake_offset = fx.shake_offset.lerp(
-				Vector3.ZERO,
-				1.0 - exp(-fx.shake_decay * delta)
-			)
-
-			fx.kick_pitch = lerp(fx.kick_pitch, 0.0, delta * fx.shake_decay)
-			fx.kick_yaw   = lerp(fx.kick_yaw,   0.0, delta * fx.shake_decay)
-			fx.fov_offset = lerp(fx.fov_offset, 0.0, delta * fx.shake_decay)
-
+	
 		var forward_3d := rot.z.normalized() # полный 3D, для стрельбы
 		var forward_xz := Vector3(forward_3d.x, 0, forward_3d.z).normalized() # для движения
 

@@ -1,11 +1,16 @@
 extends BaseSystem
 class_name InputSystem
 
+func _init( _entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus):
+	super._init( _entity_manager, _component_store, _event_bus)
+	
+	arch = cs.register_archetype(["InputComponent"])
+	
 func update(_delta):
-	var entities = get_entities_with(["InputComponent"])
+	
 
-	for e in entities:
-		var input := cs.get_component(e, "InputComponent")
+	for e in arch.entities:
+		var input = cs.components["InputComponent"][e]
 
 		input.move = Vector2(
 			Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
