@@ -28,7 +28,7 @@ func _eat_max_hp_mushroom(mushroom_poi:POIComponent,e_id: int):
 	var max_hp = cs.get_component(e_id, "MaxHPComponent")
 
 	max_hp.base_value += final_value
-	
+	cs.add_component(e_id, "DirtyStatsComponent", DirtyStatsComponent.new())
 
 func _eat_xp_left_mushroom(mushroom_poi:POIComponent,e, e_id: int): 
 	var current_xp = cs.get_component(e_id, "CurrentXPComponent").final_value

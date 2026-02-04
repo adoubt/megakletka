@@ -7,7 +7,8 @@ var values : Dictionary = {
 	"resolution": Vector2(1920,1080),
 	"sensitivity": 1.0,
 	"post_process_shader" : "Film",
-	"master_volume": 1.0
+	"master_volume": 1.0,
+	"achievement_ctrl_w":false
 }
 
 # ------------------

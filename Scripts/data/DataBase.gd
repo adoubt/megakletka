@@ -136,6 +136,7 @@ class_name DataBase
 		"merchant_discount": 0,
 		"items":[
 			"prickly_bundle"
+			
 		],
 		"xp_gain": 1.0,
 		"damage_mult" :1.0,
@@ -237,7 +238,7 @@ class_name DataBase
 				"value": 1
 			}
 		],
-		"cost": 100,
+		"cost": 2,
 		"drop_weight": 1
 	},
 
@@ -287,7 +288,7 @@ class_name DataBase
 		"scene": "res://Scenes/Items/mushrooms.tscn",
 		"abilities": [
 			{
-				"name": "low_hp_jump",
+				"name": "low_hp_flex",
 				"target_stat": Stats.PlayerStats.JUMPS_COUNT,
 				"domain": Stats.Domain.PLAYER,
 				"value": 2,
@@ -323,8 +324,27 @@ class_name DataBase
 		],
 		"cost": 3,
 		"drop_weight": 1
-	}
-
+	},
+	"GreenAcorn": {
+		"name": "GreenAcorn",
+		"title": "Green Acorn",
+		"description": "A young acorn, still full of life.",
+		"icon": "res://assets/icons/Cards/Clubs.png",
+		"scene": "res://Scenes/Items/mushrooms.tscn",
+		"abilities": [
+			{
+				"name": "GreenAcorn",
+				"title": "Green Acorn",
+				"description":"Slightly increases maximum health.",
+				"target_stat": Stats.PlayerStats.MAX_HP,
+				"domain": Stats.Domain.PLAYER,
+				"value": 3,
+				
+			}
+		],
+		"cost": 2,
+		"drop_weight": 1
+	},
 }
 
 

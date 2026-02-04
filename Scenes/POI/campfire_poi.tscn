@@ -200,7 +200,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_687ab")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=758556786]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-light_color = Color(0.99215686, 0.39215687, 0, 1)
+light_color = Color(1, 0.54901963, 0.2509804, 1)
 
 [node name="HintR" type="Node3D" parent="." unique_id=1535351645]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3915757, 0)

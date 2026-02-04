@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bqbrn3mjc8g8i"]
+[gd_scene format=3 uid="uid://bqbrn3mjc8g8i"]
 
 [ext_resource type="Script" uid="uid://e2hr6inpbeb6" path="res://UI/level_up_panel.gd" id="1_vij61"]
 [ext_resource type="Script" uid="uid://7aiu8snflvkp" path="res://UI/drop_zone.gd" id="2_1mmw1"]
@@ -32,7 +32,7 @@ corner_radius_bottom_left = 25
 corner_detail = 2
 anti_aliasing_size = 10.0
 
-[node name="LevelUpPanel" type="Control"]
+[node name="LevelUpPanel" type="Control" unique_id=145535814]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,7 +43,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_vij61")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=150141471]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,7 +51,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="TextureRect"]
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect" unique_id=1638082633]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,17 +59,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="TextureRect/MarginContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="TextureRect/MarginContainer" unique_id=2000613188]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 50
 
-[node name="SellZone" type="Control" parent="TextureRect/MarginContainer/VBoxContainer2"]
+[node name="SellZone" type="Control" parent="TextureRect/MarginContainer/VBoxContainer2" unique_id=1335459276]
 custom_minimum_size = Vector2(300, 150)
 layout_mode = 2
 script = ExtResource("2_1mmw1")
 
-[node name="Panel" type="Panel" parent="TextureRect/MarginContainer/VBoxContainer2/SellZone"]
+[node name="Panel" type="Panel" parent="TextureRect/MarginContainer/VBoxContainer2/SellZone" unique_id=1497094497]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -78,7 +78,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_12ega")
 
-[node name="Label" type="Label" parent="TextureRect/MarginContainer/VBoxContainer2/SellZone/Panel"]
+[node name="Label" type="Label" parent="TextureRect/MarginContainer/VBoxContainer2/SellZone/Panel" unique_id=778877537]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -96,12 +96,12 @@ $14"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="UseZone" type="Control" parent="TextureRect/MarginContainer/VBoxContainer2"]
+[node name="UseZone" type="Control" parent="TextureRect/MarginContainer/VBoxContainer2" unique_id=692273797]
 custom_minimum_size = Vector2(300, 150)
 layout_mode = 2
 script = ExtResource("2_1mmw1")
 
-[node name="Panel" type="Panel" parent="TextureRect/MarginContainer/VBoxContainer2/UseZone"]
+[node name="Panel" type="Panel" parent="TextureRect/MarginContainer/VBoxContainer2/UseZone" unique_id=127031923]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -110,7 +110,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vij61")
 
-[node name="Label" type="Label" parent="TextureRect/MarginContainer/VBoxContainer2/UseZone/Panel"]
+[node name="Label" type="Label" parent="TextureRect/MarginContainer/VBoxContainer2/UseZone/Panel" unique_id=1445522053]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

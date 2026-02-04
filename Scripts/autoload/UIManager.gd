@@ -38,9 +38,9 @@ func close_merchant_panel():
 	close_panel("Merchant")
 	
 func open_level_up_panel():
-	
-	open_panel("LevelUpPanel")
-	level_up_panel.background_scene.show_anim_board()
+	pass
+	#open_panel("LevelUpPanel")
+	#level_up_panel.background_scene.show_anim_board()
 
 func close_level_up_panel() -> void:
 	level_up_panel.background_scene.hide_anim_board()
@@ -175,22 +175,25 @@ func close_all(incluse_hud : bool = false) -> void:
 
 # ========== INTERNAL ==========
 func _ready() -> void:
+	post_process_canvas = CanvasLayer.new()
+	add_child(post_process_canvas)
+	post_process_canvas.name = "PostProcess"
+	post_process_canvas.add_child(merchant_panel)
+	post_process_canvas.add_child(post_process_panel)
 	canvas = CanvasLayer.new()
+	
 	canvas.name = "Panels"
 	add_child(canvas)
 	canvas.add_child(hud)
 	canvas.add_child(dev_panel)
 	canvas.add_child(level_up_panel)
-	canvas.add_child(merchant_panel)
+	
 	canvas.add_child(escape_menu)
 	canvas.add_child(main_menu)
 	canvas.add_child(settings_menu)
 	
 	
-	post_process_canvas = CanvasLayer.new()
-	add_child(post_process_canvas)
-	post_process_canvas.name = "PostProcess"
-	post_process_canvas.add_child(post_process_panel)
+	
 	
 	panels = {
 		
@@ -263,13 +266,14 @@ func _apply_margin_scaling(node: Node, scale: float):
 
 
 func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("hidden_close"):
+		if not SettingsManager.get_value("achievement_ctrl_w", false):
+			#_unlock_ctrl_w_achievement()
+			SettingsManager.set_value("achievement_ctrl_w", true)
+			return
+		_on_escape_pressed()
 	if event.is_action_pressed("Esc"):
-		if is_panel_open("Settings"):
-			close_settings()
-			
-
-		elif SceneManager.current_scene_name not in ["Intro","MainMenu"]:
-			toggle_escape_menu()
+		_on_escape_pressed()
 			
 	if event.is_action_pressed("DEV_PANEL"):
 		if SceneManager.current_scene_name in ["BigRoomTest","GameTest"]:
@@ -288,3 +292,11 @@ func _unhandled_input(event):
 	and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		_mouse_delta += event.relative	
 		
+func _on_escape_pressed():
+	if is_panel_open("Settings"):
+		close_settings()
+	if is_panel_open("Merchant"):
+		close_merchant_panel()
+
+	elif SceneManager.current_scene_name not in ["Intro","MainMenu"]:
+		toggle_escape_menu()

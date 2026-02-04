@@ -5,6 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://dbsfwcyp0fnxl" path="res://assets/Hud/CurrentHP.png" id="4_0j753"]
 [ext_resource type="Shader" uid="uid://dbkh0dtt2pwj3" path="res://assets/Materials/hud_current_hp.gdshader" id="4_rnl6m"]
 [ext_resource type="Texture2D" uid="uid://bgj31h1muposx" path="res://assets/Hud/Sprite-0006.png" id="6_0j753"]
+[ext_resource type="Texture2D" uid="uid://dr3wkxchxydkn" path="res://assets/Hud/armor.png" id="6_i0a73"]
+[ext_resource type="Texture2D" uid="uid://ccp7o235ap4e2" path="res://assets/Hud/damage.png" id="6_pf7ph"]
+[ext_resource type="Texture2D" uid="uid://dw45obno55us1" path="res://assets/Hud/pierce.png" id="7_vs5gg"]
 [ext_resource type="Texture2D" uid="uid://cq2vbq6w0tn64" path="res://assets/Hud/aim2.png" id="8_i0a73"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1ui3w"]
@@ -42,19 +45,25 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pf7ph"]
 shader = SubResource("Shader_0j753")
-shader_parameter/progress = 1.0
-shader_parameter/progress_tail = 1.0
-shader_parameter/tail_color = Color(0, 0, 0, 1)
+shader_parameter/progress = 0.48400002299
+shader_parameter/progress_tail = 0.6950000330125
+shader_parameter/tail_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vs5gg"]
-bg_color = Color(0.104636095, 0.26751766, 0.4217169, 0.8)
+bg_color = Color(0.34901962, 0.6509804, 1, 0.81960785)
 corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
-shadow_color = Color(0, 0, 0, 0.57254905)
-shadow_size = 3
-shadow_offset = Vector2(0, 2)
+shadow_color = Color(0.34901962, 0.6509804, 1, 0.627451)
+shadow_size = 5
+shadow_offset = Vector2(0, -5)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pf7ph"]
+load_path = "res://.godot/imported/xp_gain.png-9971e4bc32c022a7f85bf1f743c038b9.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_phrgc"]
+load_path = "res://.godot/imported/jumps.png-5774bba3ab737ea5e67d5fd1f25adb3b.ctex"
 
 [node name="HUD" type="Control" unique_id=1150284546]
 layout_mode = 3
@@ -63,7 +72,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 2
 script = ExtResource("1_8uiqn")
 
 [node name="HUD" type="MarginContainer" parent="." unique_id=661270111]
@@ -197,7 +206,11 @@ expand_mode = 1
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP" unique_id=177107681]
 layout_mode = 2
 
-[node name="CurrentHPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer" unique_id=1462399142]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer" unique_id=603388130]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="CurrentHPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer/HBoxContainer" unique_id=1462399142]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -205,7 +218,26 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.60784316)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5411765)
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
-text = "100 / 100"
+text = "100"
+
+[node name="_" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer/HBoxContainer" unique_id=1539074277]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(1, 1, 1, 0.60784316)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5411765)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+text = "/"
+
+[node name="MaxHPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer/HBoxContainer" unique_id=6009448]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(1, 1, 1, 0.60784316)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5411765)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+text = "100"
 
 [node name="ColorRect" type="ColorRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel" unique_id=898614680]
 visible = false
@@ -238,7 +270,20 @@ color = Color(0.7607843, 0.6392157, 0.40784314, 1)
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="CurrentLevel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer" unique_id=1492772077]
+[node name="HBoxContainer2" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer" unique_id=1657192327]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer/HBoxContainer2" unique_id=1492772077]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.9647059, 0.72156864, 0.42352942, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 3
+text = "LVL"
+
+[node name="CurrentLevelLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer/HBoxContainer2" unique_id=652033818]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -247,9 +292,12 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 3
-text = "LVL 1"
+text = "1"
 
-[node name="CurrentXPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer" unique_id=1248485248]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer" unique_id=1010840569]
+layout_mode = 2
+
+[node name="xp" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer/HBoxContainer" unique_id=1621302984]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -261,7 +309,54 @@ theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 1
 theme_override_font_sizes/font_size = 10
-text = "0 / 100"
+text = "XP"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="CurrentXPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer/HBoxContainer" unique_id=1248485248]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.9647059, 0.72156864, 0.42352942, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 10
+text = "0 "
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="_" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer/HBoxContainer" unique_id=2065835203]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.9647059, 0.72156864, 0.42352942, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 10
+text = "/"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="RequiredXPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Level/HBoxContainer/HBoxContainer" unique_id=1933658447]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.9647059, 0.72156864, 0.42352942, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 10
+text = "0 "
 horizontal_alignment = 2
 vertical_alignment = 2
 
@@ -279,12 +374,18 @@ size_flags_horizontal = 8
 texture = ExtResource("6_0j753")
 expand_mode = 3
 
+[node name="_" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Log/HBoxContainer" unique_id=1687927079]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 25
+text = "x"
+
 [node name="LogBalance" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Log/HBoxContainer" unique_id=406608736]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 25
-text = "x 3"
+text = "3"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer" unique_id=465823346]
 layout_mode = 2
@@ -315,7 +416,198 @@ vertical_alignment = 1
 
 [node name="RightPanel" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer" unique_id=323899085]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 8
+
+[node name="StatsPanel" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel" unique_id=2100560542]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1990091462]
+layout_mode = 2
+text = "Stats:"
+
+[node name="MoveSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=560968453]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/MoveSpeed" unique_id=1504526811]
+layout_mode = 2
+text = "MS"
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/MoveSpeed" unique_id=2032731994]
+layout_mode = 2
+
+[node name="MovespeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/MoveSpeed" unique_id=2043142927]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.0"
+
+[node name="Damage" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1101903877]
+layout_mode = 2
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Damage" unique_id=576060419]
+layout_mode = 2
+texture = ExtResource("6_pf7ph")
+expand_mode = 2
+
+[node name="DamageLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Damage" unique_id=4418196]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.0"
+
+[node name="AttackSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=2067294030]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/AttackSpeed" unique_id=1253939350]
+layout_mode = 2
+text = "ATKS"
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/AttackSpeed" unique_id=1563968998]
+layout_mode = 2
+
+[node name="AttackSpeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/AttackSpeed" unique_id=1973462965]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.0"
+
+[node name="Duration" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=686692946]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Duration" unique_id=493912029]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "DURATION"
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Duration" unique_id=795905258]
+layout_mode = 2
+
+[node name="DurationLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Duration" unique_id=116948985]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.0"
+
+[node name="ProjectileSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1700427168]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSpeed" unique_id=1483129024]
+layout_mode = 2
+text = "ORB SPEED"
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSpeed" unique_id=69287729]
+layout_mode = 2
+
+[node name="ProjectileSpeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSpeed" unique_id=105714549]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.0"
+
+[node name="ProjectileSize" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1806055882]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSize" unique_id=215324495]
+layout_mode = 2
+text = "ORB SIZE"
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSize" unique_id=1644704379]
+layout_mode = 2
+
+[node name="ProjectileSizeLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSize" unique_id=161652114]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.0"
+
+[node name="PickUpRange" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1237427949]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/PickUpRange" unique_id=1344444521]
+layout_mode = 2
+text = "PICK UP RANGE"
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/PickUpRange" unique_id=1597938817]
+layout_mode = 2
+
+[node name="PickUpRangeLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/PickUpRange" unique_id=676421111]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.0"
+
+[node name="XPGain" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=2092657429]
+layout_mode = 2
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/XPGain" unique_id=166229227]
+layout_mode = 2
+texture = SubResource("CompressedTexture2D_pf7ph")
+expand_mode = 2
+
+[node name="XPGainLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/XPGain" unique_id=1150349341]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.0"
+
+[node name="Pierce" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1386935686]
+layout_mode = 2
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Pierce" unique_id=1991133197]
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("7_vs5gg")
+expand_mode = 2
+
+[node name="PierceLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Pierce" unique_id=1383938571]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "0.0"
+
+[node name="Armor" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=734381301]
+layout_mode = 2
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Armor" unique_id=289626509]
+layout_mode = 2
+texture = ExtResource("6_i0a73")
+expand_mode = 2
+
+[node name="ArmorLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Armor" unique_id=1706434528]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.0"
+
+[node name="Jumps" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=2109355232]
+layout_mode = 2
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Jumps" unique_id=501320635]
+layout_mode = 2
+texture = SubResource("CompressedTexture2D_phrgc")
+expand_mode = 2
+
+[node name="JumpLeftLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Jumps" unique_id=1526428501]
+unique_name_in_owner = true
+layout_mode = 2
+text = "3"
+
+[node name="_" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Jumps" unique_id=531307824]
+layout_mode = 2
+text = "/"
+
+[node name="JumpsCountLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Jumps" unique_id=619055754]
+unique_name_in_owner = true
+layout_mode = 2
+text = "3"
+
+[node name="Slots" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1463283412]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=1390028354]
+layout_mode = 2
+text = "SLOTS"
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=990096274]
+layout_mode = 2
+expand_mode = 2
+
+[node name="SlotsCountLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=1753748950]
+unique_name_in_owner = true
+layout_mode = 2
+text = "3"
 
 [node name="Footer" type="Control" parent="HUD/VBoxContainer" unique_id=372436128]
 layout_mode = 2

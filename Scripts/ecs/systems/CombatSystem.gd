@@ -67,6 +67,12 @@ func _change_phase(combat: CombatStateComponent):
 	
 
 func _on_day_changed(data: Dictionary):
+	if combat and combat.state == CombatState.ACTIVE:
+		event_bus.emit("day_skipped", {
+				"day_index": current_day,
+				"current_day": current_day_entity
+			})
+	
 	current_day = data.current_day
 	
 	for day in day_arch.entities:

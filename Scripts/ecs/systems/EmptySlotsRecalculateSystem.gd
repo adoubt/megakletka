@@ -19,4 +19,5 @@ func update(_delta:float) -> void:
 				found_items +=1
 		empty_slots.base_value = slots.base_value - found_items			
 		print("Items for ",e," ",found_items," / ", slots.base_value )
+		cs.add_component(e,"DirtyStatsComponent", DirtyStatsComponent.new())
 		cs.remove_component(e,"EmptySlotsRecalculateRequestComponent")

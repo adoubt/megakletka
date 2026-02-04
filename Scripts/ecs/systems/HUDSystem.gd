@@ -1,6 +1,7 @@
 extends BaseSystem
 class_name  HUDSystem
 
+var cached_stats := {} # entity_id -> Dictionary
 
 var player_arch: Archetype
 var level_offer_arch: Archetype
@@ -16,12 +17,13 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 	
 	event_bus.subscribe("combat_started",_on_combat_started)
 	event_bus.subscribe("combat_completed",_on_combat_completed)
+	event_bus.subscribe("day_skipped",_on_combat_completed)
 	event_bus.subscribe("budget_changed",_on_budget_changed)
-	event_bus.subscribe("hp_changed",_on_hp_changed)
-	event_bus.subscribe("xp_changed", _on_xp_changed)
+	#event_bus.subscribe("hp_changed",_on_hp_changed)
+	#event_bus.subscribe("xp_changed", _on_xp_changed)
 	event_bus.subscribe("players_list_changed",_on_players_list_changed)
 	event_bus.subscribe("balance_changed",_on_balance_changed)
-
+	event_bus.subscribe("stats_snapshot_ready",_on_stats_snapshot_ready)
 	level_offer_arch = cs.register_archetype(["LevelUpOfferComponent"])
 	player_arch = cs.register_archetype(["PlayerComponent",])
 
@@ -80,7 +82,7 @@ func _on_xp_changed(data: Dictionary = {}) -> void:
 		return 
 	if UIManager.owner_id != e_id:
 		return
-	var current_level = data.get("ceurrent_level", null)
+	var current_level = data.get("current_level", null)
 	var current_xp = data.get("current_xp", null)
 	var xp_to_next = data.get("xp_to_next", null)
 	if xp_to_next: UIManager.hud.max_xp = xp_to_next
@@ -95,3 +97,115 @@ func _on_balance_changed(data: Dictionary):
 	var current_balance: int = data.current_balance
 	var value:int= data.value
 	UIManager.hud.set_current_log_balance(current_balance)
+	
+func _on_stats_snapshot_ready(data: Dictionary) -> void:
+	var e_id :int= data.entity
+	if UIManager.owner_id != e_id:
+		return
+
+	var snapshot :Dictionary= data.snapshot
+	var prev = cached_stats.get(e_id, {})
+
+	for stat_id in snapshot.keys():
+		var new_val = snapshot[stat_id]
+		var old_val = prev.get(stat_id, null)
+
+		if old_val == null or not is_equal_approx(old_val, new_val):
+			_on_stat_changed(stat_id, new_val)
+
+	cached_stats[e_id] = snapshot.duplicate(true)
+
+func _on_stat_changed(stat: int, value: float):
+	match stat:
+
+		# ===== DAMAGE / COMBAT =====
+		Stats.PlayerStats.DAMAGE_MULT:
+			UIManager.hud.damage = value
+
+		Stats.PlayerStats.ARMOR:
+			UIManager.hud.armor = value
+
+		Stats.PlayerStats.CRIT_DAMAGE:
+			pass
+
+		Stats.PlayerStats.CRIT_CHANCE:
+			pass
+
+		Stats.PlayerStats.PIERCE:
+			UIManager.hud.pierce = value
+
+		Stats.PlayerStats.ATK_SPEED:
+			UIManager.hud.attack_speed = value
+
+
+		# ===== HP =====
+		Stats.PlayerStats.MAX_HP:
+			UIManager.hud.max_hp = value
+		Stats.PlayerStats.CURRENT_HP:
+			UIManager.hud.current_hp = value
+			# если надо абсолютное HP:
+			# UIManager.hud.set_current_hp(value * max_hp)
+
+
+		# ===== MOVEMENT =====
+		Stats.PlayerStats.MOVESPEED:
+			UIManager.hud.movespeed = value
+
+		Stats.PlayerStats.MOVESPEED_MULT:
+			pass
+
+
+		# ===== JUMPS =====
+		Stats.PlayerStats.JUMPS_COUNT:
+			UIManager.hud.jumps_count = value
+
+		Stats.PlayerStats.JUMPS_LEFT:
+			UIManager.hud.jumps_left = value
+
+		Stats.PlayerStats.JUMP_HEIGHT:
+			pass
+
+
+		# ===== PROJECTILES =====
+		Stats.PlayerStats.PROJ_COUND:
+			pass
+
+		Stats.PlayerStats.PROJ_RADIUS:
+			pass
+
+		Stats.PlayerStats.WEAPON_RADIUS:
+			pass
+
+
+		# ===== XP / LEVEL =====
+		Stats.PlayerStats.CURRENT_XP:
+			UIManager.hud.current_xp = value
+
+		Stats.PlayerStats.XP_LEFT:
+			UIManager.hud.required_xp = value
+
+		Stats.PlayerStats.XP_GAIN:
+			UIManager.hud.xp_gain = value
+
+		Stats.PlayerStats.LEVEL:
+			UIManager.hud.current_level = value
+
+		Stats.PlayerStats.UNUSED_LEVEL_POINTS:
+			pass
+
+
+		# ===== META / GAMEPLAY =====
+		Stats.PlayerStats.SLOTS:
+			pass
+			UIManager.hud.slots_count = value
+
+		Stats.PlayerStats.DURATION_MULT:
+			UIManager.hud.duration = value
+
+		Stats.PlayerStats.MERCHANT_DISCOUNT:
+			pass
+
+
+		_:
+			# стат есть, но HUD его не отображает
+			pass

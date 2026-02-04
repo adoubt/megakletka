@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://dosmechqhf3sw"]
+[gd_scene format=4 uid="uid://dosmechqhf3sw"]
 
 [ext_resource type="Texture2D" uid="uid://dnykev5x7hc2x" path="res://Scenes/romb_Untitled.png" id="1_ra8wf"]
 [ext_resource type="Shader" uid="uid://bbuejxcikvtd1" path="res://assets/Materials/romb_sin.gdshader" id="2_hl7n5"]
@@ -86,15 +86,15 @@ color_ramp = SubResource("GradientTexture1D_kpvrd")
 
 [sub_resource type="QuadMesh" id="QuadMesh_j65ed"]
 
-[node name="romb" type="Node3D"]
+[node name="romb" type="Node3D" unique_id=1682525957]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=608168220]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.054570287, 0)
 light_color = Color(0.7607843, 0.6392157, 0.40784314, 1)
 distance_fade_enabled = true
 omni_range = 1.0
 
-[node name="Cone_001" type="MeshInstance3D" parent="."]
+[node name="Cone_001" type="MeshInstance3D" parent="." unique_id=1048125776]
 transform = Transform3D(-0.2, -3.019916e-08, 0, 3.019916e-08, -0.2, 0, 0, 0, 0.2, 0, 0.225, 0)
 cast_shadow = 0
 lod_bias = 128.0
@@ -104,7 +104,7 @@ mesh = SubResource("ArrayMesh_vwkwn")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("ShaderMaterial_l3sqc")
 
-[node name="GPUParticles3D2" type="GPUParticles3D" parent="."]
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="." unique_id=852729405]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.054570287, 0)
 material_override = SubResource("StandardMaterial3D_hl7n5")
 process_material = SubResource("ParticleProcessMaterial_v2pmu")

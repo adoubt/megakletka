@@ -7,6 +7,7 @@
 [ext_resource type="Theme" uid="uid://2ocoy8vsxdat" path="res://assets/themes/tab_settings.tres" id="4_ay7hg"]
 [ext_resource type="StyleBox" uid="uid://cetf4is0ai61y" path="res://assets/themes/back_btn_style.tres" id="5_r3owr"]
 [ext_resource type="Script" uid="uid://bofqephgaqn5r" path="res://UI/check_button.gd" id="6_oflx8"]
+[ext_resource type="Script" uid="uid://d0wiiosfbq75v" path="res://UI/ui_input.gd" id="6_rbc7x"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_oflx8"]
 
@@ -130,6 +131,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 toggle_mode = true
+button_pressed = true
 button_group = SubResource("ButtonGroup_oflx8")
 text = "GRAPHICS"
 
@@ -138,12 +140,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 toggle_mode = true
-button_pressed = true
 button_group = SubResource("ButtonGroup_oflx8")
 text = "AUDIO"
 metadata/_edit_use_anchors_ = true
 
 [node name="Debug" type="Button" parent="Control/HBoxContainer/TABCustom/TabButtons" unique_id=648338291]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
@@ -154,7 +156,7 @@ text = "DEBUG"
 layout_mode = 2
 theme = ExtResource("4_ay7hg")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_r3owr")
-current_tab = 3
+current_tab = 2
 tabs_visible = false
 use_hidden_tabs_for_min_size = true
 tab_focus_mode = 1
@@ -167,6 +169,7 @@ theme_override_constants/separation = 8
 metadata/_tab_index = 0
 
 [node name="Panel" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/General" unique_id=1489575014]
+visible = false
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme = ExtResource("1_3ykye")
@@ -225,12 +228,14 @@ popup/item_1/text = "Russian"
 popup/item_1/id = 1
 
 [node name="Panel2" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/General" unique_id=168580878]
+visible = false
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme = ExtResource("1_3ykye")
 theme_override_styles/panel = SubResource("StyleBoxFlat_4v2jo")
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/General/Panel2" unique_id=235647991]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -282,6 +287,7 @@ step = 0.05
 value = 69.7
 
 [node name="Panel4" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/General" unique_id=1636837735]
+visible = false
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme = ExtResource("1_3ykye")
@@ -339,6 +345,7 @@ step = 0.05
 value = 69.7
 
 [node name="Panel5" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/General" unique_id=128230524]
+visible = false
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme = ExtResource("1_3ykye")
@@ -396,6 +403,7 @@ step = 0.05
 value = 69.7
 
 [node name="Panel6" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/General" unique_id=643068637]
+visible = false
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme = ExtResource("1_3ykye")
@@ -453,6 +461,7 @@ step = 0.05
 value = 69.7
 
 [node name="Panel3" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/General" unique_id=312652558]
+visible = false
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme = ExtResource("1_3ykye")
@@ -512,6 +521,7 @@ popup/item_1/text = "Russian"
 popup/item_1/id = 1
 
 [node name="Panel7" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/General" unique_id=1896227239]
+visible = false
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme = ExtResource("1_3ykye")
@@ -571,6 +581,7 @@ popup/item_1/text = "Russian"
 popup/item_1/id = 1
 
 [node name="Panel8" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/General" unique_id=1434871484]
+visible = false
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme = ExtResource("1_3ykye")
@@ -630,6 +641,7 @@ popup/item_1/text = "Russian"
 popup/item_1/id = 1
 
 [node name="Panel9" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/General" unique_id=1501511008]
+visible = false
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme = ExtResource("1_3ykye")
@@ -694,7 +706,6 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="Graphics2" type="VBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer" unique_id=100209274]
-visible = false
 layout_mode = 2
 theme = ExtResource("1_3ykye")
 theme_override_constants/separation = 8
@@ -748,11 +759,11 @@ theme_override_colors/icon_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/icon_hover_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 17
 theme_override_styles/normal = SubResource("StyleBoxFlat_l1i01")
-flat = true
 fit_to_longest_item = false
 allow_reselect = true
 
 [node name="Panel2" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/Graphics2" unique_id=1599808934]
+visible = false
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme = ExtResource("1_3ykye")
@@ -810,6 +821,7 @@ step = 0.05
 value = 69.7
 
 [node name="Audio" type="VBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer" unique_id=621723740]
+visible = false
 layout_mode = 2
 theme = ExtResource("1_3ykye")
 theme_override_constants/separation = 8
@@ -862,6 +874,8 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_r62pu")
 placeholder_text = "0.00"
 alignment = 1
 max_length = 5
+script = ExtResource("6_rbc7x")
+setting_key = "master_volume"
 
 [node name="Slider" type="HSlider" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1323640001]
 layout_mode = 2

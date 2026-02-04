@@ -25,7 +25,8 @@ enum PlayerStats{
 	CURRENT_XP,
 	LEVEL,
 	XP_GAIN,
-	CURRENT_HP_RATIO
+	CURRENT_HP_RATIO,
+	CURRENT_HP
 }
 enum GameStats{
 	LOG_BALANCE,
@@ -64,7 +65,7 @@ static func _get_player_comp(stat: int) -> String:
 
 		PlayerStats.MAX_HP:             return "MaxHPComponent"
 		PlayerStats.CURRENT_HP_RATIO:   return "CurrentHPRatioComponent"
-
+		PlayerStats.CURRENT_HP:         return "CurrentHPComponent"
 		PlayerStats.JUMPS_COUNT:        return "JumpsCountComponent"
 		PlayerStats.JUMPS_LEFT:         return "JumpsLeftComponent"
 		PlayerStats.JUMP_HEIGHT:        return "JumpHeightComponent"
@@ -106,3 +107,11 @@ static func _get_game_comp(stat: int) -> String:
 		_:
 			push_error("Unknown Stat: %s" % stat)
 			return ""
+
+static func get_all_player_components() -> Array:
+	var result := []
+	for stat in PlayerStats.values():
+		var comp := get_comp_name(Domain.PLAYER, stat)
+		if comp != "":
+			result.append(comp)
+	return result

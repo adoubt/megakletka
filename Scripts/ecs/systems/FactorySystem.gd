@@ -305,33 +305,33 @@ func _create_items(data_array: Array = []):
 			
 		var e_data = db.item_configs[item_name]
 		var entity_id = em.create_entity()
-		var slot_mask: int
+		#var slot_mask: int
 		cs.add_component(entity_id, "TitleComponent", TitleComponent.new(data.get("title", "Item Title"),data.get("description","Item Description")))	
 		cs.add_component(entity_id, "RenderComponent", RenderComponent.new(e_data.scene, false))
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(data.get("position",Vector3.ZERO)))
-		if cs.has_component(owner_id, "PlayerComponent"):
-			slot_mask = SlotMask.PLAYER
-		elif cs.has_component(owner_id, "POIComponent"):
-			var poi_name = cs.get_component(owner_id, "POIComponent").name
-			match poi_name:
-				"campfire": 
-					slot_mask = SlotMask.CAMPFIRE
-				"merchant": 
-					slot_mask = SlotMask.MERCHANT
-				_: 
-					printerr("Owner type is not founded to create item")
-					return
+		#if cs.has_component(owner_id, "PlayerComponent"):
+			#slot_mask = SlotMask.PLAYER
+		#elif cs.has_component(owner_id, "POIComponent"):
+			#var poi_name = cs.get_component(owner_id, "POIComponent").name
+			#match poi_name:
+				#"campfire": 
+					#slot_mask = SlotMask.CAMPFIRE
+				#"merchant": 
+					#slot_mask = SlotMask.MERCHANT
+				#_: 
+					#printerr("Owner type is not founded to create item")
+					#return
 		
-		var slot_index: int = data.get("slot_index",0)
-		cs.add_component(entity_id, "ItemComponent", ItemComponent.new(item_name, owner_id, slot_mask, slot_index))
+		#var slot_index: int = data.get("slot_index",0)
+		cs.add_component(entity_id, "ItemComponent", ItemComponent.new(item_name))
 		cs.add_component(entity_id, "CostComponent", CostComponent.new(e_data.cost))
 		
-		cs.add_component(entity_id, "FollowOwnerComponent", FollowOwnerComponent.new(
-			owner_id, 
-			data.get("follow_offset", Vector3(0.2,0.7,0.2)), 
-			data.get("follow_weight", 0.9),
-			)
-			)
+		var transaction = ItemTransactionComponent.new()
+		transaction.target_id = owner_id
+		transaction.source_id = RUN
+		cs.add_component(entity_id, "ItemTransactionComponent", transaction)
+		
+		#cs.add_component(entity_id, "FollowOwnerComponent", FollowOwnerComponent.new())
 		if e_data.has("abilities") and e_data.abilities != null:
 			var abilities_to_create := []
 			for ability in e_data.abilities:

@@ -6,6 +6,8 @@ var db: DataBase
 var object_pool: ObjectPool
 var campfire_id: int
 var item_arch : Archetype
+var enemy_arch: Archetype
+var pick_up_arch: Archetype
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _event_bus: EventBus,_db: DataBase,_object_pool: ObjectPool ):
 	super._init(_entity_manager, _component_store, _event_bus)
 	
@@ -17,13 +19,16 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	event_bus.subscribe("combat_completed", _on_combat_completed)
 	arch = cs.register_archetype(["DayIdComponent","POIComponent","TransformComponent"],["DeadComponent"])
 	item_arch = cs.register_archetype(["ItemComponent",])
+	enemy_arch = cs.register_archetype(["EnemyComponent"], ["DeadComponent"])
+	pick_up_arch = cs.register_archetype((["PickUpComponent"]),["DeadComponent"])
 func _update_day(data: Dictionary = {}) ->void:
 	
 	_activate_poi_on_day(data)
 	var render = cs.get_component(campfire_id, "RenderComponent")
 	if render and render.instance:
 		render.instance.zone.set_cold()
-		
+	_clear_enemies()
+	_clear_pick_ups()	
 	
 	
 func _activate_poi_on_day(_data: Dictionary = {}) ->void:
@@ -108,3 +113,12 @@ func _on_combat_completed(data: Dictionary = {}) ->void:
 	var render = cs.get_component(campfire_id, "RenderComponent")
 	if render and render.instance:
 		render.instance.zone.set_warm()	
+
+func _clear_enemies():
+	var entities = enemy_arch.entities.duplicate()
+	for e in entities:
+		cs.add_component(e, "DeadComponent", DeadComponent.new())
+func _clear_pick_ups():
+	var entities = pick_up_arch.entities.duplicate()
+	for e in entities:
+		cs.add_component(e, "DeadComponent", DeadComponent.new())

@@ -21,3 +21,5 @@ func update(_delta):
 			tf.velocity.y = height
 			tf.grounded = false
 			jump_left.base_value -= 1
+			cs.add_component(e, "DirtyStatsComponent", DirtyStatsComponent.new())
+			event_bus.emit("jumped", {"entity":e})

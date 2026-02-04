@@ -1,11 +1,11 @@
 extends Control
 
 @onready var texture_rect: TextureRect = $TextureRect
-var background_scene: Node
+var background_scene: Node = null
 
 		
 func setup_background(data: Array):
-	background_scene.show_offer(data)
+	if background_scene: background_scene.show_offer(data)
 
 func _gui_input(event: InputEvent):
 	

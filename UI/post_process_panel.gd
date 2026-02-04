@@ -5,7 +5,7 @@ var shader_names := []        # список имён эффектов в пор
 
 func _ready() -> void:
 	_load_all_shaders()
-
+	#$ColorRect2.material = shader_materials["vignette"]
 	# Получаем имя из настроек или дефолтное
 	var current_effect = SettingsManager.get_value("post_process_shader")
 	if current_effect == "off":

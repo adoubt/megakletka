@@ -34,4 +34,5 @@ func update(_delta: float) -> void:
 			var current_xp = cs.get_component(pid, "CurrentXPComponent")
 			current_xp.base_value += base_xp * xp_gain
 			event_bus.emit("xp_changed", {"e_id": pid, "current_xp": current_xp.base_value})
+			cs.add_component(pid, "DirtyStatsComponent", DirtyStatsComponent.new())
 		cs.add_component(orb_id, "DeadComponent", DeadComponent.new(0.0))

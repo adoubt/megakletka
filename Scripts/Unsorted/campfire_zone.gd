@@ -3,8 +3,8 @@ extends Node3D
 
 @export var color_param_name := "ColorParameter"
 
-@export var warm_color: Color = Color(1.0, 0.55, 0.25)   # 🔥 тепло
-@export var cold_color: Color = Color(0.35, 0.65, 1.0)  # ❄️ холод
+@export var warm_color: Color = Color("ff8c40ff")   # 🔥 тепло
+@export var cold_color: Color = Color("59a6ffff")  # ❄️ холод
 
 @onready var mesh: MeshInstance3D = $Sphere
 @onready var material: ShaderMaterial

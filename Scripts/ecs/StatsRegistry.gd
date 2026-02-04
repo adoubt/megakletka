@@ -3,6 +3,7 @@ class_name StatsRegistry
 
 
 const STAT_COMPONENTS := [
+	"ArmorComponent",
 	"AttackSpeedComponent",
 	"BounceComponent",
 	"CurrentHPRatioComponent",
@@ -27,7 +28,6 @@ const STAT_COMPONENTS := [
 	"EnemyBudgetComponent",
 	"MoveSpeedComponent",
 	"PierceComponent",
-	"XPMultComponent",
 	"XPRewardComponent",
 	
 	"JumpsCountComponent",

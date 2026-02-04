@@ -64,7 +64,7 @@ func update(delta: float) -> void:
 			continue
 
 		move.direction = dir.normalized()
-		speed.base_value += ACCEL * delta
+		speed.final_value += ACCEL * delta
 		ptf.velocity.y += move.direction.y * speed.final_value
 		
 		if dist <= PICKUP_DIST:

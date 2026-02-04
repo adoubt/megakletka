@@ -15,3 +15,4 @@ func _on_slider_changed(value: float) -> void:
 
 	if setting_key != "":
 		SettingsManager.set_value(setting_key, value)
+	get_parent().get_child(0).text = str(value)

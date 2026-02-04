@@ -5,7 +5,7 @@ class_name CameraEffectSystem
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
 	super._init(_entity_manager, _component_store, _event_bus)
 	event_bus.subscribe("grounded", _on_grounded)
-
+	event_bus.subscribe("jumped",_on_jumped)
 	arch = cs.register_archetype(["CameraComponent", "CameraEffectsComponent"])
 
 
@@ -91,3 +91,35 @@ func _on_grounded(data: Dictionary) -> void:
 
 	# ========= FOV IMPULSE (короткий zoom-out)
 	fx.fov_velocity -= power * 100.0
+
+func _on_jumped(data: Dictionary) -> void:
+	var e_id: int = data.entity
+	var jump_force: float = data.get("force", 1.0) # можно не передавать
+
+	var cam_e := -1
+	for c in arch.entities:
+		var cam := cs.get_component(c, "CameraComponent")
+		if cam != null and cam.owner_id == e_id:
+			cam_e = c
+			break
+
+	if cam_e == -1:
+		return
+
+	var fx := cs.get_component(cam_e, "CameraEffectsComponent")
+
+	var power :float= clamp(jump_force, 0.6, 1.2)
+
+	# ========= DROP (резкое приседание вниз)
+	fx.drop_velocity += power * 5.0
+
+	# ========= KICK (камера вверх)
+	#fx.kick_pitch -= power * 0.5
+	#fx.kick_yaw   += randf_range(-0.5, 0.5) * power
+
+	# ========= FOV (микро zoom-out)
+	fx.fov_velocity += power * 100.0
+
+	# ========= SHAKE (очень короткий)
+	#fx.shake_strength = max(fx.shake_strength, power * 0.08)
+	#fx.shake_life     = max(fx.shake_life, 0.12)

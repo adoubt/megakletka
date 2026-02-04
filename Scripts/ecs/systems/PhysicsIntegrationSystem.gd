@@ -44,6 +44,7 @@ func update(delta: float) -> void:
 						"velocity_y": impact_vy
 					})
 						jumps_left.base_value = jumps.final_value
+						cs.add_component(e_id, "DirtyStatsComponent", DirtyStatsComponent.new())
 
 			tf.position.y = ground_y
 		else:
