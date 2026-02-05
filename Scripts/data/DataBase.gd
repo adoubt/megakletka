@@ -107,7 +107,24 @@ class_name DataBase
 		"mushroom": true,
 		"drop_weight": 0,
 	},
-		
+	"heal_mushroom":{
+		"scene": "res://Scenes/POI/heal_mushroom.tscn",
+		"interact_radius": 1.5,
+		"collider_radius":1,
+		"target_priority" : 1,
+		"interact_type": InteractType.PRESS,
+		"mushroom": true,
+		"drop_weight": 10,
+	},	
+	"damage_for_current_hp_mushroom":{
+		"scene": "res://Scenes/POI/damage_for_current_hp_mushroom.tscn",
+		"interact_radius": 1.5,
+		"collider_radius":1,
+		"target_priority" : 1,
+		"interact_type": InteractType.PRESS,
+		"mushroom": true,
+		"drop_weight": 10,
+	},
 }
 
 	

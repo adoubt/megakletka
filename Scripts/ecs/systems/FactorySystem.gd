@@ -385,6 +385,7 @@ func _create_camera(data_array: Array = []) -> void:
 		cs.add_component(entity_id, "CameraComponent", cam_comp)
 		cs.add_component(entity_id, "CameraEffectsComponent",CameraEffectsComponent.new())
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new())
+		cs.add_component(entity_id, "GravityComponent", GravityComponent.new(0.0))
 		
 func _create_hit_vfx(data_array: Array = []) -> void:
 	for data in data_array:

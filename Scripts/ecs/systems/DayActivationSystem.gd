@@ -15,6 +15,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	object_pool = _object_pool
 	event_bus.subscribe("poi_created", _update_day)
 	event_bus.subscribe("day_changed", _update_day)
+	event_bus.subscribe("ground_generated", _on_ground_generated)
 	event_bus.subscribe("combat_started", _on_combat_started)
 	event_bus.subscribe("combat_completed", _on_combat_completed)
 	arch = cs.register_archetype(["DayIdComponent","POIComponent","TransformComponent"],["DeadComponent"])
@@ -29,7 +30,7 @@ func _update_day(data: Dictionary = {}) ->void:
 		render.instance.zone.set_cold()
 	_clear_enemies()
 	_clear_pick_ups()	
-	
+	_generate_ground()
 	
 func _activate_poi_on_day(_data: Dictionary = {}) ->void:
 	var poi_list := arch.entities.duplicate()
@@ -122,3 +123,46 @@ func _clear_pick_ups():
 	var entities = pick_up_arch.entities.duplicate()
 	for e in entities:
 		cs.add_component(e, "DeadComponent", DeadComponent.new())
+func _generate_ground()-> void:
+	cs.add_component(RUN, "GroundGenerationRequestComponent", GroundGenerationRequestComponent.new())
+
+func _on_ground_generated(data:Dictionary) -> void:
+	var poi_list := arch.entities.duplicate()
+	var current_day = cs.get_component(RUN,"RunComponent").current_day
+	for poi_id in poi_list:
+		
+		var day_id = cs.get_component(poi_id, "DayIdComponent").id
+		if day_id != current_day: continue
+		var poi = cs.get_component(poi_id, "POIComponent")
+		var poi_name = poi.name
+		if poi_name == "heal_mushroom": 
+			
+			var pos_to_spawn: Vector3 = _get_highiest_position()
+			cs.get_component(poi_id, "TransformComponent").position = pos_to_spawn
+func _get_highiest_position():
+	var ground = cs.get_component(RUN, "GroundHeightComponent")
+	
+	var max_h := -INF
+	var best_x := 0
+	var best_z := 0
+
+	for z in range(ground.size_z):
+		for x in range(ground.size_x):
+			var i :float= x + z * ground.size_x
+			var h :float= ground.heights[i]
+
+			if h > max_h:
+				max_h = h
+				best_x = x
+				best_z = z
+
+	# grid → world
+	var half_x :float= (ground.size_x - 1) * ground.cell_size * 0.5
+	var half_z :float= (ground.size_z - 1) * ground.cell_size * 0.5
+
+	var world_x :float= best_x * ground.cell_size - half_x
+	var world_z :float= best_z * ground.cell_size - half_z
+
+	return Vector3(world_x, max_h, world_z)
+
+	

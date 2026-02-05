@@ -175,42 +175,52 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LeftPanel" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer" unique_id=1346636822]
+layout_direction = 2
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 theme_override_constants/separation = 20
 
 [node name="HP" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel" unique_id=558187113]
 layout_mode = 2
 theme_override_constants/separation = -20
 
-[node name="MarginContainer2" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP" unique_id=1136165463]
+[node name="Control" type="Control" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP" unique_id=2105431273]
 layout_mode = 2
 
-[node name="MaxHp" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer2" unique_id=2077850536]
+[node name="MarginContainer2" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/Control" unique_id=1136165463]
+layout_mode = 0
+offset_top = -9.0
+offset_right = 200.0
+offset_bottom = 16.0
+
+[node name="MaxHp" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/Control/MarginContainer2" unique_id=2077850536]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(20, 25)
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
 texture = SubResource("CompressedTexture2D_1ui3w")
 expand_mode = 1
 
-[node name="CurrentHp" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer2" unique_id=1850323699]
+[node name="CurrentHp" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/Control/MarginContainer2" unique_id=1850323699]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_i0a73")
-custom_minimum_size = Vector2(20, 25)
+custom_minimum_size = Vector2(200, 25)
+layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 0
 texture = ExtResource("4_0j753")
 expand_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP" unique_id=177107681]
-layout_mode = 2
+[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/Control" unique_id=177107681]
+layout_mode = 0
+offset_top = -4.0
+offset_right = 200.0
+offset_bottom = 20.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer" unique_id=603388130]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/Control/MarginContainer" unique_id=603388130]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="CurrentHPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer/HBoxContainer" unique_id=1462399142]
+[node name="CurrentHPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/Control/MarginContainer/HBoxContainer" unique_id=1462399142]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -220,7 +230,7 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
 text = "100"
 
-[node name="_" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer/HBoxContainer" unique_id=1539074277]
+[node name="_" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/Control/MarginContainer/HBoxContainer" unique_id=1539074277]
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_colors/font_color = Color(1, 1, 1, 0.60784316)
@@ -229,7 +239,7 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
 text = "/"
 
-[node name="MaxHPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/MarginContainer/HBoxContainer" unique_id=6009448]
+[node name="MaxHPLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/HP/Control/MarginContainer/HBoxContainer" unique_id=6009448]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -392,7 +402,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.98
 
-[node name="CombatPanel" type="PanelContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer" unique_id=1707010462]
+[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer" unique_id=2130635769]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 50
+
+[node name="CombatPanel" type="PanelContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1707010462]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_pf7ph")
 custom_minimum_size = Vector2(0, 20)
@@ -400,7 +416,7 @@ layout_mode = 2
 size_flags_vertical = 10
 theme_override_styles/panel = SubResource("StyleBoxFlat_vs5gg")
 
-[node name="PhaseLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer/CombatPanel" unique_id=204083348]
+[node name="PhaseLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer/MarginContainer/CombatPanel" unique_id=204083348]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)

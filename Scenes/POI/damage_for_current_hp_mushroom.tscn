@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://di2a0nqs0uqh6"]
+
+[ext_resource type="Script" uid="uid://dyv66n3a3fshe" path="res://scripts/objects/poi.gd" id="1_tgc5h"]
+[ext_resource type="Shader" uid="uid://dkna07j4n1v3u" path="res://assets/Shaders/Mushroom/mushroom_particles.tres" id="2_yu4ou"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtxaw"]
+albedo_color = Color(1.5035768, 1.6074628, 1.8383204, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_24kg6"]
+top_radius = 0.0
+bottom_radius = 0.33
+height = 0.425
+radial_segments = 6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e3pru"]
+albedo_color = Color(1.0440854, 0, 0.09117555, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_woeyc"]
+top_radius = 0.05
+bottom_radius = 0.1
+height = 0.3
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_t84m2"]
+load_path = "res://.godot/imported/T_VFX_Flare_251.jpg-c40b811657c6ab919b804f928c27f042.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_skh0c"]
+render_priority = 0
+shader = ExtResource("2_yu4ou")
+shader_parameter/ColorParameter = Color(1, 1, 1, 1)
+shader_parameter/MainTexture = SubResource("CompressedTexture2D_t84m2")
+
+[sub_resource type="Gradient" id="Gradient_sulhr"]
+colors = PackedColorArray(0, 1, 0, 1, 0.99215686, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fsiyu"]
+gradient = SubResource("Gradient_sulhr")
+
+[sub_resource type="Curve" id="Curve_1b81j"]
+_data = [Vector2(0, 0.029082775), 0.0, 0.0, 0, 0, Vector2(0.26683936, 0.10961974), 0.0, 0.0, 0, 0, Vector2(0.49999997, 0.08277404), 0.0, 0.0, 0, 0, Vector2(0.80569947, 0.08277404), -0.23550993, -0.23550993, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_q0tlq"]
+curve = SubResource("Curve_1b81j")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cowbs"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+angle_min = 1.0728835e-05
+angle_max = 228.00002
+spread = 180.0
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, -1, 0)
+scale_curve = SubResource("CurveTexture_q0tlq")
+color_ramp = SubResource("GradientTexture1D_fsiyu")
+
+[sub_resource type="QuadMesh" id="QuadMesh_bitxw"]
+
+[node name="POIEntity" type="Node3D" unique_id=1891108490]
+script = ExtResource("1_tgc5h")
+
+[node name="Hint" type="Node3D" parent="." unique_id=181343573]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.262548, 0)
+
+[node name="Label3D2" type="Label3D" parent="Hint" unique_id=670235137]
+visibility_range_end = 70.95
+billboard = 1
+shaded = true
+no_depth_test = true
+alpha_scissor_threshold = 1.0
+texture_filter = 4
+outline_render_priority = -6
+text = "[E]   Eat"
+outline_size = 15
+
+[node name="Model" type="Node3D" parent="." unique_id=1179866701]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model" unique_id=2121577032]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5103666, 0)
+material_override = SubResource("StandardMaterial3D_qtxaw")
+mesh = SubResource("CylinderMesh_24kg6")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Model" unique_id=1339757765]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15524518, 0)
+material_override = SubResource("StandardMaterial3D_e3pru")
+mesh = SubResource("CylinderMesh_woeyc")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=2010099057]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8072423, 0)
+material_override = SubResource("ShaderMaterial_skh0c")
+process_material = SubResource("ParticleProcessMaterial_cowbs")
+draw_pass_1 = SubResource("QuadMesh_bitxw")

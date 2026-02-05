@@ -34,7 +34,7 @@ func update(_delta: float):
 				event_bus.emit("damage_done", [{"position": owner_tf.position, "owner_id": e_id, "damage": diff, "damage_type": "physics"}])
 				event_bus.emit("enemy_hitted", {"position": owner_tf.position, "e_id": e_id})
 			
-		event_bus.emit("hp_changed",{"e_id":e_id, "current_hp":hp.base_value, "max_hp": max_hp.final_value})
+		cs.add_component(e_id, "DirtyStatsComponent", DirtyStatsComponent.new())
 			
 
 		cs.remove_component(e_id, "HPChangeRequestComponent")

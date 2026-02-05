@@ -56,7 +56,7 @@ var duration:float =0.0:
 var required_xp:float= 0.0:
 	set(value):
 		required_xp = value
-		%RequiredXPLabel.text = str(value)
+		%RequiredXPLabel.text = str(int(value))
 var current_level:float= 0.0:
 	set(value):
 		current_level = value

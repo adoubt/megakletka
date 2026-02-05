@@ -72,7 +72,9 @@ func update(delta: float) -> void:
 			cs.add_component(pid, "PickedUpComponent", PickedUpComponent.new())
 			
 func _magnetize_all_xp(_data) -> void:
-	
+	if player_arch.entities.size()<=0:
+		return
 	for orb in xp_orb_arch.entities:
 		var player = player_arch.entities.pick_random()
+		
 		cs.get_component(orb,"PickUpComponent").target_id = player

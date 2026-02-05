@@ -9,31 +9,32 @@ const PUDDLE_LEVEL := -2.15
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus, _ecs: Node,):
 	super._init(_entity_manager,_component_store,_event_bus)
 	ecs = _ecs
-	event_bus.subscribe("day_changed", _on_day_changed)
+	arch = cs.register_archetype(["GroundGenerationRequestComponent","GroundHeightComponent","GroundVisualComponent","RunComponent"])
 	days_arch = cs.register_archetype(["DayComponent", "DayIdComponent"],["DeadComponent"])
+func update(delta: float) ->void:
+	for e in arch.entities:
+		var run_comp = cs.get_component(e, "RunComponent")
+		var ground = cs.get_component(e, "GroundHeightComponent")
+		var visual = cs.get_component(e, "GroundVisualComponent")
+		var current_day = run_comp.current_day
+		var _seed = run_comp.seed
+		var day_comp : DayComponent
+		for d in days_arch.entities:
+			var day_index = cs.get_component(d, "DayIdComponent").id
+			if day_index == current_day:
+				day_comp = cs.get_component(d, "DayComponent")
+				break
+		ground.generate(
+			_seed + current_day, 
+			day_comp.height_amp,
+			day_comp.frequency,
+			day_comp.puddles
+		)
+		_update_mesh(ground, visual)
+		cs.remove_component(RUN,"GroundGenerationRequestComponent" )
+		event_bus.emit("ground_generated", {"ground": ground})
+		
 	
-func _on_day_changed(data: Dictionary = {}):
-	
-
-	var run_comp = cs.get_component(RUN, "RunComponent")
-	var ground = cs.get_component(RUN, "GroundHeightComponent")
-	var visual = cs.get_component(RUN, "GroundVisualComponent")
-	var current_day = run_comp.current_day
-	var _seed = run_comp.seed
-	var day_comp : DayComponent
-	for d in days_arch.entities:
-		var day_index = cs.get_component(d, "DayIdComponent").id
-		if day_index == current_day:
-			day_comp = cs.get_component(d, "DayComponent")
-			break
-	ground.generate(
-		_seed + data.current_day, 
-		day_comp.height_amp,
-		day_comp.frequency,
-		day_comp.puddles
-	)
-	_update_mesh(ground, visual)
-	event_bus.emit("ground_generated", {"ground": ground})
 
 func _update_mesh(ground, visual):
 	var st := SurfaceTool.new()
@@ -97,11 +98,11 @@ func _add_vertex(st: SurfaceTool, pos: Vector3, normal: Vector3, height: float):
 
 func _height_to_color(h: float) -> Color:
 	if h < PUDDLE_LEVEL:
-		return Color(0.05, 0.07, 0.05) # вода / грязь
+		return Color(0.04, 0.06, 0.10) # холодная вода, почти чёрная
 	elif h < 0.2:
-		return Color(0.15, 0.22, 0.14) # мокрое болото
+		return Color(0.07, 0.11, 0.14) # мокрое холодное болото
 	else:
-		return Color(0.28, 0.24, 0.18) # кочки
+		return Color(0.12, 0.15, 0.17) # холодные кочки / ил
 
 # ======================================================
 # MATERIAL
