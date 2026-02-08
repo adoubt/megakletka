@@ -8,7 +8,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	super._init(_entity_manager, _component_store, _event_bus)
 	event_bus.subscribe("change_day_request", _change_day)
 	event_bus.subscribe("combat_completed", _on_combat_completed)
-	days_arch = cs.register_archetype(["DayComponent","DayIdComponent"])
+	days_arch = cs.register_archetype(["DayGroundComponent","DayComponent"])
 	
 	player_arch =cs.register_archetype(["PlayerComponent"], ["DeadComponent", "RespawnableComponent"])
 func _change_day(data: Dictionary={})->void:

@@ -61,9 +61,12 @@ func initialize(run_seed: int):
 	
 	#1 INIT / SPAWN
 	
-	system_manager.add_system(RunInitSystem.new(entity_manager, component_store,event_bus, db,run_seed,))
-	system_manager.add_system(DaySystem.new(entity_manager, component_store,event_bus))
-	
+	system_manager.add_system(RunInitSystem.new(entity_manager, component_store, event_bus, db, run_seed,))
+	system_manager.add_system(DaySystem.new(entity_manager, component_store, event_bus))
+	system_manager.add_system(GraphGenerationSystem.new(entity_manager, component_store, event_bus))
+	system_manager.add_system(NavigationSystem.new(entity_manager, component_store, event_bus))
+	system_manager.add_system(DaySelectionSystem.new(entity_manager, component_store, event_bus))
+	system_manager.add_system(DayEnterSystem.new(entity_manager, component_store,event_bus, db, object_pool))
 	system_manager.add_system(GroundGenerationSystem.new(entity_manager, component_store,event_bus,groound_handler))
 	system_manager.add_system(InputSystem.new(entity_manager, component_store,event_bus))
 	
@@ -140,7 +143,7 @@ func initialize(run_seed: int):
 	system_manager.add_system(ItemVisualPlacementSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HUDSystem.new(entity_manager, component_store,event_bus,))
 	system_manager.add_system(POIInteractionSystem.new(entity_manager, component_store,event_bus,))
-	system_manager.add_system(DayActivationSystem.new(entity_manager, component_store,event_bus, db, object_pool))
+	#system_manager.add_system(DayActivationSystem.new(entity_manager, component_store,event_bus, db, object_pool))
 	system_manager.add_system(MerchantActivationSystem.new(entity_manager, component_store,event_bus, db, object_pool))
 	system_manager.add_system(RenderSystem.new(entity_manager, component_store,event_bus, object_pool))
 	system_manager.add_system(ScaleSystem.new(entity_manager, component_store,event_bus))

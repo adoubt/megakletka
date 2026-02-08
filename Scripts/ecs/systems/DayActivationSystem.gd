@@ -1,10 +1,10 @@
 extends BaseSystem
 class_name DayActivationSystem
 
-
+var BASE_BUDGET :float = 50
 var db: DataBase
 var object_pool: ObjectPool
-var campfire_id: int
+
 var item_arch : Archetype
 var enemy_arch: Archetype
 var pick_up_arch: Archetype
@@ -15,40 +15,25 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	object_pool = _object_pool
 	event_bus.subscribe("poi_created", _update_day)
 	event_bus.subscribe("day_changed", _update_day)
-	event_bus.subscribe("ground_generated", _on_ground_generated)
-	event_bus.subscribe("combat_started", _on_combat_started)
-	event_bus.subscribe("combat_completed", _on_combat_completed)
-	arch = cs.register_archetype(["DayIdComponent","POIComponent","TransformComponent"],["DeadComponent"])
-	item_arch = cs.register_archetype(["ItemComponent",])
-	enemy_arch = cs.register_archetype(["EnemyComponent"], ["DeadComponent"])
-	pick_up_arch = cs.register_archetype((["PickUpComponent"]),["DeadComponent"])
+
+	arch = cs.register_archetype(["DayComponent","POIComponent","TransformComponent"],["DeadComponent"])
+	
 func _update_day(data: Dictionary = {}) ->void:
 	
 	_activate_poi_on_day(data)
-	var render = cs.get_component(campfire_id, "RenderComponent")
-	if render and render.instance:
-		render.instance.zone.set_cold()
-	_clear_enemies()
-	_clear_pick_ups()	
-	_generate_ground()
+	
+
 	
 func _activate_poi_on_day(_data: Dictionary = {}) ->void:
 	var poi_list := arch.entities.duplicate()
 	var current_day = cs.get_component(RUN,"RunComponent").current_day
-	var campfire_pos :Vector3 = Vector3(0.0,-3.0,0.0)
 	for poi_id in poi_list:
-		var day_id = cs.get_component(poi_id, "DayIdComponent").id
+		var day_id = cs.get_component(poi_id, "DayComponent").id
 		var poi = cs.get_component(poi_id, "POIComponent")
+		
 		var poi_name = poi.name
-		if poi_name == "campfire": 
-			campfire_id= poi_id
-			cs.get_component(poi_id, "DayIdComponent").id = current_day
-			cs.get_component(poi_id, "TransformComponent").position = campfire_pos
-			
-			continue
-		if poi_name ==	"merchant":
-			if cs.get_component(poi_id, "DayIdComponent").id == current_day:
-				cs.add_component(poi_id,"MerchantActivationRequestComponent", MerchantActivationRequestComponent.new())
+		
+				
 			
 		if day_id == current_day:
 			var e_data: Dictionary = db.poi_configs[poi_name]
@@ -103,66 +88,22 @@ func _deactivate_items_for_entity(id : int)-> void:
 				cs.remove_component(e,"RenderComponent")
 			
 			
-func _on_combat_started(data: Dictionary = {}) ->void:
 
-	var render = cs.get_component(campfire_id, "RenderComponent")
-	if render and render.instance:
-		render.instance.zone.disable()
 
-func _on_combat_completed(data: Dictionary = {}) ->void:
 
-	var render = cs.get_component(campfire_id, "RenderComponent")
-	if render and render.instance:
-		render.instance.zone.set_warm()	
-
-func _clear_enemies():
-	var entities = enemy_arch.entities.duplicate()
-	for e in entities:
-		cs.add_component(e, "DeadComponent", DeadComponent.new())
-func _clear_pick_ups():
-	var entities = pick_up_arch.entities.duplicate()
-	for e in entities:
-		cs.add_component(e, "DeadComponent", DeadComponent.new())
-func _generate_ground()-> void:
-	cs.add_component(RUN, "GroundGenerationRequestComponent", GroundGenerationRequestComponent.new())
-
-func _on_ground_generated(data:Dictionary) -> void:
-	var poi_list := arch.entities.duplicate()
-	var current_day = cs.get_component(RUN,"RunComponent").current_day
-	for poi_id in poi_list:
-		
-		var day_id = cs.get_component(poi_id, "DayIdComponent").id
-		if day_id != current_day: continue
-		var poi = cs.get_component(poi_id, "POIComponent")
-		var poi_name = poi.name
-		if poi_name == "heal_mushroom": 
-			
-			var pos_to_spawn: Vector3 = _get_highiest_position()
-			cs.get_component(poi_id, "TransformComponent").position = pos_to_spawn
-func _get_highiest_position():
-	var ground = cs.get_component(RUN, "GroundHeightComponent")
 	
-	var max_h := -INF
-	var best_x := 0
-	var best_z := 0
 
-	for z in range(ground.size_z):
-		for x in range(ground.size_x):
-			var i :float= x + z * ground.size_x
-			var h :float= ground.heights[i]
 
-			if h > max_h:
-				max_h = h
-				best_x = x
-				best_z = z
+func _spawn_combat(day_entity, day, ante):
+	
 
-	# grid → world
-	var half_x :float= (ground.size_x - 1) * ground.cell_size * 0.5
-	var half_z :float= (ground.size_z - 1) * ground.cell_size * 0.5
+	var budget := int(
+		BASE_BUDGET *
+		(1.0 + day * 0.12) *
+		(1.0 + ante * 0.3)
+	)
 
-	var world_x :float= best_x * ground.cell_size - half_x
-	var world_z :float= best_z * ground.cell_size - half_z
-
-	return Vector3(world_x, max_h, world_z)
-
+	cs.add_component(day_entity, "CombatStateComponent", CombatStateComponent.new())
+	cs.add_component(day_entity, "BatteryComponent", BatteryComponent.new(budget))
+	cs.add_component(day_entity, "CombatRewardComponent", CombatRewardComponent.new(6))
 	

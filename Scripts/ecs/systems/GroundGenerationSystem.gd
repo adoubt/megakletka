@@ -3,32 +3,64 @@ class_name GroundGenerationSystem
 
 
 var ecs : Node
-var days_arch: Archetype
+#var days_arch: Archetype
 const PUDDLE_LEVEL := -2.15
 
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus, _ecs: Node,):
 	super._init(_entity_manager,_component_store,_event_bus)
 	ecs = _ecs
 	arch = cs.register_archetype(["GroundGenerationRequestComponent","GroundHeightComponent","GroundVisualComponent","RunComponent"])
-	days_arch = cs.register_archetype(["DayComponent", "DayIdComponent"],["DeadComponent"])
+	#days_arch = cs.register_archetype(["DayGroundComponent", "DayComponent"],["DeadComponent"])
+	
 func update(delta: float) ->void:
+	if arch.entities.is_empty():
+		return
 	for e in arch.entities:
+		var req = cs.get_component(e, "GroundGenerationRequestComponent")
 		var run_comp = cs.get_component(e, "RunComponent")
 		var ground = cs.get_component(e, "GroundHeightComponent")
 		var visual = cs.get_component(e, "GroundVisualComponent")
 		var current_day = run_comp.current_day
 		var _seed = run_comp.seed
-		var day_comp : DayComponent
-		for d in days_arch.entities:
-			var day_index = cs.get_component(d, "DayIdComponent").id
-			if day_index == current_day:
-				day_comp = cs.get_component(d, "DayComponent")
-				break
+		
+		var height_amp : float
+		var frequency : float
+		var puddles : float
+		var day_type = cs.get_component(req.target_day, "DayComponent").type
+		match day_type:
+			DayType.LOBBY:
+				height_amp = randf_range(0.0, 3.0)   
+				frequency = randf_range(0.2, 0.2)  
+				puddles = randf_range(4, 100.1)    
+			DayType.ENEMY:
+				height_amp = randf_range(-3.0, 10.0)   
+				frequency = randf_range(0.2, 0.2)  
+				puddles = randf_range(4, 10.1)    
+			DayType.ELITE:
+				height_amp = randf_range(-3.0, 10.0)   
+				frequency = randf_range(0.2, 0.2)  
+				puddles = randf_range(4, 10.1)    
+			DayType.BOSS:
+				height_amp = randf_range(-3.0, 10.0)   
+				frequency = randf_range(0.2, 0.2)  
+				puddles = randf_range(4, 10.1)   
+			DayType.MERCHANT_DEAD:
+				height_amp = randf_range(-3.0, 10.0)   
+				frequency = randf_range(0.2, 0.2)  
+				puddles = randf_range(4, 10.1)     
+			DayType.MERCHANT:
+				height_amp = randf_range(-3.0, 10.0)   
+				frequency = randf_range(0.2, 0.2)  
+				puddles = randf_range(4, 10.1) 
+			DayType.MUSHROOMS:
+				height_amp = randf_range(-3.0, 10.0)   
+				frequency = randf_range(0.2, 0.2)  
+				puddles = randf_range(4, 10.1) 	    
 		ground.generate(
 			_seed + current_day, 
-			day_comp.height_amp,
-			day_comp.frequency,
-			day_comp.puddles
+			height_amp,
+			frequency,
+			puddles 
 		)
 		_update_mesh(ground, visual)
 		cs.remove_component(RUN,"GroundGenerationRequestComponent" )

@@ -16,14 +16,16 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 
 	event_bus.subscribe("enemy_died", _on_enemy_died)
 	event_bus.subscribe("day_changed", _on_day_changed)
-	event_bus.subscribe("campfire_moved", _on_campfire_moved)
-	day_arch = cs.register_archetype(["DayComponent", "DayIdComponent","CombatStateComponent","BatteryComponent"])
+	
+	day_arch = cs.register_archetype(["DayComponent","CombatStateComponent","BatteryComponent"])
 	enemy_arch = cs.register_archetype(["EnemyComponent","EnemyBudgetComponent"], ["DeadComponent"])
 	player_arch = cs.register_archetype(["PlayerComponent", "TransformComponent"],["DeadComponent"])
 	
 func update(delta: float) -> void:
+	if day_arch.entities.is_empty():
+		return
 	var enemies = enemy_arch.entities.duplicate()
-
+	
 	if combat.state == CombatState.INACTIVE:
 		if _player_left_safe_zone() and battery.current_budget > 0:
 			combat.state = CombatState.ACTIVE
@@ -76,7 +78,7 @@ func _on_day_changed(data: Dictionary):
 	current_day = data.current_day
 	
 	for day in day_arch.entities:
-		if cs.get_component(day, "DayIdComponent").id == current_day:
+		if cs.get_component(day, "DayComponent").id == current_day:
 			current_day_entity = day
 			break
 
@@ -94,5 +96,3 @@ func _on_enemy_died(data : Dictionary):
 	"alive_budget": battery.alive_budget
 	})
 	
-func _on_campfire_moved(data : Dictionary):
-	day_center = data.position

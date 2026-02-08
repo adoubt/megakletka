@@ -3,7 +3,7 @@ class_name RunInitSystem
 
 
 var db : DataBase
-const ANTES := 3
+const ANTES := 1
 const DAYS_PER_ANTE := 5
 const BASE_BATTERY := 50
 const WORLD_SIZE : int = 75
@@ -12,13 +12,14 @@ const POI_ON_DAY : int = 1
 const MUSHROOM_POI_ON_DAY: int = 40
 var days_arch: Archetype
 var run_seed: int
-var start_day := 0
-var start_balance: int = 10
 
+var start_balance: int = 10
+const FLOORS_PER_ANTE := 15
+const COLUMNS_PER_FLOOR := 6
 func _init( _entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus, _db: DataBase,_run_seed:int):
 	super._init( _entity_manager, _component_store, _event_bus)
 	run_seed = _run_seed
-	days_arch = cs.register_archetype(["DayComponent","DayIdComponent"],["DeadComponent"])
+	days_arch = cs.register_archetype(["DayComponent"],["DeadComponent"])
 	db = _db
 	event_bus.subscribe("ecs_ready",_init_run)
 	
@@ -30,8 +31,11 @@ func _init_run(_data:Dictionary ={}) -> void:
 	if run_entity != RUN:
 		return
 	run_comp.seed = run_seed
-	run_comp.current_day = start_day
+	
+	run_comp.current_floor = 0
+	run_comp.current_ante = 1
 	run_comp.logs = start_balance
+	run_comp.current_day = -1
 	cs.add_component(run_entity,"RunComponent",run_comp)
 	cs.add_component(run_entity,"RunPhaseComponent",RunPhaseComponent.new(RunPhaseComponent.Phase.INIT))
 	cs.add_component(run_entity,"GroundHeightComponent",GroundHeightComponent.new(WORLD_SIZE, WORLD_SIZE, CELL_SIZE))
@@ -39,87 +43,120 @@ func _init_run(_data:Dictionary ={}) -> void:
 	
 	#print("RUN MASK:", entity_component_mask[run_entity])
 	#print("BITS:", component_bit)
-	_init_days(run_seed)
 	
+	var lobby_id = _init_lobby()
 	
+	var boss_id : int
+	for ante in range(1, ANTES + 1):
+		boss_id = _init_days(run_seed, ante)
+	
+	var req:GraphGenerationRequestComponent = GraphGenerationRequestComponent.new()
+	req.boss_id = boss_id
+	req.lobby_id = lobby_id
+	cs.add_component(RUN,"GraphGenerationRequestComponent", req)
 	_init_campfire()
 	
-	_init_poi()
+	#_init_poi()
 	
 	event_bus.emit("create_char", [{ "camera":true, "char_name": "Rigman", "position": Vector3(-3.0,3,0)}])
 	
-	event_bus.emit("change_day_request",{})
-	event_bus.emit("balance_changed", {"current_balance": run_comp.logs, "value": run_comp.logs})
 	
-func _init_days(run_seed: int) -> void:
-	var day_index := start_day
+	event_bus.emit("balance_changed", {"current_balance": run_comp.logs, "value": run_comp.logs})
 
-	for ante in range(ANTES):
-		var ante_multiplier: float = 1.0 + (ante * 0.1)
+func _init_lobby() -> int:
+	var e = em.create_entity()
+	
+	cs.add_component(e, "DayComponent", DayComponent.new(0,1,DayType.LOBBY,2))
+	cs.add_component(RUN, "DaySelectRequestComponent", DaySelectRequestComponent.new(e))
+	cs.add_component(e, "ReachableComponent", ReachableComponent.new())
+	return e
 
-		for i in range(DAYS_PER_ANTE):
-			var day_entity := em.create_entity()
+func _init_days(run_seed: int, ante: int) -> int:
+	var mid_floor := int(FLOORS_PER_ANTE / 2)
+	var boss_id:int = -1
+	for floor in range(1, FLOORS_PER_ANTE + 1):
 
-			# ---------- RNG ДНЯ ----------
-			var day_rng := RandomNumberGenerator.new()
-			day_rng.seed = run_seed + day_index * 1337
+		var rng := RandomNumberGenerator.new()
+		rng.seed = run_seed ^ (ante << 8) ^ (floor << 4)
+		
+		# ---- сколько нод на этаже ----
+		var node_count := rng.randi_range(2, 6)
 
-			# ---------- DAY COMPONENT ----------
-			var day := DayComponent.new()
+		# ---- СПЕЦ ЭТАЖИ ----
 
-			# базовые параметры мира
-			day.height_amp = day_rng.randf_range(-2.0, 5.0) ## height
-			day.frequency  = day_rng.randf_range(0.2, 0.2) ## flatness
-			day.puddles    = day_rng.randf_range(4.3, 5.1)
+		# первый этаж — всегда 4 врага
+		if floor == 1:
+			for column in range(4):
+				var e := em.create_entity()
+				cs.add_component(
+					e,
+					"DayComponent",
+					DayComponent.new(floor, ante, DayType.ENEMY, column)
+				)
+			continue
 
-			day.biome     = day_rng.randi_range(0, 2)
-
-			# ---------- СЛОЖНОСТЬ ДНЯ ----------
-			var multiplier := day_rng.randf_range(0.6, 0.8)
-
-			if i == 1 or i == 2:
-				multiplier = day_rng.randf_range(0.8, 1.3)
-			elif i == 3:
-				multiplier = day_rng.randf_range(1.3, 1.8)
-			elif i == 4:
-				multiplier = day_rng.randf_range(1.5, 2.2)
-				cs.add_component(day_entity, "BossDayComponent", BossDayComponent.new())
-
-			# усиливаем визуал вместе со сложностью
-			#day.roughness *= multiplier
-			#day.hills     *= ante_multiplier
-
-			# ---------- COMPONENTS ----------
-			cs.add_component(day_entity, "DayComponent", day)
-			cs.add_component(day_entity, "DayIdComponent", DayIdComponent.new(day_index+1))
-			cs.add_component(day_entity, "AnteComponent", AnteComponent.new(ante))
-			cs.add_component(day_entity, "CombatStateComponent", CombatStateComponent.new())
-			cs.add_component(day_entity, "CombatRewardComponent", CombatRewardComponent.new(6))
-			
-			# ---------- BUDGET ----------
-			var budget: int = int(
-				BASE_BATTERY +
-				(day_index * 10) * multiplier * ante_multiplier
-			)
-
+		# последний этаж — один босс
+		if floor == FLOORS_PER_ANTE:
+			var e := em.create_entity()
 			cs.add_component(
-				day_entity,
-				"BatteryComponent",
-				BatteryComponent.new(budget)
+				e,
+				"DayComponent",
+				DayComponent.new(
+					floor,
+					ante,
+					DayType.BOSS,
+					int(COLUMNS_PER_FLOOR / 2)
+				)
 			)
+			boss_id = e
+			continue
 
-			print(
-				"day ", day_index+1,
-				" | budget ", budget,
-				" | biome ", day.biome
+		# серединный этаж — все сундуки
+		if floor == mid_floor:
+			for column in range(node_count):
+				var e := em.create_entity()
+				cs.add_component(
+					e,
+					"DayComponent",
+					DayComponent.new(floor, ante, DayType.CHEST, column)
+				)
+			continue
+		var available_columns := []
+		for i in range(COLUMNS_PER_FLOOR):
+			available_columns.append(i)
+
+		available_columns.shuffle()
+		var chosen_columns := available_columns.slice(0, node_count)
+		# ---- ОБЫЧНЫЕ ЭТАЖИ ----
+		for column in chosen_columns:
+			
+			var roll := rng.randf()
+			var day_type := DayType.ENEMY
+
+			# редкие события
+			if roll < 0.03:
+				day_type = DayType.HIDDEN
+			elif roll < 0.06:
+				day_type = DayType.MERCHANT_DEAD
+			elif roll < 0.10:
+				day_type = DayType.MUSHROOMS
+
+			# обычные вариации
+			elif roll < 0.20:
+				day_type = DayType.MERCHANT
+			elif roll < 0.35:
+				day_type = DayType.ELITE
+
+			var e := em.create_entity()
+			cs.add_component(
+				e,
+				"DayComponent",
+				DayComponent.new(floor, ante, day_type, column)
 			)
-
-			day_index += 1
-
-	#event_bus.emit("DAYS_CREATED")
+	return boss_id
 	
 func _init_campfire() -> void:
-	event_bus.emit("create_poi",[{ "poi_name": "campfire", "day_id" :start_day, "position": Vector3.ZERO}])
+	event_bus.emit("create_poi",[{ "poi_name": "campfire", "position": Vector3.ZERO}])
 
 	
 func _init_poi() -> void:
@@ -127,7 +164,7 @@ func _init_poi() -> void:
 	var days_list = days_arch.entities.duplicate()
 
 	for e_id in days_list:
-		var day_id = cs.get_component(e_id, "DayIdComponent").id
+		var day_id = cs.get_component(e_id, "DayComponent").id
 
 		var pool := []
 		var mushroom_pool := []

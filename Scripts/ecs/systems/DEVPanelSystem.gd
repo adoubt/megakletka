@@ -12,11 +12,13 @@ func _init(_entity_manager :EntityManager, _component_store :ComponentStore, _ev
 
 
 func update(_delta: float) -> void:
+	
 	_timer += _delta
 	if _timer < UPDATE_INTERVAL:
 		return
 	_timer = 0.0
-
+	if not UIManager.is_panel_open("DEV_PANEL"):
+		return
 	var stats: Dictionary = object_pool.get_debug_stats()
 
 	UIManager.dev_panel.update_pool_stats(stats)

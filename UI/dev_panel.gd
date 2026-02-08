@@ -3,19 +3,23 @@ class_name DevPanel
 
 
 
-@onready var list: VBoxContainer = $MarginContainer/HBoxContainer/MarginContainer2/Pools/List
+@onready var list: VBoxContainer = %List
 
-@onready var console_input: LineEdit = $MarginContainer/HBoxContainer/MarginContainer2/console_input
+@onready var console_input: LineEdit = %ConsoleInput
 
-@onready var console_output: RichTextLabel = $MarginContainer/HBoxContainer/MarginContainer2/console_output
+@onready var console_output: RichTextLabel = %ConsoleOutput
 
-@onready var systems_list: VBoxContainer = $MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer/SystemsList
-func _ready() -> void:
-	console_input.text_submitted.connect(_on_command)
+@onready var systems_list: VBoxContainer = %SystemsList
+
 # кеш строк
 var system_rows :Dictionary= {} # system_name -> HBoxContainer
 # кеш строк чтобы не пересоздавать каждый апдейт
 var rows: Dictionary = {} # scene_path -> HBoxContainer
+
+func _ready() -> void:
+
+	console_input.text_submitted.connect(_on_command)
+
 
 func update_system_profile(stats: Dictionary) -> void:
 	var alive := {}

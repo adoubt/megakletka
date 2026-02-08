@@ -74,7 +74,7 @@ func _create_pois(data_array: Array = []) -> void:
 		if not db.poi_configs.has(poi_name):
 			push_warning("Unknown enemy name: %s" % poi_name)
 			
-		var day_id:int= data["day_id"]
+	
 		var position: Vector3 = data["position"]
 		
 		
@@ -82,7 +82,7 @@ func _create_pois(data_array: Array = []) -> void:
 		var entity_id = em.create_entity()	
 		var mushroom_mult_size:float = data.get("mushroom_mult_size",1.0)
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(position))
-		cs.add_component(entity_id, "DayIdComponent", DayIdComponent.new(day_id))
+		
 		var is_mushroom = e_data.get("mushroom", false)
 		cs.add_component(entity_id, "POIComponent", POIComponent.new(poi_name, is_mushroom,mushroom_mult_size))
 		
@@ -102,20 +102,15 @@ func _create_pois(data_array: Array = []) -> void:
 		var render_comp = RenderComponent.new()
 		if scene: render_comp.scene_path = scene
 		cs.add_component(entity_id, "RenderComponent", render_comp)
+		var slots_count:int = 0
 		if e_data.has("slots"):
-			var items_count:int= e_data.get("items",0)
-			cs.add_component(entity_id, "SlotsCountComponent",SlotsCountComponent.new(e_data.slots))
-			cs.add_component(entity_id, "EmptySlotsCountComponent", EmptySlotsCountComponent.new(
-			e_data.slots - items_count))
-			
-		#var slots_to_create:=[]
-		#for slot in e_data.get("slots", 0):
-			#slots_to_create.append({"owner_id": entity_id})
-		#if slots_to_create.size() > 0:
-			#event_bus.emit("create_slot", slots_to_create)
+			slots_count = e_data.slots
+			if data.has("slots"): slots_count = data.slots
+			cs.add_component(entity_id, "SlotsCountComponent",SlotsCountComponent.new(slots_count))
+			cs.add_component(entity_id, "EmptySlotsCountComponent", EmptySlotsCountComponent.new())
+		cs.get_component(RUN, "RunComponent").campfire_id = entity_id
 		
-		if poi_name == "campfire": event_bus.emit("campfire_created",[])	
-	event_bus.emit("poi_created")
+	
 
 func _create_enemies(data_array: Array = []) -> void:
 	for data in data_array:

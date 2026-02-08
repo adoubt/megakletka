@@ -14,7 +14,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 	event_bus.subscribe("level_up_panel_toggled", _on_level_up_panel_toggled)
 	event_bus.subscribe("day_changed", _on_day_changed)
 	event_bus.subscribe("phase_changed", _on_phase_changed)
-	
+	event_bus.subscribe("map_snapshot_changed",_on_map_snaphot_changed)
 	event_bus.subscribe("combat_started",_on_combat_started)
 	event_bus.subscribe("combat_completed",_on_combat_completed)
 	event_bus.subscribe("day_skipped",_on_combat_completed)
@@ -114,7 +114,8 @@ func _on_stats_snapshot_ready(data: Dictionary) -> void:
 			_on_stat_changed(stat_id, new_val)
 
 	cached_stats[e_id] = snapshot.duplicate(true)
-
+func _on_map_snaphot_changed(data: Dictionary) ->void:
+	UIManager.map_panel.redraw_from_snapshot(data)
 func _on_stat_changed(stat: int, value: float):
 	match stat:
 

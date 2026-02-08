@@ -1,8 +1,12 @@
 extends Resource
 class_name DayComponent
 
-var height_amp := 2.5      # общая высота
-var frequency := 0.015    # размер пятен
-var puddles := 0.6        # сколько луж
-
-var biome: int = 0
+var floor: int = 0
+var ante: int
+var type: int
+var column: int        # 0..4 (горизонталь)
+func _init(_floor: int = -1,_ante: int = -1, _type: int= DayType.ENEMY, _column:int =0 ) -> void:
+	floor = _floor
+	ante = _ante
+	type =_type
+	column = _column

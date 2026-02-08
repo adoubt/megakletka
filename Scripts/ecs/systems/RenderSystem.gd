@@ -8,12 +8,14 @@ const SHADOW_SCENE : String = "res://Scenes/shadow.tscn"
 const FLASH_HIT_MATERIAL := preload("res://assets/Materials/flash_hit.tres")
 var object_pool: ObjectPool
 var smoothness := 15.0 #
-var ground: GroundHeightComponent
+var ground: GroundHeightComponent = null
 
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _event_bus: EventBus, _object_pool:ObjectPool):
 	super._init(_entity_manager, _component_store, _event_bus)
 	object_pool = _object_pool
 	event_bus.subscribe("ground_generated", _on_ground_generated)
+	event_bus.subscribe("combat_started", _on_combat_started)
+	event_bus.subscribe("combat_completed", _on_combat_completed)
 	arch = cs.register_archetype(["TransformComponent", "RenderComponent"],["DeadComponent"])
 		
 func update(_delta: float) -> void:
@@ -51,7 +53,7 @@ func update(_delta: float) -> void:
 			render.shadow_instance.mesh = base_mesh.duplicate()
 			cs.add_component(entity_id, "ScaleRequestComponent", ScaleRequestComponent.new())
 	
-		_update_shadow(render.shadow_instance, transform, _delta)
+		if ground: _update_shadow(render.shadow_instance, transform, _delta)
 		
 		#if  cs.has_component(entity_id, "PlayerComponent"): 
 				#render.instance.visible = true
@@ -74,3 +76,24 @@ func _update_shadow(shadow: Node3D, tf, _delta) -> void:
 
 func _on_ground_generated(data: Dictionary) ->void:
 	ground = data.ground
+
+
+func _on_combat_started(data: Dictionary = {}) ->void:
+	var run = cs.get_component(RUN, "RunComponent")
+	var render = cs.get_component(run.campfire_id, "RenderComponent")
+	if render and render.instance:
+		render.instance.zone.disable()
+
+func _on_combat_completed(data: Dictionary = {}) ->void:
+
+	var run = cs.get_component(RUN, "RunComponent")
+	var render = cs.get_component(run.campfire_id, "RenderComponent")
+	if render and render.instance:
+		render.instance.zone.set_warm()	
+
+func _on_day_changed_(data: Dictionary = {}) ->void:
+	
+	var run = cs.get_component(RUN, "RunComponent")
+	var render = cs.get_component(run.campfire_id, "RenderComponent")
+	if render and render.instance:
+		render.instance.zone.set_cold()

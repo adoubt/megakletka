@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgy7bmqbuq12g"]
+[gd_scene format=3 uid="uid://bgy7bmqbuq12g"]
 
 [ext_resource type="Script" uid="uid://dmw0g0j2ymwjc" path="res://UI/dev_panel.gd" id="1_oxrvo"]
 
-[node name="DevPanel" type="Control"]
+[node name="DevPanel" type="Control" unique_id=782927150]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_oxrvo")
 
-[node name="TextureRect" type="ColorRect" parent="."]
+[node name="TextureRect" type="ColorRect" parent="." unique_id=543339585]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.7490196)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1710616086]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,65 +32,69 @@ theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1597819978]
 layout_mode = 2
 
-[node name="MarginContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="MarginContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=200705184]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Pools" type="ScrollContainer" parent="MarginContainer/HBoxContainer/MarginContainer2"]
+[node name="Pools" type="ScrollContainer" parent="MarginContainer/HBoxContainer/MarginContainer2" unique_id=776212054]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="List" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer2/Pools"]
+[node name="List" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer2/Pools" unique_id=1259133119]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer2/Pools/List"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer2/Pools/List" unique_id=930865919]
 visible = false
 layout_mode = 2
 text = "Enemy Pool"
 horizontal_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/MarginContainer2/Pools/List"]
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/MarginContainer2/Pools/List" unique_id=1477974226]
 visible = false
 layout_mode = 2
 
-[node name="EnemiesCount" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer2/Pools/List"]
-visible = false
-layout_mode = 2
-vertical_alignment = 1
-
-[node name="ProjectilesCount" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer2/Pools/List"]
+[node name="EnemiesCount" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer2/Pools/List" unique_id=717723262]
 visible = false
 layout_mode = 2
 vertical_alignment = 1
 
-[node name="console_output" type="RichTextLabel" parent="MarginContainer/HBoxContainer/MarginContainer2"]
+[node name="ProjectilesCount" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer2/Pools/List" unique_id=2028641335]
+visible = false
+layout_mode = 2
+vertical_alignment = 1
+
+[node name="ConsoleOutput" type="RichTextLabel" parent="MarginContainer/HBoxContainer/MarginContainer2" unique_id=782282560]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="console_input" type="LineEdit" parent="MarginContainer/HBoxContainer/MarginContainer2"]
+[node name="ConsoleInput" type="LineEdit" parent="MarginContainer/HBoxContainer/MarginContainer2" unique_id=952086925]
+unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "Tap here /help"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=2042783097]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="SystemsList" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=195114388]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer/SystemsList"]
+[node name="SystemsList" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer" unique_id=1520192902]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer/SystemsList" unique_id=1444156339]
 layout_mode = 2

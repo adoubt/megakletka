@@ -10,7 +10,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	db = _db
 	object_pool = _object_pool
 	arch = cs.register_archetype(["MerchantActivationRequestComponent","TransformComponent","SlotsCountComponent","POIComponent","RenderComponent"],["DeadComponent"])
-	#poi_arch = cs.register_archetype(["DayIdComponent","POIComponent","TransformComponent"],["DeadComponent"])
+	#poi_arch = cs.register_archetype(["DayComponent","POIComponent","TransformComponent"],["DeadComponent"])
 	
 func update(_delta:float)-> void:
 	var entities = arch.entities.duplicate()

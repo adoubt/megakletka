@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cksvu02u2qvum"]
+
+[ext_resource type="Script" uid="uid://c4852n42p4oe7" path="res://UI/Map/map_node.gd" id="1_sa75m"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ay01u"]
+load_path = "res://.godot/imported/icon.svg-76cbebfc2e9ef52f8c35f8b13fe81473.s3tc.ctex"
+
+[node name="MapNode" type="Control" unique_id=1618602761]
+layout_mode = 3
+anchors_preset = 0
+offset_bottom = 3.0517578e-05
+script = ExtResource("1_sa75m")
+metadata/_custom_type_script = "uid://dmw0g0j2ymwjc"
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=1813272692]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.5
+offset_top = -22.5
+offset_right = 22.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+texture_normal = SubResource("CompressedTexture2D_ay01u")
+ignore_texture_size = true
+stretch_mode = 0

@@ -1,0 +1,264 @@
+[gd_scene format=3 uid="uid://b5ry7ld6hrpl6"]
+
+[ext_resource type="Script" uid="uid://ckb5uatyqncxe" path="res://UI/Map/map.gd" id="1_5rlq1"]
+[ext_resource type="Script" uid="uid://7v5xmp1og4y0" path="res://UI/Map/map_canvas.gd" id="2_rd55h"]
+[ext_resource type="Texture2D" uid="uid://d2jbpyv2spc7w" path="res://assets/icons/map_hint_scroll.png" id="3_s8kei"]
+[ext_resource type="Texture2D" uid="uid://diu7i5lp11di" path="res://assets/icons/map/merchant.png" id="4_usitc"]
+[ext_resource type="Texture2D" uid="uid://ynkjjw56ewke" path="res://assets/icons/map/merchant_dead.png" id="5_5b58f"]
+[ext_resource type="Texture2D" uid="uid://bwa100w0grm02" path="res://assets/icons/map/elite.png" id="6_fudcp"]
+[ext_resource type="Texture2D" uid="uid://dpg05f72rl0s3" path="res://assets/icons/map/enemy.png" id="7_v7iak"]
+[ext_resource type="Texture2D" uid="uid://cv2fepko2pkoj" path="res://assets/icons/map/boss.png" id="8_fd4oa"]
+[ext_resource type="Texture2D" uid="uid://bteklpxo1743p" path="res://assets/icons/map/mushrooms.png" id="9_hkays"]
+[ext_resource type="Texture2D" uid="uid://bnyagid63kaoo" path="res://assets/icons/map/hidden.png" id="10_dw0mk"]
+[ext_resource type="Texture2D" uid="uid://hrs1ejblj2g7" path="res://assets/icons/map/chest.png" id="11_fgd7s"]
+
+[sub_resource type="Gradient" id="Gradient_usitc"]
+offsets = PackedFloat32Array(0.5661765, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.05882353, 0.105882354, 0.101960786, 0.8039216)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5b58f"]
+gradient = SubResource("Gradient_usitc")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_usitc"]
+gradient = SubResource("Gradient_usitc")
+fill_from = Vector2(1, 0)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="Theme" id="Theme_yesmt"]
+Label/colors/font_color = Color(0, 0, 0, 1)
+
+[node name="Map" type="Control" unique_id=2062149034]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5rlq1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=18896467]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="ColorRect2" type="TextureRect" parent="HBoxContainer" unique_id=918712471]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_5b58f")
+
+[node name="MapScroll" type="ScrollContainer" parent="HBoxContainer" unique_id=1541769815]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Container" type="Control" parent="HBoxContainer/MapScroll" unique_id=209667682]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Background" type="ColorRect" parent="HBoxContainer/MapScroll/Container" unique_id=250361505]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+color = Color(0.05882353, 0.105882354, 0.101960786, 0.8039216)
+
+[node name="MapCanvas" type="Control" parent="HBoxContainer/MapScroll/Container" unique_id=1150282408]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("2_rd55h")
+
+[node name="ColorRect3" type="TextureRect" parent="HBoxContainer" unique_id=15176014]
+z_index = -2
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_usitc")
+
+[node name="Panel" type="Control" parent="." unique_id=274339918]
+layout_mode = 1
+anchor_left = 0.9444444
+anchor_top = 0.4814815
+anchor_right = 1.0477431
+anchor_bottom = 0.52006173
+offset_left = -268.0
+offset_top = -154.0
+offset_right = -47.0
+offset_bottom = 129.0
+grow_horizontal = 0
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Panel" unique_id=638526957]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -14.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_s8kei")
+expand_mode = 1
+
+[node name="MarginContainer" type="Control" parent="Panel" unique_id=247191191]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=1479880521]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -67.0
+offset_top = -89.5
+offset_right = 67.0
+offset_bottom = 89.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_yesmt")
+
+[node name="LegendLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=438882003]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Legend"
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=215200506]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MarginContainer" unique_id=45064370]
+layout_mode = 2
+
+[node name="Merchant" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1756465850]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Merchant" unique_id=100647412]
+layout_mode = 2
+texture = ExtResource("4_usitc")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Merchant" unique_id=1031853919]
+layout_mode = 2
+text = "Merchant"
+
+[node name="DeadMerchant" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1266198928]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/DeadMerchant" unique_id=951202695]
+layout_mode = 2
+texture = ExtResource("5_5b58f")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/DeadMerchant" unique_id=528721]
+layout_mode = 2
+text = "Dead Merchant"
+
+[node name="Elite" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=386484387]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Elite" unique_id=125826178]
+layout_mode = 2
+texture = ExtResource("6_fudcp")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Elite" unique_id=591837371]
+layout_mode = 2
+text = "Elite"
+
+[node name="Enemy" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=998914694]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Enemy" unique_id=1149932535]
+layout_mode = 2
+texture = ExtResource("7_v7iak")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Enemy" unique_id=806661491]
+layout_mode = 2
+text = "Enemy"
+
+[node name="Boss" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=874388301]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Boss" unique_id=341424702]
+layout_mode = 2
+texture = ExtResource("8_fd4oa")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Boss" unique_id=758612427]
+layout_mode = 2
+text = "Boss"
+
+[node name="Mushrooms" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=673901493]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Mushrooms" unique_id=166286509]
+layout_mode = 2
+texture = ExtResource("9_hkays")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Mushrooms" unique_id=1780023424]
+layout_mode = 2
+text = "Mushroom Valley"
+
+[node name="Hidden" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=2131472872]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Hidden" unique_id=991842434]
+layout_mode = 2
+texture = ExtResource("10_dw0mk")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Hidden" unique_id=1258325794]
+layout_mode = 2
+text = "Hidden"
+
+[node name="Chest" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1554071840]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Chest" unique_id=296958917]
+layout_mode = 2
+texture = ExtResource("11_fgd7s")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Chest" unique_id=300573867]
+layout_mode = 2
+text = "Hidden"

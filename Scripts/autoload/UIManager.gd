@@ -10,6 +10,8 @@ extends Node
 @onready var level_up_panel = preload("res://UI/level_up_panel.tscn").instantiate()
 @onready var merchant_panel = preload("res://UI/merchant_panel.tscn").instantiate()
 @onready var post_process_panel:  = preload("res://UI/post_process_panel.tscn").instantiate()
+@onready var map_panel: = preload("res://UI/Map/Map.tscn").instantiate()
+
 var event_bus: EventBus
 var owner_id: int = -1
 var player_camera
@@ -32,6 +34,12 @@ func consume_mouse_delta() -> Vector2:
 	_mouse_delta = Vector2.ZERO
 	return d
 
+func open_map_panel() -> void:
+	open_panel("Map")
+	
+func close_map_panel() -> void:
+	close_panel("Map")
+	
 func open_merchant_panel():
 	open_panel("Merchant")
 func close_merchant_panel():
@@ -79,6 +87,11 @@ func toggle_escape_menu() -> void:
 			game_paused = true
 	else:
 		open_escape_menu()
+func toggle_map_panel()  -> void:
+	if map_panel.visible:
+		close_map_panel()
+	else:
+		open_map_panel()
 func toggle_dev_panel() -> void:
 	if dev_panel.visible:
 		close_dev_panel()
@@ -180,14 +193,16 @@ func _ready() -> void:
 	post_process_canvas.name = "PostProcess"
 	post_process_canvas.add_child(merchant_panel)
 	post_process_canvas.add_child(post_process_panel)
+	
 	canvas = CanvasLayer.new()
 	
 	canvas.name = "Panels"
 	add_child(canvas)
 	canvas.add_child(hud)
+	
 	canvas.add_child(dev_panel)
 	canvas.add_child(level_up_panel)
-	
+	canvas.add_child(map_panel)
 	canvas.add_child(escape_menu)
 	canvas.add_child(main_menu)
 	canvas.add_child(settings_menu)
@@ -204,7 +219,7 @@ func _ready() -> void:
 		"LevelUpPanel": level_up_panel,
 		"Merchant": merchant_panel,
 		"HUD" :hud,
-		
+		"Map": map_panel
 	}
 	
 	close_all()
@@ -283,7 +298,9 @@ func _input(event: InputEvent) -> void:
 			toggle_level_up_panel()
 			event_bus.emit("level_up_panel_toggled") 
 			#toggle_upgrade_menu()
-
+	if event.is_action_pressed("map"):
+		if SceneManager.current_scene_name in ["GameTest"]:
+			toggle_map_panel() 
 func _unhandled_input(event):
 	if game_paused:
 		return
