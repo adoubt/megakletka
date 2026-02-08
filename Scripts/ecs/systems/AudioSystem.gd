@@ -43,14 +43,8 @@ func _on_enemy_hitted(data: Dictionary = {}) -> void:
 	)
 	
 func _on_level_up(_data: Dictionary = {}):
-	var _sounds = [
-		
-		"level_up"
-	]
 	
-	var rand_index = randi() % _sounds.size()
-	var chosen_sound = _sounds[rand_index]
-	AudioManager.play_ui_sound(chosen_sound)
+	AudioManager.play_ui_sound("level_up")
 	
 func _on_campfire_created(_data: Dictionary = {})-> void:
 	
@@ -69,3 +63,5 @@ func _on_combat_completed(_data: Dictionary = {}) -> void:
 	
 func _on_day_changed(_data: Dictionary = {}) -> void:
 	AudioManager.play_music_delayed("day_changed",0.0,0.0,false)
+	
+	

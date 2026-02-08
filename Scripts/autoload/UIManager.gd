@@ -24,6 +24,7 @@ var canvas :CanvasLayer
 var post_process_canvas :CanvasLayer
 var game_paused: bool = false
 var _mouse_delta: Vector2 = Vector2.ZERO
+var saved_mouse_pos: Vector2
 # ========== PUBLIC API ==========
 
 func set_owner_id(_owner_id : int) -> void:
@@ -35,11 +36,12 @@ func consume_mouse_delta() -> Vector2:
 	return d
 
 func open_map_panel() -> void:
+	close_hud()
 	open_panel("Map")
 	
 func close_map_panel() -> void:
 	close_panel("Map")
-	
+	open_hud()
 func open_merchant_panel():
 	open_panel("Merchant")
 func close_merchant_panel():
@@ -156,7 +158,8 @@ func open_panel(_name: String, use_tween: bool = false ) -> void:
 		else:
 			panel.visible = true
 
-			
+		if panel.has_method("play_open_anim"):
+			panel.play_open_anim()	
 		if panel.has_method("refresh"):
 			panel.refresh()
 			
@@ -166,6 +169,7 @@ func close_panel(_name: String, use_tween: bool = false ) -> void:
 	if panels.has(_name):
 		var panel = panels[_name]
 		if use_tween:
+			
 			var tween:Tween = panel.create_tween()
 			tween.set_trans(Tween.TRANS_BACK)
 			tween.set_ease(Tween.EASE_IN)
@@ -175,7 +179,9 @@ func close_panel(_name: String, use_tween: bool = false ) -> void:
 			tween.finished.connect(func():
 				panel.visible = false
 			)
+		
 		else:	panel.visible = false
+		
 		_update_ui_state()
 
 func close_all(incluse_hud : bool = false) -> void:
@@ -247,11 +253,13 @@ func _any_ui_open() -> bool:
 func _show_mouse(visible: bool) -> void:
 	if visible == last_mouse_state:
 		return
+	
+	
 	last_mouse_state = visible
 	Input.set_mouse_mode(
 		Input.MOUSE_MODE_VISIBLE if visible else Input.MOUSE_MODE_CAPTURED
 	)
-
+	
 
 
 func _on_resize():
@@ -287,9 +295,12 @@ func _input(event: InputEvent) -> void:
 			SettingsManager.set_value("achievement_ctrl_w", true)
 			return
 		_on_escape_pressed()
+	if event.is_action_pressed("hud"):
+		toggle_hud()
 	if event.is_action_pressed("Esc"):
 		_on_escape_pressed()
-			
+	if event.is_action_pressed("restart"):
+		SceneManager.restart_current()
 	if event.is_action_pressed("DEV_PANEL"):
 		if SceneManager.current_scene_name in ["BigRoomTest","GameTest"]:
 			toggle_dev_panel()
@@ -314,6 +325,7 @@ func _on_escape_pressed():
 		close_settings()
 	if is_panel_open("Merchant"):
 		close_merchant_panel()
-
+	if is_panel_open("Map"):
+		close_map_panel()
 	elif SceneManager.current_scene_name not in ["Intro","MainMenu"]:
 		toggle_escape_menu()

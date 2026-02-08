@@ -18,7 +18,7 @@ func _ready() -> void:
 	apply_master_volume(SettingsManager.get_value("master_volume"))
 	
 ## One-shot UI sound
-func play_ui_sound(_name: String, volume_db: float = -10.0, pitch_range: Vector2 = Vector2(1.0,1.0)) -> void:
+func play_ui_sound(_name: String, volume_db: float = -10.0, pitch_range: Vector2 = Vector2(0.9,1.1)) -> void:
 	var entry = DatabaseManager.db.sound_configs["non_diegetic"]["ui"].get(_name, null)
 	if entry == null:
 		push_error("AudioManager: sound not found in DB: %s" % _name)

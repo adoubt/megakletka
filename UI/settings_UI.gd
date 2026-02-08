@@ -34,28 +34,33 @@ func _load_effects()-> void:
 func _on_back_pressed() -> void:
 	
 	UIManager.close_settings()
-
+	_sound("menu_back")
 
 func _on_general_pressed() -> void:
+	
 	tab_container.set_current_tab(0)
-
+	_sound()
 
 func _on_accessibility_pressed() -> void:
 	tab_container.set_current_tab(1)
-
+	_sound()
 
 func _on_graphics_pressed() -> void:
 	tab_container.set_current_tab(2)
-
+	_sound()
 
 func _on_audio_pressed() -> void:
 	tab_container.set_current_tab(3)
-
+	_sound()
 
 func _on_debug_pressed() -> void:
 	tab_container.set_current_tab(4)
-
+	_sound()
 
 func _on_effects_item_selected(index: int) -> void:
 	UIManager.post_process_panel.set_shader_by_index(index)
+	
+func _sound(sound_name:String = "settings_select") -> void :
+	
+	AudioManager.play_ui_sound(sound_name)
 	

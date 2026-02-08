@@ -57,17 +57,21 @@ func _tween_scale(btn: Button, target_scale: Vector2) -> void:
 
 func _on_restart_pressed() -> void:
 	SceneManager.restart_current()
-
+	_sound()
 func _on_menu_pressed() -> void:
 	SceneManager.go_to_main_menu()
-
+	_sound()
 func _on_exit_pressed() -> void:
 	SceneManager.exit()
-
+	_sound()
 
 func _on_settings_pressed() -> void:
 	UIManager.open_settings()
-
+	_sound()
 
 func _on_continue_pressed() -> void:
 	UIManager.toggle_escape_menu()
+	_sound()
+	
+func _sound()->void :
+	AudioManager.play_ui_sound("menu_select")

@@ -10,12 +10,13 @@ const WORLD_SIZE : int = 75
 const CELL_SIZE : float = 1.5
 const POI_ON_DAY : int = 1
 const MUSHROOM_POI_ON_DAY: int = 40
+const MIN_COLUMNS_PER_FLOOR: int = 3
 var days_arch: Archetype
 var run_seed: int
 
 var start_balance: int = 10
-const FLOORS_PER_ANTE := 15
-const COLUMNS_PER_FLOOR := 6
+var floors_per_ante: int = 10
+const COLUMNS_PER_FLOOR: int = 6
 func _init( _entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus, _db: DataBase,_run_seed:int):
 	super._init( _entity_manager, _component_store, _event_bus)
 	run_seed = _run_seed
@@ -41,8 +42,7 @@ func _init_run(_data:Dictionary ={}) -> void:
 	cs.add_component(run_entity,"GroundHeightComponent",GroundHeightComponent.new(WORLD_SIZE, WORLD_SIZE, CELL_SIZE))
 	cs.add_component(run_entity,"GroundVisualComponent", GroundVisualComponent.new())
 	
-	#print("RUN MASK:", entity_component_mask[run_entity])
-	#print("BITS:", component_bit)
+
 	
 	var lobby_id = _init_lobby()
 	
@@ -72,21 +72,27 @@ func _init_lobby() -> int:
 	return e
 
 func _init_days(run_seed: int, ante: int) -> int:
-	var mid_floor := int(FLOORS_PER_ANTE / 2)
+	var mid_floor := int(floors_per_ante / 2)
 	var boss_id:int = -1
-	for floor in range(1, FLOORS_PER_ANTE + 1):
+	for floor in range(1, floors_per_ante + 1):
 
 		var rng := RandomNumberGenerator.new()
 		rng.seed = run_seed ^ (ante << 8) ^ (floor << 4)
 		
 		# ---- сколько нод на этаже ----
-		var node_count := rng.randi_range(2, 6)
+		var node_count := rng.randi_range(MIN_COLUMNS_PER_FLOOR, COLUMNS_PER_FLOOR)
 
 		# ---- СПЕЦ ЭТАЖИ ----
+		var available_columns := []
+		for i in range(COLUMNS_PER_FLOOR):
+			available_columns.append(i)
 
+		available_columns.shuffle()
+		var chosen_columns := available_columns.slice(0, node_count)
+		
 		# первый этаж — всегда 4 врага
 		if floor == 1:
-			for column in range(4):
+			for column in chosen_columns.slice(1, 5):
 				var e := em.create_entity()
 				cs.add_component(
 					e,
@@ -96,7 +102,7 @@ func _init_days(run_seed: int, ante: int) -> int:
 			continue
 
 		# последний этаж — один босс
-		if floor == FLOORS_PER_ANTE:
+		if floor == floors_per_ante:
 			var e := em.create_entity()
 			cs.add_component(
 				e,
@@ -110,10 +116,25 @@ func _init_days(run_seed: int, ante: int) -> int:
 			)
 			boss_id = e
 			continue
-
+			
+		if floor == floors_per_ante-1:
+			for column in chosen_columns:
+				var e := em.create_entity()
+				cs.add_component(
+					e,
+					"DayComponent",
+					DayComponent.new(
+						floor,
+						ante,
+						DayType.MUSHROOMS,
+						int(column)
+					)
+				)
+			continue
+			
 		# серединный этаж — все сундуки
 		if floor == mid_floor:
-			for column in range(node_count):
+			for column in chosen_columns:
 				var e := em.create_entity()
 				cs.add_component(
 					e,
@@ -121,12 +142,6 @@ func _init_days(run_seed: int, ante: int) -> int:
 					DayComponent.new(floor, ante, DayType.CHEST, column)
 				)
 			continue
-		var available_columns := []
-		for i in range(COLUMNS_PER_FLOOR):
-			available_columns.append(i)
-
-		available_columns.shuffle()
-		var chosen_columns := available_columns.slice(0, node_count)
 		# ---- ОБЫЧНЫЕ ЭТАЖИ ----
 		for column in chosen_columns:
 			
@@ -135,17 +150,19 @@ func _init_days(run_seed: int, ante: int) -> int:
 
 			# редкие события
 			if roll < 0.03:
-				day_type = DayType.HIDDEN
-			elif roll < 0.06:
 				day_type = DayType.MERCHANT_DEAD
+			
 			elif roll < 0.10:
-				day_type = DayType.MUSHROOMS
-
-			# обычные вариации
-			elif roll < 0.20:
 				day_type = DayType.MERCHANT
-			elif roll < 0.35:
+			elif roll < 0.12:
+				day_type = DayType.MUSHROOMS
+			elif roll < 0.16:
 				day_type = DayType.ELITE
+			elif roll < 0.30:
+				day_type = DayType.HIDDEN
+			
+
+			
 
 			var e := em.create_entity()
 			cs.add_component(
@@ -157,7 +174,7 @@ func _init_days(run_seed: int, ante: int) -> int:
 	
 func _init_campfire() -> void:
 	event_bus.emit("create_poi",[{ "poi_name": "campfire", "position": Vector3.ZERO}])
-
+	event_bus.emit("campfire_created",{})
 	
 func _init_poi() -> void:
 	var pois_to_create := []

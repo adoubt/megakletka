@@ -59,6 +59,7 @@ func update(_delta):
 
 	
 	_emit_map_snapshot(run)
+	event_bus.emit("day_changed",{"current_day": run.depth})
 	# ---------- конец ----------
 	cs.remove_component(RUN, "DayEnterRequestComponent")
 		

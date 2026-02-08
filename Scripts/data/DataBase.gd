@@ -407,8 +407,16 @@ class_name DataBase
 				],
 			"combat_started_signal":
 				[
-				]
-			
+				],
+			"main_menu":
+				["res://assets/sounds/non_diegetic/music/days_passed.mp3",
+				],
+			"death":
+				[
+				"res://assets/sounds/non_diegetic/music/death.mp3",
+				],
+				
+				
 		},
 		"ui": {
 			"game_start" :
@@ -425,7 +433,24 @@ class_name DataBase
 				],
 			"combat_started":
 				["",
-				]
+				],
+			"menu_select": 
+				["res://assets/sounds/non_diegetic/ui/tap4.mp3",
+				],
+			"note":
+				["res://assets/sounds/non_diegetic/ui/note.mp3",
+				],
+			"note_reward":
+				["res://assets/sounds/non_diegetic/ui/reward_counted.mp3",
+				],
+			"strange_tap":
+				["res://assets/sounds/non_diegetic/ui/strange_tap.mp3",
+				],
+			"settings_select":
+				["res://assets/sounds/non_diegetic/ui/tap6.mp3",
+				],
+			"menu_back": 
+				["res://assets/sounds/non_diegetic/ui/tap2.mp3",],
 		},
 	}
 }

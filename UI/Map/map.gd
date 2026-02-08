@@ -2,6 +2,13 @@ extends Control
 
 var rows :int
 var cols :int
+
+@export var fade_time := 0.18
+@onready var legend: Control = $Legend
+var fade_tween: Tween
+var map_tween : Tween
+var legend_tween : Tween
+var first_open: bool = true
 @export var row_spacing := 90
 @export var col_spacing := 80
 @export var padding := 100
@@ -9,9 +16,11 @@ var cols :int
 @onready var canvas: Control = %MapCanvas
 @onready var map_scroll: ScrollContainer = %MapScroll
 @onready var container: Control = %Container
-@onready var background: ColorRect = %Background
+
 @export var random_offset_x :=25
 @export var random_offset_y := 20
+
+
 
 @export var icons := {
 	DayType.ENEMY: preload("res://assets/icons/map/enemy.png"),
@@ -41,12 +50,13 @@ var cols :int
 }
 var nodes: Array = []
 
-
-func _ready() -> void:
-	pass
+func _ready():
+	
+	container.pivot_offset = canvas.size /2
 
 
 func redraw_from_snapshot(snapshot: Dictionary) -> void:
+	
 	_clear()
 	seed(_map_layout_seed(snapshot.floors))
 	var floors: Dictionary = snapshot.floors
@@ -67,7 +77,7 @@ func redraw_from_snapshot(snapshot: Dictionary) -> void:
 
 	# day_id -> MapNode (для связей)
 	var node_by_id := {}
-
+	
 	var center_x := canvas.custom_minimum_size.x * 0.5
 	var base_y := canvas.custom_minimum_size.y - padding
 
@@ -84,19 +94,26 @@ func redraw_from_snapshot(snapshot: Dictionary) -> void:
 
 			var node := preload("res://UI/Map/MapNode.tscn").instantiate()
 			canvas.add_child(node)
-
+			
 			var offset_x = (x - (cols - 1) * 0.5) * col_spacing
 			var rand_x := randf_range(-random_offset_x, random_offset_x)
 			var rand_y := randf_range(-random_offset_y, random_offset_y)
-
+			
 			node.position = Vector2(
 				center_x + offset_x + rand_x,
 				base_y - y * row_spacing + rand_y
 			)
+			if cell.type == DayType.BOSS:
+				node.texture.size*= 2.5
+				node.texture.position = - node.texture.size/2
+				rand_y-= 40
+				node.position.x = center_x
 			var node_icon = icons.get(cell.type)
 			var node_icon_hover = icons_hover.get(cell.type)
-			node.texture.texture_normal = node_icon
-			node.texture.texture_hover = node_icon_hover
+			node.texture._texture_normal = node_icon
+			node.texture._texture_hover = node_icon_hover
+			
+			node.texture.day_type = cell.type
 			row[x] = node
 			node_by_id[cell.id] = node
 
@@ -124,26 +141,12 @@ func redraw_from_snapshot(snapshot: Dictionary) -> void:
 				})
 
 	canvas.queue_redraw()
-	await get_tree().process_frame
-	_scroll_to_bottom()
-
-func _connect_from_snapshot(connections: Array) -> void:
-	if not "connections" in canvas:
-		return
-
-	canvas.connections.clear()
-
-	for c in connections:
-		var from = nodes[c.from.y][c.from.x]
-		var to = nodes[c.to.y][c.to.x]
-
-		if from != null and to != null:
-			canvas.connections.append({
-				"from": from,
-				"to": to
-			})
-
-
+	first_open = true
+	map_scroll.scroll_vertical = 0.0
+	#container.size.y - map_scroll.size.y
+	
+	
+	
 
 func _prepare_canvas() -> void:
 	var _size = Vector2(
@@ -170,14 +173,54 @@ func _clear() -> void:
 
 
 func _scroll_to_bottom() -> void:
-	var bar := map_scroll.get_v_scroll_bar()
-	print("scroll max:", bar.max_value)
 	await get_tree().process_frame
-	var max_scroll := int(
-		canvas.size.y - map_scroll.size.y
-	)
-	map_scroll.scroll_vertical = max(max_scroll, 0)
 
+	var max_scroll := int(
+		container.size.y - map_scroll.size.y
+	)
+	
+	if map_tween:
+		map_tween.kill()
+	legend.position = Vector2(2000,130)
+
+	canvas.scale = Vector2(2.3, 1.8)
+	canvas.pivot_offset.x = canvas.size.x / 2
+	canvas.animate_connections()
+	map_tween = create_tween()
+
+	
+	map_tween.tween_interval(0.2)
+
+
+	map_tween.parallel().tween_property(
+		canvas,
+		"scale",
+		Vector2.ONE,
+		1.0
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+
+	map_tween.parallel().tween_property(
+		map_scroll,
+		"scroll_vertical",
+		max_scroll,
+		3.0
+	).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_IN)
+	
+	
+	map_tween.finished.connect(_animate_legend)
+	
+func _animate_legend() ->void :
+	
+	var target_pos: Vector2 = Vector2(810.0,130.0)
+	if legend_tween:
+		legend_tween.kill()
+	legend_tween = create_tween()	
+	legend_tween.tween_property(
+		legend,
+		"position",
+		target_pos,
+		1.0
+	).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 func _map_layout_seed(floors: Dictionary) -> int:
 	var s := ""
 
@@ -193,3 +236,69 @@ func _map_layout_seed(floors: Dictionary) -> int:
 			]
 
 	return s.hash()
+
+
+
+func hover_all_of_type(type:int) -> void:
+	for node_row in nodes:
+		for node in node_row:
+			if not node:
+				continue
+				
+			if node.texture.day_type == type:
+				node.texture.set_hover(true)
+			else:
+				node.texture.set_unhover()
+
+
+func normal_all_of_type(type:int) -> void:
+	for node_row in nodes:
+		for node in node_row:
+			if not node:
+				continue
+				
+			if node.texture.day_type == type:
+				node.texture.set_normal(true)
+			else:
+				node.texture.set_normal(true)
+
+
+func play_open_anim() -> void:
+	if first_open: 
+		_scroll_to_bottom()
+		first_open = false
+	modulate.a = 0.0
+
+	if fade_tween:
+		fade_tween.kill()
+
+	fade_tween = create_tween()
+	fade_tween.set_trans(Tween.TRANS_QUAD)
+	fade_tween.set_ease(Tween.EASE_OUT)
+
+	fade_tween.tween_property(
+		self,
+		"modulate:a",
+		1.0,
+		fade_time
+	)
+
+
+func play_close_anim() -> void:
+	if fade_tween:
+		fade_tween.kill()
+
+	fade_tween = create_tween()
+	fade_tween.set_trans(Tween.TRANS_QUAD)
+	fade_tween.set_ease(Tween.EASE_IN)
+
+	fade_tween.tween_property(
+		self,
+		"modulate:a",
+		0.0,
+		fade_time
+	)
+
+	fade_tween.finished.connect(func():
+		visible = false
+	)

@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bapk8ffqxb4j1"]
+[gd_scene format=3 uid="uid://bapk8ffqxb4j1"]
 
 [ext_resource type="Script" uid="uid://5eveuotn2fjd" path="res://UI/main_menu.gd" id="1_p8ccj"]
 [ext_resource type="Material" uid="uid://d4culp27pja5e" path="res://assets/Materials/intro.tres" id="2_4cwpn"]
 [ext_resource type="Theme" uid="uid://2ocoy8vsxdat" path="res://assets/themes/tab_settings.tres" id="2_tk8dj"]
 [ext_resource type="StyleBox" uid="uid://cetf4is0ai61y" path="res://assets/themes/back_btn_style.tres" id="3_d8nwk"]
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=575382271]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_p8ccj")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=784393291]
 material = ExtResource("2_4cwpn")
 layout_mode = 1
 anchors_preset = 15
@@ -23,7 +23,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=850141023]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -38,26 +38,26 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_tk8dj")
 
-[node name="GameTest" type="Button" parent="VBoxContainer"]
+[node name="GameTest" type="Button" parent="VBoxContainer" unique_id=970845501]
 layout_mode = 2
 text = "New Run"
 
-[node name="Join" type="Button" parent="VBoxContainer"]
+[node name="Join" type="Button" parent="VBoxContainer" unique_id=1731823974]
 layout_mode = 2
 disabled = true
 text = "Join
 "
 
-[node name="Button2" type="Button" parent="VBoxContainer"]
+[node name="Button2" type="Button" parent="VBoxContainer" unique_id=665597225]
 layout_mode = 2
 disabled = true
 text = "BIG ROOM TEST"
 
-[node name="Settings" type="Button" parent="VBoxContainer"]
+[node name="Settings" type="Button" parent="VBoxContainer" unique_id=1936093454]
 layout_mode = 2
 text = "SETTINGS"
 
-[node name="Exit" type="Button" parent="VBoxContainer"]
+[node name="Exit" type="Button" parent="VBoxContainer" unique_id=933662318]
 layout_mode = 2
 theme_override_styles/normal = ExtResource("3_d8nwk")
 text = "EXIT"
