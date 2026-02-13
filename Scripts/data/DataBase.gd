@@ -152,7 +152,8 @@ class_name DataBase
 		"jump_height": 10.0,
 		"merchant_discount": 0,
 		"items":[
-			"prickly_bundle"
+			
+		
 			
 		],
 		"xp_gain": 1.0,
@@ -196,15 +197,15 @@ class_name DataBase
 }
 
 @export var item_configs = {
-	"prickly_bundle":{
-		"name": "Prickly Bundle",
+	0:{
+		"title": "Prickly Bundle",
 		"description": "A tiny hedgehog that grows tougher the more you feed it",
 		"icon": "res://assets/icons/Cards/Sprite-0002.png",
 		"scene": "res://Scenes/Items/prickly_bundle.tscn",
 		"abilities": [
 			{
-				"name": "Prickly Bundle",
-				"description": "Gains 0.1 Armor each time you eat a Mushroom",
+				"title": "Passive: Fat",
+				"description": "Gains {trigger.value:float1} Armor each time you eat a Mushroom ({stat_modifier.value:float1})",
 				"target_stat": Stats.PlayerStats.ARMOR,
 				"domain": Stats.Domain.PLAYER,
 				"value": 0,
@@ -220,14 +221,15 @@ class_name DataBase
 		"cost": 4,
 		"drop_weight": 1
 	},
-	"jump_item": {
-		"name": "Jump Item",
-		"description": "+ 1 JUMP",
+	1: {
+		"title": "Jump Item",
+		"description": "__",
 		"icon": "res://assets/icons/Cards/Sprite-0002.png",
 		"scene": "res://Scenes/Items/prickly_bundle.tscn",
 		"abilities": [
 			{
-				"name": "extra_jump",
+				"title": "Passive: Extra Jump",
+				"description":"Add {stat_modifier.value:int} JUMP",
 				"target_stat": Stats.PlayerStats.JUMPS_COUNT,
 				"domain": Stats.Domain.PLAYER,
 				"value": 1
@@ -237,36 +239,17 @@ class_name DataBase
 		"drop_weight": 1
 	},
 
-	"jump_scale_for_phase": {
-		"name": "Jump x Phase",
-		"description": "+ JUMP for current PHASE",
-		"icon": "res://assets/icons/Cards/Diamonds.png",
-		"scene": "res://Scenes/Items/prickly_bundle.tscn",
-		"abilities": [
-			{
-				"name": "jump_scale_for_phase",
-				"scaling": {
-					"per": 1,
-					"source_stat": Stats.GameStats.CURRENT_PHASE,
-					"domain": Stats.Domain.GAME,
-				},
-				"target_stat": Stats.PlayerStats.JUMPS_COUNT,
-				"domain": Stats.Domain.PLAYER,
-				"value": 1
-			}
-		],
-		"cost": 2,
-		"drop_weight": 1
-	},
+	
 
-	"LogDiscount": {
-		"name": "LogDiscount",
-		"description": "Merchant discount 1 LOG",
+	3: {
+		"title": "LogDiscount",
+		"description": "__",
 		"icon": "res://assets/icons/Cards/Spades.png",
 		"scene": "res://Scenes/Items/prickly_bundle.tscn",
 		"abilities": [
 			{
-				"name": "log_discount",
+				"title": "Passive: Discount",
+				"description": "Merchant discount {stat_modifier.value:int} LOG",
 				"target_stat": Stats.PlayerStats.MERCHANT_DISCOUNT,
 				"domain": Stats.Domain.PLAYER,
 				"value": 1
@@ -276,14 +259,15 @@ class_name DataBase
 		"drop_weight": 1
 	},
 
-	"LogFueledDamage": {
-		"name": "LogFueledDamage",
-		"description": "+10% DAMAGE for each LOG",
+	4: {
+		"title": "LogFueledDamage",
+		"description": "__",
 		"icon": "res://assets/icons/Cards/Clubs.png",
 		"scene": "res://Scenes/Items/prickly_bundle.tscn",
 		"abilities": [
 			{
-				"name": "log_fueled_damage",
+				"title": "Passive: RICHA",
+				"description": "Add {stat_modifier.value:percent} DAMAGE for each LOG",
 				"target_stat": Stats.PlayerStats.DAMAGE_MULT,
 				"domain": Stats.Domain.PLAYER,
 				"value": 0.1,
@@ -298,14 +282,22 @@ class_name DataBase
 		"drop_weight": 1
 	},
 
-	"LowHPFlex": {
-		"name": "LowHPFlex",
+	5: {
+		"title": "LowHPFlex",
 		"description": "+2 Jump when Hp below 50%",
 		"icon": "res://assets/icons/Cards/Clubs.png",
 		"scene": "res://Scenes/Items/mushrooms.tscn",
 		"abilities": [
 			{
-				"name": "low_hp_flex",
+				"title": "Passive: Extra Jump",
+				"description":"Add {stat_modifier.value:int} JUMP",
+				"target_stat": Stats.PlayerStats.JUMPS_COUNT,
+				"domain": Stats.Domain.PLAYER,
+				"value": 1
+			},
+			{
+				"title": "Passive: Low Flex",
+				"description": "Add {stat_modifier.value:int} JUMPS when HP below 50%",
 				"target_stat": Stats.PlayerStats.JUMPS_COUNT,
 				"domain": Stats.Domain.PLAYER,
 				"value": 2,
@@ -320,39 +312,15 @@ class_name DataBase
 		"cost": 3,
 		"drop_weight": 1
 	},
-	"FirstPhaseDamage": {
-		"name": "FirstPhaseDamage",
-		"description": "+50% for PHASE 1",
-		"icon": "res://assets/icons/Cards/Clubs.png",
-		"scene": "res://Scenes/Items/prickly_bundle.tscn",
-		"abilities": [
-			{
-				"name": "FirstPhaseDamage",
-				"target_stat": Stats.PlayerStats.DAMAGE_MULT,
-				"domain": Stats.Domain.PLAYER,
-				"value": 0.5,
-				"condition": {
-					"type": ConditionType.EQUAL,
-					"source_stat": Stats.GameStats.CURRENT_PHASE,
-					"domain": Stats.Domain.GAME,
-					"value": 1
-				}
-			}
-		],
-		"cost": 3,
-		"drop_weight": 1
-	},
-	"GreenAcorn": {
-		"name": "GreenAcorn",
+	7: {
 		"title": "Green Acorn",
 		"description": "A young acorn, still full of life.",
 		"icon": "res://assets/icons/Cards/Clubs.png",
 		"scene": "res://Scenes/Items/mushrooms.tscn",
 		"abilities": [
 			{
-				"name": "GreenAcorn",
-				"title": "Green Acorn",
-				"description":"Slightly increases maximum health.",
+				"title": "Passive: Green Acorn",
+				"description":"Increases MAX HP by {stat_modifier.value:int}",
 				"target_stat": Stats.PlayerStats.MAX_HP,
 				"domain": Stats.Domain.PLAYER,
 				"value": 3,

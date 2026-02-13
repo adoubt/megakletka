@@ -1,2 +1,2 @@
 extends StatComponent
-class_name EmptySlotsCountComponent
+class_name UsedSlotsCountComponent

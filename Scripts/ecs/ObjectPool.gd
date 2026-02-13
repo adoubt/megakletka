@@ -111,7 +111,7 @@ func _disable(node: Node3D) -> void:
 	node.process_mode = Node.PROCESS_MODE_DISABLED
 	node.global_position.y = -10
 
-
+	##TODO ОЧЕНЬ СТРАШНО ВЫГЛЯДИТ БЛОК, МБ УДАЛИТЬ
 	if node.has_meta("anim_ref"):
 		var anim = node.get_meta("anim_ref")
 		if is_instance_valid(anim):

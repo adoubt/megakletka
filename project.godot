@@ -8,10 +8,6 @@
 
 config_version=5
 
-[animation]
-
-compatibility/default_parent_skeleton_in_mesh_instance_3d=true
-
 [application]
 
 config/name="As Long It's Warm"
@@ -197,9 +193,16 @@ common/physics_interpolation=true
 
 [rendering]
 
+occlusion_culling/bvh_build_quality=0
 global_illumination/gi/use_half_resolution=true
-shading/overrides/force_vertex_shading=true
+camera/depth_of_field/depth_of_field_bokeh_shape=0
+camera/depth_of_field/depth_of_field_use_jitter=true
+environment/ssao/quality=0
+environment/ssil/quality=0
+occlusion_culling/occlusion_rays_per_thread=128
 global_illumination/sdfgi/probe_ray_count=0
 global_illumination/sdfgi/frames_to_converge=0
 global_illumination/sdfgi/frames_to_update_lights=4
+environment/volumetric_fog/use_filter=0
+limits/opengl/max_lights_per_object=3
 occlusion_culling/use_occlusion_culling=true

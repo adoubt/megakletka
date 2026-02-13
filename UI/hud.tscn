@@ -1,14 +1,33 @@
 [gd_scene format=3 uid="uid://dxtmay68ca301"]
 
+[ext_resource type="Theme" uid="uid://lrgo7wl6w1c0" path="res://assets/fonts/Font_theme.tres" id="1_4evux"]
 [ext_resource type="Script" uid="uid://b1g5iaiket2lr" path="res://UI/HUD.gd" id="1_8uiqn"]
 [ext_resource type="Shader" uid="uid://dprejvyaisqwb" path="res://assets/Materials/hud_current_exp.gdshader" id="3_b1lf8"]
 [ext_resource type="Texture2D" uid="uid://dbsfwcyp0fnxl" path="res://assets/Hud/CurrentHP.png" id="4_0j753"]
+[ext_resource type="Texture2D" uid="uid://b81kjjlwod1sy" path="res://assets/Hud/ItemDescription.png" id="4_4lx80"]
 [ext_resource type="Shader" uid="uid://dbkh0dtt2pwj3" path="res://assets/Materials/hud_current_hp.gdshader" id="4_rnl6m"]
 [ext_resource type="Texture2D" uid="uid://bgj31h1muposx" path="res://assets/Hud/Sprite-0006.png" id="6_0j753"]
 [ext_resource type="Texture2D" uid="uid://dr3wkxchxydkn" path="res://assets/Hud/armor.png" id="6_i0a73"]
 [ext_resource type="Texture2D" uid="uid://ccp7o235ap4e2" path="res://assets/Hud/damage.png" id="6_pf7ph"]
+[ext_resource type="Texture2D" uid="uid://s4muus8k641r" path="res://assets/Hud/MoveSpeed.png" id="6_sab3h"]
+[ext_resource type="Texture2D" uid="uid://uftruuy541fi" path="res://assets/Hud/ProjSize.png" id="7_23s3h"]
+[ext_resource type="Script" uid="uid://c1qvorheh1rhg" path="res://UI/item_tool_tip.gd" id="7_508rn"]
 [ext_resource type="Texture2D" uid="uid://dw45obno55us1" path="res://assets/Hud/pierce.png" id="7_vs5gg"]
 [ext_resource type="Texture2D" uid="uid://cq2vbq6w0tn64" path="res://assets/Hud/aim2.png" id="8_i0a73"]
+[ext_resource type="Texture2D" uid="uid://dys45uhbmvduw" path="res://assets/Hud/ATKSpeed.png" id="8_vdnig"]
+[ext_resource type="Texture2D" uid="uid://kpmvgx6hv4go" path="res://assets/Hud/ProjSpeed.png" id="9_pueji"]
+[ext_resource type="Texture2D" uid="uid://cjlyu266noy16" path="res://assets/Hud/Slots.png" id="9_vs5gg"]
+[ext_resource type="Texture2D" uid="uid://ufjote713xcq" path="res://assets/Hud/xp_gain.png" id="11_pueji"]
+[ext_resource type="Texture2D" uid="uid://cxql8sne25uv4" path="res://assets/Hud/jumps.png" id="13_vdnig"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_508rn"]
+bg_color = Color(0.06100855, 0.106126174, 0.09985284, 0)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_color = Color(0.06100855, 0.106126174, 0.09985284, 0.725)
+shadow_size = 4
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1ui3w"]
 load_path = "res://.godot/imported/BackgroundHP.png-e2136cd97acf30d923c1b36d1ca1d67a.ctex"
@@ -59,11 +78,8 @@ shadow_color = Color(0.34901962, 0.6509804, 1, 0.627451)
 shadow_size = 5
 shadow_offset = Vector2(0, -5)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pf7ph"]
-load_path = "res://.godot/imported/xp_gain.png-9971e4bc32c022a7f85bf1f743c038b9.ctex"
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_phrgc"]
-load_path = "res://.godot/imported/jumps.png-5774bba3ab737ea5e67d5fd1f25adb3b.ctex"
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4evux"]
+load_path = "res://.godot/imported/Duration.png-4696b7a956729966c2a4a5103fff2d69.ctex"
 
 [node name="HUD" type="Control" unique_id=1150284546]
 layout_mode = 3
@@ -73,6 +89,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("1_4evux")
 script = ExtResource("1_8uiqn")
 
 [node name="HUD" type="MarginContainer" parent="." unique_id=661270111]
@@ -90,6 +107,129 @@ theme_override_constants/margin_bottom = 40
 [node name="CrossHair" type="TextureRect" parent="HUD" unique_id=1145771495]
 layout_mode = 2
 mouse_filter = 2
+
+[node name="ItemToolTip" type="Control" parent="HUD" unique_id=689881255]
+unique_name_in_owner = true
+top_level = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+script = ExtResource("7_508rn")
+
+[node name="Panel" type="PanelContainer" parent="HUD/ItemToolTip" unique_id=706587942]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -118.0
+offset_top = -45.0
+offset_right = 118.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_508rn")
+
+[node name="MarginContainer2" type="MarginContainer" parent="HUD/ItemToolTip/Panel" unique_id=860826047]
+layout_mode = 2
+size_flags_vertical = 10
+mouse_filter = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="Item" type="VBoxContainer" parent="HUD/ItemToolTip/Panel/MarginContainer2" unique_id=1743407870]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item" unique_id=758751800]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item/VBoxContainer" unique_id=1790641390]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ItemTitle" type="Label" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item/VBoxContainer" unique_id=2066782772]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_colors/font_color = Color(1, 0.95281494, 0.735357, 1)
+theme_override_font_sizes/font_size = 20
+text = "Title"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item/VBoxContainer" unique_id=312182072]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="ItemCostLabel" type="Label" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item/VBoxContainer/VBoxContainer" unique_id=1074425639]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.7977378, 1, 0.7977378, 1)
+text = "6"
+
+[node name="TextureRect" type="TextureRect" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item/VBoxContainer/VBoxContainer" unique_id=1553287190]
+layout_mode = 2
+texture = ExtResource("6_0j753")
+expand_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item" unique_id=2069952975]
+custom_minimum_size = Vector2(200, 2)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.85490197, 0.85490197, 0.85490197, 0.43529412)
+
+[node name="Abilities" type="VBoxContainer" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item" unique_id=1905465048]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ColorRect2" type="ColorRect" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item" unique_id=1102100917]
+visible = false
+custom_minimum_size = Vector2(200, 2)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.85490197, 0.85490197, 0.85490197, 0.43529412)
+
+[node name="PanelContainer" type="MarginContainer" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item" unique_id=287019099]
+layout_mode = 2
+theme_override_constants/margin_left = -5
+theme_override_constants/margin_right = -50
+theme_override_constants/margin_bottom = -51
+
+[node name="TextureRect" type="TextureRect" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item/PanelContainer" unique_id=1308988161]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_4lx80")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item/PanelContainer" unique_id=1439547965]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 46
+theme_override_constants/margin_bottom = 22
+
+[node name="ItemDescription" type="Label" parent="HUD/ItemToolTip/Panel/MarginContainer2/Item/PanelContainer/MarginContainer" unique_id=1561250514]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 10)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.105882354, 0.14509805, 0.14117648, 1)
+theme_override_constants/line_spacing = -5
+theme_override_constants/paragraph_spacing = -2
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 13
+text = "ItemDescriptionhhhhhhh gggggggg g ggggggg g
+hgjghjghj
+gkjghjkgghkhhhhh"
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD" unique_id=550902972]
 layout_mode = 2
@@ -390,7 +530,7 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 25
 text = "x"
 
-[node name="LogBalance" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Log/HBoxContainer" unique_id=406608736]
+[node name="Balance" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/LeftPanel/Log/HBoxContainer" unique_id=406608736]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -403,8 +543,9 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.98
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer" unique_id=2130635769]
+visible = false
 layout_mode = 2
-size_flags_vertical = 10
+size_flags_vertical = 8
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_right = 50
 
@@ -431,12 +572,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="RightPanel" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer" unique_id=323899085]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 
 [node name="StatsPanel" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel" unique_id=2100560542]
 layout_mode = 2
-size_flags_horizontal = 8
 
 [node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1990091462]
 layout_mode = 2
@@ -445,12 +586,10 @@ text = "Stats:"
 [node name="MoveSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=560968453]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/MoveSpeed" unique_id=1504526811]
-layout_mode = 2
-text = "MS"
-
 [node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/MoveSpeed" unique_id=2032731994]
 layout_mode = 2
+texture = ExtResource("6_sab3h")
+expand_mode = 2
 
 [node name="MovespeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/MoveSpeed" unique_id=2043142927]
 unique_name_in_owner = true
@@ -473,12 +612,10 @@ text = "1.0"
 [node name="AttackSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=2067294030]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/AttackSpeed" unique_id=1253939350]
-layout_mode = 2
-text = "ATKS"
-
 [node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/AttackSpeed" unique_id=1563968998]
 layout_mode = 2
+texture = ExtResource("8_vdnig")
+expand_mode = 2
 
 [node name="AttackSpeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/AttackSpeed" unique_id=1973462965]
 unique_name_in_owner = true
@@ -488,13 +625,10 @@ text = "1.0"
 [node name="Duration" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=686692946]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Duration" unique_id=493912029]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "DURATION"
-
 [node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Duration" unique_id=795905258]
 layout_mode = 2
+texture = SubResource("CompressedTexture2D_4evux")
+expand_mode = 2
 
 [node name="DurationLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Duration" unique_id=116948985]
 unique_name_in_owner = true
@@ -504,12 +638,10 @@ text = "1.0"
 [node name="ProjectileSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1700427168]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSpeed" unique_id=1483129024]
-layout_mode = 2
-text = "ORB SPEED"
-
 [node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSpeed" unique_id=69287729]
 layout_mode = 2
+texture = ExtResource("9_pueji")
+expand_mode = 2
 
 [node name="ProjectileSpeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSpeed" unique_id=105714549]
 unique_name_in_owner = true
@@ -519,12 +651,10 @@ text = "1.0"
 [node name="ProjectileSize" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1806055882]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSize" unique_id=215324495]
-layout_mode = 2
-text = "ORB SIZE"
-
 [node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSize" unique_id=1644704379]
 layout_mode = 2
+texture = ExtResource("7_23s3h")
+expand_mode = 2
 
 [node name="ProjectileSizeLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSize" unique_id=161652114]
 unique_name_in_owner = true
@@ -532,6 +662,7 @@ layout_mode = 2
 text = "1.0"
 
 [node name="PickUpRange" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1237427949]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/PickUpRange" unique_id=1344444521]
@@ -551,7 +682,7 @@ layout_mode = 2
 
 [node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/XPGain" unique_id=166229227]
 layout_mode = 2
-texture = SubResource("CompressedTexture2D_pf7ph")
+texture = ExtResource("11_pueji")
 expand_mode = 2
 
 [node name="XPGainLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/XPGain" unique_id=1150349341]
@@ -592,7 +723,7 @@ layout_mode = 2
 
 [node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Jumps" unique_id=501320635]
 layout_mode = 2
-texture = SubResource("CompressedTexture2D_phrgc")
+texture = ExtResource("13_vdnig")
 expand_mode = 2
 
 [node name="JumpLeftLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Jumps" unique_id=1526428501]
@@ -612,13 +743,19 @@ text = "3"
 [node name="Slots" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1463283412]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=1390028354]
-layout_mode = 2
-text = "SLOTS"
-
 [node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=990096274]
 layout_mode = 2
+texture = ExtResource("9_vs5gg")
 expand_mode = 2
+
+[node name="UsedSlotsCountLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=336346850]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="_" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=320014557]
+layout_mode = 2
+text = "/"
 
 [node name="SlotsCountLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=1753748950]
 unique_name_in_owner = true

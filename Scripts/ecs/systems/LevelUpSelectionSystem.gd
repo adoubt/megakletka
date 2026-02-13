@@ -26,7 +26,7 @@ func update(_delta: float) -> void:
 				cs.get_component(offer.owner_id, "LevelPointsCountComponent").base_value -= 1
 				UIManager.hud.has_upgrade = false
 				
-				event_bus.emit("create_item", [{ "item_name": offer.choices[offer.chosen_index],
+				event_bus.emit("create_item", [{ "item_id": offer.choices[offer.chosen_index],
 				"owner_id": offer.owner_id
 				}])
 				var instance = cs.get_component(offer.owner_id, "RenderComponent").instance

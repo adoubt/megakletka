@@ -7,20 +7,22 @@ const MIN_PITCH: float = -1.2
 
 func _init( _entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus):
 	super._init( _entity_manager, _component_store, _event_bus)
-	arch = cs.register_archetype(["CameraComponent","TransformComponent"],["DeadComponent"])
+	arch = cs.register_archetype(["CameraComponent","TransformComponent"],["DeadComponent",])
 func update(delta):
 	
 
 	for e in arch.entities:
 		var cam: CameraComponent = cs.get_component(e, "CameraComponent")
-
+	
 		if cam.owner_id == -1:
 			continue
 		if !cs.has_component(cam.owner_id, "TransformComponent"):
 			continue
 		if !cs.has_component(cam.owner_id, "InputComponent"):
 			continue
-
+		if cam.mode == CameraComponent.Mode.FOCUS:
+			_update_focus_mode(cam, delta)
+			continue
 		# ================= INPUT =================
 		var input := cs.get_component(cam.owner_id, "InputComponent")
 
@@ -44,7 +46,7 @@ func update(delta):
 
 		# ================= TARGET =================
 		var target_tf := cs.get_component(cam.owner_id, "TransformComponent")
-
+		
 		var drop := fx.drop_offset if fx else 0.0
 		var pivot = target_tf.position + cam.offset + Vector3(0, drop, 0)
 
@@ -52,11 +54,13 @@ func update(delta):
 		var yaw_basis   := Basis(Vector3.UP, cam.yaw + kick_yaw)
 		var pitch_basis := Basis(Vector3.RIGHT, cam.pitch + kick_pitch)
 		var rot := yaw_basis * pitch_basis
-
+		
 		# ================= POSITION =================
 		var desired_pos = pivot + (-rot.z) * cam.distance * (1 - max(cam.pitch, 0.0))
 		desired_pos += shake
-
+		if cam.mode == CameraComponent.Mode.BLEND_TO_FOLLOW:
+			_update_return_mode(cam,desired_pos, rot, delta)
+			continue
 		# ================= SYNC =================
 		if cam.camera_instance == null:
 			continue
@@ -75,3 +79,41 @@ func update(delta):
 		cam.forward_3d = forward_3d
 		cam.forward = forward_xz
 		cam.right = Vector3.UP.cross(forward_xz).normalized()
+
+func _update_focus_mode(cam: CameraComponent, delta: float) -> void:
+	if cam.camera_instance == null:
+		return
+
+	var current_pos = cam.camera_instance.global_position
+	var new_pos = current_pos.lerp(cam.focus_from_pos, delta * 2.0)
+	var target_basis = Transform3D(Basis(),new_pos).looking_at(cam.focus_target, Vector3.UP).basis
+
+	var current_basis = cam.camera_instance.global_basis
+	var new_basis = current_basis.slerp(target_basis, delta * 5.0)
+
+	cam.camera_instance.global_basis = new_basis
+
+	cam.camera_instance.global_position = new_pos
+
+func _update_return_mode(cam:CameraComponent, target_pos: Vector3, rot: Basis, delta: float) -> void:
+
+	cam.transition_elapsed += delta
+	var t = cam.transition_elapsed / cam.transition_time
+	t = clamp(t, 0.0, 1.0)
+
+	
+	#t = pow(t, 2.0)  # ускорение
+	#t = pow(t, 3.0)  # ещё сильнее
+	t = 1.0 - pow(1.0 - t, 2.0) # ease-out
+	#t = t * t * (3.0 - 2.0 * t) # smoothstep
+
+	var new_pos = cam.return_start_pos.lerp(target_pos, t)
+	var new_rot = cam.return_start_rot.slerp(rot, t)
+
+	cam.camera_instance.global_position = new_pos
+	cam.camera_instance.global_basis = new_rot
+
+	if t >= 1.0:
+		cam.mode = CameraComponent.Mode.FOLLOW
+
+	

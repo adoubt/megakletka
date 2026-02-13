@@ -20,9 +20,10 @@ func update(_delta):
 			cs.remove_component(run_id, "DaySelectRequestComponent")
 			continue
 		
-
-		run.current_day = req.target_day
 		
+		
+		run.current_day = req.target_day
+		cs.get_component(req.target_day, "DayComponent").completed = true
 		cs.add_component(RUN, "GroundGenerationRequestComponent", GroundGenerationRequestComponent.new(req.target_day))
 		cs.add_component(run_id, "DayEnterRequestComponent", DayEnterRequestComponent.new(req.target_day))
 

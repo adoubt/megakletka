@@ -68,7 +68,7 @@ func _activate_items_for_entity(id : int)-> void:
 		var item_comp = cs.get_component(e, "ItemComponent")
 		if item_comp.owner_id == id:
 			
-			var e_data: Dictionary = db.item_configs[item_comp.item_name]
+			var e_data: Dictionary = db.item_configs[item_comp.item_id]
 			var scene = e_data.get("scene", null)
 			var render_comp = RenderComponent.new()
 			if scene: render_comp.scene_path = scene
@@ -94,16 +94,5 @@ func _deactivate_items_for_entity(id : int)-> void:
 	
 
 
-func _spawn_combat(day_entity, day, ante):
-	
 
-	var budget := int(
-		BASE_BUDGET *
-		(1.0 + day * 0.12) *
-		(1.0 + ante * 0.3)
-	)
-
-	cs.add_component(day_entity, "CombatStateComponent", CombatStateComponent.new())
-	cs.add_component(day_entity, "BatteryComponent", BatteryComponent.new(budget))
-	cs.add_component(day_entity, "CombatRewardComponent", CombatRewardComponent.new(6))
 	

@@ -20,13 +20,14 @@ enum PlayerStats{
 	PROJ_RADIUS,
 	ATK_SPEED,
 	SLOTS,
+	USED_SLOTS,
 	UNUSED_LEVEL_POINTS,
 	XP_LEFT,
 	CURRENT_XP,
 	LEVEL,
 	XP_GAIN,
 	CURRENT_HP_RATIO,
-	CURRENT_HP
+	CURRENT_HP,
 }
 enum GameStats{
 	LOG_BALANCE,
@@ -87,7 +88,7 @@ static func _get_player_comp(stat: int) -> String:
 
 		# --- Meta / progression ---
 		PlayerStats.SLOTS:              return "SlotsCountComponent"
-	
+		PlayerStats.USED_SLOTS:         return "UsedSlotsCountComponent"
 
 		PlayerStats.XP_LEFT:            return "RequiredXPComponent"
 		PlayerStats.CURRENT_XP:         return "CurrentXPComponent"
@@ -115,3 +116,71 @@ static func get_all_player_components() -> Array:
 		if comp != "":
 			result.append(comp)
 	return result
+enum StatFormatType {
+	FLAT,
+	PERCENT
+}
+static func get_format_type(domain:int, stat:int)-> int:
+	match domain:
+		Domain.PLAYER:
+			return _get_player_format_type(stat)
+		Domain.GAME:
+			return _get_game_format_type(stat)
+		_:
+			push_error("Unknown stat domain")
+			return StatFormatType.FLAT
+
+static func _get_player_format_type(stat:int) -> int:
+	match stat:
+		PlayerStats.DAMAGE_MULT:        return StatFormatType.PERCENT
+		PlayerStats.ARMOR:              return StatFormatType.FLAT
+		PlayerStats.CRIT_DAMAGE:        return StatFormatType.FLAT
+		PlayerStats.CRIT_CHANCE:        return StatFormatType.FLAT
+		PlayerStats.PIERCE:             return StatFormatType.FLAT
+
+		PlayerStats.MAX_HP:             return StatFormatType.FLAT
+		PlayerStats.CURRENT_HP_RATIO:   return StatFormatType.FLAT
+		PlayerStats.CURRENT_HP:         return StatFormatType.FLAT
+		PlayerStats.JUMPS_COUNT:        return StatFormatType.FLAT
+		PlayerStats.JUMPS_LEFT:         return StatFormatType.FLAT
+		PlayerStats.JUMP_HEIGHT:        return StatFormatType.FLAT
+		
+		PlayerStats.MOVESPEED:          return StatFormatType.FLAT
+		PlayerStats.MOVESPEED_MULT:     return StatFormatType.PERCENT
+
+		# --- Time / duration ---
+		PlayerStats.DURATION_MULT:      return StatFormatType.PERCENT
+		PlayerStats.ATK_SPEED:          return StatFormatType.FLAT
+
+		# --- Economy ---
+		PlayerStats.MERCHANT_DISCOUNT:  return StatFormatType.FLAT
+
+		# --- Projectiles ---
+		PlayerStats.PROJ_COUND:         return StatFormatType.FLAT
+		PlayerStats.WEAPON_RADIUS:      return StatFormatType.FLAT
+		PlayerStats.PROJ_RADIUS:        return StatFormatType.FLAT
+
+		# --- Meta / progression ---
+		PlayerStats.SLOTS:              return StatFormatType.FLAT
+		PlayerStats.USED_SLOTS:         return StatFormatType.FLAT
+
+		PlayerStats.XP_LEFT:            return StatFormatType.FLAT
+		PlayerStats.CURRENT_XP:         return StatFormatType.FLAT
+		PlayerStats.LEVEL:              return StatFormatType.FLAT
+		PlayerStats.XP_GAIN:            return StatFormatType.FLAT
+		PlayerStats.UNUSED_LEVEL_POINTS:return StatFormatType.FLAT
+		
+		
+		
+		_:
+			push_error("Unknown Stat: %s" % stat)
+			return StatFormatType.FLAT
+			
+static func _get_game_format_type(stat) -> int:
+	match stat:
+		GameStats.XP_REWARD: 			return StatFormatType.FLAT
+		GameStats.CURRENT_PHASE:			return StatFormatType.FLAT
+		_:
+			push_error("Unknown Stat: %s" % stat)
+			return StatFormatType.FLAT
+				

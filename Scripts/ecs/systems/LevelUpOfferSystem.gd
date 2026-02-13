@@ -48,21 +48,21 @@ func _generate_random_upgrades(_e_id: int, count: int = 3) -> Array:
 	var pool := []
 
 	
-	for item_name in db.item_configs.keys():
-		var item_data = db.item_configs[item_name]
+	for item_id in db.item_configs.keys():
+		var item_data = db.item_configs[item_id]
 		var weight = item_data.get("drop_weight", 1)
 		for i in range(weight):
-			pool.append(item_name)
+			pool.append(item_id)
 
 	
 	pool.shuffle()
 
 	
 	var chosen := []
-	for item_name in pool:
-		if item_name in chosen:
+	for item_id in pool:
+		if item_id in chosen:
 			continue
-		chosen.append(item_name)
+		chosen.append(item_id)
 		if chosen.size() >= count:
 			break
 

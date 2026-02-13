@@ -7,6 +7,7 @@ enum Events {
 	ALLY_JUMPED,
 	GROUNDED,
 	DAMAGE_RECIVED,
+	USE,
 }
 
 enum Actions {

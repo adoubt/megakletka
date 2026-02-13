@@ -3,53 +3,37 @@
 [ext_resource type="Shader" uid="uid://o3sk84snka5c" path="res://assets/Shaders/sky_shader.gdshader" id="1_yx6jq"]
 [ext_resource type="Texture2D" uid="uid://dsxmxbelw60bh" path="res://assets/shader_pics/white-lens-flare-11552154625amxuji8fmt.jpg" id="3_almpf"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_exi56"]
-noise_type = 0
-fractal_octaves = 2
-fractal_weighted_strength = 1.0
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7t8sx"]
-noise = SubResource("FastNoiseLite_exi56")
-normalize = false
-
-[sub_resource type="Gradient" id="Gradient_exi56"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_mg4q0"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_exi56"]
-noise = SubResource("FastNoiseLite_mg4q0")
-color_ramp = SubResource("Gradient_exi56")
-seamless = true
-normalize = false
-
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_yx6jq"]
-frequency = 0.0026
+frequency = 0.0001
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mg4q0"]
-width = 1024
-height = 1024
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eecqt"]
 noise = SubResource("FastNoiseLite_yx6jq")
+seamless = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_uerg2"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yx6jq"]
+noise = SubResource("FastNoiseLite_uerg2")
 seamless = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7nbq1"]
 shader = ExtResource("1_yx6jq")
-shader_parameter/cloud_shape_sampler = SubResource("NoiseTexture2D_mg4q0")
-shader_parameter/cloud_noise_sampler = SubResource("NoiseTexture2D_exi56")
-shader_parameter/cloud_curves = SubResource("NoiseTexture2D_7t8sx")
+shader_parameter/cloud_shape_sampler = SubResource("NoiseTexture2D_yx6jq")
+shader_parameter/cloud_noise_sampler = SubResource("NoiseTexture2D_eecqt")
 shader_parameter/clouds_samples = 8
-shader_parameter/shadow_sample = 4
-shader_parameter/clouds_density = 0.5000000074506
-shader_parameter/clouds_scale = 1.0
-shader_parameter/clouds_smoothness = 0.00999999977648
-shader_parameter/clouds_light_color = Color(0.1802114, 0.20473602, 0.23136112, 1)
+shader_parameter/shadow_sample = 1
+shader_parameter/clouds_density = 0.30000000447036
+shader_parameter/clouds_scale = 0.5
+shader_parameter/clouds_smoothness = 0.0999999977648
+shader_parameter/clouds_light_color = Color(0, 0, 0, 1)
 shader_parameter/clouds_shadow_intensity = 1.0
 shader_parameter/high_clouds_density = 0.0
-shader_parameter/top_color = Color(0.2901961, 0.2509804, 0.4, 1)
+shader_parameter/top_color = Color(0.1887978, 0.16030982, 0.2679266, 1)
 shader_parameter/bottom_color = Color(0.101960786, 0.13725491, 0.25882354, 1)
 shader_parameter/sun_scatter = Color(0.101960786, 0.13725491, 0.25882354, 1)
-shader_parameter/astro_tint = Color(0.322154, 0.7551282, 0.99999994, 1)
+shader_parameter/astro_tint = Color(0, 0, 0, 1)
 shader_parameter/astro_scale = 1.0
-shader_parameter/astro_intensity = 1.40000000596048
+shader_parameter/astro_intensity = 1.0
 shader_parameter/stars_intensity = 4.90000007301588
 shader_parameter/shooting_stars_intensity = 0.60000000894072
 shader_parameter/shooting_star_sampler = ExtResource("3_almpf")

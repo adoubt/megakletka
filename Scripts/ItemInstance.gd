@@ -2,20 +2,20 @@ extends Node3D
 class_name ItemInstance
 
 @export var highlight_material: Material
-@export var highlight_scale: float = 1.15
-@export var rotate_duration: float = 0.2
+@export var highlight_scale: float = 1.35
+@export var rotate_duration: float = 0.4
 @export var scale_duration: float = 0.15
 @export var yaw_offset := -PI/2  # радианы
-
+@export var highlight_position: Vector3 = Vector3(0.0,0.1, 0.0)
 @onready var model: Node3D = $Model
-
+var data: Dictionary
 var meshes: Array[MeshInstance3D] = []
 var original_materials := {} # MeshInstance3D -> Array[Material]
 
 var is_highlighted := false
 var base_scale: Vector3
 var base_rotation: Vector3
-
+var base_position: Vector3
 var rotate_tween: Tween
 var scale_tween: Tween
 
@@ -24,7 +24,7 @@ func _ready() -> void:
 	base_scale = model.scale
 	base_rotation = model.rotation
 	_collect_meshes(model)
-
+	base_position = model.position
 
 # ------------------------------------------------
 # HIGHLIGHT
@@ -50,7 +50,7 @@ func set_highlight(enabled: bool) -> void:
 	var target_rot := base_rotation
 
 	if enabled:
-		var cam: Camera3D = UIManager.merchant_panel.background_scene.camera
+		var cam: Camera3D = get_viewport().get_camera_3d()
 		if cam:
 			var look_pos := cam.global_position
 			look_pos.y = model.global_position.y
@@ -66,7 +66,12 @@ func set_highlight(enabled: bool) -> void:
 		target_rot,
 		rotate_duration
 	)
-
+	rotate_tween.parallel().tween_property(
+		model,
+		"position",
+		base_position + (highlight_position if enabled else Vector3.ZERO),
+		rotate_duration
+	)
 
 
 # ------------------------------------------------

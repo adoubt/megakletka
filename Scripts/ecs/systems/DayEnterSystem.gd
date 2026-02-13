@@ -41,23 +41,28 @@ func update(_delta):
 	
 	match day_type:
 		DayType.LOBBY:
+			pois_to_create.append({"poi_name": "merchant", "slots":5, "position": _get_random_position_in_radius(3.0, 7.0)})
+			
 			pois_to_create.append_array(_place_heal_mushroom(heal_mushrooms))
+			
 		DayType.BOSS:
 			pois_to_create.append_array(_place_heal_mushroom(heal_mushrooms))
 		DayType.ELITE:
 			pois_to_create.append_array(_place_heal_mushroom(heal_mushrooms))
 		DayType.ENEMY:
+			
+			cs.add_component(day_id, "CombatGenerationRequestComponent", CombatGenerationRequestComponent.new())
 			pois_to_create.append_array(_place_heal_mushroom(heal_mushrooms))
 		DayType.MERCHANT:
-			var slots: int = 5
-			pois_to_create.append({"poi_name": "merchant", "slots":slots},)
+		
+			pois_to_create.append({"poi_name": "merchant", "slots":5, "position": _get_random_position_in_radius(3.0, 7.0)})
 			
 		DayType.MERCHANT_DEAD:pass
 		DayType.MUSHROOMS:
 			pois_to_create.append_array(_place_heal_mushroom(heal_mushrooms))
 			
 
-	
+	event_bus.emit("create_poi",pois_to_create)
 	_emit_map_snapshot(run)
 	event_bus.emit("day_changed",{"current_day": run.depth})
 	# ---------- конец ----------
@@ -68,7 +73,7 @@ func _place_heal_mushroom(count:int) -> Array:
 	var mushrooms_to_create = []
 	for mushroom in range(count):
 		var pos_to_spawn: Vector3 =  _get_high_position(rng)
-		mushrooms_to_create.append({"position": pos_to_spawn, "name": "heal_mushroom"})
+		mushrooms_to_create.append({"position": pos_to_spawn, "poi_name": "heal_mushroom"})
 	return mushrooms_to_create
 	
 func _get_highiest_position():
@@ -165,7 +170,7 @@ func _clear_pois():
 			cs.remove_component(poi_id, "CollisionComponent")		
 			cs.remove_component(poi_id, "InteractionTargetComponent")
 			_deactivate_items_for_entity(poi_id)
-
+			
 			
 func _deactivate_items_for_entity(id : int)-> void:
 
@@ -183,6 +188,7 @@ func _deactivate_items_for_entity(id : int)-> void:
 func _emit_map_snapshot(run: RunComponent) -> void:
 	var snapshot := {
 		"ante": run.current_ante,
+		"current_day": run.current_day,
 		"floors": {}
 	}
 
@@ -200,7 +206,20 @@ func _emit_map_snapshot(run: RunComponent) -> void:
 			"id": day_id,
 			"column": day.column,
 			"type": day.type,
-			"exits": node.exits.duplicate()
+			"exits": node.exits.duplicate(),
+			"completed": day.completed,
 		})
 
 	event_bus.emit("map_snapshot_changed", snapshot)
+
+func _get_random_position_in_radius(min_radius: float= 10.0, max_radius: float= 50.0) -> Vector3:
+	var rng := RandomNumberGenerator.new()
+	rng.randomize()
+
+	var angle := rng.randf_range(0.0, TAU)
+	var radius := sqrt(rng.randf_range(min_radius * min_radius, max_radius * max_radius))
+
+	var x := cos(angle) * radius
+	var z := sin(angle) * radius
+
+	return Vector3(x, 0.5, z)

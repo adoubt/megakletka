@@ -1,2 +1,2 @@
 extends Resource
-class_name EmptySlotsRecalculateRequestComponent
+class_name UsedSlotsRecalculateRequestComponent

@@ -9,14 +9,19 @@ var offer_id:int = -1
 @onready var combat_panel: PanelContainer = %CombatPanel
 #@onready var combat_panel_background :TextureRect = %CombatPanelBackground
 @onready var current_day: Label = %CurrentDay
-@onready var log_balance: Label = %LogBalance
+
 @onready var phase_label: Label = %PhaseLabel
 var previous_combat_progress: float = 1.0
 var combat_progress : float = 1.0
 @export var max_combat_progress: float = 50.0
 @onready var combat_progress_shader: ShaderMaterial 
-##Stats
+@onready var item_tool_tip: Control = %ItemToolTip
 
+##Stats
+var balance:int:
+	set(value):
+		balance = value
+		%Balance.text = str(value)
 var damage: float=0.0:
 	set(value):
 		damage = value
@@ -65,6 +70,10 @@ var slots_count:float= 0.0:
 	set(value):
 		slots_count = value
 		%SlotsCountLabel.text = str(int(value))
+var used_slots_count:float= 0.0:
+	set(value):
+		used_slots_count =  value
+		%UsedSlotsCountLabel.text = str(int(value))		
 # === HP ===
 @export var min_hp: float = 0.0
 @export var max_hp: float = 5.0:
@@ -239,8 +248,6 @@ func update_dayboard(data: Array):
 func set_current_day(value:int) -> void:
 	current_day.text = "Day " + str(value)
 
-func set_current_log_balance(value: int) -> void:
-	log_balance.text = str(value)
 
 func set_current_phase(value:int) -> void:
 	phase_label.text = "Phase " + str(value)
@@ -259,3 +266,9 @@ func _set_children_mouse_ignore(node: Node) -> void:
 		if child is Control:
 			child.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_set_children_mouse_ignore(child)
+
+func show_item_tool_tip(data:Dictionary) -> void:
+	item_tool_tip.update_data(data)
+	item_tool_tip.show()
+func hide_item_tool_tip():
+	item_tool_tip.hide()

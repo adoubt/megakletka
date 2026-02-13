@@ -9,7 +9,7 @@ var level_offer_arch: Archetype
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
 	super._init(_entity_manager, _component_store, _event_bus)
 
-
+	
 	event_bus.subscribe("level_up_offer_created", _on_level_up_offer_created)
 	event_bus.subscribe("level_up_panel_toggled", _on_level_up_panel_toggled)
 	event_bus.subscribe("day_changed", _on_day_changed)
@@ -47,7 +47,8 @@ func _on_level_up_panel_toggled()-> void:
 func _on_day_changed(data: Dictionary = {}) -> void:
 	var current_day = data.current_day
 	UIManager.hud.set_current_day(current_day)	
-			
+	UIManager.close_all()
+	UIManager.open_hud()
 func _on_phase_changed(data: Dictionary = {}) -> void:		
 	var current_phase = data.current_phase
 	UIManager.hud.set_current_phase(current_phase)	
@@ -63,40 +64,13 @@ func _on_budget_changed(data: Dictionary = {}) -> void:
 	var progress: float = float(data.alive_budget) / float(data.max_budget)
 	UIManager.hud.set_current_combat_progress(progress)
 
-func _on_hp_changed(data: Dictionary = {}) -> void:
-	var e_id = data.e_id
-	if e_id not in player_arch.entities:
-		return
-	if UIManager.owner_id != e_id:
-		return
-	var max_hp = data.get("max_hp", null)
-	var current_hp = data.get("current_hp", null)
-	if max_hp:
-		UIManager.hud.set_max_hp(max_hp)
-	if current_hp:
-		UIManager.hud.set_current_hp(current_hp)
-	
-func _on_xp_changed(data: Dictionary = {}) -> void:
-	var e_id = data.e_id
-	if e_id not in player_arch.entities:
-		return 
-	if UIManager.owner_id != e_id:
-		return
-	var current_level = data.get("current_level", null)
-	var current_xp = data.get("current_xp", null)
-	var xp_to_next = data.get("xp_to_next", null)
-	if xp_to_next: UIManager.hud.max_xp = xp_to_next
-	UIManager.hud.current_xp = current_xp
-	if current_level: UIManager.hud.current_level = current_level
-	
-	
+
+func _on_balance_changed(data:Dictionary):
+	UIManager.hud.balance = data.balance
 	
 func _on_players_list_changed(data:Dictionary = {}) ->void:
 	pass
-func _on_balance_changed(data: Dictionary):
-	var current_balance: int = data.current_balance
-	var value:int= data.value
-	UIManager.hud.set_current_log_balance(current_balance)
+
 	
 func _on_stats_snapshot_ready(data: Dictionary) -> void:
 	var e_id :int= data.entity
@@ -197,16 +171,17 @@ func _on_stat_changed(stat: int, value: float):
 
 		# ===== META / GAMEPLAY =====
 		Stats.PlayerStats.SLOTS:
-			pass
+		
 			UIManager.hud.slots_count = value
-
+		Stats.PlayerStats.USED_SLOTS:
+			UIManager.hud.used_slots_count = value
 		Stats.PlayerStats.DURATION_MULT:
 			UIManager.hud.duration = value
 
 		Stats.PlayerStats.MERCHANT_DISCOUNT:
 			pass
 
-
+		
 		_:
 			# стат есть, но HUD его не отображает
 			pass

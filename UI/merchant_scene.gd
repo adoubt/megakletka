@@ -3,52 +3,13 @@ extends Node
 @onready var camera: Camera3D = $SubViewport/CameraPivot/Camera3D
 
 @onready var camera_pivot: Node3D = $SubViewport/CameraPivot
-var DISTANCE := 1.0
-var HEIGHT   := 1.4
+
 func _ready() -> void:
-	UIManager.merchant_panel.texture_rect.texture = sub_viewport.get_texture()
-	UIManager.merchant_panel.background_scene = self
-	update_size()
+	#UIManager.merchant_panel.texture_rect.texture = sub_viewport.get_texture()
+	#UIManager.merchant_panel.background_scene = self
+	pass
 var hovered_item: ItemInstance = null
 
-@onready var shelves := [
-	$SubViewport/Pos/Board,
-	$SubViewport/Pos/Board2
-]
-@export var ANGLE_OFFSET_DEG := 25.0
-var cached_angle := 0.0
-var spawned_items: Array[Node3D] = []
-var dragged_item: Node3D = null
-var drag_depth: float = 0.0
-# ------------------------------------------------
-# INPUT
-# ------------------------------------------------
-
-func update_camera_pos(campfire_pos: Vector3, poi_pos: Vector3) -> void:
-	if not camera_pivot or not camera:
-		return
-	var look_offset: Vector3 =Vector3(1,0.0,1.0)
-	# --- направление ТОЛЬКО по XZ ---
-	var flat_dir := poi_pos - campfire_pos
-	flat_dir.y = 0.0
-	flat_dir = flat_dir.normalized()
-
-	# --- позиция пивота ---
-	var pivot_pos := poi_pos + flat_dir * DISTANCE
-	pivot_pos.y = poi_pos.y + HEIGHT
-	camera_pivot.global_position = pivot_pos
-
-	# --- точка взгляда ТОЛЬКО по XZ ---
-	var look_pos := campfire_pos +look_offset
-	look_pos.y = camera.global_position.y
-
-	camera.look_at(look_pos, Vector3.UP)
-
-
-		
-func update_size():
-	var size := DisplayServer.window_get_size()
-	sub_viewport.size = size		
 func _gui_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion:
@@ -86,15 +47,18 @@ func _update_hover(mouse_pos: Vector2) -> void:
 	var new_hover: ItemInstance = null
 	if hit:
 		new_hover = hit.get_parent() as ItemInstance
-
+	else: 
+		UIManager.hud.hide_item_tool_tip()
+		
 	if new_hover == hovered_item:
 		return
 
 	if hovered_item:
 		hovered_item.set_highlight(false)
-
+	
 	hovered_item = new_hover
 	
-	if hovered_item:
+	if hovered_item and hovered_item.data:
 		hovered_item.set_highlight(true)
-		
+	
+		UIManager.hud.show_item_tool_tip(hovered_item.data)

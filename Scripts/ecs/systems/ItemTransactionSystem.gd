@@ -22,7 +22,7 @@ func update(_delta: float) -> void:
 		var item_comp = cs.get_component(e, "ItemComponent")
 		if source_id not in [-1, RUN]:
 			_on_item_unequipped(e, source_id, item_comp.slot_mask) 
-			cs.add_component(source_id, "EmptySlotsRecalculateRequestComponent", EmptySlotsRecalculateRequestComponent.new())
+			cs.add_component(source_id, "UsedSlotsRecalculateRequestComponent", UsedSlotsRecalculateRequestComponent.new())
 			
 		var target_slot_mask :int =-1
 		
@@ -45,14 +45,15 @@ func update(_delta: float) -> void:
 		
 		
 		
-		cs.add_component(target_id, "EmptySlotsRecalculateRequestComponent",
-		EmptySlotsRecalculateRequestComponent.new())
+		
 		_on_item_equipped(e, target_id,item_comp.slot_mask)
 		
 
 		cs.remove_component(e, "ItemTransactionComponent")
 		
 func _on_item_equipped(item_id:int, owner_id:int, slot_mask:int) -> void:
+	cs.add_component(owner_id, "UsedSlotsRecalculateRequestComponent",
+		UsedSlotsRecalculateRequestComponent.new())
 	cs.add_component(owner_id, "DirtyStatsComponent", DirtyStatsComponent.new())
 	cs.add_component(item_id,"ItemPlacementRequestComponent", ItemPlacementRequestComponent.new())
 	for ability_e in ability_arch.entities:
@@ -98,6 +99,8 @@ func _on_item_equipped(item_id:int, owner_id:int, slot_mask:int) -> void:
 
 
 func _on_item_unequipped(item_id:int, owner_id:int, slot_mask:int) -> void:
+	cs.add_component(owner_id, "UsedSlotsRecalculateRequestComponent",
+		UsedSlotsRecalculateRequestComponent.new())
 	cs.add_component(owner_id, "DirtyStatsComponent", DirtyStatsComponent.new())
 	for mod_e in stat_mod_arch.entities:
 		var mod := cs.get_component(mod_e, "ModifierComponent")

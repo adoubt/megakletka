@@ -6,7 +6,7 @@ var days_arch: Archetype
 var player_arch: Archetype
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _event_bus: EventBus, ):
 	super._init(_entity_manager, _component_store, _event_bus)
-	event_bus.subscribe("change_day_request", _change_day)
+
 	event_bus.subscribe("combat_completed", _on_combat_completed)
 	days_arch = cs.register_archetype(["DayGroundComponent","DayComponent"])
 	
@@ -26,7 +26,6 @@ func _change_day(data: Dictionary={})->void:
 		#SceneManager.go_to_intro()
 	_day_reward()
 	event_bus.emit("day_changed", {"current_day": run_comp.current_day})
-	event_bus.emit("balance_changed", {"current_balance": run_comp.logs, "value": 3.0})
 	
 func _on_combat_completed(data: Dictionary):
 	_combat_reward(data)

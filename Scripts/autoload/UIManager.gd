@@ -46,7 +46,8 @@ func open_merchant_panel():
 	open_panel("Merchant")
 func close_merchant_panel():
 	close_panel("Merchant")
-	
+	event_bus.emit("poi_panel_closed", {"owner_id":owner_id})
+	hud.hide_item_tool_tip()
 func open_level_up_panel():
 	pass
 	#open_panel("LevelUpPanel")
@@ -185,9 +186,10 @@ func close_panel(_name: String, use_tween: bool = false ) -> void:
 		_update_ui_state()
 
 func close_all(incluse_hud : bool = false) -> void:
-	for p in panels.values():
-		if p == hud and not incluse_hud: continue
-		p.visible = false
+	for p in panels.keys():
+		if p == "HUD" and not incluse_hud: continue
+		
+		close_panel(p) 
 	game_paused = false	
 	_update_ui_state()
 
@@ -323,9 +325,9 @@ func _unhandled_input(event):
 func _on_escape_pressed():
 	if is_panel_open("Settings"):
 		close_settings()
-	if is_panel_open("Merchant"):
+	elif is_panel_open("Merchant"):
 		close_merchant_panel()
-	if is_panel_open("Map"):
+	elif is_panel_open("Map"):
 		close_map_panel()
 	elif SceneManager.current_scene_name not in ["Intro","MainMenu"]:
 		toggle_escape_menu()

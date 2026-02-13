@@ -6,6 +6,9 @@
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ay01u"]
 load_path = "res://.godot/imported/icon.svg-76cbebfc2e9ef52f8c35f8b13fe81473.s3tc.ctex"
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_woy5s"]
+load_path = "res://.godot/imported/completed.png-b09e4ff0e38d3afc290b6afd3380d899.ctex"
+
 [node name="MapNode" type="Control" unique_id=1618602761]
 layout_mode = 3
 anchors_preset = 0
@@ -33,5 +36,20 @@ stretch_mode = 0
 script = ExtResource("2_woy5s")
 metadata/_edit_use_anchors_ = true
 
+[node name="CompletedTexture" type="TextureRect" parent="." unique_id=44526027]
+visible = false
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CompressedTexture2D_woy5s")
+expand_mode = 2
+
 [connection signal="mouse_entered" from="TextureButton" to="." method="_on_texture_button_mouse_entered"]
 [connection signal="mouse_exited" from="TextureButton" to="." method="_on_texture_button_mouse_exited"]
+[connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]

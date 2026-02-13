@@ -61,6 +61,8 @@ func redraw_from_snapshot(snapshot: Dictionary) -> void:
 	seed(_map_layout_seed(snapshot.floors))
 	var floors: Dictionary = snapshot.floors
 	var floor_keys := floors.keys()
+	var current_day: int = snapshot.current_day
+	var reachable :=[]
 	floor_keys.sort()
 
 	rows = floor_keys.size()
@@ -90,6 +92,8 @@ func redraw_from_snapshot(snapshot: Dictionary) -> void:
 			row[i] = null
 
 		for cell in floors[floor]:
+			if cell.id == current_day:
+				reachable = cell.exits
 			var x = cell.column
 
 			var node := preload("res://UI/Map/MapNode.tscn").instantiate()
@@ -114,6 +118,9 @@ func redraw_from_snapshot(snapshot: Dictionary) -> void:
 			node.texture._texture_hover = node_icon_hover
 			
 			node.texture.day_type = cell.type
+			node.completed = cell.completed
+			node.reachable = cell.id in reachable
+			node.day_id = cell.id
 			row[x] = node
 			node_by_id[cell.id] = node
 
@@ -183,7 +190,7 @@ func _scroll_to_bottom() -> void:
 		map_tween.kill()
 	legend.position = Vector2(2000,130)
 
-	canvas.scale = Vector2(2.3, 1.8)
+	canvas.scale = Vector2(5.3, 5.8)
 	canvas.pivot_offset.x = canvas.size.x / 2
 	canvas.animate_connections()
 	map_tween = create_tween()
@@ -197,17 +204,17 @@ func _scroll_to_bottom() -> void:
 		"scale",
 		Vector2.ONE,
 		1.0
-	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 
 	map_tween.parallel().tween_property(
 		map_scroll,
 		"scroll_vertical",
 		max_scroll,
 		3.0
-	).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_IN)
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	
-	
-	map_tween.finished.connect(_animate_legend)
+	_animate_legend()
+	#map_tween.finished.connect()
 	
 func _animate_legend() ->void :
 	
@@ -219,8 +226,8 @@ func _animate_legend() ->void :
 		legend,
 		"position",
 		target_pos,
-		1.0
-	).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+		2.0
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 func _map_layout_seed(floors: Dictionary) -> int:
 	var s := ""
 
@@ -244,7 +251,8 @@ func hover_all_of_type(type:int) -> void:
 		for node in node_row:
 			if not node:
 				continue
-				
+			if node.completed:
+				continue	
 			if node.texture.day_type == type:
 				node.texture.set_hover(true)
 			else:
@@ -256,7 +264,8 @@ func normal_all_of_type(type:int) -> void:
 		for node in node_row:
 			if not node:
 				continue
-				
+			if node.completed:
+				continue		
 			if node.texture.day_type == type:
 				node.texture.set_normal(true)
 			else:

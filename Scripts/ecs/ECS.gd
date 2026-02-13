@@ -58,12 +58,13 @@ func initialize(run_seed: int):
 })	
 	
 	grid = SpatialGrid.new()
-	
+
 	#1 INIT / SPAWN
 	
 	system_manager.add_system(RunInitSystem.new(entity_manager, component_store, event_bus, db, run_seed,))
-	system_manager.add_system(DaySystem.new(entity_manager, component_store, event_bus))
+	#system_manager.add_system(DaySystem.new(entity_manager, component_store, event_bus))
 	system_manager.add_system(GraphGenerationSystem.new(entity_manager, component_store, event_bus))
+	system_manager.add_system(CombatGenerationSystem.new(entity_manager, component_store, event_bus))
 	system_manager.add_system(NavigationSystem.new(entity_manager, component_store, event_bus))
 	system_manager.add_system(DaySelectionSystem.new(entity_manager, component_store, event_bus))
 	system_manager.add_system(DayEnterSystem.new(entity_manager, component_store,event_bus, db, object_pool))
@@ -82,7 +83,7 @@ func initialize(run_seed: int):
 	
 	system_manager.add_system(ModifierTriggerSystem.new(entity_manager, component_store,event_bus))
 	
-	system_manager.add_system(EmptySlotsRecalculateSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(UsedSlotsRecalculateSystem.new(entity_manager, component_store,event_bus))
 	
 	system_manager.add_system(JumpSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(CombatSystem.new(entity_manager, component_store,event_bus))
@@ -130,7 +131,7 @@ func initialize(run_seed: int):
 	system_manager.add_system(LevelSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(LevelUpSelectionSystem.new(entity_manager,component_store,event_bus,))
 	
-	
+	system_manager.add_system(ItemViewBuilderSystem.new(entity_manager,component_store,event_bus,))
 	system_manager.add_system(PurchaseSystem.new(entity_manager,component_store,event_bus,))
 	
 	system_manager.add_system(EconomySystem.new(entity_manager,component_store,event_bus,))

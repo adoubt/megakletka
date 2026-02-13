@@ -22,34 +22,54 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	player_arch = cs.register_archetype(["PlayerComponent", "TransformComponent"],["DeadComponent"])
 	
 func update(delta: float) -> void:
+	if time_to_ignore >= 0.0:
+		time_to_ignore -= delta
+		return
 	if day_arch.entities.is_empty():
 		return
-	var enemies = enemy_arch.entities.duplicate()
 	
-	if combat.state == CombatState.INACTIVE:
-		if _player_left_safe_zone() and battery.current_budget > 0:
-			combat.state = CombatState.ACTIVE
-			event_bus.emit("combat_started", {
-				"day_index": current_day,
-				"current_day": current_day_entity
-			})
-
-	if combat.state == CombatState.ACTIVE:
-		combat.time_to_next_phase -= delta
-		if combat.time_to_next_phase <= 0:
-			_change_phase(combat)
-
+	var enemies = enemy_arch.entities.duplicate()
+	var entities = day_arch.entities.duplicate()
+	for e in entities:
+		var combat_state = cs.get_component(e, "CombatStateComponent")
 		
-		if battery.current_budget <= 0 and enemies.is_empty():
-			combat.state = CombatState.COMPLETED
-			event_bus.emit("combat_completed", {
-				"day_index": current_day,
-				"current_day": current_day_entity,
-				"current_phase": combat.phase
-			})
-		
+		if combat_state.state == CombatState.INACTIVE:
+			if _player_left_safe_zone() and battery.current_budget > 0:
+				combat_state.state = CombatState.ACTIVE
+				event_bus.emit("combat_started", {
+					"day_index": current_day,
+					"current_day": current_day_entity
+				})
+
+			if combat_state.state == CombatState.ACTIVE:
+
+				combat_state.time_left -= delta
+
+				var can_win_by_time :bool= has_win(
+					combat_state.win_condition,
+					CombatState.WinCondition.TIME
+				) and combat_state.time_left <= 0
+
+				var can_win_by_kill : bool = has_win(
+					combat_state.win_condition,
+					CombatState.WinCondition.KILL_ALL
+				) and battery.current_budget <= 0 \
+				  and enemies.is_empty()
+
+
+				if can_win_by_kill or can_win_by_time:
+					combat_state.state = CombatState.COMPLETED
+					event_bus.emit("combat_completed", {
+						"day_index": current_day,
+						"current_day": current_day_entity,
+						"current_phase": combat.phase
+					})
+					
+func has_win(win_mask: int, flag: int) -> bool:
+	return (win_mask & flag) != 0
+
 func _player_left_safe_zone() -> bool:
-
+	time_to_ignore+= 1.0
 	if player_arch.entities.is_empty():
 		return false
 
@@ -95,4 +115,3 @@ func _on_enemy_died(data : Dictionary):
 	"current_budget":battery.current_budget, 
 	"alive_budget": battery.alive_budget
 	})
-	

@@ -5,7 +5,7 @@ func _init( _entity_manager: EntityManager, _component_store: ComponentStore,_ev
 	super._init( _entity_manager, _component_store, _event_bus)
 	
 	arch = cs.register_archetype(["InputComponent"])
-	
+	event_bus.subscribe("day_selected", _on_day_selected)
 func update(_delta):
 	
 
@@ -25,3 +25,7 @@ func update(_delta):
 		input.interact_held = Input.is_action_pressed("interact")
 		input.interact_pressed = Input.is_action_just_pressed("interact")
 		input.interact_released= Input.is_action_just_released("interact")
+
+func _on_day_selected(data:Dictionary):
+	var day_id = data.day_id
+	cs.add_component(RUN, "DaySelectRequestComponent", DaySelectRequestComponent.new(day_id))

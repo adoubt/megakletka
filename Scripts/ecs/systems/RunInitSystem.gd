@@ -61,12 +61,13 @@ func _init_run(_data:Dictionary ={}) -> void:
 	event_bus.emit("create_char", [{ "camera":true, "char_name": "Rigman", "position": Vector3(-3.0,3,0)}])
 	
 	
-	event_bus.emit("balance_changed", {"current_balance": run_comp.logs, "value": run_comp.logs})
+	event_bus.emit("balance_changed", {"balance": run_comp.logs, "value": run_comp.logs})
 
 func _init_lobby() -> int:
 	var e = em.create_entity()
-	
-	cs.add_component(e, "DayComponent", DayComponent.new(0,1,DayType.LOBBY,2))
+	var day_comp :=  DayComponent.new(0,1,DayType.LOBBY,2)
+	day_comp.completed = true
+	cs.add_component(e, "DayComponent",day_comp)
 	cs.add_component(RUN, "DaySelectRequestComponent", DaySelectRequestComponent.new(e))
 	cs.add_component(e, "ReachableComponent", ReachableComponent.new())
 	return e

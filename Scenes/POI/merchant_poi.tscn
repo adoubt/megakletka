@@ -1,13 +1,14 @@
 [gd_scene format=3 uid="uid://mcibifvxgngd"]
 
 [ext_resource type="Script" uid="uid://dyv66n3a3fshe" path="res://scripts/objects/poi.gd" id="1_tqj2o"]
-[ext_resource type="Script" uid="uid://cacqbcutoini4" path="res://UI/merchant_scene.gd" id="2_mqf6q"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mqf6q"]
-shading_mode = 2
+transparency = 1
 diffuse_mode = 3
 specular_mode = 1
-albedo_color = Color(0.34365907, 0.24661654, 0, 1)
+albedo_color = Color(0.34580213, 0.28060427, 0, 0.76100004)
+refraction_enabled = true
+refraction_scale = 0.32
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_72wy3"]
 material = SubResource("StandardMaterial3D_mqf6q")
@@ -16,12 +17,29 @@ height = 0.84
 [node name="Merchant" type="Node3D" unique_id=449036048]
 script = ExtResource("1_tqj2o")
 
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1801182346]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.32872486, 1.6452246, -0.044664443)
+light_color = Color(0.68421113, 0.45127255, 0.09408315, 1)
+light_energy = 12.524
+light_bake_mode = 1
+shadow_enabled = true
+omni_range = 1.8023133
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="." unique_id=776076695]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85428214, 1.727102, -0.044664443)
+light_color = Color(0.96862745, 0.99215686, 0.9843137, 1)
+light_energy = 12.524
+light_bake_mode = 1
+omni_range = 1.0631886
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=180292939]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42093408, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3685782, 0)
+cast_shadow = 2
 mesh = SubResource("CylinderMesh_72wy3")
 
 [node name="Hint" type="Node3D" parent="." unique_id=833884270]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4952998, 0)
+visible = false
 
 [node name="Label3D2" type="Label3D" parent="Hint" unique_id=1599565576]
 visibility_range_end = 70.95
@@ -33,21 +51,3 @@ texture_filter = 4
 outline_render_priority = -6
 text = "[E]   Interact"
 outline_size = 15
-
-[node name="ViewPortRoot" type="Node" parent="." unique_id=20811863]
-script = ExtResource("2_mqf6q")
-
-[node name="SubViewport" type="SubViewport" parent="ViewPortRoot" unique_id=357705681]
-
-[node name="CameraPivot" type="Node3D" parent="ViewPortRoot/SubViewport" unique_id=106513623]
-
-[node name="Camera3D" type="Camera3D" parent="ViewPortRoot/SubViewport/CameraPivot" unique_id=1017764037]
-fov = 93.6
-
-[node name="Pos" type="Node3D" parent="ViewPortRoot/SubViewport" unique_id=313408731]
-
-[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1801182346]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.34539092, 1.325545, -0.31852734)
-light_color = Color(0.68421113, 0.45127255, 0.09408315, 1)
-light_energy = 5.205
-omni_range = 1.1544532

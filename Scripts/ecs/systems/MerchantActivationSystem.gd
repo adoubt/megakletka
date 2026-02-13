@@ -31,13 +31,13 @@ func update(_delta:float)-> void:
 		
 		var items_to_create :=[]
 		var pool := []
-		for item_name in db.item_configs.keys():
-			var poi_data = db.item_configs[item_name]
+		for item_id in db.item_configs.keys():
+			var poi_data = db.item_configs[item_id]
 			if not poi_data.has("drop_weight"):
 				continue
 			var weight = poi_data.drop_weight
 			for i in range(weight):
-				pool.append(item_name)
+				pool.append(item_id)
 		
 		
 		pool.shuffle()
@@ -45,14 +45,14 @@ func update(_delta:float)-> void:
 
 		var slots_count: int = floor(slots.base_value)
 
-		for item_name in pool:
+		for item_id in pool:
 	
 			items_to_create.append({"owner_id": e,
-			"item_name": item_name,
+			"item_id": item_id,
 			"position":_get_random_position(),
 			"slot_index": chosen.size()-1})
 			
-			chosen.append(item_name)
+			chosen.append(item_id)
 			if chosen.size() >= slots_count:
 				break
 		

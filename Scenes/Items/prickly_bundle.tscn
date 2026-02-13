@@ -18,13 +18,14 @@ _surfaces = [{
 "vertex_data": PackedByteArray("H4QAAH5637bjXhwm+MbftprBGxJHq9+2XO3tgizNLLv///hs8Xosu5rBGxJHqyy7H4QAAH56I8RHN9kUh2IjxONeHCb4xiPEH4QAAH56FOsnbcAjKC0U60c32RSHYhTrH4QAAH56HPqEtqsSqUMc+idtwCMoLRz6XO3tgizNPLer7f//0588t///+Gzxejy3qVrtgv//MYo1g///TPIxisWp+Gzg7zGKAADugvF6QbC/GP//059BsEEe+GwmyUGw51zrhgAAyudpQf//YxrK50Ee+Gy9LMrnXO3tgrcoA+4Bxf//YxoD7sWp+GwDBgPuXO3tgizN6qgBxf//gNvqqKvt///Tn+qoqVrtgv//cZNpQf//gNtxkzWD//9M8nGTAADugvF6T8G/GP//EFZPwb8Y///Tn0/B51zrhgAASPM1g///lwNI82lB//9jGkjzXO3tgrcoRNqr7f//EFZE2gHF//9jGkTaAcX//2MaOPM1g///lwM488Wp+GwDBjjzxan4bAMG/vw1g///lwP+/Odc64YAAP78aUH//2Ma4dm/GP//EFbh2UEe+Gy9LOHZQR74bL0smdC/GP//EFaZ0AAA7oLxepnQvxj//9OfeKdpQf//gNt4p0Ee+GwmyXinQR74bCbJL55pQf//gNsvnqla7YL//y+eNYP//0zyx40Bxf//gNvHjcWp+Gzg78eNxan4bODvT5MBxf//gNtPk1zt7YIszU+Tq+3//9OfjMCr7f//EFaMwP//+GzxeozA///4bPF6ksmr7f//EFaSyVzt7YK3KJLJhLarEqlDxexc7e2CtyjF7MWp+GwDBsXshLarEqlDrPfFqfhsAwas9ydtwCMoLaz3J23AIygtrf/FqfhsAwat/+dc64YAAK3/J23AIygtPeznXOuGAAA97EEe+Gy9LD3sJ23AIygtZuZBHvhsvSxm5kc32RSHYmbmRzfZFIdiTtFBHvhsvSxO0QAA7oLxek7RRzfZFIdiVbsAAO6C8XpVu0Ee+GwmyVW7RzfZFIdiyrtBHvhsJsnKu+NeHCb4xsq7414cJvjGO6lBHvhsJsk7qala7YL//zup///4bPF6CNFc7e2CtygI0YS2qxKpQwjR///4bPF6e8yEtqsSqUN7zJrBGxJHq3vMmsEbEkerhNSEtqsSqUOE1B+EAAB+eoTU414cJvjGBKOpWu2C//8Eo8Wp+Gzg7wSj414cJvjGPKbFqfhs4O88pprBGxJHqzymmsEbEker76PFqfhs4O/vo1zt7YIsze+jQx7jdEMe43RDHuN0XGNsPVxjbD1cY2w9YSl4zmEpeM5hKXjOCzw86gs8POoLPDzq2XTVPtl01T7ZdNU+FJGiExSRohMUkaIT9pnlQ/aZ5UP2meVDJIMO6iSDDuokgw7qQnfx70J38e9Cd/HvMYzVCTGM1QkxjNUJ5Ky9HeSsvR3krL0dJr/Xtia/17Ymv9e2GpHJ3RqRyd0akcndFYK+8BWCvvAVgr7woJtTCaCbUwmgm1MJtIgwAbSIMAG0iDAB7HQ6Cux0OgrsdDoKfYbB7H2Gwex9hsHsNY2T8DWNk/A1jZPw2ZUC39mVAt/ZlQLfP6N56D+jeeg/o3noXqjaIl6o2iJeqNoiyKjnB8io5wfIqOcHTZgmDE2YJgxNmCYM4G8YAuBvGALgbxgCCn9GJQp/RiUKf0Yl+XX0Lvl19C75dfQuLnfFKC53xSgud8UoUFI871BSPO9QUjzv/EsF7vxLBe78SwXuklAd8pJQHfKSUB3yd0Ar1HdAK9R3QCvUhDTI1YQ0yNWENMjVoy3hy6Mt4cujLeHL/WJSN/1iUjf9YlI3D2JKPw9iSj8PYko/2lqdTtpanU7aWp1OkST3cpEk93KRJPdy1ycKbdcnCm3XJwptujMQTrozEE66MxBO")
 }]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wsyd0"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1m0io"]
 shading_mode = 2
 diffuse_mode = 3
 specular_mode = 1
 albedo_color = Color(0.96862745, 0.8862745, 0.7019608, 1)
 metallic = 0.34
 metallic_specular = 0.46
+ao_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_at3gf"]
 
@@ -269,6 +270,14 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_jpfom")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wsyd0"]
+shading_mode = 2
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.96862745, 0.8862745, 0.7019608, 1)
+metallic = 0.34
+metallic_specular = 0.46
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_86ose"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_8x2db"]
@@ -374,7 +383,6 @@ size = Vector3(0.2010498, 0.17286682, 0.16149902)
 
 [node name="PricklyBundle" type="Node3D" unique_id=14755423]
 script = ExtResource("1_nrnpv")
-rotate_duration = 0.1
 
 [node name="Model" type="Node3D" parent="." unique_id=1514617997]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
@@ -383,41 +391,36 @@ transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 transform = Transform3D(0.9725378, -0.1377971, -0.1755555, 0.13344371, 0.9904064, -0.034039147, 0.18451159, 0.010023215, 0.9499494, -0.063642174, 0.0040187538, 0.02689139)
 gi_mode = 0
 mesh = SubResource("ArrayMesh_oekjq")
-surface_material_override/0 = SubResource("StandardMaterial3D_wsyd0")
+surface_material_override/0 = SubResource("StandardMaterial3D_1m0io")
 
 [node name="Sphere_001" type="MeshInstance3D" parent="Model" unique_id=198386278]
 transform = Transform3D(0.12561548, -0.086823836, -0.051825427, 0.04593428, 0.23445804, -0.023692012, 0.031382307, 0.004357719, 0.2421221, 1.0208392, -0.41676196, -0.00468509)
 gi_mode = 0
 mesh = SubResource("ArrayMesh_crb1l")
-skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_fqg1c")
 
 [node name="Sphere_002" type="MeshInstance3D" parent="Model" unique_id=169350091]
 transform = Transform3D(0.11814274, -0.026580142, -0.039643805, 0.011916773, 0.15748829, -0.06878057, 0.026666373, 0.04738171, 0.20637488, 0.75989974, -0.29173276, 0.33889613)
 gi_mode = 0
 mesh = SubResource("ArrayMesh_r42s1")
-skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_fqg1c")
 
 [node name="Sphere_003" type="MeshInstance3D" parent="Model" unique_id=1766585836]
 transform = Transform3D(0.29683065, -0.042008743, -0.0553669, 0.04072868, 0.3019347, -0.010735308, 0.056315217, 0.003055672, 0.29959622, 0.39196154, -0.7238431, 0.36416236)
 gi_mode = 0
 mesh = SubResource("ArrayMesh_aqxqr")
-skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_lpmnk")
 
 [node name="Sphere_004" type="MeshInstance3D" parent="Model" unique_id=1350641233]
 transform = Transform3D(0.29245284, -0.018311054, 0.051669598, 0.021569805, 0.2962707, -0.017091734, -0.050396282, 0.020544812, 0.29252663, -0.3671687, -0.7855731, 0.34820768)
 gi_mode = 0
 mesh = SubResource("ArrayMesh_g03hn")
-skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_lpmnk")
 
 [node name="Sphere_005" type="MeshInstance3D" parent="Model" unique_id=1756172462]
 transform = Transform3D(0.3080683, -0.043599155, -0.05746304, 0.042270623, 0.31336567, -0.011141736, 0.058447253, 0.0031713566, 0.31093863, 0.394666, -0.7162268, -0.3091165)
 gi_mode = 0
 mesh = SubResource("ArrayMesh_ukxwk")
-skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_lpmnk")
 
 [node name="Sphere_006" type="MeshInstance3D" parent="Model" unique_id=546949576]
@@ -430,21 +433,18 @@ surface_material_override/0 = SubResource("StandardMaterial3D_lpmnk")
 transform = Transform3D(-0.72435635, 0.07080069, -0.11608502, 0.10013705, 0.49739328, 0.03631841, 0.11473366, 0.012877081, -0.7645859, 0.6829794, -0.37233877, 0.0040943725)
 gi_mode = 0
 mesh = SubResource("ArrayMesh_igy48")
-skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_wsyd0")
 
 [node name="Sphere_008" type="MeshInstance3D" parent="Model" unique_id=495805995]
 transform = Transform3D(0.11230729, -0.018881448, -0.037622433, 0.016905146, 0.15560842, 0.032916844, 0.017912056, -0.028475763, 0.20482346, 0.77053165, -0.2821042, -0.30555132)
 gi_mode = 0
 mesh = SubResource("ArrayMesh_pj18u")
-skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_fqg1c")
 
 [node name="Sphere" type="MeshInstance3D" parent="Model" unique_id=1231728859]
 transform = Transform3D(1.7396784, 0, 0, 0, 1.7396784, 0, 0, 0, 1.7396784, 0, 1.0924401, 0)
 gi_mode = 0
 mesh = SubResource("ArrayMesh_1h312")
-skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_1a5b7")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Model" unique_id=848230601]

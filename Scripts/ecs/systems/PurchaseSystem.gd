@@ -18,7 +18,8 @@ func process_purchase(data):
 	var requested_entity: int =-1
 	var merchant_entity = -1
 	var buyer: int = data.owner_id
-	if cs.get_component(buyer,"EmptySlotsCountComponent").base_value <= 0:
+	var empty_slots = cs.get_component(buyer, "SlotsCountComponent").base_value - cs.get_component(buyer,"UsedSlotsCountComponent").base_value
+	if  empty_slots <= 0:
 		event_bus.emit("purchase_failed",{ "reason":"NOT_ENOUGH_SLOTS"})
 		return
 	
@@ -41,11 +42,7 @@ func process_purchase(data):
 	if run.logs < price:
 		event_bus.emit("purchase_failed",{ "reason":"NOT_ENOUGH_BALANCE"})
 		return
-	#var item_name: String = "LogFueledDamage"
-	## 1. создаём предмет
-	#event_bus.emit("create_item", [
-		#{"owner_id": data.owner_id,"item_name": item_name}
-		#])
+	
 
 	var transaction : ItemTransactionComponent = ItemTransactionComponent.new()
 	transaction.source_id = merchant_entity

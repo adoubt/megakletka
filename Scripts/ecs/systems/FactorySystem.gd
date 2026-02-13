@@ -74,8 +74,8 @@ func _create_pois(data_array: Array = []) -> void:
 		if not db.poi_configs.has(poi_name):
 			push_warning("Unknown enemy name: %s" % poi_name)
 			
-	
-		var position: Vector3 = data["position"]
+		
+		var position: Vector3 = data.get("position", Vector3.ZERO)
 		
 		
 		var e_data = db.poi_configs[poi_name]	
@@ -107,9 +107,14 @@ func _create_pois(data_array: Array = []) -> void:
 			slots_count = e_data.slots
 			if data.has("slots"): slots_count = data.slots
 			cs.add_component(entity_id, "SlotsCountComponent",SlotsCountComponent.new(slots_count))
-			cs.add_component(entity_id, "EmptySlotsCountComponent", EmptySlotsCountComponent.new())
-		cs.get_component(RUN, "RunComponent").campfire_id = entity_id
-		
+			cs.add_component(entity_id, "UsedSlotsCountComponent", UsedSlotsCountComponent.new())
+			cs.add_component(entity_id, "UsedSlotsRecalculateRequestComponent",
+		UsedSlotsRecalculateRequestComponent.new())
+		match poi_name:
+			"campfire":
+				cs.get_component(RUN, "RunComponent").campfire_id = entity_id
+			"merchant":
+				cs.add_component(entity_id,"MerchantActivationRequestComponent", MerchantActivationRequestComponent.new())
 	
 
 func _create_enemies(data_array: Array = []) -> void:
@@ -232,11 +237,13 @@ func _create_chars(data_array: Array = []):
 		
 		var items_to_create:= []
 		for item in e_data.items:
-			items_to_create.append({"item_name":item, "owner_id":entity_id})
-		cs.add_component(entity_id, "EmptySlotsCountComponent", EmptySlotsCountComponent.new(
+			items_to_create.append({"item_id":item, "owner_id":entity_id})
+		cs.add_component(entity_id, "UsedSlotsCountComponent", UsedSlotsCountComponent.new(
 			e_data.slots - e_data.items.size()))
-		_create_items(items_to_create)	
 		
+		_create_items(items_to_create)	
+		cs.add_component(entity_id, "UsedSlotsRecalculateRequestComponent",
+		UsedSlotsRecalculateRequestComponent.new())
 		#var slots_to_create:=[]
 		#for slot in e_data.get("slots", 0):
 			#slots_to_create.append({"owner_id": entity_id})
@@ -293,15 +300,15 @@ func _create_weapons(data_array: Array = []):
 		
 func _create_items(data_array: Array = []):
 	for data in data_array:
-		var item_name: String = data["item_name"]
+		var item_id: int = data["item_id"]
 		var owner_id: int = data["owner_id"]
-		if not db.item_configs.has(item_name):
-			push_warning("Unknown card name : %s" % item_name)
+		if not db.item_configs.has(item_id):
+			push_warning("Unknown item id : %s" % item_id)
 			
-		var e_data = db.item_configs[item_name]
+		var e_data = db.item_configs[item_id]
 		var entity_id = em.create_entity()
 		#var slot_mask: int
-		cs.add_component(entity_id, "TitleComponent", TitleComponent.new(data.get("title", "Item Title"),data.get("description","Item Description")))	
+		cs.add_component(entity_id, "TitleComponent", TitleComponent.new(e_data.get("title", "Item Title"),e_data.get("description","Item Description")))	
 		cs.add_component(entity_id, "RenderComponent", RenderComponent.new(e_data.scene, false))
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(data.get("position",Vector3.ZERO)))
 		#if cs.has_component(owner_id, "PlayerComponent"):
@@ -318,7 +325,7 @@ func _create_items(data_array: Array = []):
 					#return
 		
 		#var slot_index: int = data.get("slot_index",0)
-		cs.add_component(entity_id, "ItemComponent", ItemComponent.new(item_name))
+		cs.add_component(entity_id, "ItemComponent", ItemComponent.new(item_id))
 		cs.add_component(entity_id, "CostComponent", CostComponent.new(e_data.cost))
 		
 		var transaction = ItemTransactionComponent.new()
@@ -350,7 +357,7 @@ func _create_abilities(data_array: Array = []) -> void:
 		
 		if ability_data.has("trigger"):
 			cs.add_component(entity_id, "TriggerComponent", TriggerComponent.new(ability_data.trigger.event, ability_data.trigger.action,ability_data.trigger.value))			
-		cs.add_component(entity_id, "ItemAbilityComponent", ItemAbilityComponent.new(owner_id, ability_data.name))
+		cs.add_component(entity_id, "ItemAbilityComponent", ItemAbilityComponent.new(owner_id, ability_data.title))
 		
 		if ability_data.has("target_stat"):
 			cs.add_component(entity_id, "StatModifierComponent", StatModifierComponent.new(ability_data.target_stat,ability_data.domain, ability_data.value))

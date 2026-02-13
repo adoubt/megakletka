@@ -317,6 +317,7 @@ anti_aliasing = false
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c0v5a"]
 
 [resource]
+Button/colors/font_color = Color(0.78431374, 0.84313726, 0.81960785, 1)
 Button/styles/normal = SubResource("StyleBoxFlat_6rrxc")
 CodeEdit/styles/normal = SubResource("StyleBoxEmpty_4bdji")
 EditorInspectorCategory/styles/bg = SubResource("StyleBoxFlat_x4bf7")

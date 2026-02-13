@@ -8,6 +8,8 @@ var em: EntityManager
 var cs: ComponentStore
 var event_bus: EventBus
 var RUN: int = 1
+
+var time_to_ignore:float =0.0
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus):
 	em = _entity_manager
 	cs = _component_store

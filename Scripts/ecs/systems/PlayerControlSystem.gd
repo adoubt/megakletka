@@ -28,7 +28,8 @@ func update(_delta):
 				camera_id = cam_e
 				break
 					
-		var cam = cs.components["CameraComponent"][camera_id]
+		var cam = cs.get_component(camera_id, "CameraComponent")
+		if not cam: continue
 		cam_forward = cam.forward
 		cam_right = cam.right
 		

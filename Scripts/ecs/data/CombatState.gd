@@ -7,3 +7,8 @@ enum {
 	ACTIVE,
 	COMPLETED
 }
+
+enum WinCondition {
+	TIME = 1 << 0,
+	KILL_ALL = 1 << 1
+}
