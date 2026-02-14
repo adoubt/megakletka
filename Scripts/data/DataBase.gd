@@ -219,7 +219,7 @@ class_name DataBase
 			}
 		],
 		"cost": 4,
-		"drop_weight": 1
+		"drop_weight": 10
 	},
 	1: {
 		"title": "Jump Item",
@@ -236,7 +236,31 @@ class_name DataBase
 			}
 		],
 		"cost": 3,
-		"drop_weight": 1
+		"drop_weight": 10
+	},
+	2: {
+		"title": "Glass Tail",
+		"description": "A brave little fox that fights fiercely but leaves you unguarded",
+		"icon": "res://assets/icons/Cards/Sprite-0002.png",
+		"scene": "res://Scenes/Items/glass_tail.tscn",
+		"abilities": [
+			{
+				"title": "Passive: Bold Pounce",
+				"description":"+ {stat_modifier.value:percent} DAMAGE",
+				"target_stat": Stats.PlayerStats.DAMAGE_MULT,
+				"domain": Stats.Domain.PLAYER,
+				"value": 0.5
+			},
+			{
+				"title": "Passive: Fragility",
+				"description":"{stat_modifier.value:int} ARMOR",
+				"target_stat": Stats.PlayerStats.ARMOR,
+				"domain": Stats.Domain.PLAYER,
+				"value": -10
+			}
+		],
+		"cost": 3,
+		"drop_weight": 10
 	},
 
 	
@@ -256,7 +280,7 @@ class_name DataBase
 			}
 		],
 		"cost": 3,
-		"drop_weight": 1
+		"drop_weight": 10
 	},
 
 	4: {
@@ -279,7 +303,7 @@ class_name DataBase
 			}
 		],
 		"cost": 3,
-		"drop_weight": 1
+		"drop_weight": 10
 	},
 
 	5: {
@@ -310,7 +334,7 @@ class_name DataBase
 			}
 		],
 		"cost": 3,
-		"drop_weight": 1
+		"drop_weight": 10
 	},
 	7: {
 		"title": "Green Acorn",
@@ -328,7 +352,7 @@ class_name DataBase
 			}
 		],
 		"cost": 2,
-		"drop_weight": 1
+		"drop_weight": 10
 	},
 }
 
@@ -419,6 +443,14 @@ class_name DataBase
 				],
 			"menu_back": 
 				["res://assets/sounds/non_diegetic/ui/tap2.mp3",],
+			"merchant_item_selected":
+				["res://assets/sounds/non_diegetic/ui/item_select1.mp3",
+				"res://assets/sounds/non_diegetic/ui/item_select2.mp3",
+				"res://assets/sounds/non_diegetic/ui/item_select3.mp3",
+				"res://assets/sounds/non_diegetic/ui/item_select4.mp3",
+				"res://assets/sounds/non_diegetic/ui/item_select5.mp3",
+				"res://assets/sounds/non_diegetic/ui/item_select6.mp3",
+				]
 		},
 	}
 }

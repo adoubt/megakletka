@@ -59,7 +59,7 @@ func initialize(run_seed: int):
 	
 	grid = SpatialGrid.new()
 
-	#1 INIT / SPAWN
+	##1 INIT / SPAWN
 	
 	system_manager.add_system(RunInitSystem.new(entity_manager, component_store, event_bus, db, run_seed,))
 	#system_manager.add_system(DaySystem.new(entity_manager, component_store, event_bus))
@@ -91,7 +91,7 @@ func initialize(run_seed: int):
 	system_manager.add_system(FactorySystem.new(entity_manager, component_store,event_bus,db,object_pool))
 	system_manager.add_system(MushroomSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(ItemTransactionSystem.new(entity_manager,component_store,event_bus,))
-	#2 AI / DECISION
+	##2 AI / DECISION
 	system_manager.add_system(EnemyChaseSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(WeaponSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(WeaponAimSystem.new(entity_manager, component_store,event_bus))
@@ -99,11 +99,11 @@ func initialize(run_seed: int):
 	
 	system_manager.add_system(FireSystem.new(entity_manager, component_store,event_bus))
 	
-	#3. PROJECTILES LOGIC
+	##3. PROJECTILES LOGIC
 	system_manager.add_system(ProjectileSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(PierceSystem.new(entity_manager,component_store, event_bus))
 	
-	#4. PHYSICS / MOVEMENT
+	##4. PHYSICS / MOVEMENT
 	system_manager.add_system(FollowOwnerPositionSystem.new(entity_manager,component_store, event_bus))
 	system_manager.add_system(PickUpSystem.new(entity_manager,component_store, event_bus))
 	
@@ -113,7 +113,7 @@ func initialize(run_seed: int):
 	system_manager.add_system(ClimbSystem.new(entity_manager,component_store, event_bus))
 	system_manager.add_system(PhysicsIntegrationSystem.new(entity_manager, component_store,event_bus))
 	
-	#5. COLLISION / DAMAGE
+	##5. COLLISION / DAMAGE
 	system_manager.add_system(PickUpSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(CollisionSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HitSystem.new(entity_manager, component_store,event_bus))
@@ -122,7 +122,7 @@ func initialize(run_seed: int):
 	
 	system_manager.add_system(HealthSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(DeathSystem.new(entity_manager, component_store,event_bus))
-	#6. UI / META
+	##6. UI / META
 	system_manager.add_system(DamagePopupSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HitVFXSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(InteractionProximitySystem.new(entity_manager, component_store,event_bus))
@@ -135,11 +135,11 @@ func initialize(run_seed: int):
 	system_manager.add_system(PurchaseSystem.new(entity_manager,component_store,event_bus,))
 	
 	system_manager.add_system(EconomySystem.new(entity_manager,component_store,event_bus,))
-	#7. RENDER
+	##7. RENDER
 	system_manager.add_system(CameraEffectSystem.new(entity_manager,component_store,event_bus,))
 	system_manager.add_system(LevelUpOfferSystem.new(entity_manager,component_store,event_bus,db))
 	system_manager.add_system(Interactionsystem.new(entity_manager,component_store,event_bus))
-
+	system_manager.add_system(ItemIdleFloatSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(DEVPanelSystem.new(entity_manager, component_store,event_bus, object_pool))
 	system_manager.add_system(ItemVisualPlacementSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HUDSystem.new(entity_manager, component_store,event_bus,))

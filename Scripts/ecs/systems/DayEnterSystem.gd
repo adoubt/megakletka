@@ -41,7 +41,7 @@ func update(_delta):
 	
 	match day_type:
 		DayType.LOBBY:
-			pois_to_create.append({"poi_name": "merchant", "slots":5, "position": _get_random_position_in_radius(3.0, 7.0)})
+			pois_to_create.append({"poi_name": "merchant", "slots":10, "position": _get_random_position_in_radius(3.0, 7.0)})
 			
 			pois_to_create.append_array(_place_heal_mushroom(heal_mushrooms))
 			

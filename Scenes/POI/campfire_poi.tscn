@@ -15,7 +15,7 @@
 noise_type = 0
 frequency = 0.0366
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_m4txs"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_687ab"]
 noise = SubResource("FastNoiseLite_no8uq")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mw62k"]
@@ -24,7 +24,7 @@ shader = ExtResource("2_3ueme")
 shader_parameter/MainTexture = ExtResource("3_5aa2q")
 shader_parameter/DissolveTilling = Vector2(0.395, 0.205)
 shader_parameter/DissolveSpeed = Vector2(0, 0.2)
-shader_parameter/DissolveTexture = SubResource("NoiseTexture2D_m4txs")
+shader_parameter/DissolveTexture = SubResource("NoiseTexture2D_687ab")
 shader_parameter/DissolveAmount = 0.1810000085975
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bigvi"]
@@ -45,7 +45,7 @@ shader_parameter/DissolveAmount = 1.0
 _data = [Vector2(0, 0.047357917), 0.0, 0.0, 0, 0, Vector2(0.18041237, 0.52691925), 0.0, 0.0, 0, 0, Vector2(0.93814427, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_8qyrm"]
+[sub_resource type="CurveTexture" id="CurveTexture_262gu"]
 curve = SubResource("Curve_4wyr0")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_38yw6"]
@@ -58,7 +58,7 @@ spread = 0.0
 gravity = Vector3(0, 3, 0)
 scale_min = 0.7
 scale_max = 0.79999995
-scale_curve = SubResource("CurveTexture_8qyrm")
+scale_curve = SubResource("CurveTexture_262gu")
 color = Color(3.6837127, 1.0518198, 0, 0.972549)
 
 [sub_resource type="QuadMesh" id="QuadMesh_1plvg"]

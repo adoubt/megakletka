@@ -23,7 +23,9 @@ func update(_delta: float) -> void:
 		if source_id not in [-1, RUN]:
 			_on_item_unequipped(e, source_id, item_comp.slot_mask) 
 			cs.add_component(source_id, "UsedSlotsRecalculateRequestComponent", UsedSlotsRecalculateRequestComponent.new())
-			
+		
+		cs.add_component(e, "AnimationComponent", AnimationComponent.new(AnimationType.FLOAT))
+				
 		var target_slot_mask :int =-1
 		
 		if cs.get_component(target_id, "PlayerComponent"):

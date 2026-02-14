@@ -45,8 +45,8 @@ func _get_merchant_offset(
 	poi_pos: Vector3,
 	target_pos: Vector3,
 	height: float = 1.0,
-	radius: float = 0.35,
-	arc_angle_deg: float = 90.0
+	radius: float = 0.30,
+	arc_angle_deg: float = 180.0
 ) -> Vector3:
 
 	if slots_count <= 1:
@@ -61,7 +61,7 @@ func _get_merchant_offset(
 	var right := forward.cross(Vector3.UP).normalized()
 
 	# дуга от -half_angle до +half_angle
-	var half_angle :float= deg_to_rad(arc_angle_deg * 0.5)
+	var half_angle :float= deg_to_rad(arc_angle_deg * 0.9)
 	var t := float(slot_index) / float(slots_count - 1)
 	var angle :float= lerp(-half_angle, half_angle, t)
 

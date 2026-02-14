@@ -6,7 +6,7 @@ var object_sources: Dictionary = {} # node -> AudioStreamPlayer3D
 
 var music_players: Dictionary = {} # _name -> AudioStreamPlayer3D
 
-var ui_sources: Array = []
+var ui_sources: Dictionary = {}
 
 var spatial_loops: Dictionary = {} # key -> AudioStreamPlayer3D
 
@@ -34,14 +34,17 @@ func play_ui_sound(_name: String, volume_db: float = -10.0, pitch_range: Vector2
 		push_error("AudioManager: invalid sound entry: %s" % _name)
 		return
 
+	var new_ui_player = AudioStreamPlayer.new()
+	new_ui_player.stream = load(path)
+	new_ui_player.volume_db = volume_db
+	new_ui_player.pitch_scale = randf_range(pitch_range.x, pitch_range.y)
+	add_child(new_ui_player)
 	
-	ui_player.stream = load(path)
-	ui_player.volume_db = volume_db
-	ui_player.pitch_scale = randf_range(pitch_range.x, pitch_range.y)
+	new_ui_player.play()
+	
+	ui_sources[_name] = new_ui_player
+	new_ui_player.connect("finished", Callable(self, "_on_ui_finished").bind(new_ui_player))
 
-	
-	ui_player.play()
-	
 ## One-shot sound within 3D Position
 func play_sound(
 	_name: String,

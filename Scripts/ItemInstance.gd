@@ -8,6 +8,8 @@ class_name ItemInstance
 @export var yaw_offset := -PI/2  # радианы
 @export var highlight_position: Vector3 = Vector3(0.0,0.1, 0.0)
 @onready var model: Node3D = $Model
+
+
 var data: Dictionary
 var meshes: Array[MeshInstance3D] = []
 var original_materials := {} # MeshInstance3D -> Array[Material]
@@ -24,17 +26,22 @@ func _ready() -> void:
 	base_scale = model.scale
 	base_rotation = model.rotation
 	_collect_meshes(model)
-	base_position = model.position
+	
 
 # ------------------------------------------------
 # HIGHLIGHT
 # ------------------------------------------------
 
 func set_highlight(enabled: bool) -> void:
+	
 	if is_highlighted == enabled:
 		return
-
+	if not is_highlighted and enabled:
+		base_position = model.position
+		
 	is_highlighted = enabled
+	if enabled:
+		_sound()
 	_kill_tweens()
 
 	# === SCALE ===
@@ -47,7 +54,7 @@ func set_highlight(enabled: bool) -> void:
 	)
 
 	# === ROTATION ===
-	var target_rot := base_rotation
+	var target_rot: Vector3
 
 	if enabled:
 		var cam: Camera3D = get_viewport().get_camera_3d()
@@ -58,6 +65,13 @@ func set_highlight(enabled: bool) -> void:
 			var dir := look_pos - model.global_position
 			target_rot = model.rotation
 			target_rot.y = atan2(dir.x, dir.z) + yaw_offset
+		else:
+			target_rot = model.rotation
+	else:
+		target_rot = model.rotation
+		target_rot.y += deg_to_rad(randf_range(-120.0,120.0))
+		base_rotation = target_rot
+
 
 	rotate_tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	rotate_tween.tween_property(
@@ -97,3 +111,7 @@ func _collect_meshes(node: Node) -> void:
 
 		elif c is Node:
 			_collect_meshes(c)
+
+func _sound()-> void:
+	AudioManager.play_ui_sound("merchant_item_selected",0.0,Vector2(0.9, 1.0))
+	

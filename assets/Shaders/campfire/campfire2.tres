@@ -23,6 +23,8 @@ billboard_type = 3
 keep_scale = true
 
 [resource]
+flags/unshaded = true
+flags/shadows_disabled = true
 nodes/vertex/2/node = SubResource("VisualShaderNodeBillboard_73do2")
 nodes/vertex/2/position = Vector2(20, 360)
 nodes/vertex/connections = PackedInt32Array(2, 0, 0, 10)
