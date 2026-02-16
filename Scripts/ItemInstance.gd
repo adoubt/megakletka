@@ -1,18 +1,17 @@
 extends Node3D
 class_name ItemInstance
 
-@export var highlight_material: Material
+@export var highlight_material: Material = preload("res://assets/Materials/item_highlight2.tres")
 @export var highlight_scale: float = 1.35
 @export var rotate_duration: float = 0.4
-@export var scale_duration: float = 0.15
+@export var scale_duration: float = 0.25
 @export var yaw_offset := -PI/2  # радианы
-@export var highlight_position: Vector3 = Vector3(0.0,0.1, 0.0)
+@export var highlight_position_offset: float = 0.3
 @onready var model: Node3D = $Model
 
 
 var data: Dictionary
 var meshes: Array[MeshInstance3D] = []
-var original_materials := {} # MeshInstance3D -> Array[Material]
 
 var is_highlighted := false
 var base_scale: Vector3
@@ -38,12 +37,13 @@ func set_highlight(enabled: bool) -> void:
 		return
 	if not is_highlighted and enabled:
 		base_position = model.position
-		
+	for m in meshes:
+		m.material_overlay = highlight_material if enabled else null	
 	is_highlighted = enabled
 	if enabled:
 		_sound()
 	_kill_tweens()
-
+	var highlight_position:Vector3 = Vector3(0.0,randf_range(0.1,0.25),0.0)
 	# === SCALE ===
 	scale_tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	scale_tween.tween_property(
@@ -103,15 +103,9 @@ func _collect_meshes(node: Node) -> void:
 	for c in node.get_children():
 		if c is MeshInstance3D:
 			meshes.append(c)
-
-			var mats: Array[Material] = []
-			for i in range(c.mesh.get_surface_count()):
-				mats.append(c.get_active_material(i))
-			original_materials[c] = mats
-
 		elif c is Node:
 			_collect_meshes(c)
 
 func _sound()-> void:
-	AudioManager.play_ui_sound("merchant_item_selected",0.0,Vector2(0.9, 1.0))
+	AudioManager.play_ui_sound("item_selected",0.0,Vector2(0.9, 1.1))
 	

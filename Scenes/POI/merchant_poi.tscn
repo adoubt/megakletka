@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dyv66n3a3fshe" path="res://scripts/objects/poi.gd" id="1_tqj2o"]
 [ext_resource type="Texture2D" uid="uid://d3oerqobwy8je" path="res://assets/Materials/stump/textures/Tree Stump.png" id="2_mqf6q"]
+[ext_resource type="Shader" uid="uid://d3w3rjpq2ccp1" path="res://assets/Shaders/outline_shader.gdshader" id="3_oam1a"]
 [ext_resource type="Shader" uid="uid://debcdgcea63wn" path="res://assets/Shaders/campfire/campfire.tres" id="3_w4837"]
 [ext_resource type="Texture2D" uid="uid://v3ey6gtm1at" path="res://assets/shader_pics/toppng.com-smoke-effect-png-photo-edting-smoke-cloud-transparent-900x489.png" id="4_oam1a"]
 [ext_resource type="Shader" uid="uid://cq7w71cvsqt2j" path="res://assets/Shaders/campfire/campfire2.tres" id="5_18wg3"]
@@ -17,6 +18,10 @@ albedo_texture = ExtResource("2_mqf6q")
 albedo_texture_force_srgb = true
 albedo_texture_msdf = true
 metallic_specular = 1.0
+emission_enabled = true
+emission = Color(0.4881462, 0.99999994, 0.4343264, 1)
+emission_energy_multiplier = 3.49
+emission_on_uv2 = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nyvev"]
 resource_name = "TreeStump"
@@ -56,6 +61,17 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_vynlt")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_18wg3"]
+render_priority = 0
+shader = ExtResource("3_oam1a")
+shader_parameter/scale = 2.0
+shader_parameter/outline_spread = 1.0
+shader_parameter/_Color = Color(0.79607844, 1, 0.79607844, 1)
+shader_parameter/_DepthNormalThreshold = 0.1
+shader_parameter/_DepthNormalThresholdScale = 3.0
+shader_parameter/_DepthThreshold = 1.5
+shader_parameter/_NormalThreshold = 2.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_letg3"]
 vertex_color_use_as_albedo = true
@@ -301,18 +317,22 @@ mesh = SubResource("ArrayMesh_bjeod")
 
 [node name="Sphere" type="MeshInstance3D" parent="Model" unique_id=1627071641]
 transform = Transform3D(0.25370252, 1.46983545e-08, 0.26509854, 0.069623716, 0.5582552, -0.07041065, -0.24830836, 0.1565304, 0.25111485, -0.26182756, 0.27547756, 0.72525555)
+material_overlay = SubResource("ShaderMaterial_18wg3")
 mesh = SubResource("ArrayMesh_oam1a")
 
 [node name="Sphere_001" type="MeshInstance3D" parent="Model" unique_id=2124719403]
-transform = Transform3D(-0.08325875, -0.31746677, -0.1723664, -0.044258412, 0.49682862, -0.112409316, 0.27595764, -0.016100451, -0.07003274, -0.38631678, 0.15906185, 0.5931603)
+transform = Transform3D(-0.08325875, -0.3174668, -0.17236641, -0.044258416, 0.49682868, -0.11240933, 0.27595767, -0.016100453, -0.07003274, -0.38622698, 0.15906186, 0.59316033)
+material_overlay = SubResource("ShaderMaterial_18wg3")
 mesh = SubResource("ArrayMesh_qlhfk")
 
 [node name="Sphere_002" type="MeshInstance3D" parent="Model" unique_id=832209668]
 transform = Transform3D(0.115091965, 0.061620157, 0.080925845, 0.027400075, 0.2890762, -0.05154756, -0.10938271, 0.13724926, 0.07223726, -0.16687667, 0.06210446, 0.7339083)
+material_overlay = SubResource("ShaderMaterial_18wg3")
 mesh = SubResource("ArrayMesh_0nbft")
 
 [node name="Sphere_003" type="MeshInstance3D" parent="Model" unique_id=268722564]
 transform = Transform3D(-0.022483017, -0.1334423, -0.10828172, 0.027400078, 0.2890762, -0.05154756, 0.15717904, -0.06948061, -0.006502727, -0.8802876, 0.09606258, -0.5053528)
+material_overlay = SubResource("ShaderMaterial_18wg3")
 mesh = SubResource("ArrayMesh_lihxg")
 
 [node name="fire" type="Node3D" parent="." unique_id=283999774]

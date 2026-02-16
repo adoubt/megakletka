@@ -111,7 +111,7 @@ func _format_template(template: String, data: Dictionary) -> String:
 func _apply_format(value, format: String):
 	match format:
 		"percent":
-			return str(round(float(value) * 100.0)) + "%"
+			return str(int(float(value) * 100.0)) + "%"
 		"int":
 			return str(int(round(float(value))))
 		"float1":

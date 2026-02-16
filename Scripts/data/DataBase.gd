@@ -273,7 +273,7 @@ class_name DataBase
 		"abilities": [
 			{
 				"title": "Passive: Discount",
-				"description": "Merchant discount {stat_modifier.value:int} LOG",
+				"description": "Merchant discount {stat_modifier.value:int} GOLD",
 				"target_stat": Stats.PlayerStats.MERCHANT_DISCOUNT,
 				"domain": Stats.Domain.PLAYER,
 				"value": 1
@@ -291,7 +291,7 @@ class_name DataBase
 		"abilities": [
 			{
 				"title": "Passive: RICHA",
-				"description": "Add {stat_modifier.value:percent} DAMAGE for each LOG",
+				"description": "Add {stat_modifier.value:percent} DAMAGE for each GOLD",
 				"target_stat": Stats.PlayerStats.DAMAGE_MULT,
 				"domain": Stats.Domain.PLAYER,
 				"value": 0.1,
@@ -443,13 +443,17 @@ class_name DataBase
 				],
 			"menu_back": 
 				["res://assets/sounds/non_diegetic/ui/tap2.mp3",],
-			"merchant_item_selected":
-				["res://assets/sounds/non_diegetic/ui/item_select1.mp3",
+			"item_selected":
+				["res://assets/sounds/non_diegetic/ui/item_select.mp3",
 				"res://assets/sounds/non_diegetic/ui/item_select2.mp3",
 				"res://assets/sounds/non_diegetic/ui/item_select3.mp3",
 				"res://assets/sounds/non_diegetic/ui/item_select4.mp3",
 				"res://assets/sounds/non_diegetic/ui/item_select5.mp3",
 				"res://assets/sounds/non_diegetic/ui/item_select6.mp3",
+				"res://assets/sounds/non_diegetic/ui/item_select7.mp3",
+				"res://assets/sounds/non_diegetic/ui/item_select8.mp3",
+				"res://assets/sounds/non_diegetic/ui/item_select9.mp3",
+				"res://assets/sounds/non_diegetic/ui/item_select10.mp3",
 				]
 		},
 	}

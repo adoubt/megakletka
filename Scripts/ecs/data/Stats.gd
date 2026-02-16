@@ -15,7 +15,7 @@ enum PlayerStats{
 	MOVESPEED_MULT,
 	DURATION_MULT,
 	MERCHANT_DISCOUNT,
-	PROJ_COUND,
+	PROJ_COUNT,
 	WEAPON_RADIUS,
 	PROJ_RADIUS,
 	ATK_SPEED,
@@ -82,7 +82,7 @@ static func _get_player_comp(stat: int) -> String:
 		PlayerStats.MERCHANT_DISCOUNT:  return "MerchantDiscountComponent"
 
 		# --- Projectiles ---
-		PlayerStats.PROJ_COUND:         return "ProjectileCountComponent"
+		PlayerStats.PROJ_COUNT:         return "ProjectileCountComponent"
 		PlayerStats.WEAPON_RADIUS:      return "WeaponRadiusComponent"
 		PlayerStats.PROJ_RADIUS:        return "ProjectileRadiusComponent"
 
@@ -156,7 +156,7 @@ static func _get_player_format_type(stat:int) -> int:
 		PlayerStats.MERCHANT_DISCOUNT:  return StatFormatType.FLAT
 
 		# --- Projectiles ---
-		PlayerStats.PROJ_COUND:         return StatFormatType.FLAT
+		PlayerStats.PROJ_COUNT:         return StatFormatType.FLAT
 		PlayerStats.WEAPON_RADIUS:      return StatFormatType.FLAT
 		PlayerStats.PROJ_RADIUS:        return StatFormatType.FLAT
 

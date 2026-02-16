@@ -71,7 +71,7 @@ func initialize(run_seed: int):
 	system_manager.add_system(GroundGenerationSystem.new(entity_manager, component_store,event_bus,groound_handler))
 	system_manager.add_system(InputSystem.new(entity_manager, component_store,event_bus))
 	
-	system_manager.add_system(CameraSystem.new(entity_manager,component_store,event_bus))
+	
 	system_manager.add_system(PlayerControlSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(ConsoleSystem.new(entity_manager, component_store,event_bus, db))
 	system_manager.add_system(HealthRatioReset.new(entity_manager, component_store,event_bus))
@@ -136,7 +136,9 @@ func initialize(run_seed: int):
 	
 	system_manager.add_system(EconomySystem.new(entity_manager,component_store,event_bus,))
 	##7. RENDER
+	system_manager.add_system(CameraMouseParallaxSystem.new(entity_manager,component_store,event_bus,))
 	system_manager.add_system(CameraEffectSystem.new(entity_manager,component_store,event_bus,))
+	system_manager.add_system(CameraSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(LevelUpOfferSystem.new(entity_manager,component_store,event_bus,db))
 	system_manager.add_system(Interactionsystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(ItemIdleFloatSystem.new(entity_manager,component_store,event_bus))

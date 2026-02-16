@@ -142,7 +142,7 @@ func _on_stat_changed(stat: int, value: float):
 
 
 		# ===== PROJECTILES =====
-		Stats.PlayerStats.PROJ_COUND:
+		Stats.PlayerStats.PROJ_COUNT:
 			pass
 
 		Stats.PlayerStats.PROJ_RADIUS:

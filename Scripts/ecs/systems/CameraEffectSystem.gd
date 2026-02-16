@@ -89,7 +89,7 @@ func _on_grounded(data: Dictionary) -> void:
 	# ========= DROP
 	fx.drop_velocity -= power * 16.0
 
-	# ========= FOV IMPULSE (короткий zoom-out)
+	# ========= FOV IMPULSE 
 	fx.fov_velocity -= power * 100.0
 
 func _on_jumped(data: Dictionary) -> void:
@@ -110,16 +110,9 @@ func _on_jumped(data: Dictionary) -> void:
 
 	var power :float= clamp(jump_force, 0.6, 1.2)
 
-	# ========= DROP (резкое приседание вниз)
+	# ========= DROP 
 	fx.drop_velocity += power * 5.0
 
-	# ========= KICK (камера вверх)
-	#fx.kick_pitch -= power * 0.5
-	#fx.kick_yaw   += randf_range(-0.5, 0.5) * power
 
-	# ========= FOV (микро zoom-out)
+	# ========= FOV
 	fx.fov_velocity += power * 100.0
-
-	# ========= SHAKE (очень короткий)
-	#fx.shake_strength = max(fx.shake_strength, power * 0.08)
-	#fx.shake_life     = max(fx.shake_life, 0.12)
