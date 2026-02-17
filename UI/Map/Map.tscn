@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://b5ry7ld6hrpl6"]
 
 [ext_resource type="Script" uid="uid://ckb5uatyqncxe" path="res://UI/Map/map.gd" id="1_5rlq1"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="2_p7vcq"]
 [ext_resource type="Script" uid="uid://7v5xmp1og4y0" path="res://UI/Map/map_canvas.gd" id="2_rd55h"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="3_8d5yr"]
 [ext_resource type="Texture2D" uid="uid://d2jbpyv2spc7w" path="res://assets/icons/map_hint_scroll.png" id="3_s8kei"]
 [ext_resource type="Texture2D" uid="uid://diu7i5lp11di" path="res://assets/icons/map/merchant.png" id="4_usitc"]
 [ext_resource type="Script" uid="uid://c4852n42p4oe7" path="res://UI/Map/map_node.gd" id="4_yesmt"]
@@ -31,6 +33,12 @@ gradient = SubResource("Gradient_usitc")
 fill = 1
 fill_from = Vector2(0.4923077, 0.4991453)
 fill_to = Vector2(0, 1)
+
+[sub_resource type="Resource" id="Resource_r6dgg"]
+script = ExtResource("3_8d5yr")
+
+[sub_resource type="Resource" id="Resource_lrx5m"]
+script = ExtResource("3_8d5yr")
 
 [sub_resource type="Gradient" id="Gradient_oenfn"]
 offsets = PackedFloat32Array(0.24350649, 0.91883117)
@@ -93,13 +101,19 @@ size_flags_horizontal = 3
 mouse_filter = 2
 texture = SubResource("GradientTexture2D_5b58f")
 
-[node name="MapScroll" type="ScrollContainer" parent="HBoxContainer" unique_id=1541769815]
+[node name="MapScroll" type="ScrollContainer" parent="HBoxContainer" unique_id=19379711]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-scroll_vertical_custom_step = 27.19
+scroll_vertical_custom_step = 100.0
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
+script = ExtResource("2_p7vcq")
+speed = 800.0
+wheel_scroll_damper = SubResource("Resource_r6dgg")
+dragging_scroll_damper = SubResource("Resource_lrx5m")
+hide_scrollbar_over_time = true
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
 metadata/_edit_use_anchors_ = true
 
 [node name="Container" type="Control" parent="HBoxContainer/MapScroll" unique_id=209667682]
@@ -107,7 +121,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
-mouse_filter = 2
+mouse_filter = 1
+metadata/_smooth_scroll_default_mouse_filter_set = true
 
 [node name="MapCanvas" type="Control" parent="HBoxContainer/MapScroll/Container" unique_id=1150282408]
 unique_name_in_owner = true
@@ -120,8 +135,9 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-mouse_filter = 2
+mouse_filter = 1
 script = ExtResource("2_rd55h")
+metadata/_smooth_scroll_default_mouse_filter_set = true
 
 [node name="ColorRect3" type="TextureRect" parent="HBoxContainer" unique_id=15176014]
 visible = false
@@ -506,6 +522,7 @@ text = "Hidden"
 
 [connection signal="draw" from="." to="." method="_on_draw"]
 [connection signal="hidden" from="." to="." method="_on_hidden"]
+[connection signal="visibility_changed" from="HBoxContainer/MapScroll/Container/MapCanvas" to="HBoxContainer/MapScroll/Container/MapCanvas" method="_on_visibility_changed"]
 [connection signal="mouse_entered" from="Legend/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Boss/MapNode/TextureButton" to="Legend/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Boss/MapNode" method="_on_texture_button_mouse_entered"]
 [connection signal="mouse_exited" from="Legend/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Boss/MapNode/TextureButton" to="Legend/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Boss/MapNode" method="_on_texture_button_mouse_exited"]
 [connection signal="mouse_entered" from="Legend/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Elite/MapNode/TextureButton" to="Legend/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Elite/MapNode" method="_on_texture_button_mouse_entered"]

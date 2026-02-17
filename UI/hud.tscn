@@ -31,8 +31,8 @@ border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
 shadow_color = Color(0.0627451, 0.105882354, 0.09803922, 0)
 shadow_size = 4
 
@@ -46,8 +46,24 @@ colors = PackedColorArray(0.0627451, 0.105882354, 0.09803922, 0.47843137, 0.0627
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_0mm64"]
 gradient = SubResource("Gradient_xiih7")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_2pa52"]
+size = Vector3(0.2010498, 0.17286682, 0.16149902)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0mm64"]
 bg_color = Color(0.0627451, 0.105882354, 0.09803922, 0.7882353)
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xiih7"]
+content_margin_left = 8.0
+content_margin_top = 10.0
+content_margin_right = 8.0
+content_margin_bottom = 10.0
+bg_color = Color(0.7607843, 0.6392157, 0.40784314, 0.13333334)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1ui3w"]
 load_path = "res://.godot/imported/BackgroundHP.png-e2136cd97acf30d923c1b36d1ca1d67a.ctex"
@@ -200,8 +216,14 @@ expand_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_colors/font_color = Color(0.8392157, 0.7882353, 0.41568628, 1)
+theme_override_colors/font_color = Color(0.83137256, 0.6862745, 0.21568628, 1)
 text = "6"
+
+[node name="Area3D" type="Area3D" parent="HUD/ItemToolTip/Panel/VBoxContainer/TitleBlock/MarginContainer/VBoxContainer/VBoxContainer/ItemCostLabel" unique_id=1219450613]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HUD/ItemToolTip/Panel/VBoxContainer/TitleBlock/MarginContainer/VBoxContainer/VBoxContainer/ItemCostLabel/Area3D" unique_id=99001024]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.002746582, -0.0038986206, 0.0006713867)
+shape = SubResource("BoxShape3D_2pa52")
 
 [node name="ItemBody" type="PanelContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer" unique_id=32779147]
 layout_mode = 2
@@ -219,6 +241,7 @@ theme_override_constants/margin_bottom = 5
 [node name="Item" type="VBoxContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2" unique_id=1743407870]
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 10
 
 [node name="ColorRect" type="ColorRect" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item" unique_id=2069952975]
 visible = false
@@ -241,41 +264,43 @@ color = Color(0.85490197, 0.85490197, 0.85490197, 0.43529412)
 
 [node name="PanelContainer" type="MarginContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item" unique_id=287019099]
 layout_mode = 2
-theme_override_constants/margin_left = -5
-theme_override_constants/margin_right = -50
-theme_override_constants/margin_bottom = -51
+size_flags_vertical = 3
 
 [node name="TextureRect" type="TextureRect" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item/PanelContainer" unique_id=1308988161]
+visible = false
 modulate = Color(0.5019608, 0.5019608, 0.5019608, 0.7607843)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("4_4lx80")
 expand_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item/PanelContainer" unique_id=1439547965]
+[node name="Panel" type="PanelContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item/PanelContainer" unique_id=162771135]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xiih7")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item/PanelContainer/Panel" unique_id=1439547965]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 29
 theme_override_constants/margin_top = 18
 theme_override_constants/margin_right = 38
 theme_override_constants/margin_bottom = 18
 
-[node name="ItemDescription" type="Label" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item/PanelContainer/MarginContainer" unique_id=1561250514]
+[node name="ItemDescription" type="Label" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item/PanelContainer/Panel" unique_id=1561250514]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 10)
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_constants/line_spacing = -5
-theme_override_constants/shadow_offset_y = 1
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/line_spacing = -2
 theme_override_fonts/font = ExtResource("7_2pa52")
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 17
 text = "ItemDescriptionhhhhhhh gggggggg g ggggggg g
 hgjghjghj
 gkjghjkgghkhhhhh"
+horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
-
-[node name="RichTextLabel" type="RichTextLabel" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item/PanelContainer/MarginContainer" unique_id=513208220]
-layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD" unique_id=550902972]
 layout_mode = 2
@@ -579,7 +604,7 @@ theme_override_font_sizes/font_size = 25
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.8392157, 0.7882353, 0.41568628, 1)
+theme_override_colors/font_color = Color(0.83137256, 0.6862745, 0.21568628, 1)
 theme_override_font_sizes/font_size = 25
 text = "3"
 

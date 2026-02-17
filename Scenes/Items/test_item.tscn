@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://betamk52dtrqr"]
+
+[ext_resource type="Script" uid="uid://dcfwasq74b73j" path="res://scripts/ItemInstance.gd" id="1_knpeq"]
+[ext_resource type="Texture2D" uid="uid://40kb5u3e7mus" path="res://assets/Hud/Coin.png" id="2_ylg3r"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_pvaw5"]
+height = 0.98
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i6kq2"]
+size = Vector3(0.2010498, 0.17286682, 0.16149902)
+
+[node name="TestItem" type="Node3D" unique_id=1518536966]
+script = ExtResource("1_knpeq")
+
+[node name="Model" type="Node3D" parent="." unique_id=61423837]
+transform = Transform3D(0.19, 0, 0, 0, 0.19, 0, 0, 0, 0.19, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model" unique_id=1014733698]
+mesh = SubResource("SphereMesh_pvaw5")
+
+[node name="Decal" type="Decal" parent="Model/MeshInstance3D" unique_id=521437556]
+transform = Transform3D(1.0000007, 0, 0, 0, 1.0000007, 0, 0, 0, 1.0000007, 0.070614, 0.04276235, -0.41073248)
+size = Vector3(1.1190162, 1.0519043, 1.4388672)
+texture_albedo = ExtResource("2_ylg3r")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1565140119]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=610071640]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.002746582, -0.0038986206, 0.0006713867)
+shape = SubResource("BoxShape3D_i6kq2")

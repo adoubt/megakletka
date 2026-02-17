@@ -6,9 +6,9 @@ class_name ItemInstance
 @export var rotate_duration: float = 0.4
 @export var scale_duration: float = 0.25
 @export var yaw_offset := -PI/2  # радианы
-@export var highlight_position_offset: float = 0.3
+@export var highlight_position_offset: float = 0.2
 @onready var model: Node3D = $Model
-
+var dragged: bool = false
 
 var data: Dictionary
 var meshes: Array[MeshInstance3D] = []
@@ -32,7 +32,7 @@ func _ready() -> void:
 # ------------------------------------------------
 
 func set_highlight(enabled: bool) -> void:
-	
+	if dragged:return
 	if is_highlighted == enabled:
 		return
 	if not is_highlighted and enabled:

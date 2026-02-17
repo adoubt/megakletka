@@ -19,7 +19,7 @@ func go_to_intro():
 	
 func go_to_main_menu():
 	_change_scene("MainMenu")
-	
+	AudioManager.play_music_delayed("main_menu",4.0,-5.0)
 	
 func go_to_game_test():
 	_change_scene("GameTest")
@@ -45,10 +45,11 @@ func _change_scene(_name: String):
 	current_scene_name = _name
 	#ControllerManager.refresh()
 	get_tree().change_scene_to_file(SCENES[_name])
-	
-	_update_ui_for_scene()
 	UIManager.close_all()
+	_update_ui_for_scene()
+	AudioManager.reset_audio_context()
 	AudioManager.stop_all_music()
+	
 func _update_ui_for_scene():
 	
 	# форс курсор через UIManager

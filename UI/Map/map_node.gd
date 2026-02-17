@@ -57,5 +57,11 @@ func _start_reachable_pulse():
 
 func _on_texture_button_pressed() -> void:
 	if not reachable: return
-
+	_sound()
+	_complete()
+	await get_tree().create_timer(1.0).timeout
 	UIManager.event_bus.emit("day_selected", {"day_id": day_id})
+	
+
+func _sound()-> void:
+	AudioManager.play_ui_sound("map_node_selected",5.0)

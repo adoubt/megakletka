@@ -38,12 +38,13 @@ func process_purchase(data):
 	var cost_comp = cs.get_component(requested_entity, "CostComponent")
 	var price = cost_comp.base_value
 	var run = cs.get_component(RUN, "RunComponent")
-	
-	if run.logs < price:
+	var final_price = price - cs.get_component(buyer, "MerchantDiscountComponent").final_value
+	final_price = max(0,final_price)
+	if run.logs < final_price:
 		event_bus.emit("purchase_failed",{ "reason":"NOT_ENOUGH_BALANCE"})
 		return
 	
-
+	cost_comp.base_value/=2
 	var transaction : ItemTransactionComponent = ItemTransactionComponent.new()
 	transaction.source_id = merchant_entity
 	transaction.target_id = buyer
@@ -51,6 +52,6 @@ func process_purchase(data):
 	cs.add_component(requested_entity, "ItemTransactionComponent", transaction)
 	
 	cs.add_component(RUN,"BalanceChangeRequestComponent", BalanceChangeRequestComponent.new(
-		-price,"purchase_item", merchant_entity))
-
+		-final_price,"purchase_item", merchant_entity))
+	
 	

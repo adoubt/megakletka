@@ -145,7 +145,7 @@ class_name DataBase
 			"fire_shard",],
 		"weapon_radius": 1.0,
 		"duration": 1.0,
-		"slots": 3,
+		"slots": 20,
 		"pierce": 3,
 		"bounce":0,
 		"jumps":1,
@@ -225,7 +225,7 @@ class_name DataBase
 		"title": "Jump Item",
 		"description": "__",
 		"icon": "res://assets/icons/Cards/Sprite-0002.png",
-		"scene": "res://Scenes/Items/prickly_bundle.tscn",
+		"scene": "res://Scenes/Items/test_item.tscn",
 		"abilities": [
 			{
 				"title": "Passive: Extra Jump",
@@ -269,7 +269,7 @@ class_name DataBase
 		"title": "LogDiscount",
 		"description": "__",
 		"icon": "res://assets/icons/Cards/Spades.png",
-		"scene": "res://Scenes/Items/prickly_bundle.tscn",
+		"scene": "res://Scenes/Items/test_item.tscn",
 		"abilities": [
 			{
 				"title": "Passive: Discount",
@@ -280,14 +280,14 @@ class_name DataBase
 			}
 		],
 		"cost": 3,
-		"drop_weight": 10
+		"drop_weight": 100
 	},
 
 	4: {
 		"title": "LogFueledDamage",
 		"description": "__",
 		"icon": "res://assets/icons/Cards/Clubs.png",
-		"scene": "res://Scenes/Items/prickly_bundle.tscn",
+		"scene": "res://Scenes/Items/test_item.tscn",
 		"abilities": [
 			{
 				"title": "Passive: RICHA",
@@ -310,7 +310,7 @@ class_name DataBase
 		"title": "LowHPFlex",
 		"description": "+2 Jump when Hp below 50%",
 		"icon": "res://assets/icons/Cards/Clubs.png",
-		"scene": "res://Scenes/Items/mushrooms.tscn",
+		"scene": "res://Scenes/Items/test_item.tscn",
 		"abilities": [
 			{
 				"title": "Passive: Extra Jump",
@@ -340,7 +340,7 @@ class_name DataBase
 		"title": "Green Acorn",
 		"description": "A young acorn, still full of life.",
 		"icon": "res://assets/icons/Cards/Clubs.png",
-		"scene": "res://Scenes/Items/mushrooms.tscn",
+		"scene": "res://Scenes/Items/test_item.tscn",
 		"abilities": [
 			{
 				"title": "Passive: Green Acorn",
@@ -352,6 +352,29 @@ class_name DataBase
 			}
 		],
 		"cost": 2,
+		"drop_weight": 10
+	},
+	8: {
+		"title": "Gold Rat",
+		"description": "Every hit fills her stash.",
+		"icon": "res://assets/icons/Cards/Clubs.png",
+		"scene": "res://Scenes/Items/gold_rat.tscn",
+		"abilities": [
+			{
+				"title": "Passive: Pain Dividend",
+				"description":"Gain {trigger.value:int} GOLD whenever you take DAMAGE.",
+				"target_stat": Stats.GameStats.LOG_BALANCE,
+				"domain": Stats.Domain.GAME,
+				"value": 0,
+				"trigger": {
+					"event":AbilityTriggers.Events.DAMAGE_RECIVED,
+					"action": AbilityTriggers.Actions.ADD_GOLD,
+					"value": 1
+					}
+				
+			}
+		],
+		"cost": 4,
 		"drop_weight": 10
 	},
 }
@@ -379,6 +402,10 @@ class_name DataBase
 	"non_diegetic": {
 		"music": {
 			"combat_started":[
+				
+				"res://assets/sounds/non_diegetic/music/idle theme.mp3"
+			],
+			"idle":[
 				
 				"res://assets/sounds/non_diegetic/music/idle theme.mp3"
 			],
@@ -454,8 +481,17 @@ class_name DataBase
 				"res://assets/sounds/non_diegetic/ui/item_select8.mp3",
 				"res://assets/sounds/non_diegetic/ui/item_select9.mp3",
 				"res://assets/sounds/non_diegetic/ui/item_select10.mp3",
+				],
+			"map_node_selected":
+				["res://assets/sounds/non_diegetic/ui/note.mp3"
+				#"res://assets/sounds/non_diegetic/ui/map/map_node_select1.mp3",
+				#"res://assets/sounds/non_diegetic/ui/map/map_node_select2.mp3",
+				#"res://assets/sounds/non_diegetic/ui/map/map_node_select3.mp3",
+				#"res://assets/sounds/non_diegetic/ui/map/map_node_select4.mp3",
+				#"res://assets/sounds/non_diegetic/ui/map/map_node_select5.mp3",
+				#"res://assets/sounds/non_diegetic/ui/map/map_node_select6.mp3",
 				]
-		},
+		},	
 	}
 }
 

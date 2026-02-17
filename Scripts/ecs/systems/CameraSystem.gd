@@ -24,6 +24,9 @@ func update(delta):
 		if cam.mode == CameraComponent.Mode.FOCUS:
 			_update_focus_mode(cam, delta)
 			continue
+		if cam.mode == CameraComponent.Mode.LOCKED_FOLLOW:
+			_update_locked_follow(cam, delta)
+			continue
 		# ================= INPUT =================
 		var input := cs.get_component(cam.owner_id, "InputComponent")
 
@@ -81,41 +84,28 @@ func update(delta):
 		cam.forward = forward_xz
 		cam.right = Vector3.UP.cross(forward_xz).normalized()
 		
-##IDEA1
-#func _update_focus_mode(cam: CameraComponent, delta: float) -> void:
-	#if cam.camera_instance == null:
-		#return
-#
-	#var viewport := cam.camera_instance.get_viewport()
-	#var window_size: Vector2 = viewport.get_visible_rect().size
-	#var mouse_pos: Vector2 = viewport.get_mouse_position()
-#
-	#var center: Vector2 = window_size * 0.5
-	#var normalized: Vector2 = (mouse_pos - center) / center
-	#normalized.x = clamp(normalized.x, -1.0, 1.0)
-	#normalized.y = clamp(normalized.y, -1.0, 1.0)
-#
-	#var parallax_strength: float = 0.25
-	#var mouse_offset := Vector3(
-		#normalized.x * parallax_strength,
-		#normalized.y * parallax_strength,
-		#0.0
-	#)
-#
-	#var target_pos := cam.focus_from_pos + mouse_offset
-#
-	#var current_pos := cam.camera_instance.global_position
-	#var new_pos := current_pos.lerp(target_pos, delta * 3.0)
-#
-	#var target_basis := Transform3D(Basis(), new_pos)\
-		#.looking_at(cam.focus_target, Vector3.UP).basis
-#
-	#var current_basis := cam.camera_instance.global_basis
-	#var new_basis := current_basis.slerp(target_basis, delta * 6.0)
-#
-	#cam.camera_instance.global_position = new_pos
-	#cam.camera_instance.global_basis = new_basis
+
+
+func _update_return_mode(cam:CameraComponent, target_pos: Vector3, rot: Basis, delta: float) -> void:
+
+	cam.transition_elapsed += delta
+	var t = cam.transition_elapsed / cam.transition_time
+	t = clamp(t, 0.0, 1.0)
+
 	
+	#t = pow(t, 2.0)  # ускорение
+	#t = pow(t, 3.0)  # ещё сильнее
+	t = 1.0 - pow(1.0 - t, 2.0) # ease-out
+	#t = t * t * (3.0 - 2.0 * t) # smoothstep
+
+	var new_pos = cam.return_start_pos.lerp(target_pos, t)
+	var new_rot = cam.return_start_rot.slerp(rot, t)
+
+	cam.camera_instance.global_position = new_pos
+	cam.camera_instance.global_basis = new_rot
+
+	if t >= 1.0:
+		cam.mode = CameraComponent.Mode.FOLLOW
 func _update_focus_mode(cam: CameraComponent, delta: float) -> void:
 	if cam.camera_instance == null:
 		return
@@ -151,26 +141,21 @@ func _update_focus_mode(cam: CameraComponent, delta: float) -> void:
 	cam.camera_instance.global_position = new_pos
 	cam.camera_instance.global_basis = new_basis
 
+func _update_locked_follow(cam: CameraComponent, delta: float) -> void:
+	if cam.camera_instance == null:
+		return
+	if !cs.has_component(cam.owner_id, "TransformComponent"):
+		return
 
-func _update_return_mode(cam:CameraComponent, target_pos: Vector3, rot: Basis, delta: float) -> void:
+	var target_tf = cs.get_component(cam.owner_id, "TransformComponent")
+	var focus_pos = target_tf.position + Vector3(0.0, 0.8, 0.0)
 
-	cam.transition_elapsed += delta
-	var t = cam.transition_elapsed / cam.transition_time
-	t = clamp(t, 0.0, 1.0)
+	var dir = (cam.focus_from_pos - cam.focus_target).normalized()
+	var distance = cam.focus_from_pos.distance_to(cam.focus_target)
 
-	
-	#t = pow(t, 2.0)  # ускорение
-	#t = pow(t, 3.0)  # ещё сильнее
-	t = 1.0 - pow(1.0 - t, 2.0) # ease-out
-	#t = t * t * (3.0 - 2.0 * t) # smoothstep
+	cam.focus_target = focus_pos
+	cam.focus_from_pos = focus_pos + dir * distance
 
-	var new_pos = cam.return_start_pos.lerp(target_pos, t)
-	var new_rot = cam.return_start_rot.slerp(rot, t)
-
-	cam.camera_instance.global_position = new_pos
-	cam.camera_instance.global_basis = new_rot
-
-	if t >= 1.0:
-		cam.mode = CameraComponent.Mode.FOLLOW
+	_update_focus_mode(cam, delta)
 
 	

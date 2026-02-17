@@ -5,5 +5,5 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_ag7jq")
-shader_parameter/color = Color(1.7887247, 1.4421835, 0.45238987, 1)
+shader_parameter/color = Color(0.9603811, 1.4836423, 0.83274865, 1)
 shader_parameter/size = 1.05

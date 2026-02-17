@@ -1,45 +1,51 @@
-extends Control
-class_name DropZone
+extends Control 
 
-@export var zone_type: String # "sell" | "use"
+@export var request: String = ""
 
-var enabled: bool = true
-var hovered: bool = false
+var base_scale: Vector2
+var base_modulate: Color
 
-func set_enabled(state: bool) -> void:
-	if enabled == state:
-		return
-	enabled = state
-	hovered = false
-	queue_redraw()
+var scale_tween: Tween
+var modulate_tween: Tween
 
-func set_hover(state: bool) -> void:
-	if not enabled:
-		state = false
-	if hovered == state:
-		return
-	hovered = state
-	_update_anim()
-	queue_redraw()
+func _ready():
+	base_scale = scale
+	base_modulate = modulate
 
-func _update_anim():
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_QUAD)
-	tween.set_ease(Tween.EASE_OUT)
 
-	if hovered:
-		tween.tween_property(self, "scale", Vector2.ONE * 1.05, 0.12)
+func accept_drop(item: ItemInstance) -> bool:
+	if request == "":
+		return false
+		
+	UIManager.event_bus.emit(request, {"item_instance": item, "owner_id":UIManager.owner_id})
+	return true
+
+
+func set_scale_highlight(active: bool):
+	if scale_tween:
+		scale_tween.kill()
+
+	scale_tween = create_tween()
+	scale_tween.set_trans(Tween.TRANS_BACK)
+	scale_tween.set_ease(Tween.EASE_OUT)
+
+	if active:
+		scale_tween.tween_property(self, "scale", base_scale * 1.12, 0.12)
+		scale_tween.tween_property(self, "scale", base_scale * 1.08, 0.08)
 	else:
-		tween.tween_property(self, "scale", Vector2.ONE, 0.12)
+		scale_tween.tween_property(self, "scale", base_scale, 0.14)
 
-func _draw() -> void:
-	var col: Color
 
-	if not enabled:
-		col = Color(0.2, 0.2, 0.2, 0.45) # disabled
-	elif hovered:
-		col = Color(1.0, 1.0, 1.0, 0.22) # hover
+func set_color_highlight(active: bool):
+	if modulate_tween:
+		modulate_tween.kill()
+
+	modulate_tween = create_tween()
+	modulate_tween.set_trans(Tween.TRANS_SINE)
+	modulate_tween.set_ease(Tween.EASE_OUT)
+
+	if active:
+		modulate_tween.tween_property(self, "modulate", Color(1.2, 1.2, 1.2, 1.0), 0.18)
 	else:
-		col = Color(0.1, 0.1, 0.1, 0.25) # idle
-
-	draw_rect(Rect2(Vector2.ZERO, size), col, true)
+		modulate_tween.tween_property(self, "modulate", base_modulate, 0.14)
+	

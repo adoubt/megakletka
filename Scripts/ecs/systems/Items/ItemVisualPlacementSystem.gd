@@ -76,7 +76,7 @@ func _get_hat_offset(
 	slot_index: int,
 	slots_count: int,
 	height: float = 0.7,
-	radius: float = 0.2
+	radius: float = 0.3
 ) -> Vector3:
 
 	if slots_count <= 1:

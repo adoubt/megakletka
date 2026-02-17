@@ -16,6 +16,7 @@ enum Actions {
 	GROUNDED,
 	GAIN_VALUE, 
 	SET_VALUE,
+	ADD_GOLD,
 }
 
 

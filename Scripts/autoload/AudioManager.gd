@@ -1,15 +1,18 @@
 extends Node3D
+var music_generation: int = 0
 
 var dynamic_sources: Array = []
 
 var object_sources: Dictionary = {} # node -> AudioStreamPlayer3D
 
 var music_players: Dictionary = {} # _name -> AudioStreamPlayer3D
-
+var music_fades: Dictionary = {} # _name -> Tween
 var ui_sources: Dictionary = {}
 
 var spatial_loops: Dictionary = {} # key -> AudioStreamPlayer3D
 
+func reset_audio_context():
+	music_generation += 1
 
 var ui_player: AudioStreamPlayer
 func _ready() -> void:
@@ -126,7 +129,9 @@ func _on_ui_finished(player: AudioStreamPlayer):
 		player.queue_free()
 
 ## UI play music
-func play_music(_name: String, volume_db: float = 0.0, loop: bool = true) -> void:
+func play_music(_name: String, volume_db: float = 0.0, loop: bool = true, generation:int = music_generation) -> void:
+	if generation!= music_generation:
+		return
 	_stop_non_diegetic_music()
 	
 
@@ -168,30 +173,30 @@ func _stop_diegetic_music():
 		
 		
 ## UI stop music (with fade out)
-func stop_music(_name: String, fade_time: float = 3.0) -> void:
+func stop_music(_name: String, fade_time: float = 3.0):
 	if not music_players.has(_name):
 		return
 
 	var player: AudioStreamPlayer = music_players[_name]
-
 	if not is_instance_valid(player):
-		music_players.erase(_name)
 		return
 
+	var generation_at_start = music_generation
+
 	var tween := create_tween()
-	tween.tween_property(
-		player,
-		"volume_db",
-		-80.0,
-		fade_time
-	).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
+	tween.tween_property(player, "volume_db", -80.0, fade_time)
 
 	tween.finished.connect(func():
+		if generation_at_start != music_generation:
+			return  # контекст изменился — игнорируем
+		
 		if is_instance_valid(player):
 			player.stop()
 			player.queue_free()
+		
 		music_players.erase(_name)
 	)
+
 
 ## Play persistent source sound, also check unregister_persistent()
 func register_persistent(_name: String, node: Node3D, loop: bool = true, volume_db: float = 0.0) -> void:
@@ -291,8 +296,10 @@ func _play_path(
 
 func play_music_delayed(_name: String,delay: float,volume_db: float = 0.0,loop: bool = true) -> void:
 	var timer := get_tree().create_timer(delay)
-	timer.timeout.connect(func(): play_music(_name, volume_db, loop))
+	var current_generation: int = music_generation
+	timer.timeout.connect(func(): play_music(_name, volume_db, loop, current_generation))
 
+	
 func _resolve_audio_entry(entry) -> String:
 	if entry == null:
 		return ""

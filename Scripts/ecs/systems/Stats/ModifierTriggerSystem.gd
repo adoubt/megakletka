@@ -39,7 +39,8 @@ func _apply_trigger_action(
 
 		AbilityTriggers.Actions.ADD_JUMP:
 			pass
-
+		AbilityTriggers.Actions.ADD_GOLD:
+			cs.add_component(RUN, "BalanceChangeRequestComponent", BalanceChangeRequestComponent.new(int(trigger.value), "item_ability",modifier.source_id))
 		_:
 			push_warning("Unknown trigger action")
 	cs.add_component(modifier.target_id,"DirtyStatsComponent", DirtyStatsComponent.new())	

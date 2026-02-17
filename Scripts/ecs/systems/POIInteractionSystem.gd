@@ -47,22 +47,11 @@ func _on_poi_interacted(data: Dictionary) -> void:
 				var camera_comp = cs.get_component(camera, "CameraComponent")
 				if camera_comp.owner_id == player_id:
 					camera_comp.mode = CameraComponent.Mode.FOCUS
-					#var target_pos = campfire_position
-					#var poi_pos = cs.get_component(poi_id, "TransformComponent").position
-					#var dir = (poi_pos - target_pos).normalized()
-					#var distance := 1.0
-					#var offset = Vector3(0.0,1.4,0.0)
-					#var poi_look_offset = offset+ distance *dir
-					#camera_comp.focus_from_pos = poi_pos + poi_look_offset
-					#camera_comp.focus_target = target_pos
-					#break
-					
+			
 					var poi_pos = cs.get_component(poi_id, "TransformComponent").position
 					var player_pos = cs.get_component(player_id, "TransformComponent").position
-
 					var focus_pos = poi_pos + Vector3(0.0, 1.3, 0.0)
 					var player_eye_pos = player_pos + Vector3(0.0, 1.6, 0.0)
-
 					var dir = (player_eye_pos - focus_pos).normalized()
 
 					var distance := 1.0
@@ -71,7 +60,7 @@ func _on_poi_interacted(data: Dictionary) -> void:
 					camera_comp.focus_target = focus_pos
 					camera_comp.focus_from_pos = camera_pos
 					break
-			#UIManager.merchant_panel.background_scene.update_camera_pos(campfire_position, pos)
+			
 			var render = cs.get_component(poi_id,"RenderComponent")
 			var it = cs.get_component(poi_id,"InteractionTargetComponent")
 			_update_items_data(poi_id)

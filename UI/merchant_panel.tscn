@@ -1,6 +1,23 @@
 [gd_scene format=3 uid="uid://dcqxjuq3fm2lr"]
 
 [ext_resource type="Script" uid="uid://bbv63usdi0ej3" path="res://UI/merchant_panel.gd" id="1_n4wfu"]
+[ext_resource type="Script" uid="uid://7aiu8snflvkp" path="res://UI/drop_zone.gd" id="2_5bdn6"]
+[ext_resource type="Texture2D" uid="uid://40kb5u3e7mus" path="res://assets/Hud/Coin.png" id="3_5lnka"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dc25y"]
+bg_color = Color(0.8745098, 0.627451, 0.35686275, 0.48235294)
+border_width_left = 10
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 0.39215687)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 35
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 35
+corner_detail = 2
+anti_aliasing_size = 10.0
 
 [node name="MerchantPanel" type="Control" unique_id=892930265]
 layout_mode = 3
@@ -22,17 +39,91 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1224716500]
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=731659739]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer" unique_id=1096145794]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer2" unique_id=243677740]
 layout_mode = 2
-size_flags_horizontal = 0
-mouse_filter = 2
-theme_override_constants/separation = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/VBoxContainer2" unique_id=1340789625]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="BuyZone" type="Control" parent="MarginContainer2/VBoxContainer2/HBoxContainer" unique_id=526388800]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.24313726)
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+script = ExtResource("2_5bdn6")
+request = "purchase_request"
+
+[node name="Panel" type="Panel" parent="MarginContainer2/VBoxContainer2/HBoxContainer/BuyZone" unique_id=268348628]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dc25y")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2/VBoxContainer2/HBoxContainer/BuyZone/Panel" unique_id=1819852530]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -37.5
+offset_top = -42.0
+offset_right = 37.5
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MarginContainer2/VBoxContainer2/HBoxContainer/BuyZone/Panel/VBoxContainer" unique_id=956773075]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.39215687)
+theme_override_constants/line_spacing = -25
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 27
+text = "Buy"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BuyContainer" type="HBoxContainer" parent="MarginContainer2/VBoxContainer2/HBoxContainer/BuyZone/Panel/VBoxContainer" unique_id=913950641]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer2/VBoxContainer2/HBoxContainer/BuyZone/Panel/VBoxContainer/BuyContainer" unique_id=1315105639]
+layout_mode = 2
+texture = ExtResource("3_5lnka")
+expand_mode = 2
+
+[node name="BuyValue" type="Label" parent="MarginContainer2/VBoxContainer2/HBoxContainer/BuyZone/Panel/VBoxContainer/BuyContainer" unique_id=1925487495]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.83137256, 0.6862745, 0.21568628, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.39215687)
+theme_override_constants/line_spacing = -25
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 27
+text = "14"
+horizontal_alignment = 1
+vertical_alignment = 1

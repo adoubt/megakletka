@@ -133,6 +133,7 @@ func initialize(run_seed: int):
 	
 	system_manager.add_system(ItemViewBuilderSystem.new(entity_manager,component_store,event_bus,))
 	system_manager.add_system(PurchaseSystem.new(entity_manager,component_store,event_bus,))
+	system_manager.add_system(SellSystem.new(entity_manager,component_store,event_bus,))
 	
 	system_manager.add_system(EconomySystem.new(entity_manager,component_store,event_bus,))
 	##7. RENDER
@@ -152,6 +153,7 @@ func initialize(run_seed: int):
 	system_manager.add_system(ScaleSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(AudioSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HitFlashSystem.new(entity_manager, component_store,event_bus))
+	
 	system_manager.add_system(LifeTimeSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(CleanerSystem.new(entity_manager, component_store,event_bus, object_pool))
 	if debug_collision: system_manager.add_system(DEBUGCollisionSystem.new(entity_manager, component_store,event_bus, object_pool)) 

@@ -13,29 +13,36 @@ func _ready()->void:
 func update_data(data: Dictionary) -> void:
 	if data.is_empty():
 		hide()
+		set_process(false)
 		return
 	
 	
 	item_title.text = data.get("item_title", "")
 	item_description.text = data.get("item_description", "")
-	cost_label.text = str(int(data.get("cost", 0)))
-	
+	var cost: = int(data.get("cost", 0))
+	var base_color:Color =  Color("d4af37")
+	if cost > UIManager.hud.balance:
+		base_color = Color("fd7a7a")
+		
+	cost_label.add_theme_color_override("font_color", base_color)	
+	cost_label.text = str(cost)
+
 	_clear_abilities()
 	
 	var abilities: Array = data.get("abilities", [])
 	for ability_data in abilities:
 		var ability_block = _create_ability_block(ability_data)
 		abilities_container.add_child(ability_block)
-	await get_tree().process_frame
-	_update_pos()
-	
+	#await get_tree().process_frame
+	#_update_pos()
+	#
 func _clear_abilities():
 	for child in abilities_container.get_children():
 		child.queue_free()
 func _create_ability_block(data: Dictionary) -> Control:
-
+	
 	var root := VBoxContainer.new()
-	root.add_theme_constant_override("separation", 0)
+	root.add_theme_constant_override("separation", 3)
 
 	# ================= TITLE BLOCK =================
 	var title_block := PanelContainer.new()
@@ -77,10 +84,16 @@ func _create_ability_block(data: Dictionary) -> Control:
 	title.anchor_top = 0
 	title.anchor_right = 1
 	title.anchor_bottom = 1
+	
 	title.add_theme_font_size_override("font_size", 14)
-	title.add_theme_color_override("font_color", Color8(184,169,76))
+	#title.add_theme_color_override("font_color", Color8(184,169,76))
 	title_block.add_child(title)
-
+	
+	var title_panel_style := StyleBoxFlat.new()
+	title_panel_style.corner_radius_top_left = 10
+	title_panel_style.corner_radius_top_right = 10
+	title_block.add_theme_stylebox_override("normal",title_panel_style)
+	
 	
 	# ================= DESCRIPTION =================
 	var description := RichTextLabel.new()
@@ -101,7 +114,8 @@ func _create_ability_block(data: Dictionary) -> Control:
 	desc_style.bg_color = Color8(28,38,36)
 	desc_style.content_margin_left = 8
 	desc_style.content_margin_right = 8
-
+	desc_style.corner_radius_bottom_left = 10
+	desc_style.corner_radius_bottom_right = 10
 	desc_block.add_theme_stylebox_override("panel", desc_style)
 	desc_block.add_child(description)
 	root.add_child(title_block)
@@ -110,23 +124,23 @@ func _create_ability_block(data: Dictionary) -> Control:
 
 
 
+func _process(delta: float) -> void:
+	_update_pos(delta)
 
-
-func _update_pos() -> void:
+func _update_pos(delta: float) -> void:
 	var mouse_pos = get_viewport().get_mouse_position()
 	var screen_size = get_viewport_rect().size
 	
 	var desired_pos = mouse_pos + offset
 	
-	# если вылезает вправо — ставим слева
-	if desired_pos.x + size.x > (screen_size.x * 0.8):
-		desired_pos.x = mouse_pos.x - size.x 
+	if desired_pos.x + size.x > screen_size.x * 0.8:
+		desired_pos.x = mouse_pos.x - size.x
 	
-	# если вылезает вниз — поднимаем вверх
 	if desired_pos.y + size.y > screen_size.y:
-		desired_pos.y = screen_size.y - size.y 
+		desired_pos.y = screen_size.y - size.y
 	
-	global_position = desired_pos
+	var speed := 15.0
+	global_position = global_position.lerp(desired_pos, 1.0 - exp(-speed * delta))
 func format_text(text: String) -> String:
 	var base_size := 14
 	var base_color := "#c7d6d0"

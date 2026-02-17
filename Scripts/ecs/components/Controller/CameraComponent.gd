@@ -3,7 +3,9 @@ class_name CameraComponent
 enum Mode {
 	FOLLOW,
 	FOCUS,
-	BLEND_TO_FOLLOW
+	BLEND_TO_FOLLOW,
+	LOCKED_FOLLOW,
+	
 }
 var owner_id: int = -1
 var yaw: float = 3.0
@@ -29,5 +31,6 @@ var return_start_pos:Vector3
 var return_start_rot: Basis
 var transition_elapsed: float
 var transition_time: float = 0.6
+
 func _init(_owner_id: int = -1,) -> void:
 	owner_id = _owner_id

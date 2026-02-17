@@ -31,9 +31,9 @@ func update(_delta: float):
 				cs.add_component(e_id, "HitFlashComponent", HitFlashComponent.new())
 				
 				var owner_tf = cs.get_component(e_id, "TransformComponent")
-				event_bus.emit("damage_done", [{"position": owner_tf.position, "owner_id": e_id, "damage": diff, "damage_type": "physics"}])
-				event_bus.emit("enemy_hitted", {"position": owner_tf.position, "e_id": e_id})
-			
+				event_bus.emit("DAMAGE_RECIVED", [{"position": owner_tf.position, "owner_id": e_id, "damage": diff, "damage_type": "physics"}])
+				
+
 		cs.add_component(e_id, "DirtyStatsComponent", DirtyStatsComponent.new())
 			
 

@@ -11,6 +11,7 @@ extends Node
 @onready var merchant_panel = preload("res://UI/merchant_panel.tscn").instantiate()
 @onready var post_process_panel:  = preload("res://UI/post_process_panel.tscn").instantiate()
 @onready var map_panel: = preload("res://UI/Map/Map.tscn").instantiate()
+@onready var hat_panel = preload("uid://bk2mqcn7r3nsl").instantiate()
 
 var event_bus: EventBus
 var owner_id: int = -1
@@ -37,25 +38,38 @@ func consume_mouse_delta() -> Vector2:
 
 func open_map_panel() -> void:
 	close_hud()
-	open_panel("Map")
+	_open_panel("Map")
 	
 func close_map_panel() -> void:
-	close_panel("Map")
+	_close_panel("Map")
 	open_hud()
+	
 func open_merchant_panel():
-	open_panel("Merchant")
+	_open_panel("Merchant")
+	close_hat()
 func close_merchant_panel():
-	close_panel("Merchant")
+	_close_panel("Merchant")
+	
 	event_bus.emit("poi_panel_closed", {"owner_id":owner_id})
-	hud.hide_item_tool_tip()
+func open_hat():
+	_open_panel("Hat")
+	close_merchant_panel()
+func close_hat():
+	_close_panel("Hat")
+
+func toggle_hat():
+	var opened:bool =is_panel_open("Hat")
+	if opened:
+		close_hat()
+	else: 
+		open_hat()
+	event_bus.emit("hat_toggled", {"owner_id":owner_id,"opened": !opened})		
 func open_level_up_panel():
 	pass
-	#open_panel("LevelUpPanel")
-	#level_up_panel.background_scene.show_anim_board()
 
 func close_level_up_panel() -> void:
 	level_up_panel.background_scene.hide_anim_board()
-	close_panel("LevelUpPanel")	
+	_close_panel("LevelUpPanel")	
 	
 func toggle_level_up_panel() -> void:
 	if is_panel_open("LevelUpPanel"):
@@ -66,24 +80,25 @@ func toggle_level_up_panel() -> void:
 
 	
 func open_main_menu() -> void:
-	open_panel("MainMenu")
+	_open_panel("MainMenu")
 	game_paused = false
 	
-		
+
 func open_hud() -> void:
-	open_panel("HUD")
+	_open_panel("HUD")
 	
 func close_hud()-> void:
-	close_panel("HUD")
-
+	_close_panel("HUD")
+	
 func toggle_hud() -> void:
-	
-	if is_panel_open("HUD"):
-		close_panel("HUD")
-	else: open_panel("HUD")
-	
+	var opened:bool = is_panel_open("HUD")
+	if opened:
+		close_hud()
+	else: 
+		open_hud()
+		
 func toggle_escape_menu() -> void:
-	if SceneManager.current_scene_name == "GameTest": toggle_hud()
+	
 	if is_panel_open("EscapeMenu"):
 		close_escape_menu()
 		if is_panel_open("UpgradeMenu"):
@@ -103,11 +118,11 @@ func toggle_dev_panel() -> void:
 	
 func open_settings() -> void:
 	var in_main_menu :bool = SceneManager.current_scene_name == "MainMenu"
-	open_panel("Settings",true)
+	_open_panel("Settings",true)
 	if in_main_menu:
-		close_panel("MainMenu")
+		_close_panel("MainMenu")
 	else:
-		close_panel("EscapeMenu")
+		_close_panel("EscapeMenu")
 
 func close_settings() -> void:
 	var in_main_menu := SceneManager.current_scene_name == "MainMenu"
@@ -116,22 +131,22 @@ func close_settings() -> void:
 	else:
 		open_escape_menu()
 	
-	close_panel("Settings")
+	_close_panel("Settings")
 	
 func open_escape_menu() -> void:
-	open_panel("EscapeMenu", true)
-	
+	_open_panel("EscapeMenu", true)
+	if SceneManager.current_scene_name == "GameTest": close_hud()
 	game_paused = true
 func close_escape_menu() -> void:
-	close_panel("EscapeMenu")
-	
+	_close_panel("EscapeMenu")
+	if SceneManager.current_scene_name == "GameTest": open_hud()
 	game_paused = false
 func open_dev_panel() -> void:
-	open_panel("DEV_PANEL")
+	_open_panel("DEV_PANEL")
 	await get_tree().process_frame
 	dev_panel.console_input.grab_focus()
 func close_dev_panel() -> void:
-	close_panel("DEV_PANEL")
+	_close_panel("DEV_PANEL")
 
 
 func is_panel_open(_name: String) -> bool:
@@ -142,7 +157,7 @@ func is_panel_open(_name: String) -> bool:
 	return is_instance_valid(panel) and panel.visible
 
 		
-func open_panel(_name: String, use_tween: bool = false ) -> void:
+func _open_panel(_name: String, use_tween: bool = false ) -> void:
 	if panels.has(_name):
 		var panel = panels[_name]
 		
@@ -166,9 +181,10 @@ func open_panel(_name: String, use_tween: bool = false ) -> void:
 			
 		_update_ui_state()
 
-func close_panel(_name: String, use_tween: bool = false ) -> void:
+func _close_panel(_name: String, use_tween: bool = false ) -> void:
 	if panels.has(_name):
 		var panel = panels[_name]
+		
 		if use_tween:
 			
 			var tween:Tween = panel.create_tween()
@@ -182,26 +198,28 @@ func close_panel(_name: String, use_tween: bool = false ) -> void:
 			)
 		
 		else:	panel.visible = false
-		
+		if _name in ["Hat", "Merchant"]:
+			hud.hide_item_tool_tip()
 		_update_ui_state()
 
-func close_all(incluse_hud : bool = false) -> void:
+func close_all(force_open_hud : bool = false) -> void:
 	for p in panels.keys():
-		if p == "HUD" and not incluse_hud: continue
 		
-		close_panel(p) 
+		
+		_close_panel(p) 
+	if force_open_hud: open_hud()
 	game_paused = false	
 	_update_ui_state()
 
 
-# ========== INTERNAL ==========
+
 func _ready() -> void:
 	post_process_canvas = CanvasLayer.new()
 	add_child(post_process_canvas)
 	post_process_canvas.name = "PostProcess"
 	post_process_canvas.add_child(merchant_panel)
 	post_process_canvas.add_child(post_process_panel)
-	
+	post_process_canvas.add_child(hat_panel)
 	canvas = CanvasLayer.new()
 	
 	canvas.name = "Panels"
@@ -227,20 +245,18 @@ func _ready() -> void:
 		"LevelUpPanel": level_up_panel,
 		"Merchant": merchant_panel,
 		"HUD" :hud,
-		"Map": map_panel
+		"Map": map_panel,
+		"Hat": hat_panel
 	}
 	
 	close_all()
-	scale_margins_for_resolution()  # стартовая подгонка
-	#connect("resized", Callable(self, "_on_resize"))  # если Control
+	scale_margins_for_resolution() 
+
 	get_viewport().connect("size_changed", Callable(self, "_on_resize"))
 	
 func _update_ui_state() -> void:
 	var ui_open := _any_ui_open() or force_cursor_visible
-	#var active_node := ControllerManager.get_active()
-
-	#if active_node and active_node.has_method("set_input_enabled"):
-		#active_node.set_input_enabled(not ui_open)
+	
 
 	_show_mouse(ui_open)
 
@@ -269,7 +285,7 @@ func _on_resize():
 
 func scale_margins_for_resolution():
 	var current_res = get_viewport().get_visible_rect().size
-	# коэффициенты по X и Y (берём среднее, чтобы сохранять пропорции)
+
 	var scale_x = current_res.x / BASE_RESOLUTION.x
 	var scale_y = current_res.y / BASE_RESOLUTION.y
 	var scale = (scale_x + scale_y) / 2.0
@@ -278,13 +294,13 @@ func scale_margins_for_resolution():
 
 
 func _apply_margin_scaling(node: Node, scale: float):
-	# Если это MarginContainer, меняем его Constants
+	
 	if node is MarginContainer:
 		for side in ["margin_left", "margin_top", "margin_right", "margin_bottom"]:
 			if node.has_theme_constant_override(side):
 				var value = node.get_theme_constant(side)
 				node.add_theme_constant_override(side, int(value * scale))
-	# Рекурсивно обходим детей
+	
 	for child in node.get_children():
 		if child is Control:
 			_apply_margin_scaling(child, scale)
@@ -293,10 +309,12 @@ func _apply_margin_scaling(node: Node, scale: float):
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("hidden_close"):
 		if not SettingsManager.get_value("achievement_ctrl_w", false):
-			#_unlock_ctrl_w_achievement()
+
 			SettingsManager.set_value("achievement_ctrl_w", true)
 			return
 		_on_escape_pressed()
+	if event.is_action_pressed("hat"):
+		toggle_hat()
 	if event.is_action_pressed("hud"):
 		toggle_hud()
 	if event.is_action_pressed("Esc"):
@@ -310,7 +328,7 @@ func _input(event: InputEvent) -> void:
 		if hud.has_upgrade and SceneManager.current_scene_name in ["BigRoomTest","GameTest"] and not escape_menu.visible:
 			toggle_level_up_panel()
 			event_bus.emit("level_up_panel_toggled") 
-			#toggle_upgrade_menu()
+		
 	if event.is_action_pressed("map"):
 		if SceneManager.current_scene_name in ["GameTest"]:
 			toggle_map_panel() 

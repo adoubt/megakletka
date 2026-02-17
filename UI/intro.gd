@@ -36,4 +36,3 @@ func start():
 	
 func _sound()->void :
 	AudioManager.play_ui_sound("menu_select")
-	AudioManager.play_music("main_menu")

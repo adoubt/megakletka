@@ -6,7 +6,7 @@ class_name AudioSystem
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus : EventBus): 
 	super._init(_entity_manager, _component_store, _event_bus)
 	event_bus.subscribe("enemy_died", _on_enemy_died)
-	event_bus.subscribe("enemy_hitted", _on_enemy_hitted)
+	event_bus.subscribe("DAMAGE_RECIVED", _on_enemy_hitted)
 	event_bus.subscribe("level_up", _on_level_up)
 	event_bus.subscribe("campfire_created",_on_campfire_created)
 	event_bus.subscribe("day_changed", _on_day_changed)
@@ -48,7 +48,7 @@ func _on_level_up(_data: Dictionary = {}):
 	
 func _on_campfire_created(_data: Dictionary = {})-> void:
 	
-	AudioManager.play_spatial_loop("campfire0", "campfire_crackling", Vector3.ZERO, 0.0, 50.0)
+	AudioManager.play_spatial_loop("campfire0", "campfire_crackling", Vector3.ZERO, -5.0, 50.0)
 
 func _on_combat_started(_data: Dictionary = {}) -> void:
 	AudioManager.play_music_delayed("combat_started_signal",0.0,0.0,false)
@@ -62,6 +62,6 @@ func _on_combat_completed(_data: Dictionary = {}) -> void:
 	AudioManager.play_music_delayed("combat_completed",4.0,0.0,true)
 	
 func _on_day_changed(_data: Dictionary = {}) -> void:
-	AudioManager.play_music_delayed("day_changed",0.0,0.0,false)
-	
+	AudioManager.play_music_delayed("day_changed",0.5,-5.0,false)
+	AudioManager.play_music_delayed("idle",7.0,0.0,true)
 	

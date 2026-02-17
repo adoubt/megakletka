@@ -270,5 +270,7 @@ func _set_children_mouse_ignore(node: Node) -> void:
 func show_item_tool_tip(data:Dictionary) -> void:
 	item_tool_tip.update_data(data)
 	item_tool_tip.show()
+	item_tool_tip.set_process(true)
 func hide_item_tool_tip():
 	item_tool_tip.hide()
+	item_tool_tip.set_process(false)

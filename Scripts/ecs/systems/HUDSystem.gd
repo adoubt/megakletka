@@ -47,8 +47,8 @@ func _on_level_up_panel_toggled()-> void:
 func _on_day_changed(data: Dictionary = {}) -> void:
 	var current_day = data.current_day
 	UIManager.hud.set_current_day(current_day)	
-	UIManager.close_all()
-	UIManager.open_hud()
+	UIManager.close_all(true)
+
 func _on_phase_changed(data: Dictionary = {}) -> void:		
 	var current_phase = data.current_phase
 	UIManager.hud.set_current_phase(current_phase)	

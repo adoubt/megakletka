@@ -2,6 +2,9 @@ extends Control
 
 var connections: Array = []
 
+var current_offset := Vector2.ZERO
+
+
 @export var dash_length := 7.0
 @export var dash_gap := 8.0
 @export var jitter_pos := 2.5
@@ -11,7 +14,18 @@ var connections: Array = []
 @export var endpoint_inset := 0.0
 @export var draw_steps := 10
 
+## PARALLAX
+@export var parallax_strength := 30.0
+@export var stiffness := 140.0
+@export var damping := 18.0
+@export var edge_power := 1.6
+@export var scale_strength := 0.03
+@export var rotation_strength := 0.02
 
+
+var velocity := Vector2.ZERO
+
+	
 var _raw_progress := 0.0
 var draw_progress := 0.0:
 	set(value):
@@ -30,9 +44,10 @@ func _draw():
 		var to_pos   = c.to.get_global_rect().get_center()
 		
 		_draw_dashed_connection(
-			from_pos - global_position,
-			to_pos - global_position
-		)
+	from_pos - global_position,
+	to_pos - global_position
+)
+
 
 func _draw_dashed_connection(from: Vector2, to: Vector2) -> void:
 	var full_dir := to - from
@@ -88,3 +103,36 @@ func animate_connections(duration := 3.2):
 	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 
 	draw_tween.tween_callback(queue_redraw)
+
+func _process(delta: float) -> void:
+	var viewport_size = get_viewport_rect().size
+	var mouse = get_viewport().get_mouse_position()
+	var center = viewport_size * 0.5
+	
+	# нормализация [-1, 1]
+	var normalized = (mouse - center) / center
+	
+	# нелинейная кривая (сильнее к краям)
+	var curved = Vector2(
+		sign(normalized.x) * pow(abs(normalized.x), edge_power),
+		sign(normalized.y) * pow(abs(normalized.y), edge_power)
+	)
+	
+	var target_offset = -curved * parallax_strength
+	
+	# пружинная модель
+	var force = (target_offset - current_offset) * stiffness
+	velocity += force * delta
+	velocity *= 1.0 / (1.0 + damping * delta)
+	
+	current_offset += velocity * delta
+	position = current_offset
+	
+	
+
+
+
+
+
+func _on_visibility_changed() -> void:
+	set_process(visible)

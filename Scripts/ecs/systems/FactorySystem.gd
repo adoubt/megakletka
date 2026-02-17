@@ -21,8 +21,8 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_eve
 	event_bus.subscribe("create_xp", _create_xp)
 	event_bus.subscribe("create_projectile", _create_projectiles)
 	event_bus.subscribe("create_camera", _create_camera)
-	event_bus.subscribe("damage_done", _create_damage_popup)
-	event_bus.subscribe("damage_done", _create_hit_vfx)
+	event_bus.subscribe("DAMAGE_RECIVED", _create_damage_popup)
+	event_bus.subscribe("DAMAGE_RECIVED", _create_hit_vfx)
 	damage_popup_arch = cs.register_archetype(["DamagePopupComponent","RenderComponent", "LifeTimeComponent", "TransformComponent"], ["DeadComponent"])	
 func _create_projectiles(data_array: Array = []) -> void:
 	for data in data_array:

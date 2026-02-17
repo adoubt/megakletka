@@ -2,8 +2,8 @@ extends Resource
 class_name AnimationComponent
 
 var type: int = AnimationType.FLOAT
-var amplitude : float = 0.05
-var speed : float = 0.5
+var amplitude : float = 0.03
+var speed : float = 0.6
 var phase: float 
 var base_y: float 
 var time: float = 0.0

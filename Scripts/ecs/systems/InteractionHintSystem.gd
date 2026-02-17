@@ -20,7 +20,7 @@ func update(_delta):
 			_hide(ir.previous_target_id)
 
 			# 🔥 ВАЖНО: закрываем UI ТОЛЬКО ЗДЕСЬ
-			UIManager.close_all()
+			UIManager.close_all(true)
 			UIManager.hud.hide_item_tool_tip()
 			_return_camera(p)
 			ir.previous_target_id = -1
