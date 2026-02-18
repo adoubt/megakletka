@@ -24,8 +24,8 @@ func update(delta: float) -> void:
 	if arch.entities.is_empty():
 		return
 	
-	var enemies = enemy_arch.entities
-	var entities = arch.entities
+	var enemies := enemy_arch.entities
+	var entities := arch.entities
 	for e in entities:
 		var combat_state = cs.get_component(e, "CombatStateComponent")
 		
@@ -56,6 +56,10 @@ func update(delta: float) -> void:
 
 				if can_win_by_kill or can_win_by_time:
 					combat_state.state = CombatState.COMPLETED
+					var reward = cs.get_component(e, "CombatRewardComponent").logs
+					cs.add_component(RUN, "BalanceChangeRequestComponent", BalanceChangeRequestComponent.new(
+						reward, "combat_completed",RUN))
+					
 					event_bus.emit("combat_completed", {})
 					_clear_enemies()
 					
@@ -93,9 +97,7 @@ func _on_enemy_died(data : Dictionary):
 	"current_budget":battery.current_budget, 
 	"alive_budget": battery.alive_budget
 	})
-func _kill_players():
-	for player in player_arch:
-		cs.add_component(player, "DeathRequestComponent",DeathRequestComponent.new(RUN))
+
 func _clear_enemies():
 	for enemy in enemy_arch.entities.duplicate():
 		cs.add_component(enemy, "DeadComponent", DeadComponent.new())

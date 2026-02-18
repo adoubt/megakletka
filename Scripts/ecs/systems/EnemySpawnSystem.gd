@@ -4,11 +4,6 @@ class_name EnemySpawnSystem
 
 var db: DataBase
 
-var enemy_arch: Archetype
-
-
-
-
 const MAX_ALIVE_ENEMIES := 200
 const BATTERY_BUDGET_RATIO :float= 0.1   # 100% бюджета
 const MAX_PER_TICK := 5            
@@ -21,7 +16,8 @@ var players_update_timer := 0.0
 const PLAYERS_UPDATE_INTERVAL := 3.0
 # ====================
 var players_arch: Archetype
-var enemies_arch: Archetype
+var enemy_arch: Archetype
+
 func _init(
 	_entity_manager: EntityManager,
 	_component_store: ComponentStore,
@@ -42,7 +38,7 @@ func update(delta: float) -> void:
 	if arch.entities.is_empty():
 		return
 		
-	var entities = arch.entities
+	var entities := arch.entities
 	for e in entities:
 		var combat := cs.get_component(e, "CombatStateComponent")
 		if combat.state != CombatState.ACTIVE:

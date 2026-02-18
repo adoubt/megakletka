@@ -47,7 +47,6 @@ func initialize(run_seed: int):
 	"res://Scenes/Popups/InteractPopup.tscn":2,
 	"res://Scenes/Popups/LevelUpPopup.tscn":2,
 	"res://Scenes/Popups/DamagePopup.tscn":50,
-	"res://Scenes/POI/fortune_teller.tscn":3,
 	"res://Scenes/debug_collider.tscn": 200 if debug_collision else 0,
 	"res://Scenes/Weapons/Projectiles/fire_shard.tscn" : 100,
 	"res://Scenes/Weapons/Projectiles/ice_shard.tscn": 100,

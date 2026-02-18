@@ -58,6 +58,8 @@ func _on_item_equipped(item_id:int, owner_id:int, slot_mask:int) -> void:
 		UsedSlotsRecalculateRequestComponent.new())
 	cs.add_component(owner_id, "DirtyStatsComponent", DirtyStatsComponent.new())
 	cs.add_component(item_id,"ItemPlacementRequestComponent", ItemPlacementRequestComponent.new())
+	if (slot_mask & (SlotMask.PLAYER | SlotMask.CAMPFIRE)) == 0:
+		return
 	for ability_e in ability_arch.entities:
 		var ability_comp := cs.get_component(ability_e, "ItemAbilityComponent")
 		if ability_comp.owner_id != item_id:
