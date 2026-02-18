@@ -31,7 +31,7 @@ func update(_delta):
 	
 	var req: DayEnterRequestComponent = cs.get_component(RUN, "DayEnterRequestComponent")
 
-	var day_id :int= req.target_day
+	var day_id :int= run.current_day
 	var day: DayComponent = cs.get_component(day_id, "DayComponent")
 
 	var day_type:int = day.type
@@ -46,8 +46,12 @@ func update(_delta):
 			pois_to_create.append_array(_place_heal_mushroom(heal_mushrooms))
 			
 		DayType.BOSS:
+			cs.add_component(day_id, "CombatGenerationRequestComponent", CombatGenerationRequestComponent.new())
+			
 			pois_to_create.append_array(_place_heal_mushroom(heal_mushrooms))
 		DayType.ELITE:
+			cs.add_component(day_id, "CombatGenerationRequestComponent", CombatGenerationRequestComponent.new())
+			
 			pois_to_create.append_array(_place_heal_mushroom(heal_mushrooms))
 		DayType.ENEMY:
 			

@@ -46,9 +46,6 @@ colors = PackedColorArray(0.0627451, 0.105882354, 0.09803922, 0.47843137, 0.0627
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_0mm64"]
 gradient = SubResource("Gradient_xiih7")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_2pa52"]
-size = Vector3(0.2010498, 0.17286682, 0.16149902)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0mm64"]
 bg_color = Color(0.0627451, 0.105882354, 0.09803922, 0.7882353)
 corner_radius_bottom_right = 45
@@ -112,7 +109,7 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 shadow_color = Color(0.34901962, 0.6509804, 1, 0.627451)
 shadow_size = 5
-shadow_offset = Vector2(0, -5)
+shadow_offset = Vector2(0, 3)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4evux"]
 load_path = "res://.godot/imported/Duration.png-4696b7a956729966c2a4a5103fff2d69.ctex"
@@ -146,7 +143,6 @@ mouse_filter = 2
 
 [node name="ItemToolTip" type="Control" parent="HUD" unique_id=689881255]
 unique_name_in_owner = true
-top_level = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -160,10 +156,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -118.0
-offset_top = -45.0
-offset_right = 118.0
-offset_bottom = 45.0
+offset_left = -131.0
+offset_top = -94.5
+offset_right = 131.0
+offset_bottom = 70.5
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -218,12 +214,6 @@ layout_mode = 2
 size_flags_horizontal = 6
 theme_override_colors/font_color = Color(0.83137256, 0.6862745, 0.21568628, 1)
 text = "6"
-
-[node name="Area3D" type="Area3D" parent="HUD/ItemToolTip/Panel/VBoxContainer/TitleBlock/MarginContainer/VBoxContainer/VBoxContainer/ItemCostLabel" unique_id=1219450613]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HUD/ItemToolTip/Panel/VBoxContainer/TitleBlock/MarginContainer/VBoxContainer/VBoxContainer/ItemCostLabel/Area3D" unique_id=99001024]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.002746582, -0.0038986206, 0.0006713867)
-shape = SubResource("BoxShape3D_2pa52")
 
 [node name="ItemBody" type="PanelContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer" unique_id=32779147]
 layout_mode = 2
@@ -295,9 +285,8 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_constants/line_spacing = -2
 theme_override_fonts/font = ExtResource("7_2pa52")
 theme_override_font_sizes/font_size = 17
-text = "ItemDescriptionhhhhhhh gggggggg g ggggggg g
-hgjghjghj
-gkjghjkgghkhhhhh"
+text = "ItemDescriptionhhhhhhh gggggggg g gggg
+"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -608,19 +597,23 @@ theme_override_colors/font_color = Color(0.83137256, 0.6862745, 0.21568628, 1)
 theme_override_font_sizes/font_size = 25
 text = "3"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer" unique_id=465823346]
+[node name="VBoxContainer" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer" unique_id=1569394676]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.98
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 100
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer" unique_id=2130635769]
-visible = false
 layout_mode = 2
-size_flags_vertical = 8
+size_flags_vertical = 0
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_right = 50
 
-[node name="CombatPanel" type="PanelContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1707010462]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer/MarginContainer" unique_id=744016649]
+layout_mode = 2
+
+[node name="CombatPanel" type="PanelContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1707010462]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_pf7ph")
 custom_minimum_size = Vector2(0, 20)
@@ -628,7 +621,7 @@ layout_mode = 2
 size_flags_vertical = 10
 theme_override_styles/panel = SubResource("StyleBoxFlat_vs5gg")
 
-[node name="PhaseLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer/MarginContainer/CombatPanel" unique_id=204083348]
+[node name="TimerLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=204083348]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -638,7 +631,7 @@ theme_override_constants/shadow_offset_x = 0
 theme_override_constants/shadow_offset_y = -2
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 3
-text = "Phase 1"
+text = "0.0"
 horizontal_alignment = 1
 vertical_alignment = 1
 

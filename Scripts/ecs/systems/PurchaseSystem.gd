@@ -53,5 +53,5 @@ func process_purchase(data):
 	
 	cs.add_component(RUN,"BalanceChangeRequestComponent", BalanceChangeRequestComponent.new(
 		-final_price,"purchase_item", merchant_entity))
-	
+	event_bus.emit("purchased", {"price":price, "item_id":requested_entity}, )
 	

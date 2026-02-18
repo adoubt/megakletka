@@ -14,7 +14,7 @@ const MIN_COLUMNS_PER_FLOOR: int = 3
 var days_arch: Archetype
 var run_seed: int
 
-var start_balance: int = 10
+var start_balance: int = 500
 var floors_per_ante: int = 10
 const COLUMNS_PER_FLOOR: int = 6
 func _init( _entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus, _db: DataBase,_run_seed:int):

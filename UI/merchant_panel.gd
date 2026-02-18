@@ -18,7 +18,9 @@ var hovered_item: ItemInstance = null
 var dragged_item: ItemInstance = null
 var drag_preview: Control = null
 
-
+func _ready() -> void:
+	buy_container.hide()
+	
 func _gui_input(event: InputEvent) -> void:
 
 	if event is InputEventMouseMotion:
@@ -49,7 +51,7 @@ func _try_start_drag():
 	
 	item_base_pos = item_pos
 	drag_plane = Plane(cam_forward, item_pos)
-	buy_zone.set_scale_highlight(true)
+	buy_zone.set_drop_active(true)
 	
 
 func _update_drag_position():
@@ -75,12 +77,12 @@ func _update_zone_hover():
 		return
 
 	if current_zone:
-		current_zone.set_color_highlight(false)
+		current_zone.set_hover_feedback(false)
 
 	current_zone = zone
 
 	if current_zone:
-		current_zone.set_color_highlight(true)
+		current_zone.set_hover_feedback(true)
 
 
 func _try_drop():
@@ -140,26 +142,29 @@ func _update_hover(mouse_pos: Vector2) -> void:
 	var new_hover: ItemInstance = null
 	if hit:
 		new_hover = hit.get_parent() as ItemInstance
-	else: 
-		UIManager.hud.hide_item_tool_tip()
-		
+
 	if new_hover == hovered_item:
 		return
 
-
+	# Снять старый hover
 	if hovered_item:
 		hovered_item.set_highlight(false)
-	
+
+	# Обновить состояние
 	hovered_item = new_hover
-	
+
+	# Применить новое состояние
 	if hovered_item and hovered_item.data:
 		hovered_item.set_highlight(true)
-	
+
 		UIManager.hud.show_item_tool_tip(hovered_item.data)
 		buy_value.text = str(int(hovered_item.data.cost))
 		buy_container.show()
-		
+	else:
+		UIManager.hud.hide_item_tool_tip()
+		buy_container.hide()
+
 func _cancel_drag():
 	_cleanup_drag()
-	buy_zone.set_scale_highlight(false)
+	buy_zone.set_drop_active(false)
 	buy_container.hide()

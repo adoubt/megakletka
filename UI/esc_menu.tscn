@@ -17,6 +17,7 @@ grow_vertical = 2
 script = ExtResource("1_4yblc")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=25346073]
+visible = false
 material = ExtResource("2_011l0")
 layout_mode = 1
 anchors_preset = 15
@@ -70,7 +71,8 @@ grow_vertical = 2
 theme = SubResource("Theme_ljgwf")
 text = "WASD - move
 Space - Jump
-Shift - Sprint 
+Q - Hat
+F2 - DevPanel
 Map - TAB
 GUI - V
 "

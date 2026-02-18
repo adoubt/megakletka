@@ -45,17 +45,29 @@ func _on_hat_toggled(data:Dictionary):
 			if camera_comp.owner_id == player_id:
 				
 
-
 				var player_pos = cs.get_component(player_id, "TransformComponent").position
 				var focus_pos = player_pos + Vector3(0.0, 0.8, 0.0)
-				
+
 				var camera_pos = camera_comp.camera_instance.global_position
-				
-				var dir = (camera_pos - focus_pos).normalized()
-				var target_distance := 0.9
+
+				var flat_dir = camera_pos - focus_pos
+				flat_dir.y = 0.0
+
+				if flat_dir.length_squared() < 0.0001:
+					flat_dir = Vector3.BACK  # fallback если камера ровно над игроком
+				else:
+					flat_dir = flat_dir.normalized()
+
+				var orbit_radius := 0.5
+				var orbit_height := 1.2
+
+				var offset = flat_dir * orbit_radius
+				offset.y = orbit_height
+
 				camera_comp.focus_target = focus_pos
-				camera_comp.focus_from_pos = focus_pos + dir * target_distance
+				camera_comp.focus_from_pos = focus_pos + offset
 				camera_comp.mode = CameraComponent.Mode.LOCKED_FOLLOW
+				
 				return
 
 func _return_camera(owner_id:int) -> void:

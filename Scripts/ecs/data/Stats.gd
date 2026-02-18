@@ -105,6 +105,7 @@ static func _get_game_comp(stat: int) -> String:
 	match stat:
 		GameStats.XP_REWARD: 			return "XPRewardComponent"
 		GameStats.CURRENT_PHASE:			return "NotDeclaired"
+		
 		_:
 			push_error("Unknown Stat: %s" % stat)
 			return ""

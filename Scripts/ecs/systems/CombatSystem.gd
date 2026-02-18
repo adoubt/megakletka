@@ -2,12 +2,9 @@ class_name CombatSystem
 extends BaseSystem
 
 
-var current_day := -1
-var current_day_entity := -1
 
-var combat : CombatStateComponent
-var battery : BatteryComponent
-var day_arch: Archetype
+var battery: BatteryComponent
+
 var enemy_arch: Archetype
 var player_arch: Archetype
 var day_center: Vector3 = Vector3.ZERO
@@ -15,9 +12,8 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	super._init(_entity_manager, _component_store, _event_bus)
 
 	event_bus.subscribe("enemy_died", _on_enemy_died)
-	event_bus.subscribe("day_changed", _on_day_changed)
 	
-	day_arch = cs.register_archetype(["DayComponent","CombatStateComponent","BatteryComponent"])
+	arch = cs.register_archetype(["DayComponent","CombatStateComponent","BatteryComponent"])
 	enemy_arch = cs.register_archetype(["EnemyComponent","EnemyBudgetComponent"], ["DeadComponent"])
 	player_arch = cs.register_archetype(["PlayerComponent", "TransformComponent"],["DeadComponent"])
 	
@@ -25,26 +21,27 @@ func update(delta: float) -> void:
 	if time_to_ignore >= 0.0:
 		time_to_ignore -= delta
 		return
-	if day_arch.entities.is_empty():
+	if arch.entities.is_empty():
 		return
 	
-	var enemies = enemy_arch.entities.duplicate()
-	var entities = day_arch.entities.duplicate()
+	var enemies = enemy_arch.entities
+	var entities = arch.entities
 	for e in entities:
 		var combat_state = cs.get_component(e, "CombatStateComponent")
 		
-		if combat_state.state == CombatState.INACTIVE:
-			if _player_left_safe_zone() and battery.current_budget > 0:
-				combat_state.state = CombatState.ACTIVE
-				event_bus.emit("combat_started", {
-					"day_index": current_day,
-					"current_day": current_day_entity
-				})
+		match combat_state.state:
+			CombatState.COMPLETED:
+				continue
+			CombatState.INACTIVE:
+				if _player_left_safe_zone() :
+					battery = cs.get_component(e, "BatteryComponent")
+					combat_state.state = CombatState.ACTIVE
+					event_bus.emit("combat_started", {"time_left":combat_state.time_left})
 
-			if combat_state.state == CombatState.ACTIVE:
+			CombatState.ACTIVE:
 
 				combat_state.time_left -= delta
-
+				
 				var can_win_by_time :bool= has_win(
 					combat_state.win_condition,
 					CombatState.WinCondition.TIME
@@ -59,11 +56,8 @@ func update(delta: float) -> void:
 
 				if can_win_by_kill or can_win_by_time:
 					combat_state.state = CombatState.COMPLETED
-					event_bus.emit("combat_completed", {
-						"day_index": current_day,
-						"current_day": current_day_entity,
-						"current_phase": combat.phase
-					})
+					event_bus.emit("combat_completed", {})
+					_clear_enemies()
 					
 func has_win(win_mask: int, flag: int) -> bool:
 	return (win_mask & flag) != 0
@@ -88,22 +82,6 @@ func _change_phase(combat: CombatStateComponent):
 	combat.time_to_next_phase = 10.0
 	
 
-func _on_day_changed(data: Dictionary):
-	if combat and combat.state == CombatState.ACTIVE:
-		event_bus.emit("day_skipped", {
-				"day_index": current_day,
-				"current_day": current_day_entity
-			})
-	
-	current_day = data.current_day
-	
-	for day in day_arch.entities:
-		if cs.get_component(day, "DayComponent").id == current_day:
-			current_day_entity = day
-			break
-
-	combat = cs.get_component(current_day_entity, "CombatStateComponent")
-	battery = cs.get_component(current_day_entity, "BatteryComponent")
 
 
 	
@@ -115,3 +93,9 @@ func _on_enemy_died(data : Dictionary):
 	"current_budget":battery.current_budget, 
 	"alive_budget": battery.alive_budget
 	})
+func _kill_players():
+	for player in player_arch:
+		cs.add_component(player, "DeathRequestComponent",DeathRequestComponent.new(RUN))
+func _clear_enemies():
+	for enemy in enemy_arch.entities.duplicate():
+		cs.add_component(enemy, "DeadComponent", DeadComponent.new())

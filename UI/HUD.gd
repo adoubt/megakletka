@@ -7,10 +7,17 @@ var offer_id:int = -1
 @onready var fps_label: Label = %FPS
 
 @onready var combat_panel: PanelContainer = %CombatPanel
+var last_second: int =-1
+var combat_timer: float:
+	set(value):
+		combat_timer = value
+		
+		
+@onready var combat_timer_label: Label = %TimerLabel
+
 #@onready var combat_panel_background :TextureRect = %CombatPanelBackground
 @onready var current_day: Label = %CurrentDay
 
-@onready var phase_label: Label = %PhaseLabel
 var previous_combat_progress: float = 1.0
 var combat_progress : float = 1.0
 @export var max_combat_progress: float = 50.0
@@ -211,6 +218,13 @@ func update_current_xp_texture(_direction: int):
 func _process(delta: float) -> void:
 	_update_fps(delta)
 
+	if combat_timer > 0.0:
+		combat_timer -=delta
+		var seconds := int(ceil(combat_timer))
+		if seconds != last_second:
+			last_second = seconds
+			combat_timer_label.text = str(last_second)
+			
 func _update_fps(delta: float) -> void:
 	_time_passed += delta
 	if _time_passed >= _refresh_interval:
@@ -249,18 +263,18 @@ func set_current_day(value:int) -> void:
 	current_day.text = "Day " + str(value)
 
 
-func set_current_phase(value:int) -> void:
-	phase_label.text = "Phase " + str(value)
+#func set_current_phase(value:int) -> void:
+	##phase_label.text = "Phase " + str(value)
 
 func show_combat_progress() -> void:
-	set_current_phase(1)
+	
 	#combat_panel_background.show()
 	combat_panel.show()
-	
+	combat_timer_label.show()
 func hide_combat_progress() -> void:
 	#combat_panel_background.hide()
 	combat_panel.hide()
-
+	combat_timer_label.hide()
 func _set_children_mouse_ignore(node: Node) -> void:
 	for child in node.get_children():
 		if child is Control:
@@ -269,8 +283,10 @@ func _set_children_mouse_ignore(node: Node) -> void:
 
 func show_item_tool_tip(data:Dictionary) -> void:
 	item_tool_tip.update_data(data)
-	item_tool_tip.show()
+	
+	item_tool_tip.set_showing(true)
 	item_tool_tip.set_process(true)
 func hide_item_tool_tip():
-	item_tool_tip.hide()
+	item_tool_tip.set_showing(false)
+	
 	item_tool_tip.set_process(false)

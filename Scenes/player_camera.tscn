@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://bjdbfjpoxl4ag"]
 
 [sub_resource type="Environment" id="Environment_xq8u4"]
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
 glow_enabled = true
 
 [node name="PlayerCamera" type="Camera3D" unique_id=1097827928]

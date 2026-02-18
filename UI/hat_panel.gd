@@ -17,7 +17,8 @@ var hovered_item: ItemInstance = null
 var dragged_item: ItemInstance = null
 var drag_preview: Control = null
 
-
+func _ready() -> void:
+	sell_container.hide()
 func _gui_input(event: InputEvent) -> void:
 
 	if event is InputEventMouseMotion:
@@ -48,8 +49,8 @@ func _try_start_drag():
 	
 	item_base_pos = item_pos
 	drag_plane = Plane(cam_forward, item_pos)
-	sell_zone.set_scale_highlight(true)
-	use_zone.set_scale_highlight(true)
+	sell_zone.set_drop_active(true)
+	use_zone.set_drop_active(true)
 
 func _update_drag_position():
 	if dragged_item == null:
@@ -74,12 +75,12 @@ func _update_zone_hover():
 		return
 
 	if current_zone:
-		current_zone.set_color_highlight(false)
+		current_zone.set_hover_feedback(false)
 
 	current_zone = zone
 
 	if current_zone:
-		current_zone.set_color_highlight(true)
+		current_zone.set_hover_feedback(true)
 
 
 func _try_drop():
@@ -157,9 +158,11 @@ func _update_hover(mouse_pos: Vector2) -> void:
 		UIManager.hud.show_item_tool_tip(hovered_item.data)
 		sell_value.text = str(int(hovered_item.data.cost))
 		sell_container.show()
+	else:
+		sell_container.hide()
 		
 func _cancel_drag():
 	_cleanup_drag()
-	sell_zone.set_scale_highlight(false)
-	use_zone.set_scale_highlight(false)
+	sell_zone.set_drop_active(false)
+	use_zone.set_drop_active(false)
 	sell_container.hide()

@@ -145,7 +145,7 @@ class_name DataBase
 			"fire_shard",],
 		"weapon_radius": 1.0,
 		"duration": 1.0,
-		"slots": 20,
+		"slots": 6,
 		"pierce": 3,
 		"bounce":0,
 		"jumps":1,
@@ -218,7 +218,7 @@ class_name DataBase
 				
 			}
 		],
-		"cost": 4,
+		"cost": 99,
 		"drop_weight": 10
 	},
 	1: {
@@ -235,7 +235,7 @@ class_name DataBase
 				"value": 1
 			}
 		],
-		"cost": 3,
+		"cost": 67,
 		"drop_weight": 10
 	},
 	2: {
@@ -259,7 +259,7 @@ class_name DataBase
 				"value": -10
 			}
 		],
-		"cost": 3,
+		"cost": 89,
 		"drop_weight": 10
 	},
 
@@ -273,14 +273,14 @@ class_name DataBase
 		"abilities": [
 			{
 				"title": "Passive: Discount",
-				"description": "Merchant discount {stat_modifier.value:int} GOLD",
+				"description": "Merchant discount {stat_modifier.value:int} GOLD ",
 				"target_stat": Stats.PlayerStats.MERCHANT_DISCOUNT,
 				"domain": Stats.Domain.PLAYER,
-				"value": 1
+				"value": 20
 			}
 		],
-		"cost": 3,
-		"drop_weight": 100
+		"cost": 167,
+		"drop_weight": 10
 	},
 
 	4: {
@@ -302,7 +302,7 @@ class_name DataBase
 				}
 			}
 		],
-		"cost": 3,
+		"cost": 256,
 		"drop_weight": 10
 	},
 
@@ -333,7 +333,7 @@ class_name DataBase
 				}
 			}
 		],
-		"cost": 3,
+		"cost": 124,
 		"drop_weight": 10
 	},
 	7: {
@@ -351,7 +351,7 @@ class_name DataBase
 				
 			}
 		],
-		"cost": 2,
+		"cost": 86,
 		"drop_weight": 10
 	},
 	8: {
@@ -374,7 +374,7 @@ class_name DataBase
 				
 			}
 		],
-		"cost": 4,
+		"cost": 153,
 		"drop_weight": 10
 	},
 }
@@ -402,8 +402,8 @@ class_name DataBase
 	"non_diegetic": {
 		"music": {
 			"combat_started":[
+				"res://assets/sounds/non_diegetic/music/days_passed.mp3"
 				
-				"res://assets/sounds/non_diegetic/music/idle theme.mp3"
 			],
 			"idle":[
 				
@@ -434,7 +434,7 @@ class_name DataBase
 				[
 				"res://assets/sounds/non_diegetic/music/death.mp3",
 				],
-				
+			
 				
 		},
 		"ui": {
@@ -490,6 +490,16 @@ class_name DataBase
 				#"res://assets/sounds/non_diegetic/ui/map/map_node_select4.mp3",
 				#"res://assets/sounds/non_diegetic/ui/map/map_node_select5.mp3",
 				#"res://assets/sounds/non_diegetic/ui/map/map_node_select6.mp3",
+				],
+			"money_arrived":
+				["res://assets/sounds/non_diegetic/ui/money/money_arrived.mp3",
+				"res://assets/sounds/non_diegetic/ui/money/money_arrived2.mp3",
+				"res://assets/sounds/non_diegetic/ui/money/money_arrived3.mp3",
+				"res://assets/sounds/non_diegetic/ui/money/money_arrived4.mp3"	
+				],
+			"purchased":
+				["res://assets/sounds/non_diegetic/ui/money/purchase.mp3"
+					
 				]
 		},	
 	}

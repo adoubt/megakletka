@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cg8diy5mqdnwf"]
+[gd_scene format=3 uid="uid://cg8diy5mqdnwf"]
 
 [ext_resource type="Texture2D" uid="uid://bhns03k4m0nhr" path="res://assets/shader_pics/T_VFX_Flare_251.jpg" id="1_qesax"]
 [ext_resource type="Shader" uid="uid://cxm4lxqux7cw7" path="res://assets/Materials/LevelUpPopUpAura.tres" id="2_kpvrd"]
@@ -64,9 +64,9 @@ shader_parameter/blinking_sped = 2.0
 [sub_resource type="QuadMesh" id="QuadMesh_svao1"]
 size = Vector2(1.455, 0.305)
 
-[node name="LevelUpPopUp" type="Node3D"]
+[node name="LevelUpPopUp" type="Node3D" unique_id=1631561474]
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=847143056]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.017706215, 0)
 visible = false
 material_override = SubResource("StandardMaterial3D_nylhr")
@@ -77,18 +77,18 @@ explosiveness = 0.81
 process_material = SubResource("ParticleProcessMaterial_yeynr")
 draw_pass_1 = SubResource("QuadMesh_uq5jc")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1723825844]
 material_override = SubResource("ShaderMaterial_fk0n2")
 mesh = SubResource("QuadMesh_svao1")
 
-[node name="Label3D" type="Label3D" parent="."]
+[node name="Label3D" type="Label3D" parent="." unique_id=1799587530]
 visibility_range_end = 100.0
 billboard = 1
 alpha_cut = 1
 texture_filter = 1
 outline_render_priority = -2
 modulate = Color(0.89411765, 0.827451, 0.7058824, 1)
-text = "[R]   Upgrade"
+text = "[R]   Upgrade (not work in demo)"
 font_size = 24
 outline_size = 10
 uppercase = true

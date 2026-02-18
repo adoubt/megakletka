@@ -9,7 +9,7 @@ func _ready() -> void:
 	#UIManager.merchant_panel.background_scene = self
 	pass
 var hovered_item: ItemInstance = null
-
+var last_hit: Area3D
 func _gui_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion:
@@ -43,22 +43,24 @@ func _raycast_from_mouse(mouse_pos: Vector2) -> Object:
 
 func _update_hover(mouse_pos: Vector2) -> void:
 	var hit := _raycast_from_mouse(mouse_pos)
-
 	var new_hover: ItemInstance = null
+
 	if hit:
 		new_hover = hit.get_parent() as ItemInstance
-	else: 
-		UIManager.hud.hide_item_tool_tip()
-		
+
 	if new_hover == hovered_item:
 		return
 
+	# Убираем старый hover
 	if hovered_item:
 		hovered_item.set_highlight(false)
-	
+
+	# Обновляем состояние
 	hovered_item = new_hover
-	
+
+	# Применяем новое состояние
 	if hovered_item and hovered_item.data:
 		hovered_item.set_highlight(true)
-	
 		UIManager.hud.show_item_tool_tip(hovered_item.data)
+	else:
+		UIManager.hud.hide_item_tool_tip()

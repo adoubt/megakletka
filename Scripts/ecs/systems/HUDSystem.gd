@@ -17,7 +17,6 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 	event_bus.subscribe("map_snapshot_changed",_on_map_snaphot_changed)
 	event_bus.subscribe("combat_started",_on_combat_started)
 	event_bus.subscribe("combat_completed",_on_combat_completed)
-	event_bus.subscribe("day_skipped",_on_combat_completed)
 	event_bus.subscribe("budget_changed",_on_budget_changed)
 	#event_bus.subscribe("hp_changed",_on_hp_changed)
 	#event_bus.subscribe("xp_changed", _on_xp_changed)
@@ -47,14 +46,19 @@ func _on_level_up_panel_toggled()-> void:
 func _on_day_changed(data: Dictionary = {}) -> void:
 	var current_day = data.current_day
 	UIManager.hud.set_current_day(current_day)	
-	UIManager.close_all(true)
+	UIManager.close_all(["HUD"])
 
 func _on_phase_changed(data: Dictionary = {}) -> void:		
 	var current_phase = data.current_phase
 	UIManager.hud.set_current_phase(current_phase)	
 	
-func _on_combat_started(_data: Dictionary = {}) -> void:	
+func _on_combat_started(data: Dictionary = {}) -> void:	
+
+	if data.has("time_left"):
+		UIManager.hud.combat_timer = data.time_left
+	
 	UIManager.hud.show_combat_progress()
+	
 	UIManager.hud.set_current_combat_progress(1.0)
 	
 func _on_combat_completed(_data: Dictionary = {}) -> void:	

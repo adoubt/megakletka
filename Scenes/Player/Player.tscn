@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://csuaael2v81ju"]
+[gd_scene format=4 uid="uid://cp30gcla4uaks"]
 
 [ext_resource type="Script" uid="uid://cbd1ujwj68mhr" path="res://scripts/Player/player_controller.gd" id="1_4wape"]
 [ext_resource type="PackedScene" uid="uid://cg8diy5mqdnwf" path="res://Scenes/Popups/LevelUpPopup.tscn" id="2_spxdj"]
@@ -349,51 +349,51 @@ _data = {
 &"grave_on": SubResource("Animation_spxdj")
 }
 
-[node name="Player" type="CharacterBody3D" groups=["controllable", "player"]]
+[node name="Player" type="CharacterBody3D" unique_id=1960158545 groups=["controllable", "player"]]
 collision_layer = 2
 script = ExtResource("1_4wape")
 main_player = true
 
-[node name="LevelUpPopUp" parent="." instance=ExtResource("2_spxdj")]
+[node name="LevelUpPopUp" parent="." unique_id=385223907 instance=ExtResource("2_spxdj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3836733, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=310568440]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.53125, 0)
 shape = SubResource("CapsuleShape3D_q2k22")
 
-[node name="CameraController" type="Node3D" parent="."]
+[node name="CameraController" type="Node3D" parent="." unique_id=1121894165]
 transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0.9066987, 0)
 script = ExtResource("13_0u84n")
 
-[node name="SpringArm3D" type="SpringArm3D" parent="CameraController"]
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraController" unique_id=1112740713]
 collision_mask = 3
 shape = SubResource("SphereShape3D_6tu5v")
 spring_length = 2.0
 
-[node name="SpringArmPosition" type="Node3D" parent="CameraController/SpringArm3D"]
+[node name="SpringArmPosition" type="Node3D" parent="CameraController/SpringArm3D" unique_id=515810274]
 transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="CameraController" node_paths=PackedStringArray("spring_arm")]
+[node name="Camera3D" type="Camera3D" parent="CameraController" unique_id=1324735662 node_paths=PackedStringArray("spring_arm")]
 transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0)
 fov = 90.0
 near = 0.01
 script = ExtResource("14_esmjy")
 spring_arm = NodePath("../SpringArm3D/SpringArmPosition")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="CameraController/Camera3D"]
+[node name="SpotLight3D" type="SpotLight3D" parent="CameraController/Camera3D" unique_id=602659499]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.9613998)
 visible = false
 light_bake_mode = 0
 spot_range = 11.7052145
 spot_angle = 28.565193
 
-[node name="Model" type="Node3D" parent="."]
+[node name="Model" type="Node3D" parent="." unique_id=2131375836]
 script = ExtResource("4_825xp")
 
-[node name="Armature" type="Node3D" parent="Model"]
+[node name="Armature" type="Node3D" parent="Model" unique_id=2010163423]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 
-[node name="GeneralSkeleton" type="Skeleton3D" parent="Model/Armature"]
+[node name="GeneralSkeleton" type="Skeleton3D" parent="Model/Armature" unique_id=1593672554]
 unique_name_in_owner = true
 motion_scale = 1.7382679
 bones/0/name = "Hips"
@@ -642,24 +642,24 @@ bones/34/position = Vector3(-0.0034797967, 0.22194505, -0.004049449)
 bones/34/rotation = Quaternion(-0.007833456, 0.9999276, -0.00912409, -0.00043697248)
 bones/34/scale = Vector3(0.9999998, 1.0000004, 0.99999964)
 
-[node name="mixamorig_Head" type="BoneAttachment3D" parent="Model/Armature/GeneralSkeleton"]
+[node name="mixamorig_Head" type="BoneAttachment3D" parent="Model/Armature/GeneralSkeleton" unique_id=289424167]
 transform = Transform3D(0.99769044, -0.06683573, -0.012117952, 0.061971407, 0.9686772, -0.2404668, 0.027810246, 0.23916045, 0.9705818, -0.056678757, 3.367847, 0.26661867)
 bone_name = "Head"
 bone_idx = 5
 
-[node name="telo" type="MeshInstance3D" parent="Model/Armature/GeneralSkeleton"]
+[node name="telo" type="MeshInstance3D" parent="Model/Armature/GeneralSkeleton" unique_id=1231679395]
 transform = Transform3D(1, 0, 1.7484555e-07, 0, 1, 0, -1.7484555e-07, 0, 1, 0, 0, 0)
 mesh = SubResource("ArrayMesh_hkp2m")
 skin = SubResource("Skin_s73ts")
 
-[node name="RightHandHeld" type="BoneAttachment3D" parent="Model/Armature/GeneralSkeleton"]
+[node name="RightHandHeld" type="BoneAttachment3D" parent="Model/Armature/GeneralSkeleton" unique_id=2072163223]
 transform = Transform3D(0.9037333, -0.39660367, 0.16046493, -0.13965943, -0.62746626, -0.7652388, 0.40467453, 0.66916114, -0.62245166, -0.93038267, 1.6416382, -0.39903057)
 bone_name = "RightThumbMetacarpal"
 bone_idx = 20
 
-[node name="ItemSocket" type="Marker3D" parent="Model/Armature/GeneralSkeleton/RightHandHeld"]
+[node name="ItemSocket" type="Marker3D" parent="Model/Armature/GeneralSkeleton/RightHandHeld" unique_id=1937277073]
 
-[node name="LookAtModifier3D" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton"]
+[node name="LookAtModifier3D" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton" unique_id=614066493]
 bone_name = "Head"
 bone = 5
 origin_from = 1
@@ -674,7 +674,7 @@ primary_damp_threshold = 1.0
 secondary_limit_angle = 3.3150785
 secondary_damp_threshold = 1.0
 
-[node name="l_apper_arm" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton"]
+[node name="l_apper_arm" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton" unique_id=846094229]
 active = false
 target_node = NodePath("../../../LeftArmTarget/ApperArmTarget")
 bone_name = "LeftUpperArm"
@@ -695,7 +695,7 @@ secondary_positive_damp_threshold = 1.0
 secondary_negative_limit_angle = 3.1415927
 secondary_negative_damp_threshold = 1.0
 
-[node name="l_lower_arm" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton"]
+[node name="l_lower_arm" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton" unique_id=736827760]
 active = false
 target_node = NodePath("../../../LeftArmTarget/LowerArmTarget")
 bone_name = "LeftLowerArm"
@@ -703,14 +703,14 @@ bone = 9
 forward_axis = 2
 primary_rotation_axis = 0
 
-[node name="l_hand" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton"]
+[node name="l_hand" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton" unique_id=1959939450]
 active = false
 target_node = NodePath("../../../LeftArmTarget/HandTarget/Handtarget")
 bone_name = "LeftMiddleProximal"
 bone = 14
 primary_rotation_axis = 0
 
-[node name="r_apper_arm" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton"]
+[node name="r_apper_arm" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton" unique_id=1786254563]
 active = false
 target_node = NodePath("../../../RightArmTarget/ApperArmTarget")
 bone_name = "RightUpperArm"
@@ -728,7 +728,7 @@ secondary_positive_damp_threshold = 1.0
 secondary_negative_limit_angle = 3.1415927
 secondary_negative_damp_threshold = 1.0
 
-[node name="r_lower_arm" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton"]
+[node name="r_lower_arm" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton" unique_id=1954555357]
 active = false
 target_node = NodePath("../../../RightArmTarget/LowerArmTarget")
 bone_name = "RightLowerArm"
@@ -736,116 +736,110 @@ bone = 18
 forward_axis = 2
 primary_rotation_axis = 0
 
-[node name="r_hand" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton"]
+[node name="r_hand" type="LookAtModifier3D" parent="Model/Armature/GeneralSkeleton" unique_id=578560803]
 active = false
 target_node = NodePath("../../../RightArmTarget/HandTarget")
 bone_name = "RightMiddleProximal"
 bone = 23
 primary_rotation_axis = 0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Model"]
-libraries = {
-&"": SubResource("AnimationLibrary_njoq3")
-}
-autoplay = "Idle"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Model" unique_id=1999299802]
+libraries/ = SubResource("AnimationLibrary_njoq3")
+autoplay = &"Idle"
 
-[node name="TestMarker" type="Marker3D" parent="Model"]
+[node name="TestMarker" type="Marker3D" parent="Model" unique_id=241549941]
 transform = Transform3D(-0.80734146, -0.5900845, 0, 0.5900845, -0.80734146, 0, 0, 0, 1, 0.25429595, 0.58886755, 0.009049654)
 
-[node name="LeftArmTarget" type="MeshInstance3D" parent="Model"]
+[node name="LeftArmTarget" type="MeshInstance3D" parent="Model" unique_id=1168963247]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.014696054, 0.6449457, 0.30603302)
 visible = false
 
-[node name="ApperArmTarget" type="Node3D" parent="Model/LeftArmTarget"]
+[node name="ApperArmTarget" type="Node3D" parent="Model/LeftArmTarget" unique_id=114590334]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1740683, -0.08965975, -0.10047333)
 
-[node name="ApperArmTarget" type="MeshInstance3D" parent="Model/LeftArmTarget/ApperArmTarget"]
+[node name="ApperArmTarget" type="MeshInstance3D" parent="Model/LeftArmTarget/ApperArmTarget" unique_id=632572642]
 mesh = SubResource("SphereMesh_cuqk8")
 
-[node name="LowerArmTarget" type="Node3D" parent="Model/LeftArmTarget"]
+[node name="LowerArmTarget" type="Node3D" parent="Model/LeftArmTarget" unique_id=593311708]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11629265, 0.013071895, 0.0098620355)
 
-[node name="LowerArmTarget" type="MeshInstance3D" parent="Model/LeftArmTarget/LowerArmTarget"]
+[node name="LowerArmTarget" type="MeshInstance3D" parent="Model/LeftArmTarget/LowerArmTarget" unique_id=484638164]
 transform = Transform3D(0.99644893, 0, -0.08419959, 0, 1, 0, 0.08419959, 0, 0.99644893, 0, 0, 0)
 mesh = SubResource("SphereMesh_cuqk8")
 
-[node name="HandTarget" type="Node3D" parent="Model/LeftArmTarget"]
+[node name="HandTarget" type="Node3D" parent="Model/LeftArmTarget" unique_id=1203420917]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07960708, -0.004466951, -0.022147149)
 
-[node name="Handtarget" type="MeshInstance3D" parent="Model/LeftArmTarget/HandTarget"]
+[node name="Handtarget" type="MeshInstance3D" parent="Model/LeftArmTarget/HandTarget" unique_id=283626645]
 mesh = SubResource("SphereMesh_cuqk8")
 
-[node name="RightArmTarget" type="MeshInstance3D" parent="Model"]
+[node name="RightArmTarget" type="MeshInstance3D" parent="Model" unique_id=996525974]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17075317, 0.67074144, 0.2960763)
 visible = false
 
-[node name="ApperArmTarget" type="Node3D" parent="Model/RightArmTarget"]
+[node name="ApperArmTarget" type="Node3D" parent="Model/RightArmTarget" unique_id=581957342]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.046113595, -0.1263665, -0.08345586)
 
-[node name="ApperArmTarget" type="MeshInstance3D" parent="Model/RightArmTarget/ApperArmTarget"]
+[node name="ApperArmTarget" type="MeshInstance3D" parent="Model/RightArmTarget/ApperArmTarget" unique_id=1557216718]
 mesh = SubResource("SphereMesh_cuqk8")
 
-[node name="LowerArmTarget" type="Node3D" parent="Model/RightArmTarget"]
+[node name="LowerArmTarget" type="Node3D" parent="Model/RightArmTarget" unique_id=233644566]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.055370256, -0.010569394, 0.017899036)
 
-[node name="LowerArmTarget" type="MeshInstance3D" parent="Model/RightArmTarget/LowerArmTarget"]
+[node name="LowerArmTarget" type="MeshInstance3D" parent="Model/RightArmTarget/LowerArmTarget" unique_id=200769535]
 transform = Transform3D(0.99644893, 0, -0.08419959, 0, 1, 0, 0.08419959, 0, 0.99644893, 0, 0, 0)
 mesh = SubResource("SphereMesh_cuqk8")
 
-[node name="HandTarget" type="Node3D" parent="Model/RightArmTarget"]
+[node name="HandTarget" type="Node3D" parent="Model/RightArmTarget" unique_id=763798524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07641084, -0.034318507, -0.016406447)
 
-[node name="Handtarget" type="MeshInstance3D" parent="Model/RightArmTarget/HandTarget"]
+[node name="Handtarget" type="MeshInstance3D" parent="Model/RightArmTarget/HandTarget" unique_id=261394400]
 mesh = SubResource("SphereMesh_cuqk8")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1495664647]
 root_node = NodePath("../Model/Armature/GeneralSkeleton")
-libraries = {
-&"Pack": ExtResource("5_i5acl")
-}
-autoplay = "AnimPack/idle_3"
+libraries/Pack = ExtResource("5_i5acl")
+autoplay = &"AnimPack/idle_3"
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+[node name="StateMachine" type="Node" parent="." unique_id=613113892 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("7_825xp")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateMachine"]
+[node name="Idle" type="Node" parent="StateMachine" unique_id=797457682]
 script = ExtResource("8_0kmp4")
 
-[node name="Running" type="Node" parent="StateMachine"]
+[node name="Running" type="Node" parent="StateMachine" unique_id=640796189]
 script = ExtResource("9_0kmp4")
 metadata/_custom_type_script = "uid://cgcrnfwyr7oa7"
 
-[node name="Jumping" type="Node" parent="StateMachine"]
+[node name="Jumping" type="Node" parent="StateMachine" unique_id=1678453023]
 script = ExtResource("10_i5acl")
 metadata/_custom_type_script = "uid://cgcrnfwyr7oa7"
 
-[node name="Falling" type="Node" parent="StateMachine"]
+[node name="Falling" type="Node" parent="StateMachine" unique_id=657504708]
 script = ExtResource("11_epg6k")
 metadata/_custom_type_script = "uid://cgcrnfwyr7oa7"
 
-[node name="Sprinting" type="Node" parent="StateMachine"]
+[node name="Sprinting" type="Node" parent="StateMachine" unique_id=1789344041]
 script = ExtResource("12_i5acl")
 metadata/_custom_type_script = "uid://cgcrnfwyr7oa7"
 
-[node name="Dying" type="Node" parent="StateMachine"]
+[node name="Dying" type="Node" parent="StateMachine" unique_id=1162411725]
 script = ExtResource("14_0u84n")
 metadata/_custom_type_script = "uid://cgcrnfwyr7oa7"
 
-[node name="Respawn" type="Node" parent="StateMachine"]
+[node name="Respawn" type="Node" parent="StateMachine" unique_id=708725271]
 script = ExtResource("14_0u84n")
 metadata/_custom_type_script = "uid://cgcrnfwyr7oa7"
 
-[node name="DeathAnim" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_1e6p3")
-}
+[node name="DeathAnim" type="AnimationPlayer" parent="." unique_id=261521825]
+libraries/ = SubResource("AnimationLibrary_1e6p3")
 
-[node name="GraveModel" parent="." instance=ExtResource("16_6tu5v")]
+[node name="GraveModel" parent="." unique_id=2124332617 instance=ExtResource("16_6tu5v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 visible = false
 
-[node name="SpotLight3D2" type="SpotLight3D" parent="."]
+[node name="SpotLight3D2" type="SpotLight3D" parent="." unique_id=1649721617]
 transform = Transform3D(1, 0, 0, 0, -0.03938185, 0.99922425, 0, -0.99922425, -0.03938185, 0, 2.776886, 0)
 visible = false
 light_color = Color(1, 1, 0.9882353, 1)

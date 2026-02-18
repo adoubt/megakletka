@@ -202,12 +202,15 @@ func _close_panel(_name: String, use_tween: bool = false ) -> void:
 			hud.hide_item_tool_tip()
 		_update_ui_state()
 
-func close_all(force_open_hud : bool = false) -> void:
+func close_all(exclude:=[]) -> void:
+	
 	for p in panels.keys():
-		
-		
+		if p in exclude:
+			if not is_panel_open(p):
+				_open_panel(p)
+			continue
 		_close_panel(p) 
-	if force_open_hud: open_hud()
+
 	game_paused = false	
 	_update_ui_state()
 

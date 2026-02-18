@@ -71,7 +71,7 @@ func update(delta: float) -> void:
 			#speed.final_value = 0.0
 			cs.add_component(pid, "PickedUpComponent", PickedUpComponent.new())
 			
-func _magnetize_all_xp(_data) -> void:
+func _magnetize_all_xp(_data: Dictionary = {}) -> void:
 	if player_arch.entities.size()<=0:
 		return
 	for orb in xp_orb_arch.entities:

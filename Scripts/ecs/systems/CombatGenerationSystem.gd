@@ -11,18 +11,34 @@ func update(_delta:float) -> void:
 	if arch.entities.is_empty():
 		return
 	var entities = arch.entities.duplicate()
+	
 	for e in entities:
-		cs.add_component(e, "CombatStateComponent",CombatStateComponent.new())
-		cs.add_component(e, "ButteryComponent", BatteryComponent.new())
+		var day_comp = cs.get_component(e,"DayComponent")
+		
+		_spawn_combat(e,day_comp)
 		cs.remove_component(e, "CombatGenerationRequestComponent")
 		
-func _spawn_combat(day_entity, day, ante):
+func _spawn_combat(day_entity, day_comp):
+	var _floor:int = day_comp.floor
+	var ante = day_comp.ante
+	var type = day_comp.type
 	var budget := int(
 		50 *
-		(1.0 + day * 0.12) *
+		(1.0 + _floor * 0.12) *
 		(1.0 + ante * 0.3)
 	)
-
-	cs.add_component(day_entity, "CombatStateComponent", CombatStateComponent.new())
+	var combat_state:= CombatStateComponent.new()
+	match type:
+		DayType.BOSS:
+			combat_state.win_condition = CombatState.WinCondition.KILL_ALL
+			
+		DayType.ELITE:
+			combat_state.win_condition = CombatState.WinCondition.KILL_ALL | CombatState.WinCondition.TIME
+			combat_state.time_left = 45.0
+		DayType.ENEMY:
+			combat_state.win_condition = CombatState.WinCondition.KILL_ALL | CombatState.WinCondition.TIME
+			combat_state.time_left = 30.0
+	
+	cs.add_component(day_entity, "CombatStateComponent", combat_state)
 	cs.add_component(day_entity, "BatteryComponent", BatteryComponent.new(budget))
-	cs.add_component(day_entity, "CombatRewardComponent", CombatRewardComponent.new(6))
+	cs.add_component(day_entity, "CombatRewardComponent", CombatRewardComponent.new(100))

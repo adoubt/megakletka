@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://bhns03k4m0nhr" path="res://assets/shader_pics/T_VFX_Flare_251.jpg" id="6_qjumg"]
 [ext_resource type="Script" uid="uid://bxhgu8m5512bv" path="res://scripts/Unsorted/campfire_zone.gd" id="8_687ab"]
 [ext_resource type="Shader" uid="uid://dn5feoc5p3lc4" path="res://assets/Materials/circle_shader.tres" id="8_weewd"]
-[ext_resource type="Shader" uid="uid://ck8u3vn741byu" path="res://assets/Shaders/r_progress.gdshader" id="9_fjto3"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_no8uq"]
 noise_type = 0
@@ -125,19 +124,6 @@ shader = ExtResource("8_weewd")
 shader_parameter/ColorParameter = Color(0.2784314, 0.5803922, 1, 1)
 shader_parameter/Speed = Vector2(0.015, 0.12)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_y5hso"]
-render_priority = 0
-shader = ExtResource("9_fjto3")
-shader_parameter/progress = 0.4350000206625
-shader_parameter/inner_radius = 0.6170000293075
-shader_parameter/outer_radius = 1.0
-
-[sub_resource type="QuadMesh" id="QuadMesh_fjto3"]
-lightmap_size_hint = Vector2i(3, 3)
-material = SubResource("ShaderMaterial_y5hso")
-flip_faces = true
-size = Vector2(0.25, 0.25)
-
 [node name="CampFire" type="Node3D" unique_id=1299806925]
 script = ExtResource("1_8qyrm")
 
@@ -201,25 +187,3 @@ surface_material_override/0 = SubResource("ShaderMaterial_687ab")
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=758556786]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 light_color = Color(1, 0.54901963, 0.2509804, 1)
-
-[node name="HintR" type="Node3D" parent="." unique_id=1535351645]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3915757, 0)
-
-[node name="Label3D2" type="Label3D" parent="HintR" unique_id=580549639]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7070181, 0)
-visibility_range_end = 70.95
-billboard = 1
-no_depth_test = true
-texture_filter = 4
-outline_render_priority = -6
-text = "[E]  Sleep (hold)
-"
-outline_size = 15
-
-[node name="RProgress" type="MeshInstance3D" parent="HintR" unique_id=75896316]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.636263, 0)
-top_level = true
-transparency = 0.24
-cast_shadow = 0
-gi_mode = 0
-mesh = SubResource("QuadMesh_fjto3")

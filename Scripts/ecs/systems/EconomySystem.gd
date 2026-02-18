@@ -17,3 +17,4 @@ func update(_delta:float) -> void:
 		run.logs += req.amount
 		event_bus.emit("balance_changed", {"balance":run.logs, "value": req.amount})
 		cs.remove_component(e,"BalanceChangeRequestComponent")
+		

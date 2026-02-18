@@ -4,8 +4,8 @@ extends Control
 @onready var item_description: Label = %ItemDescription
 @onready var cost_label: Label = %ItemCostLabel
 @onready var abilities_container: VBoxContainer = %Abilities
-var offset := Vector2(100, -200)
-
+var offset := Vector2(80, -50)
+var showing_tween: Tween
 func _ready()->void:
 	custom_minimum_size.x = 280
 	
@@ -128,19 +128,30 @@ func _process(delta: float) -> void:
 	_update_pos(delta)
 
 func _update_pos(delta: float) -> void:
-	var mouse_pos = get_viewport().get_mouse_position()
-	var screen_size = get_viewport_rect().size
-	
+	var visible_rect = get_viewport().get_visible_rect()
+	var mouse_pos = get_global_mouse_position()
+
+	var tooltip_size = size
 	var desired_pos = mouse_pos + offset
-	
-	if desired_pos.x + size.x > screen_size.x * 0.8:
-		desired_pos.x = mouse_pos.x - size.x
-	
-	if desired_pos.y + size.y > screen_size.y:
-		desired_pos.y = screen_size.y - size.y
-	
-	var speed := 15.0
-	global_position = global_position.lerp(desired_pos, 1.0 - exp(-speed * delta))
+
+	var pivot = pivot_offset
+
+	var min_x = visible_rect.position.x + pivot.x
+	var max_x = visible_rect.position.x + visible_rect.size.x - (tooltip_size.x - pivot.x)
+
+	var min_y = visible_rect.position.y
+	var max_y = visible_rect.position.y + visible_rect.size.y - (tooltip_size.y - pivot.y)
+
+
+	desired_pos.x = clamp(desired_pos.x, min_x, max_x)
+	desired_pos.y = clamp(desired_pos.y, min_y, max_y)
+
+	var speed := 5.0
+	global_position = global_position.lerp(
+		desired_pos,
+		1.0 - exp(-speed * delta)
+	)
+
 func format_text(text: String) -> String:
 	var base_size := 14
 	var base_color := "#c7d6d0"
@@ -200,3 +211,26 @@ func format_text(text: String) -> String:
 	result += "[/font][/color]"
 	
 	return result
+func set_showing(active:bool):
+	
+	var panel = $Panel
+	var base_scale = Vector2(0.1, 0.1)
+	panel.pivot_offset = panel.size * 0.5
+	if showing_tween:
+		showing_tween.kill()
+
+	showing_tween = create_tween()
+	showing_tween.set_trans(Tween.TRANS_SINE)
+	showing_tween.set_ease(Tween.EASE_OUT)
+
+	if active:
+		panel.scale = base_scale
+		show()
+		#showing_tween.tween_property(self, "modulate", Color(1,1,1,1), 0.15)
+		showing_tween.tween_property(panel, "scale", Vector2(1.0,1.0), 0.05)
+		
+	else:
+		#showing_tween.tween_property(self, "modulate", base_modulate, 0.15)
+		showing_tween.tween_property(panel, "scale", base_scale, 0.05)
+		showing_tween.tween_callback(hide)
+		print("hide tween start")

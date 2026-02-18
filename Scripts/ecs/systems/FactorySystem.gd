@@ -389,33 +389,33 @@ func _create_camera(data_array: Array = []) -> void:
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new())
 		cs.add_component(entity_id, "GravityComponent", GravityComponent.new(0.0))
 		
-func _create_hit_vfx(data_array: Array = []) -> void:
-	for data in data_array:
-		var vfx_name = data.damage_type
-		var e_data = db.vfx_configs[vfx_name]
-		var entity_id = em.create_entity()
-		var owner_id: int = data.owner_id
-		cs.add_component(entity_id, "HitVFXComponent", HitVFXComponent.new(owner_id))
-		cs.add_component(entity_id, "TransformComponent",TransformComponent.new(data.position))
-		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data.scene))
-		cs.add_component(entity_id, "LifeTimeComponent", LifeTimeComponent.new(e_data.duration))
-		cs.add_component(entity_id, "FollowOwnerComponent", FollowOwnerComponent.new(owner_id))
+func _create_hit_vfx(data: Dictionary) -> void:
+	
+	var vfx_name = data.damage_type
+	var e_data = db.vfx_configs[vfx_name]
+	var entity_id = em.create_entity()
+	var owner_id: int = data.owner_id
+	cs.add_component(entity_id, "HitVFXComponent", HitVFXComponent.new(owner_id))
+	cs.add_component(entity_id, "TransformComponent",TransformComponent.new(data.position))
+	cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data.scene))
+	cs.add_component(entity_id, "LifeTimeComponent", LifeTimeComponent.new(e_data.duration))
+	cs.add_component(entity_id, "FollowOwnerComponent", FollowOwnerComponent.new(owner_id))
 
 
 var DAMAGE_POPUPS_LIMIT :int = 10
 
-func _create_damage_popup(data_array: Array = []) -> void:
+func _create_damage_popup(data: Dictionary) -> void:
 	
 	var drift_x = randf_range(-3.35, 3.35)
 	var offset_x = randf_range(-0.5, 0.5)
 	var offset :Vector3 = Vector3(offset_x,offset_x,offset_x)
 	if damage_popup_arch.entities.size()> DAMAGE_POPUPS_LIMIT:
 		return
-	for data in data_array:
-		var popup_entity = em.create_entity()
-		cs.add_component(popup_entity, "DamagePopupComponent",DamagePopupComponent.new(
-			data.damage,data.damage_type,data.owner_id,data.position+offset,drift_x))
-		cs.add_component(popup_entity, "TransformComponent", TransformComponent.new(data.position+offset))
-		cs.add_component(popup_entity, "RenderComponent",RenderComponent.new("res://Scenes/Popups/DamagePopup.tscn"))
-		cs.add_component(popup_entity, "LifeTimeComponent",LifeTimeComponent.new(0.7))
-		cs.add_component(popup_entity, "FollowOwnerComponent", FollowOwnerComponent.new(data.owner_id))
+	
+	var popup_entity = em.create_entity()
+	cs.add_component(popup_entity, "DamagePopupComponent",DamagePopupComponent.new(
+		data.damage,data.damage_type,data.owner_id,data.position+offset,drift_x))
+	cs.add_component(popup_entity, "TransformComponent", TransformComponent.new(data.position+offset))
+	cs.add_component(popup_entity, "RenderComponent",RenderComponent.new("res://Scenes/Popups/DamagePopup.tscn"))
+	cs.add_component(popup_entity, "LifeTimeComponent",LifeTimeComponent.new(0.7))
+	cs.add_component(popup_entity, "FollowOwnerComponent", FollowOwnerComponent.new(data.owner_id))

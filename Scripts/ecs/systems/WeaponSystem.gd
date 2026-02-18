@@ -11,7 +11,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	arch = cs.register_archetype(["WeaponComponent"], ["FireRequestComponent","DeadComponent"])
 func _start_combat(_data) -> void:
 	combat = true
-func _finish_combat(_data)-> void:
+func _finish_combat(_data:Dictionary = {})-> void:
 	combat = false	
 
 

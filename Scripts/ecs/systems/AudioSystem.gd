@@ -12,7 +12,9 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 	event_bus.subscribe("day_changed", _on_day_changed)
 	event_bus.subscribe("combat_completed", _on_combat_completed)
 	event_bus.subscribe("combat_started", _on_combat_started)
-	
+	event_bus.subscribe("player_died", _on_died)
+	event_bus.subscribe("balance_changed",_on_balance_changed)
+	event_bus.subscribe("purchased",_on_purchased)
 func _on_enemy_died(data: Dictionary = {}) -> void:
 	var enemy_name: String = data.get("_name", "")
 	var pos: Vector3 = data.get("position", Vector3.ZERO)
@@ -63,5 +65,12 @@ func _on_combat_completed(_data: Dictionary = {}) -> void:
 	
 func _on_day_changed(_data: Dictionary = {}) -> void:
 	AudioManager.play_music_delayed("day_changed",0.5,-5.0,false)
-	AudioManager.play_music_delayed("idle",7.0,0.0,true)
-	
+	#AudioManager.play_music_delayed("idle",7.0,0.0,true)
+func _on_died(_data: Dictionary = {}) -> void:
+	AudioManager.play_music_delayed("death",0.0,-5.0,false)
+func _on_balance_changed(data: Dictionary = {}) -> void:
+	var value = data.value
+	if value > 0:
+		AudioManager.play_ui_sound("money_arrived")
+func _on_purchased(_data: Dictionary = {}) -> void:
+	AudioManager.play_ui_sound("purchased")

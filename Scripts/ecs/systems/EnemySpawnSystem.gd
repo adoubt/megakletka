@@ -4,12 +4,10 @@ class_name EnemySpawnSystem
 
 var db: DataBase
 
-var current_day: int = -1
-var spawning := false
+var enemy_arch: Archetype
 
 
-var spawn_interval := 0.5      
-var spawn_timer := 0.0
+
 
 const MAX_ALIVE_ENEMIES := 200
 const BATTERY_BUDGET_RATIO :float= 0.1   # 100% бюджета
@@ -35,35 +33,38 @@ func _init(
 	db = _db
 
 
-	event_bus.subscribe("combat_started", _on_combat_started)
-	event_bus.subscribe("combat_completed", _on_combat_finished)
-	event_bus.subscribe("day_skipped", _on_combat_finished)
+	arch = cs.register_archetype(["DayComponent","CombatStateComponent","BatteryComponent"])
+	
 	players_arch = cs.register_archetype(["PlayerComponent"],["DeadComponent"])
-	enemies_arch = cs.register_archetype(["EnemyComponent"],["DeadComponent"])
+	enemy_arch = cs.register_archetype(["EnemyComponent","EnemyBudgetComponent"], ["DeadComponent"])
 	
 func update(delta: float) -> void:
-	if not spawning:
+	if arch.entities.is_empty():
 		return
-
-	spawn_timer -= delta
-	if spawn_timer > 0.0:
-		return
+		
+	var entities = arch.entities
+	for e in entities:
+		var combat := cs.get_component(e, "CombatStateComponent")
+		if combat.state != CombatState.ACTIVE:
+			continue
+			
+		combat.spawn_timer -= delta
+		if combat.spawn_timer > 0.0:
+			return
+		
+			
+			
+		combat.spawn_timer = combat.spawn_interval
+		_try_spawn(e)
 	
 		
-		
-	spawn_timer = spawn_interval
-	_try_spawn()
-	
-		
 
-
-
-func _try_spawn() -> void:
-	var battery := cs.get_component(current_day, "BatteryComponent")
+func _try_spawn(e:int) -> void:
+	var battery := cs.get_component(e, "BatteryComponent")
 	if battery == null:
 		return
 	
-	var enemy_count := enemies_arch.entities.size()
+	var enemy_count := enemy_arch.entities.size()
 
 	if enemy_count >= MAX_ALIVE_ENEMIES:
 		return
@@ -102,23 +103,7 @@ func _try_spawn() -> void:
 		event_bus.emit("create_enemy", enemies_to_create)
 		
 
-# ===== СОБЫТИЯ =====
 
-func _on_combat_started(data: Dictionary) -> void:
-	if not data.has("current_day"):
-		return
-	spawning = true
-	current_day = data["current_day"]
-
-	# 🔥 первый спавн — СРАЗУ
-	spawn_timer = 0.0
-
-
-func _on_combat_finished(_data: Dictionary) -> void:
-	spawning = false
-
-
-# ===== ВСПОМОГАТЕЛЬНОЕ =====
 
 func _pick_enemy() -> String:
 	var keys : Array = db.enemy_configs.keys()
