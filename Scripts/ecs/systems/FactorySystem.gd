@@ -28,6 +28,8 @@ func _create_projectiles(data_array: Array = []) -> void:
 	for data in data_array:
 		var entity_id := em.create_entity()
 		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(data.projectile_speed))
+		cs.add_component(entity_id, "MoveSpeedMultComponent",MoveSpeedMultComponent.new(1.0))
+
 		cs.add_component(entity_id, "HasStatsComponent", HasStatsComponent.new())
 		cs.add_component(entity_id, "TransformComponent",TransformComponent.new(data.position))
 		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
@@ -136,6 +138,8 @@ func _create_enemies(data_array: Array = []) -> void:
 		cs.add_component(entity_id, "RenderComponent",RenderComponent.new(e_data["scene"], true))
 		cs.add_component(entity_id, "EnemyBudgetComponent", EnemyBudgetComponent.new(e_data["budget"]))
 		cs.add_component(entity_id, "MoveSpeedComponent",MoveSpeedComponent.new(e_data.movespeed))
+		cs.add_component(entity_id, "MoveSpeedMultComponent",MoveSpeedMultComponent.new(e_data.movespeed_mult))
+
 		cs.add_component(entity_id, "MovementIntentComponent", MovementIntentComponent.new())
 		
 		cs.add_component(entity_id, "XPRewardComponent", XPRewardComponent.new(e_data['budget']))
@@ -168,7 +172,11 @@ func _create_enemies(data_array: Array = []) -> void:
 		cs.add_component(entity_id,"AimComponent", AimComponent.new())
 		if not e_data.has("flying"):
 			cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
-			
+		if e_data.has("abilities") and e_data.abilities != null:
+			var abilities_to_create := []
+			for ability in e_data.abilities:
+				abilities_to_create.append({"owner_id": entity_id, "ability_id": ability})
+			_create_modifiers(entity_id, abilities_to_create)	
 		
 	
 
@@ -187,10 +195,12 @@ func _create_chars(data_array: Array = []):
 		
 		cs.add_component(entity_id, "InputComponent", InputComponent.new())
 		cs.add_component(entity_id, "InRangeInteractionComponent", InRangeInteractionComponent.new())
-		cs.add_component(entity_id, "HasStatsComponent", HasStatsComponent.new())
+		#cs.add_component(entity_id, "HasStatsComponent", HasStatsComponent.new())
 		cs.add_component(entity_id, "MovementIntentComponent", MovementIntentComponent.new())
 		cs.add_component(entity_id, "PlayerComponent", PlayerComponent.new())
 		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(e_data.movespeed))
+		cs.add_component(entity_id, "MoveSpeedMultComponent",MoveSpeedMultComponent.new(e_data.movespeed_mult))
+
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(position))
 		cs.add_component(entity_id, "MaxHPComponent", MaxHPComponent.new(e_data.hp))
 		cs.add_component(entity_id, "CurrentHPComponent",CurrentHPComponent.new(e_data.hp))
@@ -229,7 +239,10 @@ func _create_chars(data_array: Array = []):
 		cs.add_component(entity_id, "JumpsCountComponent", JumpsCountComponent.new(e_data.jumps))
 		cs.add_component(entity_id, "JumpHeightComponent", JumpHeightComponent.new(e_data.jump_height))
 		cs.add_component(entity_id, "JumpsLeftComponent", JumpsLeftComponent.new())
+		cs.add_component(entity_id, "JumpsUsedComponent", JumpsLeftComponent.new())
 		cs.add_component(entity_id, "SlotsCountComponent",SlotsCountComponent.new(e_data.slots))
+		cs.add_component(entity_id, "UsedSlotsRecalculateRequestComponent", UsedSlotsRecalculateRequestComponent.new())
+		
 		var weapons_to_create:=[]
 		for weapon in e_data.weapons:
 			weapons_to_create.append({"weapon_name": weapon,"owner_id": entity_id, "position": position})
@@ -267,6 +280,7 @@ func _create_xp(data_array: Array = []):
 		cs.add_component(entity_id, "RenderComponent", RenderComponent.new("uid://dosmechqhf3sw", true))
 		cs.add_component(entity_id, "PickUpComponent", PickUpComponent.new())
 		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new())
+		cs.add_component(entity_id, "MoveSpeedMultComponent",MoveSpeedMultComponent.new(1.0))
 		cs.add_component(entity_id, "MovementIntentComponent", MovementIntentComponent.new())
 		cs.add_component(entity_id, "GravityComponent", GravityComponent.new())
 		cs.add_component(entity_id, "HasStatsComponent", HasStatsComponent.new())
@@ -337,13 +351,40 @@ func _create_items(data_array: Array = []):
 		if e_data.has("abilities") and e_data.abilities != null:
 			var abilities_to_create := []
 			for ability in e_data.abilities:
-				abilities_to_create.append({"owner_id": entity_id, "ability_data": ability})
+				abilities_to_create.append({"owner_id": entity_id, "ability_id": ability})
 			_create_abilities(abilities_to_create)
+
+func _create_modifiers(target_id:int,data_array: Array = []) -> void:
+	for data in data_array:
+		var owner_id = data.owner_id
+		var abilidy_id = data.ability_id
+		if not db.item_ability_configs.has(abilidy_id):
+			push_warning("Unknown item id : %s" % abilidy_id)
+		var ability_data:Dictionary = db.item_ability_configs[abilidy_id]
+		var entity_id = em.create_entity()
 			
+		
+		if ability_data.has("scaling"):
+			cs.add_component(entity_id, "ScalingComponent", ScalingComponent.new(ability_data.scaling.per, ability_data.scaling.source_stat,ability_data.scaling.domain))
+		
+		if ability_data.has("condition"):
+			cs.add_component(entity_id, "ConditionComponent",ConditionComponent.new(
+				ability_data.condition.type, ability_data.condition.source_stat,ability_data.condition.domain, ability_data.condition.value))
+		
+		if ability_data.has("trigger"):
+			cs.add_component(entity_id, "TriggerComponent", TriggerComponent.new(ability_data.trigger.event, ability_data.trigger.action,ability_data.trigger.value))			
+		cs.add_component(entity_id, "ItemAbilityComponent", ItemAbilityComponent.new(owner_id, ability_data.title))
+		
+		if ability_data.has("target_stat"):
+			cs.add_component(entity_id, "ModifierComponent", ModifierComponent.new(target_id,target_id,ability_data.target_stat,ability_data.domain, ability_data.value))
+					
 func _create_abilities(data_array: Array = []) -> void:
 	for data in data_array:
 		var owner_id = data.owner_id
-		var ability_data:Dictionary = data.ability_data
+		var abilidy_id = data.ability_id
+		if not db.item_ability_configs.has(abilidy_id):
+			push_warning("Unknown item id : %s" % abilidy_id)
+		var ability_data:Dictionary = db.item_ability_configs[abilidy_id]
 		var entity_id = em.create_entity()
 			
 		cs.add_component(entity_id, "TitleComponent", TitleComponent.new(ability_data.get("title", "Ability Title"),ability_data.get("description","Ability Description")))	
@@ -362,16 +403,7 @@ func _create_abilities(data_array: Array = []) -> void:
 		if ability_data.has("target_stat"):
 			cs.add_component(entity_id, "StatModifierComponent", StatModifierComponent.new(ability_data.target_stat,ability_data.domain, ability_data.value))
 		
-#func _create_slots(data_array: Array = []) -> void:
-	#for data in data_array:
-		#var owner_id = data["owner_id"]
-		#var slots = get_entities_with(["SlotComponent"])
-		#var owner_slots: int = 0
-		#for slot in slots:
-			#if (cs.get_component(slot,"SlotComponent").owner_id == owner_id): owner_slots +=1 
-		#var entity_id = em.create_entity()
-		#cs.add_component(entity_id, "SlotComponent", SlotComponent.new(owner_id,owner_slots))
-	#event_bus.emit("slots_created")
+
 
 func _create_camera(data_array: Array = []) -> void:
 	for data in data_array:

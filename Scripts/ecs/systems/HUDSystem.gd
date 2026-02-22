@@ -72,7 +72,7 @@ func _on_budget_changed(data: Dictionary = {}) -> void:
 func _on_balance_changed(data:Dictionary):
 	UIManager.hud.balance = data.balance
 	
-func _on_players_list_changed(data:Dictionary = {}) ->void:
+func _on_players_list_changed(_data:Dictionary = {}) ->void:
 	pass
 
 	
@@ -128,10 +128,10 @@ func _on_stat_changed(stat: int, value: float):
 
 		# ===== MOVEMENT =====
 		Stats.PlayerStats.MOVESPEED:
-			UIManager.hud.movespeed = value
+			pass
 
 		Stats.PlayerStats.MOVESPEED_MULT:
-			pass
+			UIManager.hud.movespeed = value
 
 
 		# ===== JUMPS =====

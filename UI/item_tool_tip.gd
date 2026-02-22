@@ -134,13 +134,12 @@ func _update_pos(delta: float) -> void:
 	var tooltip_size = size
 	var desired_pos = mouse_pos + offset
 
-	var pivot = pivot_offset
-
-	var min_x = visible_rect.position.x + pivot.x
-	var max_x = visible_rect.position.x + visible_rect.size.x - (tooltip_size.x - pivot.x)
+	
+	var min_x = visible_rect.position.x
+	var max_x = visible_rect.position.x + visible_rect.size.x - tooltip_size.x
 
 	var min_y = visible_rect.position.y
-	var max_y = visible_rect.position.y + visible_rect.size.y - (tooltip_size.y - pivot.y)
+	var max_y = visible_rect.position.y + visible_rect.size.y - tooltip_size.y
 
 
 	desired_pos.x = clamp(desired_pos.x, min_x, max_x)
@@ -161,7 +160,6 @@ func format_text(text: String) -> String:
 		"ARMOR": "#6fa8dc",
 		"ATTACK SPEED": "#ffffff",
 		"GOLD": "#d6c96a",
-		"MAX HP": "#ffffff",
 		"CRIT DAMAGE": "#ffffff",
 		"PIERCE": "#ffffff",
 		"CRIT CHANCE": "#ffffff",
@@ -170,7 +168,6 @@ func format_text(text: String) -> String:
 		"JUMPS LEFT": "#ffffff",
 		"MOVESPEED": "#ffffff",
 		"DURATION": "#ffffff",
-		"MERCHANT DISCOUNT": "#ffffff",
 		"ORB COUNT": "#ffffff",
 		"WEAPON RADIUS": "#ffffff",
 		"ORB RADIUS": "#ffffff",
@@ -182,6 +179,10 @@ func format_text(text: String) -> String:
 		"LEVEL": "#ffffff",
 		"XP GAIN": "#ffffff",
 		"HP": "#ffffff",
+		"CURRENT HP": "#ffffff",
+		"MAX HP": "#ffffff",
+		"X": "#ffffff",
+		"COST":"#d6c96a",
 	}
 	
 	var regex := RegEx.new()

@@ -18,10 +18,10 @@ func _on_poi_interacted(data: Dictionary) -> void:
 	if comp.is_mushroom:
 		cs.add_component(poi_id, "MushroomEatedComponent", MushroomEatedComponent.new(player_id))
 		return
-		
+	UIManager.close_hat()	
 	match comp.name:
 		"campfire":
-			var pos = cs.get_component(poi_id,"TransformComponent").position
+			
 			for camera in camera_arch.entities:
 				var camera_comp = cs.get_component(camera, "CameraComponent")
 				if camera_comp.owner_id == player_id:
@@ -39,10 +39,19 @@ func _on_poi_interacted(data: Dictionary) -> void:
 
 					camera_comp.focus_target = focus_pos
 					camera_comp.focus_from_pos = camera_pos
+					break
+			var render = cs.get_component(poi_id,"RenderComponent")
+			var it = cs.get_component(poi_id,"InteractionTargetComponent")
+			_update_items_data(poi_id)
+			if it.interact_type & InteractType.PRESS:
+				render.instance.hide_hint()
+			if it.interact_type & InteractType.HOLD:
+				render.instance.hide_hint_r()
+			
+			UIManager.open_campfire()
 		"merchant":
 			
-			var campfire_position = Vector3.ZERO
-			var pos = cs.get_component(poi_id,"TransformComponent").position
+			
 			for camera in camera_arch.entities:
 				var camera_comp = cs.get_component(camera, "CameraComponent")
 				if camera_comp.owner_id == player_id:

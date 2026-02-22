@@ -3,7 +3,7 @@ class_name HitFlashSystem
 
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
 	super._init(_entity_manager, _component_store, _event_bus)
-	arch = cs.register_archetype(["HitFlashComponent", "RenderComponent"],
+	arch = cs.register_archetype(["EnemyComponent","HitFlashComponent", "RenderComponent"],
 		["DeadComponent"])
 	
 func update(delta: float) -> void:

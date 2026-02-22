@@ -22,10 +22,12 @@ func update(_delta:float) -> void:
 				_eat_damage_for_current_hp_mushroom(mult,source_id,e_id)
 			_:
 				printerr("Mushroom logic not founded")
-		event_bus.emit("MUSHROOM_EATED", {"source_id": source_id})
+		var event_e := em.create_entity()
+		cs.add_component(event_e, "TriggerEventComponent", TriggerEventComponent.new(AbilityTriggers.Events.MUSHROOM_EATED,source_id))
+			
 		cs.add_component(e_id, "DeadComponent", DeadComponent.new())
 		
-func _eat_max_hp_mushroom(mult: float, source_id: int, e_id: int):
+func _eat_max_hp_mushroom(mult: float, source_id: int, _e_id: int):
 	var base_value : float = 0.1
 	var final_value = base_value * mult
 	var max_hp = cs.get_component(source_id, "MaxHPComponent")
@@ -48,7 +50,7 @@ func _eat_xp_left_mushroom(mult: float,source_id, e_id: int):
 		exp_to_create.append({"e_id": e_id,"position": pos, "xp_value": xp_per_orb })
 		
 	event_bus.emit("create_xp",exp_to_create)
-func _eat_heal_mushroom(mult: float, source_id: int, e_id: int):
+func _eat_heal_mushroom(mult: float, source_id: int, _e_id: int):
 	var value_to_heal:float = 0.1
 	
 	var max_hp = cs.get_component(source_id, "MaxHPComponent").final_value	

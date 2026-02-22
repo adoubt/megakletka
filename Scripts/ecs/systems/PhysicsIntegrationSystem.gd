@@ -37,8 +37,9 @@ func update(delta: float) -> void:
 					
 
 					var jumps := cs.get_component(e_id, "JumpsCountComponent")
-					var jumps_left := cs.get_component(e_id, "JumpsLeftComponent")
-					if jumps and jumps_left:
+					if jumps:
+						var jumps_left := cs.get_component(e_id, "JumpsLeftComponent")
+						
 						event_bus.emit("grounded", {
 						"entity": e_id,
 						"velocity_y": impact_vy

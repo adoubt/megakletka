@@ -21,10 +21,13 @@ func update(_delta):
 			continue
 		
 		
-		
+		var combat = cs.get_component(run.current_day, "CombatStateComponent")
+		if combat: 
+			combat.state = CombatState.SKIPPED
 		run.current_day = req.target_day
+		run.current_floor += 1
 		cs.get_component(req.target_day, "DayComponent").completed = true
 		cs.add_component(RUN, "GroundGenerationRequestComponent", GroundGenerationRequestComponent.new(req.target_day))
 		cs.add_component(run_id, "DayEnterRequestComponent", DayEnterRequestComponent.new(req.target_day))
-
+		
 		cs.remove_component(run_id, "DaySelectRequestComponent")

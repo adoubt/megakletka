@@ -9,7 +9,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_eve
 	
 	arch = cs.register_archetype(["ItemTransactionComponent", "ItemComponent",],["DeadComponent"])
 	ability_arch = cs.register_archetype(["ItemAbilityComponent"])
-	stat_mod_arch = cs.register_archetype([ "ModifierComponent"],["DeadComponent"])
+	stat_mod_arch = cs.register_archetype([ "ModifierComponent"])
 	
 	item_arch = cs.register_archetype(["ItemComponent"],["DeadComponent"])
 	
@@ -23,7 +23,9 @@ func update(_delta: float) -> void:
 		if source_id not in [-1, RUN]:
 			_on_item_unequipped(e, source_id, item_comp.slot_mask) 
 			cs.add_component(source_id, "UsedSlotsRecalculateRequestComponent", UsedSlotsRecalculateRequestComponent.new())
-		
+		if target_id == RUN and source_id!= -1:
+			_sell_item(e)
+		#TODO Time before animation
 		cs.add_component(e, "AnimationComponent", AnimationComponent.new(AnimationType.FLOAT))
 				
 		var target_slot_mask :int =-1
@@ -36,10 +38,9 @@ func update(_delta: float) -> void:
 			match poi_comp.name:
 				"merchant": target_slot_mask = SlotMask.MERCHANT
 				"campfire": target_slot_mask = SlotMask.CAMPFIRE
-				
-		if target_slot_mask ==-1:
-			printerr("ItemTransactionSystem. POI Name fornot found. target_slot_mask not found. Transaction can not be done")
-			continue
+		else:
+			target_slot_mask = SlotMask.SOLD		
+		
 		item_comp.owner_id = target_id
 		item_comp.slot_mask = target_slot_mask
 			
@@ -48,7 +49,7 @@ func update(_delta: float) -> void:
 		
 		
 		
-		_on_item_equipped(e, target_id,item_comp.slot_mask)
+		_on_item_equipped(e, target_id, item_comp.slot_mask)
 		
 
 		cs.remove_component(e, "ItemTransactionComponent")
@@ -69,7 +70,9 @@ func _on_item_equipped(item_id:int, owner_id:int, slot_mask:int) -> void:
 		var stat_mod = cs.get_component(ability_e, "StatModifierComponent")
 		if not stat_mod:
 			return
-		
+			##TODO Need ItemStats enum
+		if stat_mod.stat in [Stats.PlayerStats.COST]:
+			owner_id = item_id
 		var mod_e := em.create_entity()
 		var mod = ModifierComponent.new(
 			ability_e, owner_id, stat_mod.stat, stat_mod.domain, stat_mod.value)
@@ -102,14 +105,14 @@ func _on_item_equipped(item_id:int, owner_id:int, slot_mask:int) -> void:
 			cs.add_component(mod_e, "TriggerComponent", new_trigger)
 
 
-func _on_item_unequipped(item_id:int, owner_id:int, slot_mask:int) -> void:
+func _on_item_unequipped(item_id:int, owner_id:int, _slot_mask:int) -> void:
 	cs.add_component(owner_id, "UsedSlotsRecalculateRequestComponent",
 		UsedSlotsRecalculateRequestComponent.new())
 	cs.add_component(owner_id, "DirtyStatsComponent", DirtyStatsComponent.new())
-	for mod_e in stat_mod_arch.entities:
+	var modifiers = stat_mod_arch.entities.duplicate()
+	for mod_e in modifiers:
 		var mod := cs.get_component(mod_e, "ModifierComponent")
-		if mod == null:
-			continue
+		
 
 		var ability_e :int= mod.source_id
 		var ability_comp := cs.get_component(ability_e, "ItemAbilityComponent")
@@ -117,8 +120,9 @@ func _on_item_unequipped(item_id:int, owner_id:int, slot_mask:int) -> void:
 			continue
 
 		if ability_comp.owner_id == item_id:
+			
 			cs.add_component(mod_e, "DeadComponent", DeadComponent.new(0.0))
-
+		
 func _get_valid_slot_index(owner_id: int) -> int:
 	var used := {}
 
@@ -138,4 +142,6 @@ func _get_valid_slot_index(owner_id: int) -> int:
 
 	return index
 
-		
+func _sell_item(e: int):
+	cs.add_component(e, "DeadComponent", DeadComponent.new(0.0))
+	

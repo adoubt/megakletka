@@ -1,28 +1,45 @@
 extends BaseSystem
 
 class_name ModifierTriggerSystem
-
+var mod_arch :Archetype
+var item_arch: Archetype
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_event_bus : EventBus,): 
 	super._init(_entity_manager,_component_store,_event_bus)
-	
-	arch = cs.register_archetype(["ModifierComponent", "TriggerComponent"])
-	
-	for e in AbilityTriggers.Events.values():
-		var event_str:String = AbilityTriggers.event_to_string(e)
-		event_bus.subscribe(event_str, func(data): _on_game_event(e, data))
+	item_arch = cs.register_archetype(["ItemComponent"],["DeadComponent"])
+	mod_arch = cs.register_archetype(["ModifierComponent", "TriggerComponent"], ["DeadComponent"])
+	arch = cs.register_archetype(["TriggerEventComponent"],["DeadComponent"])
 
+func update(_delta:float):
+	if arch.entities.is_empty():
+		return
+	var entities := arch.entities.duplicate()
+	for e in entities:
+		var event := cs.get_component(e, "TriggerEventComponent")
 		
-func _on_game_event(event_id: int, data: Dictionary) -> void:
-	_process_triggers(event_id, data)
+		_process_triggers(event.owner_id,event.event_id,event.payload)
+		cs.add_component(e, "DeadComponent", DeadComponent.new())
+		
+func _process_triggers(owner_id:int,event_id: int, payload:Dictionary) -> void:
 	
-func _process_triggers(event_id: int, data: Dictionary) -> void:
-	var abilities = arch.entities.duplicate()
-	for e in abilities:
+	for e in mod_arch.entities:
+		var modifier := cs.get_component(e, "ModifierComponent")
+		
+		
 		var trigger := cs.get_component(e, "TriggerComponent")
 		if trigger.event != event_id:
 			continue
-
-		var modifier := cs.get_component(e, "ModifierComponent")
+		if modifier.stat == Stats.PlayerStats.COST:
+			if owner_id != cs.get_component(modifier.target_id, "ItemComponent").owner_id:
+				continue
+		else:
+			if modifier.target_id != owner_id:
+				continue
+		match event_id:
+			AbilityTriggers.Events.USED:
+				var item_id:int = payload.item_id
+				if item_id != cs.get_component(modifier.source_id, "ItemAbilityComponent").owner_id:
+					continue
+			
 		_apply_trigger_action( trigger, modifier)
 		
 func _apply_trigger_action(
@@ -33,14 +50,37 @@ func _apply_trigger_action(
 
 		AbilityTriggers.Actions.GAIN_VALUE:
 			modifier.value += trigger.value
-			print(modifier.value)
+			cs.get_component(modifier.source_id, "StatModifierComponent").value = modifier.value
+			var item_id = cs.get_component(modifier.source_id, "ItemAbilityComponent").owner_id
+			cs.add_component(item_id, "DirtyStatsComponent", DirtyStatsComponent.new())
 		AbilityTriggers.Actions.SET_VALUE:
 			modifier.base_value = trigger.value
-
+			
 		AbilityTriggers.Actions.ADD_JUMP:
 			pass
 		AbilityTriggers.Actions.ADD_GOLD:
 			cs.add_component(RUN, "BalanceChangeRequestComponent", BalanceChangeRequestComponent.new(int(trigger.value), "item_ability",modifier.source_id))
+		AbilityTriggers.Actions.GAMBLE_FOX:
+			_gamble1(modifier.target_id)
 		_:
 			push_warning("Unknown trigger action")
+			
+		
 	cs.add_component(modifier.target_id,"DirtyStatsComponent", DirtyStatsComponent.new())	
+
+
+func _gamble1(target_id:int) -> void:
+	var items_count: int
+	var items_for_entity:=[]
+	for item in item_arch.entities:
+		if cs.get_component(item, "ItemComponent").owner_id == target_id:
+			items_for_entity.append(item)
+	items_count = items_for_entity.size()
+	if items_count<=0:
+		return
+	var chosen_item = items_for_entity.pick_random()
+	var cost_comp := cs.get_component(chosen_item, "CostComponent")
+	var new_value = cost_comp.base_value * items_count
+	cost_comp.base_value = new_value
+	cs.add_component(chosen_item, "DirtyStatsComponent", DirtyStatsComponent.new())
+	cs.add_component(chosen_item, "SellRequestComponent",SellRequestComponent.new())

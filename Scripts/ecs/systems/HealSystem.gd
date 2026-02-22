@@ -17,6 +17,6 @@ func update(_delta: float):
 				"HPChangeRequestComponent",
 				HPChangeRequestComponent.new(ph.amount, ph.source_id)
 			)
-		var max_hp = cs.get_component(e_id, "MaxHPComponent").final_value
+		
 			
 		cs.remove_component(e_id, "PendingHealComponent")

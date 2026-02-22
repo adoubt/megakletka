@@ -5,19 +5,23 @@ class_name ItemVisualPlacementSystem
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _event_bus: EventBus):
 	super._init(_entity_manager, _component_store, _event_bus)
 
-	arch = cs.register_archetype(["ItemPlacementRequestComponent","ItemComponent"])
+	arch = cs.register_archetype(["ItemPlacementRequestComponent","ItemComponent", "RenderComponent"], ["DeadComponent"])
 	
 func update(_delta:float)-> void:
 	var entities = arch.entities.duplicate()
 	for e in entities:
 		var item_comp = cs.get_component(e,"ItemComponent")
-		
+		var req = cs.get_component(e, "ItemPlacementRequestComponent")
+		if req.just_pos:
+			pass
 		var slot_mask = item_comp.slot_mask
 		var owner_id = item_comp.owner_id
 		var owner_pos = cs.get_component(owner_id, "TransformComponent").position
 		var slots_count : int = cs.get_component(owner_id, "SlotsCountComponent").base_value
 		var slot_index :int = item_comp.slot_index
+		var render = cs.get_component(e, "RenderComponent")
 		
+		render.instance.set_highlight(false)
 		var offset: Vector3 
 		var weight: float 
 		match slot_mask:
@@ -75,7 +79,7 @@ func _get_merchant_offset(
 func _get_hat_offset(
 	slot_index: int,
 	slots_count: int,
-	height: float = 0.7,
+	height: float = 0.8,
 	radius: float = 0.3
 ) -> Vector3:
 

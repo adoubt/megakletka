@@ -70,14 +70,17 @@ func initialize(run_seed: int):
 	system_manager.add_system(GroundGenerationSystem.new(entity_manager, component_store,event_bus,groound_handler))
 	system_manager.add_system(InputSystem.new(entity_manager, component_store,event_bus))
 	
-	
+	system_manager.add_system(CameraToggleSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(PlayerControlSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(ConsoleSystem.new(entity_manager, component_store,event_bus, db))
-	system_manager.add_system(HealthRatioReset.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(HealthRatioResetSystem.new(entity_manager, component_store,event_bus))
+	system_manager.add_system(JumpsUsedResetSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(ResetStatsSystem.new(entity_manager, component_store,event_bus))
 	
 	
 	system_manager.add_system(ApplyModifierSystem.new(entity_manager, component_store,event_bus))
+	#system_manager.add_system(StatModifierOverrideSystem.new(entity_manager, component_store,event_bus))
+	
 	system_manager.add_system(StatFinalizeSystem.new(entity_manager, component_store,event_bus))
 	
 	system_manager.add_system(ModifierTriggerSystem.new(entity_manager, component_store,event_bus))
@@ -141,7 +144,7 @@ func initialize(run_seed: int):
 	system_manager.add_system(CameraSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(LevelUpOfferSystem.new(entity_manager,component_store,event_bus,db))
 	system_manager.add_system(Interactionsystem.new(entity_manager,component_store,event_bus))
-	system_manager.add_system(ItemIdleFloatSystem.new(entity_manager,component_store,event_bus))
+	#system_manager.add_system(ItemIdleFloatSystem.new(entity_manager,component_store,event_bus))
 	system_manager.add_system(DEVPanelSystem.new(entity_manager, component_store,event_bus, object_pool))
 	system_manager.add_system(ItemVisualPlacementSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HUDSystem.new(entity_manager, component_store,event_bus,))
@@ -149,6 +152,7 @@ func initialize(run_seed: int):
 	#system_manager.add_system(DayActivationSystem.new(entity_manager, component_store,event_bus, db, object_pool))
 	system_manager.add_system(MerchantActivationSystem.new(entity_manager, component_store,event_bus, db, object_pool))
 	system_manager.add_system(RenderSystem.new(entity_manager, component_store,event_bus, object_pool))
+	system_manager.add_system(SlotsViewBuilderSystem.new(entity_manager, component_store,event_bus,))
 	system_manager.add_system(ScaleSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(AudioSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(HitFlashSystem.new(entity_manager, component_store,event_bus))

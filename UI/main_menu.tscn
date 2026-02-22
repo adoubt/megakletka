@@ -23,47 +23,73 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=850141023]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=266039690]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -138.5
-offset_top = -114.5
-offset_right = 138.5
-offset_bottom = 114.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=78400655]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=850141023]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
 theme = ExtResource("2_tk8dj")
 
-[node name="GameTest" type="Button" parent="VBoxContainer" unique_id=970845501]
+[node name="GameTest" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=970845501]
 layout_mode = 2
 text = "New Run"
 
-[node name="Join" type="Button" parent="VBoxContainer" unique_id=1731823974]
+[node name="Join" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1731823974]
 layout_mode = 2
 disabled = true
 text = "Join
 "
 
-[node name="Button2" type="Button" parent="VBoxContainer" unique_id=665597225]
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=665597225]
 layout_mode = 2
 disabled = true
 text = "BIG ROOM TEST"
 
-[node name="Settings" type="Button" parent="VBoxContainer" unique_id=1936093454]
+[node name="Settings" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1936093454]
 layout_mode = 2
 text = "SETTINGS"
 
-[node name="Exit" type="Button" parent="VBoxContainer" unique_id=933662318]
+[node name="Exit" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=933662318]
 layout_mode = 2
 theme_override_styles/normal = ExtResource("3_d8nwk")
 text = "EXIT"
 
-[connection signal="pressed" from="VBoxContainer/GameTest" to="." method="_on_game_test_pressed"]
-[connection signal="pressed" from="VBoxContainer/Join" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
-[connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=894952249]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2" unique_id=852752325]
+layout_mode = 2
+theme_override_font_sizes/font_size = 90
+text = "HatBound"
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2" unique_id=1804272603]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 27
+text = " v0.14.0"
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer" unique_id=1986556221]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/GameTest" to="." method="_on_game_test_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]

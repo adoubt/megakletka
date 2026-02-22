@@ -78,10 +78,12 @@ process_material = SubResource("ParticleProcessMaterial_yeynr")
 draw_pass_1 = SubResource("QuadMesh_uq5jc")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1723825844]
+visible = false
 material_override = SubResource("ShaderMaterial_fk0n2")
 mesh = SubResource("QuadMesh_svao1")
 
 [node name="Label3D" type="Label3D" parent="." unique_id=1799587530]
+visible = false
 visibility_range_end = 100.0
 billboard = 1
 alpha_cut = 1

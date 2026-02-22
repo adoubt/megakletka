@@ -8,7 +8,7 @@ extends Node
 @export var max_value: float = 1.0
 var zone: Node3D
 
-
+@onready var slots_root: Node3D = $SlotsRoot
 @onready var progress_shader: ShaderMaterial 
 func _ready() -> void:
 	hint = get_node_or_null("Hint")

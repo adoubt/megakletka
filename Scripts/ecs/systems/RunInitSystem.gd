@@ -153,13 +153,14 @@ func _init_days(run_seed: int, ante: int) -> int:
 			if roll < 0.03:
 				day_type = DayType.MERCHANT_DEAD
 			
-			elif roll < 0.10:
+			elif roll < 0.05:
 				day_type = DayType.MERCHANT
-			elif roll < 0.12:
-				day_type = DayType.MUSHROOMS
-			elif roll < 0.16:
+			
+			elif roll < 0.10:
 				day_type = DayType.ELITE
-			elif roll < 0.30:
+			elif roll < 0.25:
+				day_type = DayType.MUSHROOMS	
+			elif roll < 0.40:
 				day_type = DayType.HIDDEN
 			
 

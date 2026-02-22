@@ -22,9 +22,6 @@ func update(_delta:float)-> void:
 			
 		
 		
-		var tf = cs.get_component(e,"TransformComponent")
-		var run_comp = cs.get_component(RUN, "RunComponent")
-		
 		
 		var slots = cs.get_component(e, "SlotsCountComponent")
 		

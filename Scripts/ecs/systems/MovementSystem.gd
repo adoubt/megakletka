@@ -10,7 +10,7 @@ func _init(
 ):
 	super._init(_entity_manager, _component_store, _event_bus)
 	arch = cs.register_archetype(
-		["TransformComponent", "MoveSpeedComponent", "MovementIntentComponent"],
+		["TransformComponent", "MoveSpeedComponent","MoveSpeedMultComponent", "MovementIntentComponent"],
 		["DeadComponent"]
 	)
 
@@ -19,11 +19,11 @@ func update(_delta: float) -> void:
 		var tf: TransformComponent = cs.get_component(e_id, "TransformComponent")
 		var speed: MoveSpeedComponent = cs.get_component(e_id, "MoveSpeedComponent")
 		var move: MovementIntentComponent = cs.get_component(e_id, "MovementIntentComponent")
-
+		var movespeed_mult :MoveSpeedMultComponent = cs.get_component(e_id, "MoveSpeedMultComponent")
 		# ===== INPUT → VELOCITY =====
 		var dir := move.direction.normalized()
-		tf.velocity.x = dir.x * speed.final_value
-		tf.velocity.z = dir.z * speed.final_value
+		tf.velocity.x = dir.x * speed.final_value * movespeed_mult.final_value
+		tf.velocity.z = dir.z * speed.final_value * movespeed_mult.final_value
 
 		## ===== WORLD WRAP (SNAKE STYLE) =====
 		#tf.position.x = _wrap(tf.position.x)

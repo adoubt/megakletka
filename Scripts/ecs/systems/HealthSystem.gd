@@ -23,18 +23,20 @@ func update(_delta: float):
 			cs.add_component(e_id, "DeathRequestComponent", DeathRequestComponent.new(request.source_id))
 		var diff = hp_before - hp.base_value
 		
-		if diff < 0.0:
+		if diff < 0.001:
 			print(e_id," (", hp.base_value, ") got ",diff," heal " ) 
-		else:
+			cs.add_component(e_id, "DirtyStatsComponent", DirtyStatsComponent.new())
+		elif diff> 0.001:
 			print(e_id," (", hp.base_value, ") got ",diff," damage " ) 
-			if cs.has_component(e_id, "EnemyComponent"): 
-				cs.add_component(e_id, "HitFlashComponent", HitFlashComponent.new())
+			cs.add_component(e_id, "HitFlashComponent", HitFlashComponent.new())
 				
-				var owner_tf = cs.get_component(e_id, "TransformComponent")
-				event_bus.emit("DAMAGE_RECIVED", {"position": owner_tf.position, "owner_id": e_id, "damage": diff, "damage_type": "physics"})
+			var owner_tf = cs.get_component(e_id, "TransformComponent")
+			event_bus.emit("DAMAGE_RECIVED", {"position": owner_tf.position, "owner_id": e_id, "damage": diff, "damage_type": "physics"})
+			var event_e := em.create_entity()
+			cs.add_component(event_e, "TriggerEventComponent", TriggerEventComponent.new(AbilityTriggers.Events.DAMAGE_RECIVED,e_id))
 				
 
-		cs.add_component(e_id, "DirtyStatsComponent", DirtyStatsComponent.new())
+			cs.add_component(e_id, "DirtyStatsComponent", DirtyStatsComponent.new())
 			
 
 		cs.remove_component(e_id, "HPChangeRequestComponent")

@@ -7,16 +7,16 @@ enum Events {
 	ALLY_JUMPED,
 	GROUNDED,
 	DAMAGE_RECIVED,
-	USE,
+	USED,
 }
 
 enum Actions {
 	ADD_JUMP,
 	JUMPED,
-	GROUNDED,
 	GAIN_VALUE, 
 	SET_VALUE,
 	ADD_GOLD,
+	GAMBLE_FOX,
 }
 
 

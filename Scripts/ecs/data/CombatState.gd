@@ -5,7 +5,8 @@ class_name CombatState
 enum {
 	INACTIVE,
 	ACTIVE,
-	COMPLETED
+	COMPLETED,
+	SKIPPED
 }
 
 enum WinCondition {

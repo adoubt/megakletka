@@ -466,6 +466,7 @@ transform = Transform3D(0.44333208, -0.37437057, -0.29292202, 0.47534886, 0.3491
 mesh = SubResource("CylinderMesh_064t3")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1022628846]
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1380415707]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.002746582, -0.0038986206, 0.0006713867)

@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bhns03k4m0nhr" path="res://assets/shader_pics/T_VFX_Flare_251.jpg" id="6_qjumg"]
 [ext_resource type="Script" uid="uid://bxhgu8m5512bv" path="res://scripts/Unsorted/campfire_zone.gd" id="8_687ab"]
 [ext_resource type="Shader" uid="uid://dn5feoc5p3lc4" path="res://assets/Materials/circle_shader.tres" id="8_weewd"]
+[ext_resource type="Script" uid="uid://dtmt0djse1df0" path="res://scripts/slots_root.gd" id="10_687ab"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_no8uq"]
 noise_type = 0
@@ -187,3 +188,8 @@ surface_material_override/0 = SubResource("ShaderMaterial_687ab")
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=758556786]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 light_color = Color(1, 0.54901963, 0.2509804, 1)
+
+[node name="SlotsRoot" type="Node3D" parent="." unique_id=901941665]
+script = ExtResource("10_687ab")
+height = 0.2
+radius = 1.5

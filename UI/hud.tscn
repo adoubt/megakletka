@@ -167,18 +167,22 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_508rn")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/ItemToolTip/Panel" unique_id=1015138651]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="TitleBlock" type="PanelContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer" unique_id=257713020]
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pa52")
 
 [node name="TextureRect" type="TextureRect" parent="HUD/ItemToolTip/Panel/VBoxContainer/TitleBlock" unique_id=1655747080]
 layout_mode = 2
+mouse_filter = 2
 texture = SubResource("GradientTexture1D_0mm64")
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer/TitleBlock" unique_id=131549173]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 8
@@ -205,6 +209,7 @@ size_flags_vertical = 4
 
 [node name="TextureRect" type="TextureRect" parent="HUD/ItemToolTip/Panel/VBoxContainer/TitleBlock/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1553287190]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("10_2pa52")
 expand_mode = 3
 
@@ -217,6 +222,7 @@ text = "6"
 
 [node name="ItemBody" type="PanelContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer" unique_id=32779147]
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0mm64")
 
 [node name="MarginContainer2" type="MarginContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody" unique_id=860826047]
@@ -255,6 +261,7 @@ color = Color(0.85490197, 0.85490197, 0.85490197, 0.43529412)
 [node name="PanelContainer" type="MarginContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item" unique_id=287019099]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item/PanelContainer" unique_id=1308988161]
 visible = false
@@ -266,11 +273,13 @@ expand_mode = 1
 
 [node name="Panel" type="PanelContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item/PanelContainer" unique_id=162771135]
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_xiih7")
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/ItemToolTip/Panel/VBoxContainer/ItemBody/MarginContainer2/Item/PanelContainer/Panel" unique_id=1439547965]
 visible = false
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 29
 theme_override_constants/margin_top = 18
 theme_override_constants/margin_right = 38
@@ -601,6 +610,7 @@ text = "3"
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.98
+mouse_filter = 2
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 100
 

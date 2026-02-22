@@ -17,4 +17,8 @@ func update(_delta: float) -> void:
 		if not owner_tf:
 			continue
 		var tf: TransformComponent = cs.get_component(e, "TransformComponent")
-		tf.position = lerp(tf.position, owner_tf.position + offset,follow_weight)
+		var basis := Basis.from_euler(owner_tf.rotation)
+		var world_offset := basis * offset
+		var target_pos := owner_tf.position + world_offset
+		#tf.position = lerp(tf.position, target_pos, follow_weight)
+		tf.position = lerp(tf.position, target_pos, follow_weight)

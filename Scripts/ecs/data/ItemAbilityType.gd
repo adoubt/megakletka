@@ -2,8 +2,6 @@ extends RefCounted
 class_name ItemAbilityType
 
 enum {
-	FLAT = 0 << 0,
-	SCALE = 0 << 1,
-	CONDITION = 0 << 2,
-	EVENT = 0 << 3
+	PASSIVE = 0 << 0,
+	ACTIVE = 0 << 1,
 }

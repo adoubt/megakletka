@@ -5,7 +5,7 @@ uniform vec4 background_color1 : source_color = vec4(0.05, 0.1, 0.2, 1.0);
 uniform vec4 background_color2 : source_color = vec4(0.1, 0.05, 0.2, 1.0);
 uniform float aurora_intensity : hint_range(0.0, 5.0) = 1.8;
 uniform float star_brightness : hint_range(0.0, 1.0) = 0.8;
-
+uniform float speed : hint_range(0.0, 10.0) = 0.8;
 #define PI 3.14159265358979323846264
 
 
@@ -62,7 +62,7 @@ vec4 aurora(vec3 ro, vec3 rd, vec2 fragCoord) {
         pt -= of;
         vec3 bpos = ro + pt * rd;
         vec2 p = bpos.zx;
-        float rzt = triNoise2d(p, 0.06);
+        float rzt = triNoise2d(p, speed);
         vec4 col2 = vec4(0, 0, 0, rzt);
 
         vec3 color_variation = (sin(1. - vec3(2.15, -0.5, 1.2) + i * 0.043) * 0.5 + 0.5);
@@ -138,7 +138,7 @@ void fragment() {
         col = col * (1. - aur.a) + aur.rgb;
 
         vec3 pos = ro + ((0.5 - ro.y) / rrd.y) * rrd;
-        float nz2 = triNoise2d(pos.xz * vec2(0.5, 0.7), 0.);
+        float nz2 = triNoise2d(pos.xz * vec2(0.5, 0.7), 0.1);
         col += mix(vec3(0.2, 0.25, 0.5) * 0.08, vec3(0.3, 0.3, 0.5) * 0.7, nz2 * 0.4);
     }
 

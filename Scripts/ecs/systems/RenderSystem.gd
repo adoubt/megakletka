@@ -16,6 +16,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,  _e
 	event_bus.subscribe("ground_generated", _on_ground_generated)
 	event_bus.subscribe("combat_started", _on_combat_started)
 	event_bus.subscribe("combat_completed", _on_combat_completed)
+	
 	arch = cs.register_archetype(["TransformComponent", "RenderComponent"],["DeadComponent"])
 		
 func update(_delta: float) -> void:
@@ -39,13 +40,19 @@ func update(_delta: float) -> void:
 				# делаем УНИКАЛЬНЫЙ next_pass
 				render.hit_flash_material = FLASH_HIT_MATERIAL
 			cs.add_component(entity_id, "ScaleRequestComponent", ScaleRequestComponent.new())	
+		##TODO Create RotationSystem
 		var target = cs.get_component(entity_id, "MovementIntentComponent")
 		if target:
 			var target_pos = target.direction * 1000
 			if target_pos != Vector3.ZERO:
-				render.instance.look_at(target_pos)
-				render.instance.rotate_y(PI)	
-			
+				var dir :Vector3= (target_pos - render.instance.global_transform.origin).normalized()
+				var target_y := atan2(dir.x, dir.z) 
+				render.instance.rotation.y = lerp_angle(
+					render.instance.rotation.y,
+					target_y,
+					0.1
+				)
+				transform.rotation = render.instance.rotation
 		if render.shadow and render.shadow_instance == null:
 			render.shadow_instance = object_pool.get_instance(SHADOW_SCENE)
 			render.shadow_instance.visible = true
@@ -78,20 +85,20 @@ func _on_ground_generated(data: Dictionary) ->void:
 	ground = data.ground
 
 
-func _on_combat_started(data: Dictionary = {}) ->void:
+func _on_combat_started(_data: Dictionary = {}) ->void:
 	var run = cs.get_component(RUN, "RunComponent")
 	var render = cs.get_component(run.campfire_id, "RenderComponent")
 	if render and render.instance:
 		render.instance.zone.disable()
 
-func _on_combat_completed(data: Dictionary = {}) ->void:
+func _on_combat_completed(_data: Dictionary = {}) ->void:
 
 	var run = cs.get_component(RUN, "RunComponent")
 	var render = cs.get_component(run.campfire_id, "RenderComponent")
 	if render and render.instance:
 		render.instance.zone.set_warm()	
 
-func _on_day_changed_(data: Dictionary = {}) ->void:
+func _on_day_changed_(_data: Dictionary = {}) ->void:
 	
 	var run = cs.get_component(RUN, "RunComponent")
 	var render = cs.get_component(run.campfire_id, "RenderComponent")

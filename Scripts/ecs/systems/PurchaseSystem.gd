@@ -1,57 +1,48 @@
 extends BaseSystem
 class_name PurchaseSystem
 
-var item_arch : Archetype
 func _init( _entity_manager: EntityManager, _component_store: ComponentStore,_event_bus: EventBus):
 	super._init( _entity_manager, _component_store, _event_bus)
-	#arch = cs.register_archetype(["CameraComponent","TransformComponent"],["DeadComponent"])
-	event_bus.subscribe("purchase_request", _on_purchase_request)
-	item_arch = cs.register_archetype(["ItemComponent","RenderComponent"],["DeadComponent"])
-func _on_purchase_request(data: Dictionary)-> void:
-	#var buyer_entity :int
-	#var merchant_entity :int
-	#var offer_id :int
-	process_purchase(data)
 	
-func process_purchase(data):
-	var requested_instance: Node3D = data.item_instance
-	var requested_entity: int =-1
-	var merchant_entity = -1
-	var buyer: int = data.owner_id
-	var empty_slots = cs.get_component(buyer, "SlotsCountComponent").base_value - cs.get_component(buyer,"UsedSlotsCountComponent").base_value
+	arch = cs.register_archetype(["PurchaseRequestComponent","ItemComponent"],["DeadComponent"])
+
+func update(_delta: float) -> void:
+	if arch.entities.is_empty():
+		return
+	var entities:= arch.entities.duplicate()
+	for e in entities:
+		var req = cs.get_component(e, "PurchaseRequestComponent")
+		
+		process_purchase(e, req.source_id)
+		## req.source_id not used
+		cs.remove_component(e, "PurchaseRequestComponent")
+	
+func process_purchase(item_id, buyer_id):
+	
+	var empty_slots = cs.get_component(buyer_id, "SlotsCountComponent").base_value - cs.get_component(buyer_id,"UsedSlotsCountComponent").base_value
 	if  empty_slots <= 0:
 		event_bus.emit("purchase_failed",{ "reason":"NOT_ENOUGH_SLOTS"})
 		return
-	
-	for e in item_arch.entities:
-		var item = cs.get_component(e,"ItemComponent")
-		if (item.slot_mask & SlotMask.MERCHANT) == SlotMask.MERCHANT:
-			var render = cs.get_component(e,"RenderComponent")
-			if not render or not render.instance: continue
-			if render.instance == requested_instance:
-				requested_entity = e
-				merchant_entity = item.owner_id
-				break
-	if requested_entity ==-1 or merchant_entity == -1:
-		return
+
 		
-	var cost_comp = cs.get_component(requested_entity, "CostComponent")
-	var price = cost_comp.base_value
+	var cost_comp = cs.get_component(item_id, "CostComponent")
+	var price = cost_comp.final_value
 	var run = cs.get_component(RUN, "RunComponent")
-	var final_price = price - cs.get_component(buyer, "MerchantDiscountComponent").final_value
+	var final_price = price - cs.get_component(buyer_id, "MerchantDiscountComponent").final_value
 	final_price = max(0,final_price)
 	if run.logs < final_price:
 		event_bus.emit("purchase_failed",{ "reason":"NOT_ENOUGH_BALANCE"})
 		return
 	
 	cost_comp.base_value/=2
+	cs.add_component(item_id, "DirtyStatsComponent", DirtyStatsComponent.new())
 	var transaction : ItemTransactionComponent = ItemTransactionComponent.new()
-	transaction.source_id = merchant_entity
-	transaction.target_id = buyer
+	transaction.source_id = cs.get_component(item_id, "ItemComponent").owner_id
+	transaction.target_id = buyer_id
 	
-	cs.add_component(requested_entity, "ItemTransactionComponent", transaction)
+	cs.add_component(item_id, "ItemTransactionComponent", transaction)
 	
 	cs.add_component(RUN,"BalanceChangeRequestComponent", BalanceChangeRequestComponent.new(
-		-final_price,"purchase_item", merchant_entity))
-	event_bus.emit("purchased", {"price":price, "item_id":requested_entity}, )
+		-final_price,"purchase_item", transaction.source_id ))
+	event_bus.emit("purchased", {"price":price, "item_id":item_id}, )
 	

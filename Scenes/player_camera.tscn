@@ -1,12 +1,9 @@
 [gd_scene format=3 uid="uid://bjdbfjpoxl4ag"]
 
-[sub_resource type="Environment" id="Environment_xq8u4"]
-sdfgi_enabled = true
-sdfgi_use_occlusion = true
-glow_enabled = true
+[ext_resource type="Environment" uid="uid://f5b0km3n8yim" path="res://assets/Materials/night_sky.tres" id="1_asj12"]
 
 [node name="PlayerCamera" type="Camera3D" unique_id=1097827928]
-environment = SubResource("Environment_xq8u4")
+environment = ExtResource("1_asj12")
 current = true
 fov = 85.0
 

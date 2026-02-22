@@ -72,10 +72,10 @@ theme = SubResource("Theme_ljgwf")
 text = "WASD - move
 Space - Jump
 Q - Hat
-F2 - DevPanel
 Map - TAB
 GUI - V
-"
+Hat Camera - N
+F2 - Console"
 tab_size = 5
 
 [connection signal="pressed" from="VBoxContainer/Continue" to="." method="_on_continue_pressed"]

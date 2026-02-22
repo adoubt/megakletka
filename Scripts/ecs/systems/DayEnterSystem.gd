@@ -64,7 +64,7 @@ func update(_delta):
 		DayType.MERCHANT_DEAD:pass
 		DayType.MUSHROOMS:
 			pois_to_create.append_array(_place_heal_mushroom(heal_mushrooms))
-			
+			pois_to_create.append_array(_buid_mushroom_valley())
 
 	event_bus.emit("create_poi",pois_to_create)
 	_emit_map_snapshot(run)
@@ -227,3 +227,32 @@ func _get_random_position_in_radius(min_radius: float= 10.0, max_radius: float= 
 	var z := sin(angle) * radius
 
 	return Vector3(x, 0.5, z)
+
+func _buid_mushroom_valley() -> Array:
+	var mushrooms_to_create = []
+
+	var mushroom_pool := []
+	
+	for poi_name in db.poi_configs.keys():
+		var poi_data = db.poi_configs[poi_name]
+		if not poi_data.has("drop_weight") and not poi_data.has("mushroom"):
+			continue
+		var weight = poi_data.drop_weight
+		for i in range(weight):
+			mushroom_pool.append(poi_name)
+	
+
+	mushroom_pool.shuffle()
+	var chosen := []
+	for poi_name in mushroom_pool:
+		var position: Vector3 = _get_random_position_in_radius()
+		mushrooms_to_create.append({"poi_name":poi_name, "position": position})
+
+		chosen.append(poi_name)
+		if chosen.size() >= 50:
+			break		
+	var merchant_pos: Vector3 = _get_random_position_in_radius(5.0, 9.0)
+	mushrooms_to_create.append({ "poi_name": "merchant", "position": merchant_pos})
+
+	
+	return mushrooms_to_create

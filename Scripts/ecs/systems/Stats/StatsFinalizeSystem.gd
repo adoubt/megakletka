@@ -16,7 +16,9 @@ func update(_delta):
 				"entity": e,
 				"snapshot": snapshot
 			})
-
+			
+		elif cs.get_component(e,"ItemComponent"):
+			cs.add_component(e, "ItemViewBuildRequestComponent", ItemViewBuildRequestComponent.new())
 		cs.remove_component(e, "DirtyStatsComponent")
 		
 func _build_snapshot(e: int) -> Dictionary:

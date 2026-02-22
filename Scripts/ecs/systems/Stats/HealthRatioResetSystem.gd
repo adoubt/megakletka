@@ -1,5 +1,5 @@
 extends BaseSystem
-class_name HealthRatioReset
+class_name HealthRatioResetSystem
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
 	super._init(_entity_manager, _component_store, _event_bus) 
 	arch = cs.register_archetype(["DirtyStatsComponent","CurrentHPRatioComponent","MaxHPComponent","CurrentHPComponent"])	

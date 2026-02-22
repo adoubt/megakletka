@@ -12,6 +12,7 @@ extends Node
 @onready var post_process_panel:  = preload("res://UI/post_process_panel.tscn").instantiate()
 @onready var map_panel: = preload("res://UI/Map/Map.tscn").instantiate()
 @onready var hat_panel = preload("uid://bk2mqcn7r3nsl").instantiate()
+@onready var campfire_panel = preload("uid://cqata6sp41ei8").instantiate()
 
 var event_bus: EventBus
 var owner_id: int = -1
@@ -45,25 +46,43 @@ func close_map_panel() -> void:
 	open_hud()
 	
 func open_merchant_panel():
-	_open_panel("Merchant")
-	close_hat()
-func close_merchant_panel():
-	_close_panel("Merchant")
 	
-	event_bus.emit("poi_panel_closed", {"owner_id":owner_id})
+	_open_panel("Merchant")
+	
+func close_merchant_panel(emit_signals:bool = true):
+	_close_panel("Merchant")
+	if emit_signals:
+		event_bus.emit("panel_closed", {"owner_id":owner_id,})
+	
+	
 func open_hat():
-	_open_panel("Hat")
 	close_merchant_panel()
-func close_hat():
+	close_campfire()
+	_open_panel("Hat")
+	
+	event_bus.emit("hat_opened", {"owner_id":owner_id,})
+func close_hat(emit_signals:bool = true):
 	_close_panel("Hat")
-
+	if emit_signals:
+		event_bus.emit("panel_closed", {"owner_id":owner_id,})
+	
 func toggle_hat():
 	var opened:bool =is_panel_open("Hat")
 	if opened:
 		close_hat()
 	else: 
 		open_hat()
-	event_bus.emit("hat_toggled", {"owner_id":owner_id,"opened": !opened})		
+	
+	
+func open_campfire():
+	_open_panel("Campfire")
+	
+	
+func close_campfire(emit_signals:bool = true):
+	_close_panel("Campfire")
+	if emit_signals:
+		event_bus.emit("panel_closed", {"owner_id":owner_id, })
+	
 func open_level_up_panel():
 	pass
 
@@ -198,7 +217,7 @@ func _close_panel(_name: String, use_tween: bool = false ) -> void:
 			)
 		
 		else:	panel.visible = false
-		if _name in ["Hat", "Merchant"]:
+		if _name in ["Hat", "Merchant", "Campfire"]:
 			hud.hide_item_tool_tip()
 		_update_ui_state()
 
@@ -218,17 +237,20 @@ func close_all(exclude:=[]) -> void:
 
 func _ready() -> void:
 	post_process_canvas = CanvasLayer.new()
-	add_child(post_process_canvas)
+	post_process_canvas.layer = -100
 	post_process_canvas.name = "PostProcess"
-	post_process_canvas.add_child(merchant_panel)
+	add_child(post_process_canvas)
 	post_process_canvas.add_child(post_process_panel)
-	post_process_canvas.add_child(hat_panel)
+
 	canvas = CanvasLayer.new()
-	
+	canvas.layer = 2
 	canvas.name = "Panels"
 	add_child(canvas)
+
 	canvas.add_child(hud)
-	
+	canvas.add_child(merchant_panel)
+	canvas.add_child(hat_panel)
+	canvas.add_child(campfire_panel)
 	canvas.add_child(dev_panel)
 	canvas.add_child(level_up_panel)
 	canvas.add_child(map_panel)
@@ -237,6 +259,9 @@ func _ready() -> void:
 	canvas.add_child(settings_menu)
 	
 	
+	## panels below placed here becos i need to show them on top of the post_process effect.
+	## Maybe i need to create a new Canvas or just move it to "Panels" canvas i'm not sure
+	## it's not a priority task for now
 	
 	
 	panels = {
@@ -249,7 +274,8 @@ func _ready() -> void:
 		"Merchant": merchant_panel,
 		"HUD" :hud,
 		"Map": map_panel,
-		"Hat": hat_panel
+		"Hat": hat_panel,
+		"Campfire":campfire_panel,
 	}
 	
 	close_all()
@@ -318,6 +344,7 @@ func _input(event: InputEvent) -> void:
 		_on_escape_pressed()
 	if event.is_action_pressed("hat"):
 		toggle_hat()
+	
 	if event.is_action_pressed("hud"):
 		toggle_hud()
 	if event.is_action_pressed("Esc"):
@@ -348,6 +375,10 @@ func _on_escape_pressed():
 		close_settings()
 	elif is_panel_open("Merchant"):
 		close_merchant_panel()
+	elif is_panel_open("Hat"):
+		close_hat()	
+	elif is_panel_open("Campfire"):
+		close_campfire()	
 	elif is_panel_open("Map"):
 		close_map_panel()
 	elif SceneManager.current_scene_name not in ["Intro","MainMenu"]:

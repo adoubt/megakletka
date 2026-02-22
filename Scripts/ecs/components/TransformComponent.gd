@@ -5,7 +5,7 @@ class_name TransformComponent
 var position: Vector3 = Vector3.ZERO
 
 ## Rotation in radians (optional)
-var rotation: Quaternion = Quaternion.IDENTITY
+var rotation: Vector3 = Vector3.ZERO
 var grounded: bool = false
 var velocity: Vector3 = Vector3.ZERO
 

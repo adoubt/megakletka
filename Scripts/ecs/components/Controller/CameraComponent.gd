@@ -7,6 +7,7 @@ enum Mode {
 	LOCKED_FOLLOW,
 	
 }
+
 var owner_id: int = -1
 var yaw: float = 3.0
 var pitch: float = -1.0

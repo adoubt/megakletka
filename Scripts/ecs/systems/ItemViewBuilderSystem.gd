@@ -14,7 +14,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_eve
 	
 	item_arch = cs.register_archetype(["ItemComponent"],["DeadComponent"])
 	
-func update(delta: float) -> void:
+func update(_delta: float) -> void:
 	if arch.entities.is_empty():
 		return
 	
@@ -30,7 +30,7 @@ func update(delta: float) -> void:
 		view_data["item_description"] = item_title_comp.description
 		
 		var cost_comp := cs.get_component(item, "CostComponent")
-		view_data["cost"] = cost_comp.base_value
+		view_data["cost"] = cost_comp.final_value
 		
 		for ability in ability_arch.entities:
 			var ability_comp := cs.get_component(ability, "ItemAbilityComponent")

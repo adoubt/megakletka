@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bct6i2roln3ij"]
+
+[ext_resource type="Shader" uid="uid://cajqarq0eotjh" path="res://assets/Shaders/Projectiles/enemy_bullet.gdshader" id="1_bxxda"]
+[ext_resource type="Script" uid="uid://bcpen8isno6r8" path="res://Scenes/slot_view.gd" id="1_kjra5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kjra5"]
+render_priority = 0
+shader = ExtResource("1_bxxda")
+shader_parameter/bullet_color = Color(0.56577706, 0.57636285, 0.39771384, 1)
+shader_parameter/min_power = 0.52
+shader_parameter/max_power = 2.795
+shader_parameter/blink_speed = 4.105
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_0tum3"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.001
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bxxda"]
+radius = 0.121
+
+[node name="SlotView" type="Node3D" unique_id=336066880]
+script = ExtResource("1_kjra5")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1664871943]
+visible = false
+material_override = SubResource("ShaderMaterial_kjra5")
+transparency = 0.53
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_0tum3")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1122406632]
+collision_layer = 512
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1461617497]
+shape = SubResource("SphereShape3D_bxxda")
+disabled = true

@@ -33,10 +33,12 @@ func _ready() -> void:
 
 func set_highlight(enabled: bool) -> void:
 	if dragged:return
+	
 	if is_highlighted == enabled:
 		return
 	if not is_highlighted and enabled:
-		base_position = model.position
+		base_position = Vector3.ZERO
+
 	for m in meshes:
 		m.material_overlay = highlight_material if enabled else null	
 	is_highlighted = enabled

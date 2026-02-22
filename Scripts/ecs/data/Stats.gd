@@ -11,6 +11,7 @@ enum PlayerStats{
 	JUMPS_COUNT,
 	JUMP_HEIGHT,
 	JUMPS_LEFT,
+	JUMPS_USED,
 	MOVESPEED,
 	MOVESPEED_MULT,
 	DURATION_MULT,
@@ -28,10 +29,11 @@ enum PlayerStats{
 	XP_GAIN,
 	CURRENT_HP_RATIO,
 	CURRENT_HP,
+	COST
 }
 enum GameStats{
 	LOG_BALANCE,
-	CURRENT_DAY,
+	CURRENT_FLOOR,
 	CURRENT_ANTE,
 	SKIPPED_DAYS,
 	PLAYERS,
@@ -63,14 +65,14 @@ static func _get_player_comp(stat: int) -> String:
 		PlayerStats.CRIT_DAMAGE:        return "CritDamageComponent"
 		PlayerStats.CRIT_CHANCE:        return "CritChanceComponent"
 		PlayerStats.PIERCE:             return "PierceComponent"
-
+		PlayerStats.COST:				return "CostComponent"
 		PlayerStats.MAX_HP:             return "MaxHPComponent"
 		PlayerStats.CURRENT_HP_RATIO:   return "CurrentHPRatioComponent"
 		PlayerStats.CURRENT_HP:         return "CurrentHPComponent"
 		PlayerStats.JUMPS_COUNT:        return "JumpsCountComponent"
 		PlayerStats.JUMPS_LEFT:         return "JumpsLeftComponent"
 		PlayerStats.JUMP_HEIGHT:        return "JumpHeightComponent"
-		
+		PlayerStats.JUMPS_USED:			return "JumpsUsedComponent"
 		PlayerStats.MOVESPEED:          return "MoveSpeedComponent"
 		PlayerStats.MOVESPEED_MULT:     return "MoveSpeedMultComponent"
 
@@ -105,7 +107,7 @@ static func _get_game_comp(stat: int) -> String:
 	match stat:
 		GameStats.XP_REWARD: 			return "XPRewardComponent"
 		GameStats.CURRENT_PHASE:			return "NotDeclaired"
-		
+		GameStats.CURRENT_FLOOR: return "CURRENT_FLOOR"
 		_:
 			push_error("Unknown Stat: %s" % stat)
 			return ""
@@ -145,10 +147,10 @@ static func _get_player_format_type(stat:int) -> int:
 		PlayerStats.JUMPS_COUNT:        return StatFormatType.FLAT
 		PlayerStats.JUMPS_LEFT:         return StatFormatType.FLAT
 		PlayerStats.JUMP_HEIGHT:        return StatFormatType.FLAT
-		
+		PlayerStats.JUMPS_USED:			return StatFormatType.FLAT
 		PlayerStats.MOVESPEED:          return StatFormatType.FLAT
 		PlayerStats.MOVESPEED_MULT:     return StatFormatType.PERCENT
-
+		PlayerStats.COST:				return StatFormatType.FLAT
 		# --- Time / duration ---
 		PlayerStats.DURATION_MULT:      return StatFormatType.PERCENT
 		PlayerStats.ATK_SPEED:          return StatFormatType.FLAT
@@ -179,8 +181,9 @@ static func _get_player_format_type(stat:int) -> int:
 			
 static func _get_game_format_type(stat) -> int:
 	match stat:
-		GameStats.XP_REWARD: 			return StatFormatType.FLAT
+		GameStats.XP_REWARD: 				return StatFormatType.FLAT
 		GameStats.CURRENT_PHASE:			return StatFormatType.FLAT
+		GameStats.CURRENT_FLOOR:			return StatFormatType.FLAT
 		_:
 			push_error("Unknown Stat: %s" % stat)
 			return StatFormatType.FLAT

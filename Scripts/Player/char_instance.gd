@@ -3,6 +3,9 @@ extends Node3D
 
 @onready var level_up_pop_up: Node3D = $LevelUpPopUp
 
+@onready var camera: Camera3D = $Model/Camera3D
+
+@onready var slots_root: Node3D = $SlotsRoot
 #@export_group("Controller")
 ###if true this player will registred as 1st player
 #@export var main_player : bool = false

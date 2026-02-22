@@ -20,21 +20,20 @@ var drag_preview: Control = null
 
 func _ready() -> void:
 	buy_container.hide()
-	
+
+func _process(_delta):
+	if dragged_item:
+		_update_drag_position()   
+		
 func _gui_input(event: InputEvent) -> void:
-
-	if event is InputEventMouseMotion:
-		if dragged_item:
-			_update_drag_position()
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			_try_start_drag()
 		else:
-			_update_hover(event.position)
+			_try_drop()
 
-	elif event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				_try_start_drag()
-			else:
-				_try_drop()
+	if event is InputEventMouseMotion and not dragged_item:
+		_update_hover(event.position)
 
 func _try_start_drag():
 	if hovered_item == null:
@@ -66,7 +65,7 @@ func _update_drag_position():
 
 	var hit = drag_plane.intersects_ray(from, dir)
 	if hit:
-		dragged_item.model.global_position = dragged_item.model.global_position.lerp(hit, 0.9)
+		dragged_item.model.global_position = dragged_item.model.global_position.lerp(hit, 0.07)
 
 	_update_zone_hover()
 
@@ -100,10 +99,15 @@ func _try_drop():
 	_cancel_drag()
 
 func _cleanup_drag():
-	if dragged_item:
-		dragged_item.model.global_position = item_base_pos
-		dragged_item.dragged = false
-		dragged_item = null
+	if not dragged_item:
+		return
+
+	var item = dragged_item
+
+	
+	item.dragged = false
+	item.set_highlight(false)	
+	dragged_item = null
 
 func _raycast_from_mouse(mouse_pos: Vector2) -> Object:
 	var camera := get_viewport().get_camera_3d()
@@ -168,3 +172,8 @@ func _cancel_drag():
 	_cleanup_drag()
 	buy_zone.set_drop_active(false)
 	buy_container.hide()
+
+
+
+func _on_hidden() -> void:
+	_cancel_drag()

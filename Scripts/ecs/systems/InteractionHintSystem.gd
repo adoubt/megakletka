@@ -10,7 +10,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 	["DeadComponent"]
 )
 	camera_arch = cs.register_archetype(["CameraComponent"])
-	event_bus.subscribe("poi_panel_closed", _on_poi_panel_closed)
+	event_bus.subscribe("panel_closed", _on_panel_closed)
 func update(_delta):
 	for p in arch.entities:
 		var ir := cs.get_component(p, "InRangeInteractionComponent")
@@ -51,7 +51,8 @@ func _show(target_id: int):
 	if render and render.instance:
 		render.instance.show_hint()
 		render.instance.show_hint_r()
-
+		if render.instance.slots_root:
+			render.instance.slots_root.show_slots()
 func _hide(target_id: int):
 	if target_id == -1:
 		return
@@ -59,19 +60,27 @@ func _hide(target_id: int):
 	if render and render.instance:
 		render.instance.hide_hint()
 		render.instance.hide_hint_r()
-
+		if render.instance.slots_root:
+			render.instance.slots_root.hide_slots()
 func _return_camera(owner_id:int) -> void:
 	for camera in camera_arch.entities:
-				var camera_comp = cs.get_component(camera, "CameraComponent")
-				if camera_comp.owner_id == owner_id:
-					if camera_comp.mode == CameraComponent.Mode.FOCUS:
-						camera_comp.return_start_pos = camera_comp.camera_instance.global_position
-						camera_comp.return_start_rot = camera_comp.camera_instance.global_basis
-						camera_comp.transition_elapsed = 0.0
-						camera_comp.mode = CameraComponent.Mode.BLEND_TO_FOLLOW
-						
-					return	
+		var camera_comp = cs.get_component(camera, "CameraComponent")
+		if camera_comp.owner_id == owner_id:
+			if camera_comp.mode in [CameraComponent.Mode.FOCUS, CameraComponent.Mode.LOCKED_FOLLOW]:
+				camera_comp.return_start_pos = camera_comp.camera_instance.global_position
+				camera_comp.return_start_rot = camera_comp.camera_instance.global_basis
+				camera_comp.transition_elapsed = 0.0
+				camera_comp.mode = CameraComponent.Mode.BLEND_TO_FOLLOW
+			
+			
+			return	
 	
-func _on_poi_panel_closed(data:Dictionary) -> void:
+func _on_panel_closed(data:Dictionary) -> void:
 	var owner_id = data.owner_id
+	_hide_slots(owner_id)
 	_return_camera(owner_id)
+func _hide_slots(owner_id:int) -> void:
+	var render = cs.get_component(owner_id, "RenderComponent")
+	if render and render.instance:
+		if render.instance.slots_root:
+			render.instance.slots_root.hide_slots()

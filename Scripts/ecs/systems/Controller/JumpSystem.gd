@@ -10,7 +10,6 @@ func _init( _entity_manager: EntityManager, _component_store: ComponentStore,_ev
 		"JumpHeightComponent"
 	])
 func update(_delta):
-	
 
 	for e in arch.entities:
 		var input := cs.get_component(e, "InputComponent")
@@ -22,4 +21,6 @@ func update(_delta):
 			tf.grounded = false
 			jump_left.base_value -= 1
 			cs.add_component(e, "DirtyStatsComponent", DirtyStatsComponent.new())
+			var event := em.create_entity()
+			cs.add_component(event, "TriggerEventComponent", TriggerEventComponent.new(AbilityTriggers.Events.JUMPED,e))
 			event_bus.emit("jumped", {"entity":e})
