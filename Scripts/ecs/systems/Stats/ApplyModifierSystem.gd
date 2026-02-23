@@ -7,7 +7,7 @@ var players := []
 var dead_players: =[]
 var alive_players: =[]
 var combat_state : int = CombatState.INACTIVE
-var phase: int = 1
+
 var run_comp : RunComponent
 func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _event_bus: EventBus):
 	super._init(_entity_manager, _component_store, _event_bus) 
@@ -20,7 +20,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore, _ev
 		["ModifierComponent"],
 		["DeadComponent"]
 	)
-	event_bus.subscribe("phase_changed", _on_phase_changed)
+	
 	event_bus.subscribe("day_changed", _on_day_changed)
 	
 func update(_delta: float) -> void:
@@ -82,7 +82,7 @@ func _get_stat_value(entity_id: int, domain: int, stat: int) -> float:
 	
 	if domain == Stats.Domain.GAME:
 		match stat: 
-			Stats.GameStats.CURRENT_PHASE: return phase 
+			
 			Stats.GameStats.LOG_BALANCE: return run_comp.logs
 			Stats.GameStats.CURRENT_FLOOR: 
 				return run_comp.current_floor
@@ -98,8 +98,6 @@ func _get_stat_value(entity_id: int, domain: int, stat: int) -> float:
 	return comp.final_value
 	
 	
-func _on_phase_changed(data: Dictionary) -> void:
-	phase = data.current_phase
-	
+
 func _on_day_changed(_data: Dictionary) -> void:
 	run_comp = cs.get_component(RUN, "RunComponent")

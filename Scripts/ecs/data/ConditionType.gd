@@ -15,5 +15,10 @@ enum {
 	OUT_OF_RANGE,       # x < min || x > max
 
 	EXISTS,             # значение существует / > 0 / true
-	NOT_EXISTS          # отсутствует / 0 / false
+	NOT_EXISTS,
+	ITEM_NEAR          # отсутствует / 0 / false
+}
+
+enum Inventory{
+	NEAR_SAME_ID
 }

@@ -19,7 +19,7 @@ func go_to_intro():
 	
 func go_to_main_menu():
 	_change_scene("MainMenu")
-	AudioManager.play_music_delayed("main_menu",4.0,-5.0)
+	AudioManager.play_music_delayed("main_menu",1.0,-5.0)
 	
 func go_to_game_test():
 	_change_scene("GameTest")

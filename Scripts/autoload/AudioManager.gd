@@ -29,7 +29,7 @@ func play_ui_sound(_name: String, volume_db: float = -10.0, pitch_range: Vector2
 
 	var path: String
 
-	if entry is Array:
+	if entry is Array and entry.size()>0:
 		path = entry.pick_random()
 	elif entry is String:
 		path = entry
@@ -173,29 +173,15 @@ func _stop_diegetic_music():
 		
 		
 ## UI stop music (with fade out)
-func stop_music(_name: String, fade_time: float = 3.0):
+func stop_music(_name: String) -> void:
 	if not music_players.has(_name):
 		return
 
-	var player: AudioStreamPlayer = music_players[_name]
-	if not is_instance_valid(player):
-		return
-
-	var generation_at_start = music_generation
-
-	var tween := create_tween()
-	tween.tween_property(player, "volume_db", -80.0, fade_time)
-
-	tween.finished.connect(func():
-		if generation_at_start != music_generation:
-			return  # контекст изменился — игнорируем
-		
-		if is_instance_valid(player):
-			player.stop()
-			player.queue_free()
-		
-		music_players.erase(_name)
-	)
+	var player = music_players[_name]
+	if is_instance_valid(player):
+		player.stop()
+		player.queue_free()
+	music_players.erase(_name)
 
 
 ## Play persistent source sound, also check unregister_persistent()

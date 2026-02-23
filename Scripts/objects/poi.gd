@@ -8,7 +8,7 @@ extends Node
 @export var max_value: float = 1.0
 var zone: Node3D
 
-@onready var slots_root: Node3D = $SlotsRoot
+var slots_root: Node3D
 @onready var progress_shader: ShaderMaterial 
 func _ready() -> void:
 	hint = get_node_or_null("Hint")
@@ -16,6 +16,7 @@ func _ready() -> void:
 	r_progress = get_node_or_null("HintR/RProgress")
 	hide_hint()
 	hide_hint_r()
+	slots_root = get_node_or_null("SlotsRoot") 
 	#r_progress.mesh.material.set_billboard_mode(BaseMaterial3D.BILLBOARD_FIXED_Y) 
 	if r_progress: 
 		progress_shader =  r_progress.mesh.material

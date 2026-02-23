@@ -39,7 +39,8 @@ func _process_triggers(owner_id:int,event_id: int, payload:Dictionary) -> void:
 				var item_id:int = payload.item_id
 				if item_id != cs.get_component(modifier.source_id, "ItemAbilityComponent").owner_id:
 					continue
-			
+				event_bus.emit("item_used",{"item_id":item_id, "source_id":owner_id})
+				
 		_apply_trigger_action( trigger, modifier)
 		
 func _apply_trigger_action(

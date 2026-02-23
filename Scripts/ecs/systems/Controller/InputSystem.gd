@@ -26,7 +26,7 @@ func update(_delta):
 		)
 
 		input.look = UIManager.consume_mouse_delta()
-	
+		input.attack = Input.is_action_just_pressed("attack") and not UIManager._any_ui_open()
 		input.jump = Input.is_action_just_pressed("jump")
 		input.camera_toggle = Input.is_action_just_pressed("camera_toggle")
 		#input.attack = Input.is_action_pressed("attack")

@@ -35,13 +35,9 @@ enum GameStats{
 	LOG_BALANCE,
 	CURRENT_FLOOR,
 	CURRENT_ANTE,
-	SKIPPED_DAYS,
-	PLAYERS,
 	ALIVE_PLAYERS,
 	DEAD_PLAYES,
-	
-	CURRENT_PHASE,
-	XP_REWARD,
+
 }
 
 enum Domain {
@@ -105,9 +101,12 @@ static func _get_player_comp(stat: int) -> String:
 			return ""
 static func _get_game_comp(stat: int) -> String:
 	match stat:
-		GameStats.XP_REWARD: 			return "XPRewardComponent"
-		GameStats.CURRENT_PHASE:			return "NotDeclaired"
-		GameStats.CURRENT_FLOOR: return "CURRENT_FLOOR"
+		GameStats.LOG_BALANCE:			return	"LOG_BALANCE"
+		GameStats.CURRENT_FLOOR:			return	"CURRENT_FLOOR"
+		GameStats.CURRENT_ANTE:			return	"CURRENT_ANTE"
+		GameStats.ALIVE_PLAYERS:			return	"ALIVE_PLAYERS"
+		GameStats.DEAD_PLAYES:			return "NotDeclaired"
+		
 		_:
 			push_error("Unknown Stat: %s" % stat)
 			return ""
@@ -181,9 +180,11 @@ static func _get_player_format_type(stat:int) -> int:
 			
 static func _get_game_format_type(stat) -> int:
 	match stat:
-		GameStats.XP_REWARD: 				return StatFormatType.FLAT
-		GameStats.CURRENT_PHASE:			return StatFormatType.FLAT
-		GameStats.CURRENT_FLOOR:			return StatFormatType.FLAT
+		GameStats.LOG_BALANCE:			return StatFormatType.FLAT
+		GameStats.CURRENT_FLOOR:		return StatFormatType.FLAT
+		GameStats.CURRENT_ANTE:			return StatFormatType.FLAT
+		GameStats.ALIVE_PLAYERS:		return StatFormatType.FLAT
+		GameStats.DEAD_PLAYES:			return StatFormatType.FLAT
 		_:
 			push_error("Unknown Stat: %s" % stat)
 			return StatFormatType.FLAT

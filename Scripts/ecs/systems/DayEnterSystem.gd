@@ -68,7 +68,7 @@ func update(_delta):
 
 	event_bus.emit("create_poi",pois_to_create)
 	_emit_map_snapshot(run)
-	event_bus.emit("day_changed",{"current_day": run.depth, "day_type": day_type })
+	event_bus.emit("day_changed",{"current_day": run.current_floor, "day_type": day_type })
 	# ---------- конец ----------
 	cs.remove_component(RUN, "DayEnterRequestComponent")
 		

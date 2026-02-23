@@ -1,12 +1,15 @@
 extends Control
 var day_id: int = -1
-@onready var texture: TextureButton = $TextureButton
+var texture: TextureButton 
 @export var completed: bool = false:
 	set(value):
 		completed = value
 		
 		if completed: _complete() 
-@onready var completed_texture: TextureRect = $CompletedTexture
+var completed_texture: TextureRect 
+func _ready() -> void:
+	texture= get_node_or_null("TextureButton")
+	completed_texture= get_node_or_null("CompletedTexture")
 @export var reachable: bool = false:
 	set(value):
 		reachable = value

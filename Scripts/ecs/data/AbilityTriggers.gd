@@ -8,6 +8,7 @@ enum Events {
 	GROUNDED,
 	DAMAGE_RECIVED,
 	USED,
+	FLOOR_CHANGED
 }
 
 enum Actions {
@@ -17,6 +18,7 @@ enum Actions {
 	SET_VALUE,
 	ADD_GOLD,
 	GAMBLE_FOX,
+	CHANGE_CURRENT_HP,
 }
 
 
