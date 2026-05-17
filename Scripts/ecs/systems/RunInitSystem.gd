@@ -6,8 +6,8 @@ var db : DataBase
 const ANTES := 1
 const DAYS_PER_ANTE := 5
 const BASE_BATTERY := 50
-const WORLD_SIZE : int = 75
-const CELL_SIZE : float = 1.5
+const WORLD_SIZE : int = 150
+const CELL_SIZE : float = 0.3
 const POI_ON_DAY : int = 1
 const MUSHROOM_POI_ON_DAY: int = 40
 const MIN_COLUMNS_PER_FLOOR: int = 3

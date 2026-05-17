@@ -29,16 +29,16 @@ func update(delta: float) ->void:
 		var day_type = cs.get_component(req.target_day, "DayComponent").type
 		match day_type:
 			DayType.LOBBY:
-				height_amp = randf_range(0.0, 3.0)   
-				frequency = randf_range(0.2, 0.2)  
-				puddles = randf_range(4, 100.1)    
+				height_amp = randf_range(-10, 3)   
+				frequency = randf_range(0.01, 0.2)  
+				puddles = randf_range(0.1, 100.1)    
 			DayType.ENEMY:
 				height_amp = randf_range(-3.0, 10.0)   
-				frequency = randf_range(0.2, 0.2)  
-				puddles = randf_range(4, 10.1)    
+				frequency = randf_range(0.02, 0.2)  
+				puddles = randf_range(0.1, 10.1)    
 			DayType.ELITE:
 				height_amp = randf_range(-3.0, 10.0)   
-				frequency = randf_range(0.2, 0.2)  
+				frequency = randf_range(0.02, 0.2)   
 				puddles = randf_range(4, 10.1)    
 			DayType.BOSS:
 				height_amp = randf_range(-3.0, 10.0)   
@@ -62,12 +62,37 @@ func update(delta: float) ->void:
 			frequency,
 			puddles 
 		)
+		smooth_heights(ground)
 		_update_mesh(ground, visual)
 		cs.remove_component(RUN,"GroundGenerationRequestComponent" )
 		event_bus.emit("ground_generated", {"ground": ground})
 		
 	
+func smooth_heights(ground, iterations := 1):
 
+	for i in iterations:
+
+		var new_heights = ground.heights.duplicate()
+
+		for z in range(1, ground.size_z - 1):
+			for x in range(1, ground.size_x - 1):
+
+				var sum := 0.0
+				var count := 0
+
+				for oz in range(-1, 2):
+					for ox in range(-1, 2):
+
+						var idx = (x + ox) + (z + oz) * ground.size_x
+
+						sum += ground.heights[idx]
+						count += 1
+
+				var center_idx = x + z * ground.size_x
+
+				new_heights[center_idx] = sum / count
+
+		ground.heights = new_heights
 func _update_mesh(ground, visual):
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -129,12 +154,36 @@ func _add_vertex(st: SurfaceTool, pos: Vector3, normal: Vector3, height: float):
 # ======================================================
 
 func _height_to_color(h: float) -> Color:
-	if h < PUDDLE_LEVEL:
-		return Color(0.04, 0.06, 0.10) # холодная вода, почти чёрная
-	elif h < 0.2:
-		return Color(0.07, 0.11, 0.14) # мокрое холодное болото
+
+	if h < -5.0:
+		return Color("#05070d") # бездонная черная жижа
+
+	elif h < -3.5:
+		return Color("#0b1020") # глубокая болотная вода
+
+	elif h < -2.2:
+		return Color("#11182b") # темно-синяя топь
+
+	elif h < -1.0:
+		return Color("#1a2331") # холодный мокрый ил
+
+	elif h < 0.0:
+		return Color("#2b352f") # грязный грибной мох
+
+	elif h < 1.5:
+		return Color("#4b4a2f") # morrowind желто-зеленая грязь
+
+	elif h < 3.0:
+		return Color("#6d672e") # сухие болотные кочки
+
+	elif h < 5.0:
+		return Color("#8d7f47") # грибные возвышенности
+
+	elif h < 8.0:
+		return Color("#a08f5a") # пепельно-песочные вершины
+
 	else:
-		return Color(0.12, 0.15, 0.17) # холодные кочки / ил
+		return Color("#c2b98a") # высохшие светлые пики
 
 # ======================================================
 # MATERIAL

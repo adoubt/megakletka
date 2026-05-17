@@ -14,23 +14,30 @@ func _init(x: int, z: int, cell: float):
 	heights.resize(size_x * size_z)
 
 func generate(_seed: int, amp: float, freq: float, puddles: float) -> void:
-	var rng := RandomNumberGenerator.new()
-	rng.seed = _seed
+
+	var noise := FastNoiseLite.new()
+
+	noise.seed = _seed
+	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
+	noise.fractal_octaves = 4
+	noise.fractal_gain = 0.5
+	noise.frequency = freq
 
 	for z in range(size_z):
 		for x in range(size_x):
-			var nx = x * freq
-			var nz = z * freq
 
-			# базовая мягкая волна
-			var base = sin(nx + _seed) * cos(nz - _seed)
+			var h = 0.0
 
-			# пятна-лужи
-			var puddle_noise = rng.randf()
-			if puddle_noise < puddles:
-				base -= rng.randf_range(0.4, 1.0)
+			# BIG SHAPES
+			h += noise.get_noise_2d(x * 0.2, z * 0.2) * amp
 
-			var h = base * amp
+			# SMALL DETAILS
+			h += noise.get_noise_2d(x * 1.5, z * 1.5) * amp * 0.15
+
+			# puddles
+			if h < puddles:
+				h -= 2.0
+
 			heights[x + z * size_x] = h
 
 
