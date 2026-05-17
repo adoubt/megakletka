@@ -15,31 +15,111 @@ func _init(x: int, z: int, cell: float):
 
 func generate(_seed: int, amp: float, freq: float, puddles: float) -> void:
 
-	var noise := FastNoiseLite.new()
+	var macro := FastNoiseLite.new()
+	macro.seed = _seed
+	macro.frequency = 0.01
+	macro.fractal_octaves = 3
 
-	noise.seed = _seed
-	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
-	noise.fractal_octaves = 4
-	noise.fractal_gain = 0.5
-	noise.frequency = freq
+	var detail := FastNoiseLite.new()
+	detail.seed = _seed + 999
+	detail.frequency = 0.08
+	detail.fractal_octaves = 2
+
+	var mountain_noise := FastNoiseLite.new()
+	mountain_noise.seed = _seed + 222
+	mountain_noise.frequency = 0.03
+
+	var flatten_noise := FastNoiseLite.new()
+	flatten_noise.seed = _seed + 444
+	flatten_noise.frequency = 0.02
+
+	# случайная сторона наклона мира
+	var slope_dir := Vector2(randf_range(-1,1), randf_range(-3,5)).normalized()
+
+	# шанс большой горы
+	var has_mountain := randf() < 0.7
+
+	var mountain_center := Vector2(
+		randf_range(0, size_x),
+		randf_range(0, size_z)
+	)
 
 	for z in range(size_z):
 		for x in range(size_x):
 
-			var h = 0.0
+			var pos := Vector2(x, z)
 
-			# BIG SHAPES
-			h += noise.get_noise_2d(x * 0.2, z * 0.2) * amp
+			var h := 0.0
 
-			# SMALL DETAILS
-			h += noise.get_noise_2d(x * 1.5, z * 1.5) * amp * 0.15
+			# ==================================================
+			# GLOBAL WORLD SLOPE
+			# ==================================================
 
-			# puddles
+			var slope = (pos.dot(slope_dir) / max(size_x, size_z)) * 8.0
+
+			h += slope
+
+			# ==================================================
+			# LARGE TERRAIN SHAPES
+			# ==================================================
+
+			h += macro.get_noise_2d(x, z) * 6.0
+
+			# ==================================================
+			# OPTIONAL BIG MOUNTAIN
+			# ==================================================
+
+			if has_mountain:
+
+				var dist = pos.distance_to(mountain_center)
+
+				var mountain_radius = size_x * 0.35
+
+				if dist < mountain_radius:
+
+					var falloff = 1.0 - (dist / mountain_radius)
+
+					falloff = pow(falloff, 2.0)
+
+					h += falloff * 18.0
+
+					h += mountain_noise.get_noise_2d(x, z) * falloff * 4.0
+
+			# ==================================================
+			# FLAT AREAS / PLAINS
+			# ==================================================
+
+			var flatten = flatten_noise.get_noise_2d(x, z)
+
+			if flatten > 0.35:
+
+				h = lerp(h, floor(h * 0.3), 0.7)
+
+			# ==================================================
+			# RIVER / ROAD TUNNEL
+			# ==================================================
+
+			var river = abs(detail.get_noise_2d(x * 0.5, z * 0.5))
+
+			if river < 0.91:
+
+				h -= 1.0
+
+			# ==================================================
+			# SMALL DETAIL
+			# ==================================================
+
+			h += detail.get_noise_2d(x, z) * 1.2
+
+			# ==================================================
+			# SWAMP LOWLANDS
+			# ==================================================
+
 			if h < puddles:
-				h -= 2.0
+
+				h -= 1.5
 
 			heights[x + z * size_x] = h
-
 
 func get_height(world_x: float, world_z: float) -> float:
 	var half_x := (size_x - 1) * cell_size * 0.5

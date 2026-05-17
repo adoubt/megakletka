@@ -108,7 +108,7 @@ func initialize(run_seed: int):
 	##4. PHYSICS / MOVEMENT
 	system_manager.add_system(FollowOwnerPositionSystem.new(entity_manager,component_store, event_bus))
 	system_manager.add_system(PickUpSystem.new(entity_manager,component_store, event_bus))
-	
+	system_manager.add_system(JumpTimerSystem.new(entity_manager, component_store,event_bus))
 	
 	system_manager.add_system(MovementSystem.new(entity_manager, component_store,event_bus))
 	system_manager.add_system(GravitySystem.new(entity_manager,component_store, event_bus))

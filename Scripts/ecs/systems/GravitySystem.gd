@@ -6,7 +6,7 @@ func _init(_entity_manager: EntityManager, _component_store: ComponentStore,_eve
 	
 	arch = cs.register_archetype(
 	["TransformComponent", "GravityComponent",],
-	["DeadComponent"]
+	["DeadComponent", "JumpTimerComponent"]
 )
 	event_bus.subscribe("day_changed",_refresh_wind)
 		

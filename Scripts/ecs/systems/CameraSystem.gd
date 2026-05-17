@@ -130,13 +130,13 @@ func _update_focus_mode(cam: CameraComponent, delta: float) -> void:
 	var target_pos := cam.focus_from_pos + mouse_offset
 
 	var current_pos := cam.camera_instance.global_position
-	var new_pos := current_pos.lerp(target_pos, delta * 3.0)
+	var new_pos := current_pos.lerp(target_pos, delta * 5.0)
 
 	var target_basis := Transform3D(Basis(), new_pos)\
 		.looking_at(cam.focus_target, Vector3.UP).basis
 
 	var current_basis := cam.camera_instance.global_basis
-	var new_basis := current_basis.slerp(target_basis, delta * 6.0)
+	var new_basis := current_basis.slerp(target_basis, delta * 1.0)
 
 	cam.camera_instance.global_position = new_pos
 	cam.camera_instance.global_basis = new_basis

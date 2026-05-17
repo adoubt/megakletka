@@ -200,7 +200,7 @@ func _create_chars(data_array: Array = []):
 		cs.add_component(entity_id, "PlayerComponent", PlayerComponent.new())
 		cs.add_component(entity_id, "MoveSpeedComponent", MoveSpeedComponent.new(e_data.movespeed))
 		cs.add_component(entity_id, "MoveSpeedMultComponent",MoveSpeedMultComponent.new(e_data.movespeed_mult))
-
+		
 		cs.add_component(entity_id, "TransformComponent", TransformComponent.new(position))
 		cs.add_component(entity_id, "MaxHPComponent", MaxHPComponent.new(e_data.hp))
 		cs.add_component(entity_id, "CurrentHPComponent",CurrentHPComponent.new(e_data.hp))

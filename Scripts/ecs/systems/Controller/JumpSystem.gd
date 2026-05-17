@@ -23,4 +23,7 @@ func update(_delta):
 			cs.add_component(e, "DirtyStatsComponent", DirtyStatsComponent.new())
 			var event := em.create_entity()
 			cs.add_component(event, "TriggerEventComponent", TriggerEventComponent.new(AbilityTriggers.Events.JUMPED,e))
+			if cs.has_component(e, "JumpTimerComponent"):
+				cs.remove_component(e, "JumpTimerComponent")
+			cs.add_component(e,"JumpTimerComponent", JumpTimerComponent.new())
 			event_bus.emit("jumped", {"entity":e})

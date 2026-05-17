@@ -155,35 +155,47 @@ func _add_vertex(st: SurfaceTool, pos: Vector3, normal: Vector3, height: float):
 
 func _height_to_color(h: float) -> Color:
 
-	if h < -5.0:
-		return Color("#05070d") # бездонная черная жижа
+	if h < -4.5:
+		return Color("#0a0e0c") # глубокая вода
 
-	elif h < -3.5:
-		return Color("#0b1020") # глубокая болотная вода
+	elif h < -2.5:
+		return Color("#141b14") # болотная вода
 
-	elif h < -2.2:
-		return Color("#11182b") # темно-синяя топь
+	elif h < -1.5:
+		return Color("#1e2a1c") # глубокая трясина
 
-	elif h < -1.0:
-		return Color("#1a2331") # холодный мокрый ил
+	elif h < -0.5:
+		return Color("#2e3a25") # влажная земля
 
-	elif h < 0.0:
-		return Color("#2b352f") # грязный грибной мох
+	elif h < 0.5:
+		return Color("#3e4b2a") # мокрая почва
 
 	elif h < 1.5:
-		return Color("#4b4a2f") # morrowind желто-зеленая грязь
+		return Color("#576336") # мох / трава
 
-	elif h < 3.0:
-		return Color("#6d672e") # сухие болотные кочки
+	elif h < 2.5:
+		return Color("#6d7842") # светлый мох
 
-	elif h < 5.0:
-		return Color("#8d7f47") # грибные возвышенности
+	elif h < 3.5:
+		return Color("#7f6f3f") # грибница / корни
 
-	elif h < 8.0:
-		return Color("#a08f5a") # пепельно-песочные вершины
+	elif h < 4.5:
+		return Color("#8e5e35") # рыжая глина
+
+	elif h < 5.5:
+		return Color("#6a5a49") # камни с мхом
+
+	elif h < 6.5:
+		return Color("#5a5e56") # холодный камень
+
+	elif h < 7.5:
+		return Color("#6d6f6b") # светлый камень
+
+	elif h < 8.5:
+		return Color("#7f827e") # вершина скалы
 
 	else:
-		return Color("#c2b98a") # высохшие светлые пики
+		return Color("#9a9c99") # пепельная вершина
 
 # ======================================================
 # MATERIAL
