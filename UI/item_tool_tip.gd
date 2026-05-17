@@ -124,32 +124,29 @@ func _create_ability_block(data: Dictionary) -> Control:
 
 
 
-func _process(delta: float) -> void:
-	_update_pos(delta)
+func _process(_delta: float) -> void:
+	_update_pos()
 
-func _update_pos(delta: float) -> void:
+func _update_pos() -> void:
 	var visible_rect = get_viewport().get_visible_rect()
 	var mouse_pos = get_global_mouse_position()
 
 	var tooltip_size = size
 	var desired_pos = mouse_pos + offset
 
-	
-	var min_x = visible_rect.position.x
-	var max_x = visible_rect.position.x + visible_rect.size.x - tooltip_size.x
-
-	var min_y = visible_rect.position.y
-	var max_y = visible_rect.position.y + visible_rect.size.y - tooltip_size.y
-
-
-	desired_pos.x = clamp(desired_pos.x, min_x, max_x)
-	desired_pos.y = clamp(desired_pos.y, min_y, max_y)
-
-	var speed := 5.0
-	global_position = global_position.lerp(
-		desired_pos,
-		1.0 - exp(-speed * delta)
+	desired_pos.x = clamp(
+		desired_pos.x,
+		visible_rect.position.x,
+		visible_rect.end.x - tooltip_size.x
 	)
+
+	desired_pos.y = clamp(
+		desired_pos.y,
+		visible_rect.position.y,
+		visible_rect.end.y - tooltip_size.y
+	)
+
+	global_position = desired_pos
 
 func format_text(text: String) -> String:
 	var base_size := 14
@@ -215,8 +212,9 @@ func format_text(text: String) -> String:
 func set_showing(active:bool):
 	
 	var panel = $Panel
-	var base_scale = Vector2(0.1, 0.1)
-	panel.pivot_offset = panel.size * 0.5
+	var base_scale = Vector2.ONE
+	#panel.pivot_offset = panel.size * 0.5
+	pivot_offset = Vector2.ZERO
 	if showing_tween:
 		showing_tween.kill()
 

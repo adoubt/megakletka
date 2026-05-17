@@ -17,9 +17,11 @@ func reset_audio_context():
 var ui_player: AudioStreamPlayer
 func _ready() -> void:
 	ui_player= AudioStreamPlayer.new()
+	ui_player.bus = "SFX"
 	add_child(ui_player)
-	apply_master_volume(SettingsManager.get_value("master_volume"))
-	
+	apply_volume("Master",SettingsManager.get_value("master_volume"))
+	apply_volume("Music",SettingsManager.get_value("music_volume"))
+	apply_volume("SFX",SettingsManager.get_value("sfx_volume"))
 ## One-shot UI sound
 func play_ui_sound(_name: String, volume_db: float = -10.0, pitch_range: Vector2 = Vector2(0.9,1.1)) -> void:
 	var entry = DatabaseManager.db.sound_configs["non_diegetic"]["ui"].get(_name, null)
@@ -38,6 +40,7 @@ func play_ui_sound(_name: String, volume_db: float = -10.0, pitch_range: Vector2
 		return
 
 	var new_ui_player = AudioStreamPlayer.new()
+	new_ui_player.bus = "SFX"
 	new_ui_player.stream = load(path)
 	new_ui_player.volume_db = volume_db
 	new_ui_player.pitch_scale = randf_range(pitch_range.x, pitch_range.y)
@@ -72,6 +75,7 @@ func play_sound(
 		return
 
 	var player = AudioStreamPlayer3D.new()
+	player.bus = "SFX"
 	player.stream = load(path)
 	player.global_transform.origin = _position
 	player.volume_db = volume_db
@@ -151,6 +155,7 @@ func play_music(_name: String, volume_db: float = 0.0, loop: bool = true, genera
 		return
 
 	var player = AudioStreamPlayer.new()
+	player.bus = "Music"
 	player.stream = load(path)
 	player.volume_db = volume_db
 	player.stream.loop = loop
@@ -195,6 +200,7 @@ func register_persistent(_name: String, node: Node3D, loop: bool = true, volume_
 		return
 
 	var player = AudioStreamPlayer3D.new()
+	player.bus = "SFX"
 	player.stream = load(path)
 	player.loop = loop
 	player.volume_db = volume_db
@@ -233,6 +239,7 @@ func play_spatial_loop(
 
 	var player := AudioStreamPlayer3D.new()
 	add_child(player)
+	player.bus = "SFX"
 	player.stream = load(path)
 	player.stream.loop = true
 	player.volume_db = volume_db
@@ -268,6 +275,7 @@ func _play_path(
 ) -> void:
 	var player := AudioStreamPlayer3D.new()
 	add_child(player)
+	player.bus = "SFX"
 	player.stream = load(path)
 	player.global_transform.origin = _position
 	player.volume_db = volume_db
@@ -364,6 +372,7 @@ func play_music_with_fallback(
 		return
 
 	var player := AudioStreamPlayer.new()
+	player.bus = "Music"
 	add_child(player)
 	player.stream = load(path)
 	player.stream.loop = loop
@@ -376,11 +385,11 @@ func play_music_with_fallback(
 
 
 
-func apply_master_volume(value: float) -> void:
+func apply_volume(bus:String, value: float) -> void:
 	value = clamp(value, 0.0, 1.0)
 
 	var db := linear_to_db(value)
 	AudioServer.set_bus_volume_db(
-		AudioServer.get_bus_index("Master"),
+		AudioServer.get_bus_index(bus),
 		db
 	)

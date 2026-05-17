@@ -1,31 +1,24 @@
 extends Node
 class_name ObjectPool
 
-# Универсальный Object Pool для ECS
-# Работает по путям к сценам (String)
-
 var _pools: Dictionary = {}      # { scene_path: [Node3D, ...] }
 var _prefabs: Dictionary = {}    # { scene_path: PackedScene }
 var _usage: Dictionary = {}      # { scene_path: int }
-var _parent: Node = null         # куда добавлять объекты (опционально)
+var _parent: Node = null         # куда добавлять объекты 
 
-# ---------------------------
-# Инициализация
-# ---------------------------
+
 func _init(parent: Node) -> void:
 	_parent = parent
 
-# ---------------------------
-# Разогрев (создаёт заранее объекты)
-# scenes_dict = { "res://scenes/enemy.tscn": 10, "res://scenes/effect.tscn": 5 }
-# ---------------------------
+
+## Разогрев 
+## scenes_dict = { "res://scenes/enemy.tscn": 10, "res://scenes/effect.tscn": 5 }
 func prewarm(scenes_dict: Dictionary) -> void:
 	for scene_path in scenes_dict.keys():
 		var count: int = int(scenes_dict[scene_path])
 		if count <= 0:
 			continue
 
-		# Загружаем сцену, если ещё не загружена
 		if not _prefabs.has(scene_path):
 			var scene: PackedScene = load(scene_path)
 			if not scene:
@@ -35,7 +28,6 @@ func prewarm(scenes_dict: Dictionary) -> void:
 			_usage[scene_path] = 0
 			_pools[scene_path] = []
 
-		# Создаём N экземпляров
 		var scene_ref: PackedScene = _prefabs[scene_path]
 		for i in range(count):
 			var node = scene_ref.instantiate() as Node3D
@@ -46,9 +38,7 @@ func prewarm(scenes_dict: Dictionary) -> void:
 
 	print("ObjectPool: prewarmed %d scene types" % scenes_dict.size())
 
-# ---------------------------
-# Получить экземпляр
-# ---------------------------
+
 func get_instance(scene_path: String) -> Node3D:
 	if scene_path == "":
 		push_warning("ObjectPool: empty scene_path")
@@ -78,9 +68,7 @@ func get_instance(scene_path: String) -> Node3D:
 	_usage[scene_path] += 1
 	return node
 
-# ---------------------------
-# Вернуть экземпляр в пул
-# ---------------------------
+
 func release_instance(scene_path: String, node: Node3D) -> void:
 	if not is_instance_valid(node):
 		return
@@ -91,9 +79,7 @@ func release_instance(scene_path: String, node: Node3D) -> void:
 	_pools[scene_path].append(node)
 	_usage[scene_path] = max(0, _usage.get(scene_path, 0) - 1)
 
-# ---------------------------
-# Очистить все пулы
-# ---------------------------
+
 func clear_all() -> void:
 	for arr in _pools.values():
 		for node in arr:
@@ -103,9 +89,7 @@ func clear_all() -> void:
 	_prefabs.clear()
 	_usage.clear()
 
-# ---------------------------
-# Вспомогательные
-# ---------------------------
+
 func _disable(node: Node3D) -> void:
 	node.visible = false
 	node.process_mode = Node.PROCESS_MODE_DISABLED

@@ -67,7 +67,7 @@ func close_hat(emit_signals:bool = true):
 		event_bus.emit("panel_closed", {"owner_id":owner_id,})
 	
 func toggle_hat():
-	var opened:bool =is_panel_open("Hat")
+	var opened:bool = is_panel_open("Hat")
 	if opened:
 		close_hat()
 	else: 
@@ -127,8 +127,10 @@ func toggle_escape_menu() -> void:
 func toggle_map_panel()  -> void:
 	if map_panel.visible:
 		close_map_panel()
+		AudioManager.play_ui_sound("map_closed")
 	else:
 		open_map_panel()
+		
 func toggle_dev_panel() -> void:
 	if dev_panel.visible:
 		close_dev_panel()
@@ -342,11 +344,13 @@ func _input(event: InputEvent) -> void:
 			SettingsManager.set_value("achievement_ctrl_w", true)
 			return
 		_on_escape_pressed()
-	if event.is_action_pressed("hat"):
-		toggle_hat()
+	if event.is_action_pressed("hat") :
+		if SceneManager.current_scene_name in ["BigRoomTest","GameTest"]:
+			toggle_hat()
 	
 	if event.is_action_pressed("hud"):
-		toggle_hud()
+		if SceneManager.current_scene_name in ["BigRoomTest","GameTest"]:
+			toggle_hud()
 	if event.is_action_pressed("Esc"):
 		_on_escape_pressed()
 	if event.is_action_pressed("restart"):
@@ -360,7 +364,7 @@ func _input(event: InputEvent) -> void:
 			event_bus.emit("level_up_panel_toggled") 
 		
 	if event.is_action_pressed("map"):
-		if SceneManager.current_scene_name in ["GameTest"]:
+		if SceneManager.current_scene_name in ["GameTest"] and not UIManager.is_panel_open("EscapeMenu") and not UIManager.is_panel_open("Settings"):
 			toggle_map_panel() 
 func _unhandled_input(event):
 	if game_paused:
@@ -380,6 +384,6 @@ func _on_escape_pressed():
 	elif is_panel_open("Campfire"):
 		close_campfire()	
 	elif is_panel_open("Map"):
-		close_map_panel()
-	elif SceneManager.current_scene_name not in ["Intro","MainMenu"]:
+		toggle_map_panel()
+	elif SceneManager.current_scene_name not in ["Intro", "MainMenu"]:
 		toggle_escape_menu()

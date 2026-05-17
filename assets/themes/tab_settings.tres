@@ -2,16 +2,39 @@
 
 [ext_resource type="FontFile" uid="uid://bjrss4qesetwq" path="res://assets/fonts/DarumadropOne-Regular.ttf" id="1_464lv"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8rf6d"]
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_464lv"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8rf6d"]
-bg_color = Color(0.938449, 0.93845, 0.938449, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ly75n"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 132
+expand_margin_left = 30.0
+expand_margin_right = 29.0
+shadow_color = Color(0.92941177, 1, 0.972549, 0.05882353)
+shadow_size = 17
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_464lv"]
+bg_color = Color(0.039215688, 0.105882354, 0.101960786, 0)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 132
+expand_margin_left = 30.0
+expand_margin_right = 29.0
+shadow_color = Color(0, 0, 0, 0.70980394)
+shadow_size = 17
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4a8tw"]
+bg_color = Color(0.039215688, 0.105882354, 0.101960786, 0)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 132
+shadow_color = Color(0.03529412, 0.9529412, 0.78039217, 0.84705883)
+shadow_size = 80
+anti_aliasing_size = 4.09
 
 [sub_resource type="Image" id="Image_464lv"]
 data = {
@@ -109,13 +132,13 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_es2w7"]
 image = SubResource("Image_jmjdr")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8hg1d"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g1imu"]
 content_margin_left = 6.0
 content_margin_top = 4.0
 content_margin_right = 6.0
 content_margin_bottom = 4.0
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8hg1d"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pu33s"]
 
@@ -242,19 +265,36 @@ corner_detail = 5
 
 [resource]
 default_font = ExtResource("1_464lv")
-Button/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(0, 0, 0, 1)
-Button/font_sizes/font_size = 40
+Button/colors/font_color = Color(0.92941177, 1, 0.972549, 1)
+Button/colors/font_disabled_color = Color(0.78431374, 0.84313726, 0.81960785, 0.4392157)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0.92941177, 1, 0.972549, 1)
+Button/colors/font_pressed_color = Color(0.05882353, 0.105882354, 0.101960786, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 29
 Button/fonts/font = ExtResource("1_464lv")
-Button/styles/focus = SubResource("StyleBoxEmpty_8rf6d")
-Button/styles/hover = SubResource("StyleBoxEmpty_464lv")
-Button/styles/pressed = SubResource("StyleBoxFlat_8rf6d")
-CheckButton/colors/font_color = Color(1, 1, 1, 1)
+Button/styles/disabled = SubResource("StyleBoxEmpty_464lv")
+Button/styles/focus = SubResource("StyleBoxFlat_ly75n")
+Button/styles/hover = SubResource("StyleBoxFlat_ly75n")
+Button/styles/normal = SubResource("StyleBoxFlat_464lv")
+Button/styles/pressed = SubResource("StyleBoxFlat_4a8tw")
+CheckButton/colors/button_checked_color = Color(0.78431374, 0.84313726, 0.81960785, 1)
+CheckButton/colors/button_unchecked_color = Color(0.49411765, 0.6627451, 0.64705884, 1)
 CheckButton/colors/font_disabled_color = Color(0.87451, 0.172549, 0.87451, 0.501961)
 CheckButton/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
 CheckButton/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 CheckButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-CheckButton/colors/font_outline_color = Color(0, 0, 0, 1)
 CheckButton/colors/font_pressed_color = Color(1, 1, 1, 1)
 CheckButton/constants/check_v_offset = 0
 CheckButton/constants/h_separation = 4
@@ -268,13 +308,13 @@ CheckButton/icons/unchecked = SubResource("ImageTexture_5fhun")
 CheckButton/icons/unchecked_disabled = SubResource("ImageTexture_4a8tw")
 CheckButton/icons/unchecked_disabled_mirrored = SubResource("ImageTexture_ul148")
 CheckButton/icons/unchecked_mirrored = SubResource("ImageTexture_es2w7")
-CheckButton/styles/disabled = SubResource("StyleBoxEmpty_g1imu")
+CheckButton/styles/disabled = null
 CheckButton/styles/focus = SubResource("StyleBoxEmpty_8hg1d")
 CheckButton/styles/hover = SubResource("StyleBoxEmpty_g1imu")
 CheckButton/styles/hover_pressed = SubResource("StyleBoxEmpty_g1imu")
 CheckButton/styles/normal = SubResource("StyleBoxEmpty_g1imu")
 CheckButton/styles/pressed = SubResource("StyleBoxEmpty_pu33s")
-OptionButton/colors/font_color = Color(0, 0, 0, 1)
+OptionButton/colors/font_color = Color(0.78431374, 0.84313726, 0.81960785, 1)
 OptionButton/colors/font_disabled_color = Color(0.5354204, 0.5354212, 0.5354205, 0.5019608)
 OptionButton/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
 OptionButton/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)

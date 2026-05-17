@@ -1,13 +1,15 @@
 extends Node
 
-const SAVE_PATH := "res://Saves/settings.cfg"
+const SAVE_PATH := "user://settings.cfg"
 var values : Dictionary = {
 	   
 	"language": "English",          
 	"resolution": Vector2(1920,1080),
 	"sensitivity": 1.0,
 	"post_process_shader" : "Film",
-	"master_volume": 1.0,
+	"master_volume": 0.7,
+	"music_volume": 0.7,
+	"sfx_volume":0.7,
 	"achievement_ctrl_w":false
 }
 

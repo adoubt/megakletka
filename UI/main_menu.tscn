@@ -5,6 +5,21 @@
 [ext_resource type="Theme" uid="uid://2ocoy8vsxdat" path="res://assets/themes/tab_settings.tres" id="2_tk8dj"]
 [ext_resource type="StyleBox" uid="uid://cetf4is0ai61y" path="res://assets/themes/back_btn_style.tres" id="3_d8nwk"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4cwpn"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 200
+corner_radius_top_right = 200
+corner_radius_bottom_right = 200
+corner_radius_bottom_left = 200
+shadow_size = 169
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f40uw"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+shadow_size = 18
+
 [node name="MainMenu" type="Control" unique_id=575382271]
 layout_mode = 3
 anchors_preset = 15
@@ -43,28 +58,76 @@ layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 8
 theme = ExtResource("2_tk8dj")
+theme_override_constants/separation = 15
 
-[node name="GameTest" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=970845501]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1757426917]
 layout_mode = 2
+
+[node name="GameTest" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=970845501]
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../MarginContainer5/Exit")
+focus_neighbor_top = NodePath("../../MarginContainer5/Exit")
+focus_neighbor_right = NodePath("../../MarginContainer2/Join")
+focus_neighbor_bottom = NodePath("../../MarginContainer2/Join")
+focus_next = NodePath("../../MarginContainer2/Join")
+focus_previous = NodePath("../../MarginContainer5/Exit")
 text = "New Run"
 
-[node name="Join" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1731823974]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1502755472]
 layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_right = -33
+
+[node name="Join" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2" unique_id=1731823974]
+layout_mode = 2
+focus_neighbor_left = NodePath("../../MarginContainer/GameTest")
+focus_neighbor_top = NodePath("../../MarginContainer/GameTest")
+focus_neighbor_right = NodePath("../../MarginContainer4/Settings")
+focus_neighbor_bottom = NodePath("../../MarginContainer4/Settings")
+focus_next = NodePath("../../MarginContainer4/Settings")
+focus_previous = NodePath("../../MarginContainer/GameTest")
 disabled = true
 text = "Join
 "
 
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=665597225]
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=467519903]
+visible = false
+layout_mode = 2
+
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer3" unique_id=665597225]
 layout_mode = 2
 disabled = true
 text = "BIG ROOM TEST"
 
-[node name="Settings" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1936093454]
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1472167775]
 layout_mode = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_right = -54
+
+[node name="Settings" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer4" unique_id=1936093454]
+layout_mode = 2
+focus_neighbor_left = NodePath("../../MarginContainer2/Join")
+focus_neighbor_top = NodePath("../../MarginContainer2/Join")
+focus_neighbor_right = NodePath("../../MarginContainer5/Exit")
+focus_neighbor_bottom = NodePath("../../MarginContainer5/Exit")
+focus_next = NodePath("../../MarginContainer5/Exit")
+focus_previous = NodePath("../../MarginContainer2/Join")
 text = "SETTINGS"
 
-[node name="Exit" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=933662318]
+[node name="MarginContainer5" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=43147040]
 layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = -91
+
+[node name="Exit" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer5" unique_id=933662318]
+layout_mode = 2
+focus_neighbor_left = NodePath("../../MarginContainer4/Settings")
+focus_neighbor_top = NodePath("../../MarginContainer4/Settings")
+focus_neighbor_right = NodePath("../../MarginContainer/GameTest")
+focus_neighbor_bottom = NodePath("../../MarginContainer/GameTest")
+focus_next = NodePath("../../MarginContainer/GameTest")
+focus_previous = NodePath("../../MarginContainer4/Settings")
 theme_override_styles/normal = ExtResource("3_d8nwk")
 text = "EXIT"
 
@@ -72,24 +135,40 @@ text = "EXIT"
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 0
+theme_override_constants/separation = -30
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2" unique_id=852752325]
+z_index = 1
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.92941177, 1, 0.972549, 1)
+theme_override_colors/font_shadow_color = Color(0.92941177, 1, 0.972549, 0.18039216)
+theme_override_colors/font_outline_color = Color(0.05882353, 0.105882354, 0.101960786, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 10
+theme_override_constants/shadow_outline_size = 7
 theme_override_font_sizes/font_size = 90
+theme_override_styles/normal = SubResource("StyleBoxFlat_4cwpn")
 text = "HatBound"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2" unique_id=1804272603]
+z_index = 1
 layout_mode = 2
 size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0.92941177, 1, 0.972549, 1)
 theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_f40uw")
 text = " v0.14.0"
 
 [node name="Control" type="Control" parent="MarginContainer/HBoxContainer" unique_id=1986556221]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/GameTest" to="." method="_on_game_test_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Join" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/GameTest" to="." method="_on_game_test_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer3/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer4/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer5/Exit" to="." method="_on_exit_pressed"]

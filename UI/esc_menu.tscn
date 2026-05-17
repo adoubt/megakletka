@@ -1,8 +1,18 @@
 [gd_scene format=3 uid="uid://2n8tbm3osyqw"]
 
 [ext_resource type="Script" uid="uid://ccin71kc3tnaf" path="res://UI/esc_menu.gd" id="1_4yblc"]
+[ext_resource type="Theme" uid="uid://2ocoy8vsxdat" path="res://assets/themes/tab_settings.tres" id="1_5t328"]
 [ext_resource type="FontFile" uid="uid://cygyhlf65bg51" path="res://assets/fonts/SFPRODISPLAYLIGHTITALIC.OTF" id="2_7ucxq"]
 [ext_resource type="Material" uid="uid://b6jm1dn3iwhm1" path="res://assets/Materials/DarkenedBlur.tres" id="2_011l0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5t328"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 58
+corner_radius_top_right = 68
+corner_radius_bottom_right = 68
+corner_radius_bottom_left = 70
+shadow_color = Color(0, 0, 0, 0.5647059)
+shadow_size = 86
 
 [sub_resource type="Theme" id="Theme_ljgwf"]
 default_font = ExtResource("2_7ucxq")
@@ -14,6 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_5t328")
 script = ExtResource("1_4yblc")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=25346073]
@@ -38,47 +49,86 @@ alignment = 1
 
 [node name="Continue" type="Button" parent="VBoxContainer" unique_id=755967377]
 layout_mode = 2
+focus_neighbor_left = NodePath("../Exit")
+focus_neighbor_top = NodePath("../Exit")
+focus_neighbor_right = NodePath("../Map")
+focus_neighbor_bottom = NodePath("../Map")
 text = "Continue"
+
+[node name="Map" type="Button" parent="VBoxContainer" unique_id=1436404276]
+layout_mode = 2
+focus_neighbor_left = NodePath("../Continue")
+focus_neighbor_top = NodePath("../Continue")
+focus_neighbor_right = NodePath("../Restart")
+focus_neighbor_bottom = NodePath("../Restart")
+text = "Map"
 
 [node name="Restart" type="Button" parent="VBoxContainer" unique_id=426891726]
 layout_mode = 2
+focus_neighbor_left = NodePath("../Map")
+focus_neighbor_top = NodePath("../Map")
+focus_neighbor_right = NodePath("../Settings")
+focus_neighbor_bottom = NodePath("../Settings")
 text = "Restart"
 
 [node name="Settings" type="Button" parent="VBoxContainer" unique_id=1326088414]
 layout_mode = 2
+focus_neighbor_left = NodePath("../Restart")
+focus_neighbor_top = NodePath("../Restart")
+focus_neighbor_right = NodePath("../Menu")
+focus_neighbor_bottom = NodePath("../Menu")
 text = "Settings"
 
 [node name="Menu" type="Button" parent="VBoxContainer" unique_id=520994345]
 layout_mode = 2
+focus_neighbor_left = NodePath("../Settings")
+focus_neighbor_top = NodePath("../Settings")
+focus_neighbor_right = NodePath("../Exit")
+focus_neighbor_bottom = NodePath("../Exit")
 text = "Menu"
 
 [node name="Exit" type="Button" parent="VBoxContainer" unique_id=1876041174]
 layout_mode = 2
+focus_neighbor_left = NodePath("../Menu")
+focus_neighbor_top = NodePath("../Menu")
+focus_neighbor_right = NodePath("../Continue")
+focus_neighbor_bottom = NodePath("../Continue")
 text = "Exit"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=329794629]
+[node name="Panel" type="Panel" parent="." unique_id=503978033]
 layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
+anchors_preset = -1
+anchor_left = 0.037326388
+anchor_top = 0.582
+anchor_right = 0.157
+anchor_bottom = 0.7569444
+offset_top = -0.13604736
+offset_right = 0.13598633
+offset_bottom = -11.5
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5t328")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel" unique_id=329794629]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -227.0
-offset_top = -195.0
-offset_bottom = 196.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_ljgwf")
-text = "WASD - move
-Space - Jump
+text = "Move - WASD
+Jump - Space 
 Q - Hat
-Map - TAB
-GUI - V
-Hat Camera - N
+Tab - Map 
+V - GUI
+N - Hat Camera
 F2 - Console"
+fit_content = true
 tab_size = 5
+vertical_alignment = 1
 
 [connection signal="pressed" from="VBoxContainer/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="VBoxContainer/Map" to="." method="_on_map_pressed"]
 [connection signal="pressed" from="VBoxContainer/Restart" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="VBoxContainer/Menu" to="." method="_on_menu_pressed"]

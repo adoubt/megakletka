@@ -6,7 +6,7 @@ extends Control
 func _ready() -> void:
 	_apply_settings(self)
 	_load_effects()
-	
+	print_tree()
 func _apply_settings(node: Node) -> void:
 	if "setting_key" in node and "setting_property" in node:
 		node.set(node.setting_property,SettingsManager.get_value(node.setting_key))
@@ -29,7 +29,15 @@ func _load_effects()-> void:
 			post_process_effects_button.selected = i
 		i+=1
 	
-	
+func _notification(what):	
+
+	if what == NOTIFICATION_VISIBILITY_CHANGED:
+
+		if visible:
+
+			await get_tree().process_frame
+
+			$Control/HBoxContainer/TABCustom/TabButtons/General.grab_focus()
 
 func _on_back_pressed() -> void:
 	

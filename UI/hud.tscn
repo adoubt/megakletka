@@ -21,6 +21,9 @@
 [ext_resource type="Texture2D" uid="uid://40kb5u3e7mus" path="res://assets/Hud/Coin.png" id="10_2pa52"]
 [ext_resource type="Texture2D" uid="uid://ufjote713xcq" path="res://assets/Hud/xp_gain.png" id="11_pueji"]
 [ext_resource type="Texture2D" uid="uid://cxql8sne25uv4" path="res://assets/Hud/jumps.png" id="13_vdnig"]
+[ext_resource type="Texture2D" uid="uid://cqwb17axfjqro" path="res://assets/icons/buttons/letter-q.png" id="21_x8e40"]
+[ext_resource type="Texture2D" uid="uid://bhm1ltvw4s7hg" path="res://assets/Hud/map.png" id="22_xiih7"]
+[ext_resource type="Texture2D" uid="uid://dtfbvppakusde" path="res://assets/icons/buttons/tab.png" id="23_0mm64"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_508rn"]
 bg_color = Color(0.0627451, 0.105882354, 0.09803922, 0)
@@ -33,8 +36,8 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
-shadow_color = Color(0.0627451, 0.105882354, 0.09803922, 0)
-shadow_size = 4
+shadow_color = Color(0.0627451, 0.105882354, 0.09803922, 0.34117648)
+shadow_size = 39
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pa52"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -111,8 +114,39 @@ shadow_color = Color(0.34901962, 0.6509804, 1, 0.627451)
 shadow_size = 5
 shadow_offset = Vector2(0, 3)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lgfjo"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_right = 23
+corner_radius_bottom_left = 172
+expand_margin_top = 71.0
+expand_margin_right = 64.0
+expand_margin_bottom = 83.0
+shadow_color = Color(0.05882353, 0.105882354, 0.101960786, 0.3137255)
+shadow_size = 51
+shadow_offset = Vector2(-2.57, 4.105)
+
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4evux"]
 load_path = "res://.godot/imported/Duration.png-4696b7a956729966c2a4a5103fff2d69.ctex"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x8e40"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 58
+corner_radius_top_right = 57
+corner_radius_bottom_left = 33
+expand_margin_top = 5.0
+expand_margin_right = 2.0
+shadow_color = Color(0.05882353, 0.105882354, 0.101960786, 0.33333334)
+shadow_size = 60
+shadow_offset = Vector2(-2.57, 4.105)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_87l0j"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 34
+corner_radius_top_right = 79
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 47
+shadow_color = Color(0.6745098, 0.7254902, 0.70980394, 0.5764706)
+shadow_size = 11
 
 [node name="HUD" type="Control" unique_id=1150284546]
 layout_mode = 3
@@ -132,8 +166,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 40
-theme_override_constants/margin_top = 40
+theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
 
@@ -315,6 +350,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -650,188 +686,306 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="StatsPanel" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel" unique_id=2100560542]
+[node name="PanelContainer" type="PanelContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel" unique_id=1384214918]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lgfjo")
+
+[node name="StatsPanel" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer" unique_id=2100560542]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1990091462]
+[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=1990091462]
 layout_mode = 2
 text = "Stats:"
 
-[node name="MoveSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=560968453]
+[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=1223427718]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+
+[node name="MoveSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer" unique_id=560968453]
 layout_mode = 2
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/MoveSpeed" unique_id=2032731994]
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer/MoveSpeed" unique_id=2032731994]
 layout_mode = 2
 texture = ExtResource("6_sab3h")
 expand_mode = 2
 
-[node name="MovespeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/MoveSpeed" unique_id=2043142927]
+[node name="MovespeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer/MoveSpeed" unique_id=2043142927]
 unique_name_in_owner = true
 layout_mode = 2
-text = "1.0"
+text = "0%"
 
-[node name="Damage" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1101903877]
+[node name="MarginContainer2" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=150536628]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+
+[node name="Damage" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer2" unique_id=1101903877]
 layout_mode = 2
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Damage" unique_id=576060419]
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer2/Damage" unique_id=576060419]
 layout_mode = 2
 texture = ExtResource("6_pf7ph")
 expand_mode = 2
 
-[node name="DamageLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Damage" unique_id=4418196]
+[node name="DamageLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer2/Damage" unique_id=4418196]
 unique_name_in_owner = true
 layout_mode = 2
-text = "1.0"
+text = "0%"
 
-[node name="AttackSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=2067294030]
+[node name="MarginContainer3" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=2111415550]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+
+[node name="AttackSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer3" unique_id=2067294030]
 layout_mode = 2
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/AttackSpeed" unique_id=1563968998]
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer3/AttackSpeed" unique_id=1563968998]
 layout_mode = 2
 texture = ExtResource("8_vdnig")
 expand_mode = 2
 
-[node name="AttackSpeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/AttackSpeed" unique_id=1973462965]
+[node name="AttackSpeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer3/AttackSpeed" unique_id=1973462965]
 unique_name_in_owner = true
 layout_mode = 2
-text = "1.0"
+text = "0%"
 
-[node name="Duration" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=686692946]
+[node name="MarginContainer4" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=418402140]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+
+[node name="MarginContainer5" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=1781620610]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="Duration" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer5" unique_id=686692946]
 layout_mode = 2
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Duration" unique_id=795905258]
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer5/Duration" unique_id=795905258]
 layout_mode = 2
 texture = SubResource("CompressedTexture2D_4evux")
 expand_mode = 2
 
-[node name="DurationLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Duration" unique_id=116948985]
+[node name="DurationLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer5/Duration" unique_id=116948985]
 unique_name_in_owner = true
 layout_mode = 2
-text = "1.0"
+text = "0%"
 
-[node name="ProjectileSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1700427168]
+[node name="MarginContainer6" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=1356272292]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+
+[node name="ProjectileSpeed" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer6" unique_id=1700427168]
 layout_mode = 2
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSpeed" unique_id=69287729]
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer6/ProjectileSpeed" unique_id=69287729]
 layout_mode = 2
 texture = ExtResource("9_pueji")
 expand_mode = 2
 
-[node name="ProjectileSpeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSpeed" unique_id=105714549]
+[node name="ProjectileSpeedLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer6/ProjectileSpeed" unique_id=105714549]
 unique_name_in_owner = true
 layout_mode = 2
-text = "1.0"
+text = "0%"
 
-[node name="ProjectileSize" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1806055882]
+[node name="MarginContainer7" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=53022287]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+
+[node name="ProjectileSize" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer7" unique_id=1806055882]
 layout_mode = 2
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSize" unique_id=1644704379]
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer7/ProjectileSize" unique_id=1644704379]
 layout_mode = 2
 texture = ExtResource("7_23s3h")
 expand_mode = 2
 
-[node name="ProjectileSizeLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/ProjectileSize" unique_id=161652114]
+[node name="ProjectileSizeLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer7/ProjectileSize" unique_id=161652114]
 unique_name_in_owner = true
 layout_mode = 2
-text = "1.0"
+text = "0%"
 
-[node name="PickUpRange" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1237427949]
+[node name="MarginContainer8" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=1941505876]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/PickUpRange" unique_id=1344444521]
+[node name="PickUpRange" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer8" unique_id=1237427949]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer8/PickUpRange" unique_id=1344444521]
 layout_mode = 2
 text = "PICK UP RANGE"
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/PickUpRange" unique_id=1597938817]
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer8/PickUpRange" unique_id=1597938817]
 layout_mode = 2
 
-[node name="PickUpRangeLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/PickUpRange" unique_id=676421111]
+[node name="PickUpRangeLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer8/PickUpRange" unique_id=676421111]
 unique_name_in_owner = true
 layout_mode = 2
 text = "1.0"
 
-[node name="XPGain" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=2092657429]
+[node name="MarginContainer9" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=1650916277]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+
+[node name="XPGain" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer9" unique_id=2092657429]
 layout_mode = 2
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/XPGain" unique_id=166229227]
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer9/XPGain" unique_id=166229227]
 layout_mode = 2
 texture = ExtResource("11_pueji")
 expand_mode = 2
 
-[node name="XPGainLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/XPGain" unique_id=1150349341]
+[node name="XPGainLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer9/XPGain" unique_id=1150349341]
 unique_name_in_owner = true
 layout_mode = 2
-text = "1.0"
+text = "0%"
 
-[node name="Pierce" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1386935686]
+[node name="MarginContainer10" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=281437658]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+
+[node name="Pierce" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer10" unique_id=1386935686]
 layout_mode = 2
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Pierce" unique_id=1991133197]
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer10/Pierce" unique_id=1991133197]
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("7_vs5gg")
 expand_mode = 2
 
-[node name="PierceLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Pierce" unique_id=1383938571]
+[node name="PierceLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer10/Pierce" unique_id=1383938571]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-text = "0.0"
+text = "0%"
 
-[node name="Armor" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=734381301]
+[node name="MarginContainer11" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=1748830239]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+
+[node name="Armor" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer11" unique_id=734381301]
 layout_mode = 2
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Armor" unique_id=289626509]
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer11/Armor" unique_id=289626509]
 layout_mode = 2
 texture = ExtResource("6_i0a73")
 expand_mode = 2
 
-[node name="ArmorLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Armor" unique_id=1706434528]
+[node name="ArmorLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer11/Armor" unique_id=1706434528]
 unique_name_in_owner = true
 layout_mode = 2
 text = "1.0"
 
-[node name="Jumps" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=2109355232]
+[node name="MarginContainer12" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=1202747670]
+layout_mode = 2
+theme_override_constants/margin_left = 22
+
+[node name="Jumps" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer12" unique_id=2109355232]
 layout_mode = 2
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Jumps" unique_id=501320635]
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer12/Jumps" unique_id=501320635]
 layout_mode = 2
 texture = ExtResource("13_vdnig")
 expand_mode = 2
 
-[node name="JumpLeftLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Jumps" unique_id=1526428501]
+[node name="JumpLeftLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer12/Jumps" unique_id=1526428501]
 unique_name_in_owner = true
 layout_mode = 2
 text = "3"
 
-[node name="_" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Jumps" unique_id=531307824]
+[node name="_" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer12/Jumps" unique_id=531307824]
 layout_mode = 2
 text = "/"
 
-[node name="JumpsCountLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Jumps" unique_id=619055754]
+[node name="JumpsCountLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer12/Jumps" unique_id=619055754]
 unique_name_in_owner = true
 layout_mode = 2
 text = "3"
 
-[node name="Slots" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel" unique_id=1463283412]
+[node name="MarginContainer13" type="MarginContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel" unique_id=2012222305]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+
+[node name="Slots" type="HBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13" unique_id=1463283412]
 layout_mode = 2
 
-[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=990096274]
+[node name="Control" type="Control" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots" unique_id=1411499903]
+custom_minimum_size = Vector2(26.7, 0)
 layout_mode = 2
+
+[node name="StatIcon" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots/Control" unique_id=990096274]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -28.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("9_vs5gg")
 expand_mode = 2
+stretch_mode = 5
 
-[node name="UsedSlotsCountLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=336346850]
+[node name="PanelContainer" type="PanelContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots/Control" unique_id=1816057224]
+z_index = -42
+layout_mode = 0
+offset_left = -31.0
+offset_top = -8.0
+offset_right = 52.0
+offset_bottom = 67.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_x8e40")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots/Control/PanelContainer" unique_id=1162790435]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots/Control/PanelContainer/VBoxContainer" unique_id=11864661]
+modulate = Color(1, 1, 1, 0.7411765)
+z_index = 200
+layout_mode = 2
+size_flags_vertical = 3
+texture_normal = ExtResource("9_vs5gg")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Control" type="Control" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots/Control/PanelContainer/VBoxContainer" unique_id=1441368360]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots/Control/PanelContainer/VBoxContainer/Control" unique_id=47649872]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.482959
+offset_top = -24.204393
+offset_right = -32.869335
+offset_bottom = 11.731123
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.27576202
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_87l0j")
+
+[node name="TextureRect" type="TextureRect" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots/Control/PanelContainer/VBoxContainer/Control/PanelContainer" unique_id=1917208880]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("21_x8e40")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="UsedSlotsCountLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots" unique_id=336346850]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 
-[node name="_" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=320014557]
+[node name="_" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots" unique_id=320014557]
 layout_mode = 2
 text = "/"
 
-[node name="SlotsCountLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/StatsPanel/Slots" unique_id=1753748950]
+[node name="SlotsCountLabel" type="Label" parent="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots" unique_id=1753748950]
 unique_name_in_owner = true
 layout_mode = 2
 text = "3"
@@ -891,3 +1045,56 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("8_i0a73")
+
+[node name="Control2" type="Control" parent="HUD" unique_id=1263204746]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HUD/Control2" unique_id=729569854]
+layout_mode = 0
+offset_left = -0.35465762
+offset_top = 1.536191
+offset_right = 49.645344
+offset_bottom = 41.53619
+rotation = -1.3439035
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_x8e40")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Control2/PanelContainer" unique_id=1874912545]
+layout_mode = 2
+theme_override_constants/separation = -44
+
+[node name="TextureButton" type="TextureButton" parent="HUD/Control2/PanelContainer/VBoxContainer" unique_id=948557794]
+modulate = Color(1, 1, 1, 0.7607843)
+z_index = 200
+custom_minimum_size = Vector2(50, 40)
+layout_mode = 2
+texture_normal = ExtResource("22_xiih7")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Control" type="Control" parent="HUD/Control2/PanelContainer/VBoxContainer" unique_id=1126760326]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HUD/Control2/PanelContainer/VBoxContainer/Control" unique_id=816555063]
+z_index = -77
+layout_mode = 0
+offset_left = 0.25614166
+offset_top = 14.591576
+offset_right = 30.061523
+offset_bottom = 44.195488
+rotation = 1.2252212
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_87l0j")
+
+[node name="TextureRect" type="TextureRect" parent="HUD/Control2/PanelContainer/VBoxContainer/Control/PanelContainer" unique_id=953640025]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("23_0mm64")
+expand_mode = 1
+stretch_mode = 5
+
+[connection signal="pressed" from="HUD/VBoxContainer/Body/HBoxContainer/RightPanel/PanelContainer/StatsPanel/MarginContainer13/Slots/Control/PanelContainer/VBoxContainer/TextureButton" to="." method="_on_hat_button_pressed"]
+[connection signal="pressed" from="HUD/Control2/PanelContainer/VBoxContainer/TextureButton" to="." method="_on_map_button_pressed"]

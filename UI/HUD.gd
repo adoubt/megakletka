@@ -23,7 +23,10 @@ var combat_progress : float = 1.0
 @export var max_combat_progress: float = 50.0
 @onready var combat_progress_shader: ShaderMaterial 
 @onready var item_tool_tip: Control = %ItemToolTip
-
+func format_value(value: float) -> String:
+	if is_equal_approx(value, round(value)):
+		return str(int(round(value)))
+	return str(value)
 ##Stats
 var balance:int:
 	set(value):
@@ -32,11 +35,11 @@ var balance:int:
 var damage: float=0.0:
 	set(value):
 		damage = value
-		%DamageLabel.text = str(value)
+		%DamageLabel.text = str(int((value - 1.0) * 100.0)) + "%"
 var armor: float = 0.0:
 	set(value):
 		armor = value
-		%ArmorLabel.text = str(value)
+		%ArmorLabel.text = str(format_value(value))
 var pierce:float = 0.0:
 	set(value):
 		pierce = value
@@ -44,11 +47,11 @@ var pierce:float = 0.0:
 var movespeed: float=0.0:
 	set(value):
 		movespeed = value
-		%MovespeedLabel.text = str(value)
+		%MovespeedLabel.text = str(int((value - 1.0) * 100.0)) + "%"
 var attack_speed:float =0.0:
 	set(value):
 		attack_speed = value
-		%AttackSpeedLabel.text = str(value)
+		%AttackSpeedLabel.text = str(int((value - 1.0) * 100.0)) + "%"
 var jumps_left:float =0.0:
 	set(value):
 		jumps_left = value
@@ -60,11 +63,11 @@ var jumps_count:float =0.0:
 var xp_gain:float =0.0:
 	set(value):
 		xp_gain = value
-		%XPGainLabel.text = str(value)
+		%XPGainLabel.text = str(int((value - 1.0) * 100.0)) + "%"
 var duration:float =0.0:
 	set(value):
 		duration = value
-		%DurationLabel.text = str(value)
+		%DurationLabel.text = str(int((value - 1.0) * 100.0)) + "%"
 var required_xp:float= 0.0:
 	set(value):
 		required_xp = value
@@ -156,11 +159,11 @@ func set_current_hp(new_current_hp: float):
 	current_hp = clampf(new_current_hp, min_hp, max_hp)
 	
 	update_current_hp_texture(sign(diff))
-	%CurrentHPLabel.text = str(current_hp)
+	%CurrentHPLabel.text = str(format_value(current_hp))
 	
 func set_max_hp(new_max_hp:float):
 	max_hp = new_max_hp
-	%MaxHPLabel.text = str(new_max_hp)
+	%MaxHPLabel.text = str(format_value(new_max_hp))
 	resize_hp_bar(max_hp)
 	
 func resize_hp_bar(new_max_hp:float):
@@ -277,16 +280,25 @@ func hide_combat_progress() -> void:
 	combat_timer_label.hide()
 func _set_children_mouse_ignore(node: Node) -> void:
 	for child in node.get_children():
-		if child is Control:
+		if child is Control and child is not TextureButton:
 			child.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_set_children_mouse_ignore(child)
 
 func show_item_tool_tip(data:Dictionary) -> void:
-	item_tool_tip.update_data(data)
-	
-	item_tool_tip.set_showing(true)
-	item_tool_tip.set_process(true)
+	if UIManager._any_ui_open():
+		item_tool_tip.update_data(data)
+		
+		item_tool_tip.set_showing(true)
+		item_tool_tip.set_process(true)
 func hide_item_tool_tip():
 	item_tool_tip.set_showing(false)
 	
 	item_tool_tip.set_process(false)
+
+
+func _on_map_button_pressed() -> void:
+	UIManager.open_map_panel()
+
+
+func _on_hat_button_pressed() -> void:
+	UIManager.toggle_hat()

@@ -13,9 +13,15 @@ func _on_text_submited(_text: String) -> void:
 	var value := _text.to_float()
 	value = clamp(value, min_value, max_value)
 	text = str(value)
-	AudioManager.apply_master_volume(value)
-
+	var bus: String = ""
+	match setting_key:
+		"master_volume":bus = "Master"
+		"music_volume":bus = "Music"
+		"sfx_volume":bus = "SFX"
+	
+	
 	if setting_key != "":
+		AudioManager.apply_volume(bus,value)
 		SettingsManager.set_value(setting_key, value)
 	
 	var slider = get_parent().get_node_or_null("Slider")

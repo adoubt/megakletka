@@ -9,6 +9,14 @@
 [ext_resource type="Script" uid="uid://bofqephgaqn5r" path="res://UI/check_button.gd" id="6_oflx8"]
 [ext_resource type="Script" uid="uid://d0wiiosfbq75v" path="res://UI/ui_input.gd" id="6_rbc7x"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rbc7x"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_right = 48
+corner_radius_bottom_left = 27
+shadow_color = Color(0, 0, 0, 0.4627451)
+shadow_size = 54
+shadow_offset = Vector2(-8.67, -6.27)
+
 [sub_resource type="ButtonGroup" id="ButtonGroup_oflx8"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r3owr"]
@@ -89,13 +97,15 @@ theme_override_constants/separation = 35
 [node name="Label" type="Label" parent="Control/HBoxContainer/VBoxContainer" unique_id=871612874]
 layout_mode = 2
 size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_rbc7x")
 text = "Settings"
 uppercase = true
 
 [node name="Back" type="Button" parent="Control/HBoxContainer/VBoxContainer" unique_id=1967281350]
 layout_mode = 2
-theme = ExtResource("1_3ykye")
+theme = ExtResource("4_ay7hg")
 theme_override_styles/normal = ExtResource("5_r3owr")
 text = "BACK"
 
@@ -112,7 +122,6 @@ alignment = 1
 [node name="General" type="Button" parent="Control/HBoxContainer/TABCustom/TabButtons" unique_id=1322293744]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 toggle_mode = true
 button_group = SubResource("ButtonGroup_oflx8")
 text = "GENERAL"
@@ -120,7 +129,6 @@ text = "GENERAL"
 [node name="Accessibility" type="Button" parent="Control/HBoxContainer/TABCustom/TabButtons" unique_id=2030737394]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 toggle_mode = true
 button_group = SubResource("ButtonGroup_oflx8")
 text = "ACCESSIBILITY"
@@ -129,7 +137,6 @@ metadata/_edit_use_anchors_ = true
 [node name="Graphics" type="Button" parent="Control/HBoxContainer/TABCustom/TabButtons" unique_id=1088182505]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 toggle_mode = true
 button_pressed = true
 button_group = SubResource("ButtonGroup_oflx8")
@@ -138,7 +145,6 @@ text = "GRAPHICS"
 [node name="Audio" type="Button" parent="Control/HBoxContainer/TABCustom/TabButtons" unique_id=1664804740]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 toggle_mode = true
 button_group = SubResource("ButtonGroup_oflx8")
 text = "AUDIO"
@@ -156,7 +162,7 @@ text = "DEBUG"
 layout_mode = 2
 theme = ExtResource("4_ay7hg")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_r3owr")
-current_tab = 2
+current_tab = 3
 tabs_visible = false
 use_hidden_tabs_for_min_size = true
 tab_focus_mode = 1
@@ -706,6 +712,7 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="Graphics2" type="VBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer" unique_id=100209274]
+visible = false
 layout_mode = 2
 theme = ExtResource("1_3ykye")
 theme_override_constants/separation = 8
@@ -821,7 +828,6 @@ step = 0.05
 value = 69.7
 
 [node name="Audio" type="VBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer" unique_id=621723740]
-visible = false
 layout_mode = 2
 theme = ExtResource("1_3ykye")
 theme_override_constants/separation = 8
@@ -886,6 +892,126 @@ step = 0.05
 value = 0.7
 script = ExtResource("3_cj1lu")
 setting_key = "master_volume"
+
+[node name="Panel2" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio" unique_id=2106106402]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme = ExtResource("1_3ykye")
+theme_override_styles/panel = SubResource("StyleBoxFlat_4v2jo")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel2" unique_id=1479158946]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3ykye")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 7
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel2/MarginContainer" unique_id=1858062470]
+layout_mode = 2
+theme = ExtResource("1_3ykye")
+theme_override_constants/separation = 220
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel2/MarginContainer/HBoxContainer" unique_id=1216903063]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme = ExtResource("1_3ykye")
+text = "SFX VOLUME"
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel2/MarginContainer/HBoxContainer" unique_id=2052075515]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3ykye")
+theme_override_constants/separation = 20
+
+[node name="Input" type="LineEdit" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel2/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1292234176]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_r62pu")
+placeholder_text = "0.00"
+alignment = 1
+max_length = 5
+script = ExtResource("6_rbc7x")
+setting_key = "sfx_volume"
+
+[node name="Slider" type="HSlider" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel2/MarginContainer/HBoxContainer/HBoxContainer" unique_id=957601712]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.05
+value = 0.7
+script = ExtResource("3_cj1lu")
+setting_key = "sfx_volume"
+
+[node name="Panel3" type="Panel" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio" unique_id=945528695]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme = ExtResource("1_3ykye")
+theme_override_styles/panel = SubResource("StyleBoxFlat_4v2jo")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel3" unique_id=333741510]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3ykye")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 7
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel3/MarginContainer" unique_id=40328514]
+layout_mode = 2
+theme = ExtResource("1_3ykye")
+theme_override_constants/separation = 220
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel3/MarginContainer/HBoxContainer" unique_id=1273107406]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme = ExtResource("1_3ykye")
+text = "MUSIC VOLUME"
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel3/MarginContainer/HBoxContainer" unique_id=639219951]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3ykye")
+theme_override_constants/separation = 20
+
+[node name="Input" type="LineEdit" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel3/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1441905934]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_r62pu")
+placeholder_text = "0.00"
+alignment = 1
+max_length = 5
+script = ExtResource("6_rbc7x")
+setting_key = "music_volume"
+
+[node name="Slider" type="HSlider" parent="Control/HBoxContainer/TABCustom/TabContainer/Audio/Panel3/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1550458320]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.05
+value = 0.7
+script = ExtResource("3_cj1lu")
+setting_key = "music_volume"
 
 [node name="Debug" type="VBoxContainer" parent="Control/HBoxContainer/TABCustom/TabContainer" unique_id=1990622529]
 visible = false

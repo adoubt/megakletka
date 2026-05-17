@@ -465,7 +465,7 @@ class_name DataBase
 			}	
 		},
 	12:{"type": ItemAbilityType.ACTIVE,
-		"title": "Passive: Fox Gamble",
+		"title": "Active: Fox Gamble",
 		"gamble": true,
 		"description": "On USE: SELL a random item for X its COST, where X is the current total number of items",
 		"target_stat": Stats.GameStats.LOG_BALANCE,
@@ -628,6 +628,12 @@ class_name DataBase
 			"settings_select":
 				["res://assets/sounds/non_diegetic/ui/tap6.mp3",
 				],
+			"map_opened":[
+				"res://assets/sounds/non_diegetic/ui/tap7.mp3"
+			],
+			"map_closed":[
+				"res://assets/sounds/non_diegetic/ui/tap2.mp3",
+			],
 			"menu_back": 
 				["res://assets/sounds/non_diegetic/ui/tap2.mp3",],
 			"item_selected":

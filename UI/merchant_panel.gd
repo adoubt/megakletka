@@ -25,7 +25,20 @@ func _process(_delta):
 	if dragged_item:
 		_update_drag_position()   
 		
-func _gui_input(event: InputEvent) -> void:
+#func _gui_input(event: InputEvent) -> void:
+	#if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		#if event.pressed:
+			#_try_start_drag()
+		#else:
+			#_try_drop()
+#
+	#if event is InputEventMouseMotion and not dragged_item:
+		#_update_hover(event.position)
+func _unhandled_input(event):
+	if Input.is_action_just_pressed("buy") and hovered_item:
+		if buy_zone.accept_drop(hovered_item):
+			_cleanup_drag()
+			return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			_try_start_drag()
@@ -33,8 +46,7 @@ func _gui_input(event: InputEvent) -> void:
 			_try_drop()
 
 	if event is InputEventMouseMotion and not dragged_item:
-		_update_hover(event.position)
-
+		_update_hover(get_viewport().get_mouse_position())
 func _try_start_drag():
 	if hovered_item == null:
 		return

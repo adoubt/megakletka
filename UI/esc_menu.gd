@@ -15,10 +15,16 @@ var hover_scale: Vector2 = Vector2(1.15, 1.15)
 var pressed_scale: Vector2 = Vector2(0.95, 0.95)
 var anim_time: float = 0.32
 func _ready():
-	visible = false  # панели всегда стартуют скрытыми
-	for btn in vbox.get_children():
+	
+	visible = false  
+	var buttons := vbox.get_children().filter(func(x): return x is Button)
+	
+	for btn in buttons:
+		
 		if btn is Button:
-			_apply_style(btn)
+			
+			btn.pivot_offset = btn.size/2
+			#_apply_style(btn)
 			_connect_animation(btn)
 
 
@@ -42,7 +48,17 @@ func _apply_style(btn: Button) -> void:
 	btn.add_theme_stylebox_override("hover", style_hover)
 	btn.add_theme_stylebox_override("pressed", style_pressed)
 	btn.add_theme_color_override("font_color", Color(1,1,1))
+func _notification(what):	
 
+	if what == NOTIFICATION_VISIBILITY_CHANGED:
+
+		if visible:
+			
+			await get_tree().process_frame
+			var buttons := vbox.get_children().filter(func(x): return x is Button)
+			buttons[0].grab_focus()
+			
+			
 func _connect_animation(btn: Button) -> void:
 	btn.mouse_entered.connect(Callable(self, "_tween_scale").bind(btn, hover_scale))
 	btn.mouse_exited.connect(Callable(self, "_tween_scale").bind(btn, Vector2(1,1)))
@@ -75,3 +91,9 @@ func _on_continue_pressed() -> void:
 	
 func _sound()->void :
 	AudioManager.play_ui_sound("menu_select")
+
+
+func _on_map_pressed() -> void:
+	UIManager.toggle_escape_menu()
+	UIManager.open_map_panel()
+	_sound()

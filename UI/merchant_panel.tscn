@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bbv63usdi0ej3" path="res://UI/merchant_panel.gd" id="1_n4wfu"]
 [ext_resource type="Script" uid="uid://7aiu8snflvkp" path="res://UI/drop_zone.gd" id="2_5bdn6"]
 [ext_resource type="Texture2D" uid="uid://40kb5u3e7mus" path="res://assets/Hud/Coin.png" id="3_5lnka"]
+[ext_resource type="Texture2D" uid="uid://xjaqjj36qdnc" path="res://assets/icons/buttons/one.png" id="4_5lnka"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dc25y"]
 bg_color = Color(0.8745098, 0.627451, 0.35686275, 0.48235294)
@@ -19,6 +20,15 @@ corner_radius_bottom_left = 35
 corner_detail = 2
 anti_aliasing_size = 10.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e1j7n"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 34
+corner_radius_top_right = 79
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 47
+shadow_color = Color(0.6745098, 0.7254902, 0.70980394, 0.5764706)
+shadow_size = 11
+
 [node name="MerchantPanel" type="Control" unique_id=892930265]
 layout_mode = 3
 anchors_preset = 15
@@ -26,6 +36,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_n4wfu")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1074500238]
@@ -46,6 +57,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 200
@@ -53,10 +65,12 @@ theme_override_constants/margin_bottom = 50
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer2" unique_id=243677740]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/VBoxContainer2" unique_id=1340789625]
 layout_mode = 2
 size_flags_horizontal = 8
+mouse_behavior_recursive = 2
 
 [node name="BuyZone" type="Control" parent="MarginContainer2/VBoxContainer2/HBoxContainer" unique_id=526388800]
 unique_name_in_owner = true
@@ -127,5 +141,32 @@ theme_override_font_sizes/font_size = 27
 text = "14"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer2/VBoxContainer2/HBoxContainer/BuyZone/Panel/VBoxContainer/BuyContainer" unique_id=1299433608]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer2/VBoxContainer2/HBoxContainer/BuyZone/Panel/VBoxContainer/BuyContainer/Control" unique_id=327830249]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.454235
+offset_top = 15.616705
+offset_right = 66.69386
+offset_bottom = 21.171913
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.11868239
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_e1j7n")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer2/VBoxContainer2/HBoxContainer/BuyZone/Panel/VBoxContainer/BuyContainer/Control/PanelContainer" unique_id=928827865]
+z_index = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_5lnka")
+expand_mode = 1
+stretch_mode = 5
 
 [connection signal="hidden" from="." to="." method="_on_hidden"]

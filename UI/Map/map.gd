@@ -311,3 +311,15 @@ func play_close_anim() -> void:
 	fade_tween.finished.connect(func():
 		visible = false
 	)
+
+
+func _on_map_button_pressed() -> void:
+	UIManager.toggle_map_panel()
+	
+
+func _on_draw() -> void:
+	AudioManager.play_ui_sound("map_opened")
+
+
+
+	
