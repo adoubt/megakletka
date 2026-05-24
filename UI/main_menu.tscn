@@ -161,7 +161,7 @@ size_flags_horizontal = 8
 theme_override_colors/font_color = Color(0.92941177, 1, 0.972549, 1)
 theme_override_font_sizes/font_size = 27
 theme_override_styles/normal = SubResource("StyleBoxFlat_f40uw")
-text = " v0.14.0"
+text = " v0.14.5"
 
 [node name="Control" type="Control" parent="MarginContainer/HBoxContainer" unique_id=1986556221]
 layout_mode = 2
